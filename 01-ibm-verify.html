@@ -161,9 +161,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul class="collapse">
   <li><a href="#important-tables" id="toc-important-tables" class="nav-link active" data-scroll-target="#important-tables">Important Tables</a></li>
   <li><a href="#internal-applications" id="toc-internal-applications" class="nav-link" data-scroll-target="#internal-applications">Internal Applications</a></li>
-  <li><a href="#total-sign-ins-to-canadalogin" id="toc-total-sign-ins-to-canadalogin" class="nav-link" data-scroll-target="#total-sign-ins-to-canadalogin">Total Sign-Ins to CanadaLogin</a></li>
-  <li><a href="#total-year-to-date-unique-users-of-canadalogin" id="toc-total-year-to-date-unique-users-of-canadalogin" class="nav-link" data-scroll-target="#total-year-to-date-unique-users-of-canadalogin">Total Year-to-Date Unique Users of CanadaLogin</a></li>
-  <li><a href="#total-sign-ins-by-application" id="toc-total-sign-ins-by-application" class="nav-link" data-scroll-target="#total-sign-ins-by-application">Total Sign-Ins by Application</a></li>
+  <li><a href="#sign-ins-to-canadalogin" id="toc-sign-ins-to-canadalogin" class="nav-link" data-scroll-target="#sign-ins-to-canadalogin">Sign-Ins to CanadaLogin</a></li>
+  <li><a href="#year-to-date-unique-users-of-canadalogin" id="toc-year-to-date-unique-users-of-canadalogin" class="nav-link" data-scroll-target="#year-to-date-unique-users-of-canadalogin">Year-to-Date Unique Users of CanadaLogin</a></li>
+  <li><a href="#sign-ins-by-application" id="toc-sign-ins-by-application" class="nav-link" data-scroll-target="#sign-ins-by-application">Sign-Ins by Application</a></li>
   <li><a href="#peak-daily-users-by-application" id="toc-peak-daily-users-by-application" class="nav-link" data-scroll-target="#peak-daily-users-by-application">Peak Daily Users by Application</a></li>
   <li><a href="#year-to-date-unique-users-by-application" id="toc-year-to-date-unique-users-by-application" class="nav-link" data-scroll-target="#year-to-date-unique-users-by-application">Year-to-Date Unique Users by Application</a></li>
   <li><a href="#average-daily-sign-ins-by-application" id="toc-average-daily-sign-ins-by-application" class="nav-link" data-scroll-target="#average-daily-sign-ins-by-application">Average Daily Sign-Ins by Application</a></li>
@@ -208,8 +208,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="st">'GCS Migration Solution'</span>,</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="st">'GC Sign In - Profile Management App'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="total-sign-ins-to-canadalogin" class="level2">
-<h2 class="anchored" data-anchor-id="total-sign-ins-to-canadalogin">Total Sign-Ins to CanadaLogin</h2>
+<section id="sign-ins-to-canadalogin" class="level2">
+<h2 class="anchored" data-anchor-id="sign-ins-to-canadalogin">Sign-Ins to CanadaLogin</h2>
 <section id="description" class="level3">
 <h3 class="anchored" data-anchor-id="description">Description</h3>
 <p>The total number of sign-in events to CanadaLogin. It includes both successful attempts and failed attempts to sign in.</p>
@@ -240,12 +240,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> ibm_verify.auth_total_logins</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co">-- Select an arbitrary reporting period</span></span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> from_date <span class="kw">BETWEEN</span> <span class="dt">DATE</span> <span class="st">'2026-01-01'</span> <span class="kw">AND</span> <span class="dt">DATE</span> <span class="st">'2026-05-28'</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> application_name</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> total_sign_in_attempts <span class="kw">DESC</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> total_sign_in_attempts <span class="kw">DESC</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 </section>
-<section id="total-year-to-date-unique-users-of-canadalogin" class="level2">
-<h2 class="anchored" data-anchor-id="total-year-to-date-unique-users-of-canadalogin">Total Year-to-Date Unique Users of CanadaLogin</h2>
+<section id="year-to-date-unique-users-of-canadalogin" class="level2">
+<h2 class="anchored" data-anchor-id="year-to-date-unique-users-of-canadalogin">Year-to-Date Unique Users of CanadaLogin</h2>
 <section id="description-1" class="level3">
 <h3 class="anchored" data-anchor-id="description-1">Description</h3>
 <p>The total number of unique users who have signed in to CanadaLogin since the beginning of the current calendar year.</p>
@@ -276,14 +275,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode" id="cb3"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    ytd_unique_users</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> ibm_verify.auth_total_logins</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> from_date <span class="op">&gt;=</span> DATE_TRUNC(<span class="st">'year'</span>, <span class="fu">CURRENT_DATE</span>)</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> from_date <span class="kw">DESC</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="kw">LIMIT</span> <span class="dv">1</span>;</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> from_date <span class="kw">DESC</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="kw">LIMIT</span> <span class="dv">1</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 </section>
-<section id="total-sign-ins-by-application" class="level2">
-<h2 class="anchored" data-anchor-id="total-sign-ins-by-application">Total Sign-Ins by Application</h2>
+<section id="sign-ins-by-application" class="level2">
+<h2 class="anchored" data-anchor-id="sign-ins-by-application">Sign-Ins by Application</h2>
 <section id="description-2" class="level3">
 <h3 class="anchored" data-anchor-id="description-2">Description</h3>
 <p>The total number of sign-ins recorded for each application over a selected time period.</p>
@@ -318,15 +315,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  application_name,</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">SUM</span>(total_logins) <span class="kw">AS</span> total_sign_ins</span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span>   ibm_verify.app_login_counts</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span>  from_date <span class="kw">BETWEEN</span> <span class="dt">DATE</span> <span class="st">'2026-01-01'</span> <span class="kw">AND</span> <span class="dt">DATE</span> <span class="st">'2026-05-28'</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co">-- optionally filter out internal applications</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">AND</span> application_name <span class="kw">NOT</span> <span class="kw">IN</span> (</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>      <span class="st">'Flow Application'</span>,</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>      <span class="st">'GCS Migration Solution'</span>,</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>      <span class="st">'GC Sign In - Profile Management App'</span></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span>  <span class="kw">BY</span> application_name</span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span>  <span class="kw">BY</span> total_sign_ins <span class="kw">DESC</span>; </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co">-- select an arbitrary reporting period</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span>  from_date <span class="kw">BETWEEN</span> <span class="dt">DATE</span> <span class="st">'2026-01-01'</span> <span class="kw">AND</span> <span class="dt">DATE</span> <span class="st">'2026-05-28'</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co">-- optionally filter out internal applications</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">AND</span> application_name <span class="kw">NOT</span> <span class="kw">IN</span> (</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>      <span class="st">'Flow Application'</span>,</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>      <span class="st">'GCS Migration Solution'</span>,</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>      <span class="st">'GC Sign In - Profile Management App'</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span>  <span class="kw">BY</span> application_name</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span>  <span class="kw">BY</span> total_sign_ins <span class="kw">DESC</span>; </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 </section>
 <section id="peak-daily-users-by-application" class="level2">
@@ -361,13 +359,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="example-sql-3" class="level3">
 <h3 class="anchored" data-anchor-id="example-sql-3">Example SQL</h3>
-<div class="sourceCode" id="cb5"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    application_name,</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">MAX</span>(unique_users) <span class="kw">AS</span> peak_daily_unique_users</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> ibm_verify.app_login_counts</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> from_date <span class="kw">BETWEEN</span> <span class="dt">DATE</span> <span class="st">'2026-01-01'</span> <span class="kw">AND</span> <span class="dt">DATE</span> <span class="st">'2026-05-28'</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> application_name</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> peak_daily_unique_users <span class="kw">DESC</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">WITH</span> ranked <span class="kw">AS</span> (</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">SELECT</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>        application_name,</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>        from_date,</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>        unique_users,</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>        <span class="fu">ROW_NUMBER</span>() <span class="kw">OVER</span> (</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>            <span class="kw">PARTITION</span> <span class="kw">BY</span> application_name</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>            <span class="kw">ORDER</span> <span class="kw">BY</span> unique_users <span class="kw">DESC</span>, from_date <span class="kw">ASC</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>        ) <span class="kw">AS</span> rn</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">FROM</span> ibm_verify.app_login_counts</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- select an arbitrary reporting period</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">WHERE</span> from_date <span class="kw">BETWEEN</span> <span class="dt">DATE</span> <span class="st">'2026-01-01'</span> <span class="kw">AND</span> <span class="dt">DATE</span> <span class="st">'2026-05-28'</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    application_name,</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    from_date,</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>    unique_users <span class="kw">AS</span> peak_daily_unique_users</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> ranked</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> rn <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> peak_daily_unique_users <span class="kw">DESC</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 </section>
 <section id="year-to-date-unique-users-by-application" class="level2">
@@ -398,7 +410,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="calculation-logic-4" class="level3">
 <h3 class="anchored" data-anchor-id="calculation-logic-4">Calculation logic</h3>
-<p>Take the maximum value of <code>ytd_unique_users</code> over the selected reporting period, grouped by application.</p>
+<p>Take the latest value of <code>ytd_unique_users</code> over the selected reporting period, grouped by application.</p>
 </section>
 <section id="example-sql-4" class="level3">
 <h3 class="anchored" data-anchor-id="example-sql-4">Example SQL</h3>
@@ -450,29 +462,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="calculation-logic-5" class="level3">
 <h3 class="anchored" data-anchor-id="calculation-logic-5">Calculation logic</h3>
-<p>For a given reporting period, calculate total sign-ins by day, then take the average of those daily totals.</p>
+<p>For each application, calculate the average of <code>total_logins</code> across all daily records in the selected reporting period. This assumes there is one row per application per date.</p>
 </section>
 <section id="example-sql-5" class="level3">
 <h3 class="anchored" data-anchor-id="example-sql-5">Example SQL</h3>
-<div class="sourceCode" id="cb7"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">WITH</span> daily_sign_ins <span class="kw">AS</span> (</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">SELECT</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>        application_name,</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>        from_date,</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>        total_logins</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">FROM</span> ibm_verify.app_login_counts</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- choose an arbitrary reporting period</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">WHERE</span> from_date <span class="kw">BETWEEN</span> <span class="dt">DATE</span> <span class="st">'2026-04-22'</span> <span class="kw">AND</span> <span class="dt">DATE</span> <span class="st">'2026-05-31'</span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">GROUP</span> <span class="kw">BY</span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>        application_name,</span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>        from_date</span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    application_name,</span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">AVG</span>(total_logins) <span class="kw">AS</span> average_daily_sign_ins</span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> daily_sign_ins</span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> application_name</span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> average_daily_sign_ins <span class="kw">DESC</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    application_name,</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">AVG</span>(total_logins) <span class="kw">AS</span> average_daily_sign_ins</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> ibm_verify.app_login_counts</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co">-- Choose an arbitrary reporting period</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> from_date <span class="kw">BETWEEN</span> <span class="dt">DATE</span> <span class="st">'2026-04-22'</span> <span class="kw">AND</span> <span class="dt">DATE</span> <span class="st">'2026-05-31'</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> application_name</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> average_daily_sign_ins <span class="kw">DESC</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 
 </section>
