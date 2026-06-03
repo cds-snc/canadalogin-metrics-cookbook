@@ -1,0 +1,27 @@
+---
+project:
+  type: book
+
+book:
+  title: "CanadaLogin Metrics Cookbook"
+  author: "Colin Douglas"
+  date: today
+  chapters:
+    - index.qmd
+    - 01-ibm-verify.qmd
+#    - 02-call-centre.qmd
+#    - 03-cross-source.qmd
+#    - 90-notes.qmd
+
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    code-fold: true
+    number-sections: false
+    theme: cosmo
+
+execute:
+  echo: true
+  warning: false
+  message: false

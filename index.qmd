@@ -1,0 +1,66 @@
+# Introduction
+
+This cookbook documents commonly used CanadaLogin metrics, including their 
+definitions, plain-language alternate names, calculation logic, and example 
+SQL queries.
+
+The cookbook is organized by data source:
+
+- IBM Verify
+- Call Centre
+- Cross-source / interpretive metrics
+
+Each metric generally includes:
+
+- a description
+- plain-language alternate names
+- data source information
+- calculation logic
+- example SQL
+- interpretation notes, where relevant
+
+The goal is to make metric definitions easier to reuse, explain, and validate 
+across reporting products.
+
+## How to use this cookbook
+
+Use this cookbook as a reference when building dashboards, reports, briefing 
+materials, or ad hoc analyses.
+
+For each metric, confirm:
+
+1. Does it measure what I think it does?
+2. What table and columns are used?
+3. Should I apply any filters?
+4. Is this metric a count, a rate, a cumulative value, or an average?
+
+## Conventions
+
+In reporting language, prefer the noun **sign-in** over **login** where 
+possible. The underlying IBM Verify field may be called `total_logins`, but 
+“sign-ins” is preferred (and often enforced) when talking about CanadaLogin.
+
+Where applicable, internal applications are excluded from external-facing 
+adoption reporting.
+
+As of June 3, 2026, the current internal application exclusion list is:
+
+- Flow Application
+- GCS Migration Solution
+- GC Sign In - Profile Management App
+
+## Scope
+
+This is a preliminary metrics cookbook to help with *ad hoc* CanadaLogin
+analyses. It generally deals with *calculated* metrics. Metrics that are already
+present in a table and don't require any calculation do not need to be included,
+although they can be if they need clarification.
+
+The initial version focuses on:
+
+- IBM Verify application sign-in metrics
+- call centre activity metrics
+- call centre topic metrics
+- simple cross-source interpretive metrics comparing sign-in activity and call volume
+
+Additional data sources, metric definitions, and validation notes can be added as the cookbook matures.

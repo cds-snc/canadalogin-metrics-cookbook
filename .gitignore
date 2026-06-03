@@ -1,0 +1,46 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+*.Rproj
+
+# Quarto execution and rendering caches
+/.quarto/
+/_freeze/
+
+# Quarto output directories (default HTML/site formats)
+/_site/
+/site_libs/
+
+# Quarto Book and Manuscript outputs
+/_book/
+/_manuscript/
+
+# R-specific execution artifacts (if using R)
+.Rproj.user
+.Rhistory
+.RData
+.RDataTmp
+
+# Python-specific execution artifacts (if using Jupyter/Python)
+__pycache__/
+.ipynb_checkpoints/
+.virtualenv/
+env/
+venv/
+
+# LaTeX compilation artifacts (if rendering to PDF via keep-tex)
+*.pdf
+*.log
+*.aux
+*.toc
+*.out
+*.synctex.tail
+*.synctex(busy)
+*.synctex.gz
+*.fdb_latexmk
+*.fls
+
+# OS-specific metadata files
+.DS_Store
+Thumbs.db
