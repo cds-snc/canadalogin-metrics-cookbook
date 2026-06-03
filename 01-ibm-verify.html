@@ -187,21 +187,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#calculation-logic-2" id="toc-calculation-logic-2" class="nav-link" data-scroll-target="#calculation-logic-2">Calculation logic</a></li>
   <li><a href="#example-sql-2" id="toc-example-sql-2" class="nav-link" data-scroll-target="#example-sql-2">Example SQL</a></li>
   <li><a href="#interpretation-notes-2" id="toc-interpretation-notes-2" class="nav-link" data-scroll-target="#interpretation-notes-2">Interpretation notes</a></li>
+  </ul></li>
+  <li><a href="#average-daily-sign-ins" id="toc-average-daily-sign-ins" class="nav-link" data-scroll-target="#average-daily-sign-ins">Average Daily Sign-Ins</a>
+  <ul class="collapse">
   <li><a href="#description-3" id="toc-description-3" class="nav-link" data-scroll-target="#description-3">Description</a></li>
   <li><a href="#plain-language-alternate-names-3" id="toc-plain-language-alternate-names-3" class="nav-link" data-scroll-target="#plain-language-alternate-names-3">Plain-language alternate names</a></li>
   <li><a href="#data-source-3" id="toc-data-source-3" class="nav-link" data-scroll-target="#data-source-3">Data source</a></li>
   <li><a href="#calculation-logic-3" id="toc-calculation-logic-3" class="nav-link" data-scroll-target="#calculation-logic-3">Calculation logic</a></li>
   <li><a href="#example-sql-3" id="toc-example-sql-3" class="nav-link" data-scroll-target="#example-sql-3">Example SQL</a></li>
-  <li><a href="#example-sql-for-latest-adoption-value" id="toc-example-sql-for-latest-adoption-value" class="nav-link" data-scroll-target="#example-sql-for-latest-adoption-value">Example SQL for latest adoption value</a></li>
-  <li><a href="#interpretation-notes-3" id="toc-interpretation-notes-3" class="nav-link" data-scroll-target="#interpretation-notes-3">Interpretation notes</a></li>
-  </ul></li>
-  <li><a href="#average-daily-sign-ins" id="toc-average-daily-sign-ins" class="nav-link" data-scroll-target="#average-daily-sign-ins">Average Daily Sign-Ins</a>
-  <ul class="collapse">
-  <li><a href="#description-4" id="toc-description-4" class="nav-link" data-scroll-target="#description-4">Description</a></li>
-  <li><a href="#plain-language-alternate-names-4" id="toc-plain-language-alternate-names-4" class="nav-link" data-scroll-target="#plain-language-alternate-names-4">Plain-language alternate names</a></li>
-  <li><a href="#data-source-4" id="toc-data-source-4" class="nav-link" data-scroll-target="#data-source-4">Data source</a></li>
-  <li><a href="#calculation-logic-4" id="toc-calculation-logic-4" class="nav-link" data-scroll-target="#calculation-logic-4">Calculation logic</a></li>
-  <li><a href="#example-sql-4" id="toc-example-sql-4" class="nav-link" data-scroll-target="#example-sql-4">Example SQL</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -400,84 +393,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="interpretation-notes-2">Interpretation notes</h3>
 <p>Since <code>ytd_unique_users</code> is a cumulative field, it will reset every year.</p>
 </section>
-<section id="description-3" class="level3">
-<h3 class="anchored" data-anchor-id="description-3">Description</h3>
-<p>The adoption curve shows the cumulative number of unique users for an application since a defined launch or onboarding date.</p>
-<p>In the notebook, this is shown using <code>since_apr22_unique_users</code>, with April 22, 2026 used as the launch date for PrairiesCan.</p>
-<p>This metric is useful for answering questions such as:</p>
-<ul>
-<li>How quickly is an application gaining users?</li>
-<li>Has adoption plateaued?</li>
-<li>Is onboarding complete?</li>
-<li>How much user reach has been achieved since launch?</li>
-</ul>
-</section>
-<section id="plain-language-alternate-names-3" class="level3">
-<h3 class="anchored" data-anchor-id="plain-language-alternate-names-3">Plain-language alternate names</h3>
-<ul>
-<li>Onboarding curve</li>
-<li>Adoption trend</li>
-<li>Cumulative users since launch</li>
-<li>User growth since launch</li>
-<li>Rollout progress</li>
-</ul>
-</section>
-<section id="data-source-3" class="level3">
-<h3 class="anchored" data-anchor-id="data-source-3">Data source</h3>
-<ul>
-<li>Schema: <code>ibm_verify</code></li>
-<li>Table: <code>app_login_counts</code></li>
-<li>Key fields:
-<ul>
-<li><code>application_name</code></li>
-<li><code>from_date</code></li>
-<li><code>since_apr22_unique_users</code></li>
-</ul></li>
-</ul>
-</section>
-<section id="calculation-logic-3" class="level3">
-<h3 class="anchored" data-anchor-id="calculation-logic-3">Calculation logic</h3>
-<p>Select the cumulative unique user field for the relevant application and launch period.</p>
-<p>For the PrairiesCan example, use <code>since_apr22_unique_users</code> starting on April 22, 2026.</p>
-</section>
-<section id="example-sql-3" class="level3">
-<h3 class="anchored" data-anchor-id="example-sql-3">Example SQL</h3>
-<div class="sourceCode" id="cb5"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    from_date,</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    application_name,</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">CAST</span>(since_apr22_unique_users <span class="kw">AS</span> BIGINT) <span class="kw">AS</span> cumulative_unique_users_since_launch</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> ibm_verify.app_login_counts</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> application_name <span class="op">=</span> <span class="st">'PrairiesCan'</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">AND</span> from_date <span class="op">&gt;=</span> <span class="dt">DATE</span> <span class="st">'2026-04-22'</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> from_date;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="example-sql-for-latest-adoption-value" class="level3">
-<h3 class="anchored" data-anchor-id="example-sql-for-latest-adoption-value">Example SQL for latest adoption value</h3>
-<div class="sourceCode" id="cb6"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    application_name,</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">MAX</span>(from_date) <span class="kw">AS</span> latest_date,</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">MAX</span>(<span class="fu">CAST</span>(since_apr22_unique_users <span class="kw">AS</span> BIGINT)) <span class="kw">AS</span> cumulative_unique_users_since_launch</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> ibm_verify.app_login_counts</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> application_name <span class="op">=</span> <span class="st">'PrairiesCan'</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">AND</span> from_date <span class="op">&gt;=</span> <span class="dt">DATE</span> <span class="st">'2026-04-22'</span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> application_name;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="interpretation-notes-3" class="level3">
-<h3 class="anchored" data-anchor-id="interpretation-notes-3">Interpretation notes</h3>
-<p>This metric assumes that <code>since_apr22_unique_users</code> is cumulative and specific to the April 22, 2026 launch period.</p>
-<p>Longer term, it may be preferable to generalize this field name or calculate cumulative unique users from user-level event data, if available.</p>
-</section>
 </section>
 <section id="average-daily-sign-ins" class="level2">
 <h2 class="anchored" data-anchor-id="average-daily-sign-ins">Average Daily Sign-Ins</h2>
-<section id="description-4" class="level3">
-<h3 class="anchored" data-anchor-id="description-4">Description</h3>
+<section id="description-3" class="level3">
+<h3 class="anchored" data-anchor-id="description-3">Description</h3>
 <p>The average number of sign-ins per day for a specific application over a selected reporting period.</p>
 <p>This metric summarizes daily sign-in activity into a single average value. It is useful for understanding typical daily usage during a launch period, reporting window, or monitoring period.</p>
 <p>For example, this metric can be used to describe the average daily sign-in volume for PrairiesCan between April 22, 2026 and May 31, 2026.</p>
 </section>
-<section id="plain-language-alternate-names-4" class="level3">
-<h3 class="anchored" data-anchor-id="plain-language-alternate-names-4">Plain-language alternate names</h3>
+<section id="plain-language-alternate-names-3" class="level3">
+<h3 class="anchored" data-anchor-id="plain-language-alternate-names-3">Plain-language alternate names</h3>
 <ul>
 <li>Average daily sign-ins</li>
 <li>Average sign-ins per day</li>
@@ -486,38 +412,38 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Average daily CanadaLogin activity</li>
 </ul>
 </section>
-<section id="data-source-4" class="level3">
-<h3 class="anchored" data-anchor-id="data-source-4">Data source</h3>
+<section id="data-source-3" class="level3">
+<h3 class="anchored" data-anchor-id="data-source-3">Data source</h3>
 <ul>
 <li>Schema: <code>ibm_verify</code></li>
 <li>Table: <code>app_login_counts</code></li>
 </ul>
 </section>
-<section id="calculation-logic-4" class="level3">
-<h3 class="anchored" data-anchor-id="calculation-logic-4">Calculation logic</h3>
+<section id="calculation-logic-3" class="level3">
+<h3 class="anchored" data-anchor-id="calculation-logic-3">Calculation logic</h3>
 <p>For a given reporting period, calculate total sign-ins by day, then take the average of those daily totals.</p>
 </section>
-<section id="example-sql-4" class="level3">
-<h3 class="anchored" data-anchor-id="example-sql-4">Example SQL</h3>
-<div class="sourceCode" id="cb7"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">WITH</span> daily_sign_ins <span class="kw">AS</span> (</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">SELECT</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>        application_name,</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>        from_date,</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>        total_logins</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">FROM</span> ibm_verify.app_login_counts</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">--- choose an arbitrary reporting period</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">WHERE</span> from_date <span class="kw">BETWEEN</span> <span class="dt">DATE</span> <span class="st">'2026-04-22'</span> <span class="kw">AND</span> <span class="dt">DATE</span> <span class="st">'2026-05-31'</span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">GROUP</span> <span class="kw">BY</span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>        application_name,</span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>        from_date</span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    application_name,</span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">AVG</span>(total_logins) <span class="kw">AS</span> average_daily_sign_ins</span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> daily_sign_ins</span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> application_name</span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> average_daily_sign_ins <span class="kw">DESC</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="example-sql-3" class="level3">
+<h3 class="anchored" data-anchor-id="example-sql-3">Example SQL</h3>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">WITH</span> daily_sign_ins <span class="kw">AS</span> (</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">SELECT</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>        application_name,</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>        from_date,</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>        total_logins</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">FROM</span> ibm_verify.app_login_counts</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">--- choose an arbitrary reporting period</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">WHERE</span> from_date <span class="kw">BETWEEN</span> <span class="dt">DATE</span> <span class="st">'2026-04-22'</span> <span class="kw">AND</span> <span class="dt">DATE</span> <span class="st">'2026-05-31'</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">GROUP</span> <span class="kw">BY</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>        application_name,</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>        from_date</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    application_name,</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">AVG</span>(total_logins) <span class="kw">AS</span> average_daily_sign_ins</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> daily_sign_ins</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> application_name</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> average_daily_sign_ins <span class="kw">DESC</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 
 </section>
