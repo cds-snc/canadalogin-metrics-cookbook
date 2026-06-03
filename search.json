@@ -1,0 +1,112 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "CanadaLogin Metrics Cookbook",
+    "section": "",
+    "text": "Introduction\nThis cookbook documents commonly used CanadaLogin metrics, including their definitions, plain-language alternate names, calculation logic, and example SQL queries.\nThe cookbook is organized by data source:\nEach metric generally includes:\nThe goal is to make metric definitions easier to reuse, explain, and validate across reporting products.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Introduction</span>"
+    ]
+  },
+  {
+    "objectID": "index.html#how-to-use-this-cookbook",
+    "href": "index.html#how-to-use-this-cookbook",
+    "title": "CanadaLogin Metrics Cookbook",
+    "section": "How to use this cookbook",
+    "text": "How to use this cookbook\nUse this cookbook as a reference when building dashboards, reports, briefing materials, or ad hoc analyses.\nFor each metric, confirm:\n\nDoes it measure what I think it does?\nWhat table and columns are used?\nShould I apply any filters?\nIs this metric a count, a rate, a cumulative value, or an average?",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Introduction</span>"
+    ]
+  },
+  {
+    "objectID": "index.html#conventions",
+    "href": "index.html#conventions",
+    "title": "CanadaLogin Metrics Cookbook",
+    "section": "Conventions",
+    "text": "Conventions\nIn reporting language, prefer the noun sign-in over login where possible. The underlying IBM Verify field may be called total_logins, but “sign-ins” is preferred (and often enforced) when talking about CanadaLogin.\nWhere applicable, internal applications are excluded from external-facing adoption reporting.\nAs of June 3, 2026, the current internal application exclusion list is:\n\nFlow Application\nGCS Migration Solution\nGC Sign In - Profile Management App",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Introduction</span>"
+    ]
+  },
+  {
+    "objectID": "index.html#scope",
+    "href": "index.html#scope",
+    "title": "CanadaLogin Metrics Cookbook",
+    "section": "Scope",
+    "text": "Scope\nThis is a preliminary metrics cookbook to help with ad hoc CanadaLogin analyses. It generally deals with calculated metrics. Metrics that are already present in a table and don’t require any calculation do not need to be included, although they can be if they need clarification.\nThe initial version focuses on:\n\nIBM Verify application sign-in metrics\ncall centre activity metrics\ncall centre topic metrics\nsimple cross-source interpretive metrics comparing sign-in activity and call volume\n\nAdditional data sources, metric definitions, and validation notes can be added as the cookbook matures.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Introduction</span>"
+    ]
+  },
+  {
+    "objectID": "01-ibm-verify.html",
+    "href": "01-ibm-verify.html",
+    "title": "IBM Verify",
+    "section": "",
+    "text": "Important Tables\nMetrics in this section are calculated from IBM Verify authentication and application sign-in data.",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>IBM Verify</span>"
+    ]
+  },
+  {
+    "objectID": "01-ibm-verify.html#important-tables",
+    "href": "01-ibm-verify.html#important-tables",
+    "title": "IBM Verify",
+    "section": "",
+    "text": "ibm_verify.auth_total_logins contains info about CanadaLogin in general\nibm_verify.mfa_activity contains information about multi-factor authentication\nibm_verify.app_login_counts contains info about which apps users are authenticating against",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>IBM Verify</span>"
+    ]
+  },
+  {
+    "objectID": "01-ibm-verify.html#internal-applications",
+    "href": "01-ibm-verify.html#internal-applications",
+    "title": "IBM Verify",
+    "section": "Internal Applications",
+    "text": "Internal Applications\nThe following applications are typically excluded from public-facing adoption metrics:\n'Flow Application',\n'GCS Migration Solution',\n'GC Sign In - Profile Management App'",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>IBM Verify</span>"
+    ]
+  },
+  {
+    "objectID": "01-ibm-verify.html#total-sign-ins-by-application",
+    "href": "01-ibm-verify.html#total-sign-ins-by-application",
+    "title": "IBM Verify",
+    "section": "Total Sign-Ins by Application",
+    "text": "Total Sign-Ins by Application\n\nDescription\nThe total number of sign-ins recorded for each application over a selected time period.\nThis metric is useful for understanding overall usage volume across CanadaLogin-integrated applications. It counts sign-in events, not people. A single user may sign in multiple times and contribute multiple sign-ins.\nThis metric is currently referred to in the source data as total_logins, but in reporting language it is usually clearer to describe it as total sign-ins.\n\n\nPlain-language alternate names\n\nTotal sign-ins\nSign-in volume\nNumber of sign-ins\nApplication sign-in count\nTotal uses of CanadaLogin by application\n\n\n\nData source\n\nSchema: ibm_verify\nTable: app_login_counts\n\n\n\nCalculation logic\nSum total_logins over the selected reporting period, grouped by application.\n\n\nExample SQL\nSELECT \n  application_name,\n  SUM(total_logins) AS total_sign_ins\nFROM   ibm_verify.app_login_counts\nWHERE  from_date BETWEEN DATE '2026-01-01' AND DATE '2026-05-28'\n--- optionally filter out internal applications\n  AND application_name NOT IN (\n      'Flow Application',\n      'GCS Migration Solution',\n      'GC Sign In - Profile Management App'\n  )\nGROUP  BY application_name\nORDER  BY total_sign_ins DESC; \n\n\nInterpretation notes\nA sign-in count measures events, not people. Use this metric when the question is about system usage or activity volume.\nUse unique user metrics when the question is about reach.",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>IBM Verify</span>"
+    ]
+  },
+  {
+    "objectID": "01-ibm-verify.html#peak-daily-unique-users",
+    "href": "01-ibm-verify.html#peak-daily-unique-users",
+    "title": "IBM Verify",
+    "section": "Peak Daily Unique Users",
+    "text": "Peak Daily Unique Users\n\nDescription\nThe highest number of unique users observed on any single day during the reporting period.\nThis metric is useful for identifying the maximum daily reach of an application and for understanding peak demand.\nUnlike total daily unique users, this metric does not sum across days. It identifies the single highest daily value.\n\n\nPlain-language alternate names\n\nPeak daily users\nHighest daily unique users\nMaximum daily active users\nBusiest day by unique users\nPeak daily reach\n\n\n\nData source\n\nSchema: ibm_verify\nTable: app_login_counts\n\n\n\nCalculation logic\nTake the maximum value of unique_users over the selected reporting period, grouped by application.\n\n\nExample SQL\nSELECT\n    application_name,\n    MAX(unique_users) AS peak_daily_unique_users\nFROM ibm_verify.app_login_counts\nWHERE from_date BETWEEN DATE '2026-01-01' AND DATE '2026-05-28'\nGROUP BY application_name\nORDER BY peak_daily_unique_users DESC;\n\n\nInterpretation notes\nThis metric is useful for identifying the busiest single day by unique user reach.",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>IBM Verify</span>"
+    ]
+  },
+  {
+    "objectID": "01-ibm-verify.html#year-to-date-unique-users",
+    "href": "01-ibm-verify.html#year-to-date-unique-users",
+    "title": "IBM Verify",
+    "section": "Year-to-Date Unique Users",
+    "text": "Year-to-Date Unique Users\n\nDescription\nThe number of unique users observed year-to-date for each application.\nGenerally, this is calculated by taking the last value of ytd_unique_users over the reporting period or within a year. ytd_unique_users is a cumulative field that increases or remains stable over time.\nThis metric is closer to “how many distinct people have used the application this year” than the daily unique user metrics.\n\n\nPlain-language alternate names\n\nYTD unique users\nUnique users this year\nYear-to-date user reach\nDistinct users this year\nTotal unique people reached this year\n\n\n\nData source\n\nSchema: ibm_verify\nTable: app_login_counts\nKey fields:\n\napplication_name\nfrom_date\nytd_unique_users\n\n\n\n\nCalculation logic\nTake the maximum value of ytd_unique_users over the selected reporting period, grouped by application.\n\n\nExample SQL\nWITH ranked AS (\n    SELECT\n        application_name,\n        from_date,\n        ytd_unique_users,\n        ROW_NUMBER() OVER (\n            PARTITION BY application_name\n            ORDER BY from_date DESC\n        ) AS rn\n    FROM ibm_verify.app_login_counts\n    WHERE from_date BETWEEN DATE '2026-01-01' AND DATE '2026-05-28'\n)\n\nSELECT\n    application_name,\n    CAST(ytd_unique_users AS BIGINT) AS ytd_unique_users\nFROM ranked\nWHERE rn = 1\nORDER BY ytd_unique_users DESC;\n\n\nInterpretation notes\nSince ytd_unique_users is a cumulative field, it will reset every year.\n\n\nDescription\nThe adoption curve shows the cumulative number of unique users for an application since a defined launch or onboarding date.\nIn the notebook, this is shown using since_apr22_unique_users, with April 22, 2026 used as the launch date for PrairiesCan.\nThis metric is useful for answering questions such as:\n\nHow quickly is an application gaining users?\nHas adoption plateaued?\nIs onboarding complete?\nHow much user reach has been achieved since launch?\n\n\n\nPlain-language alternate names\n\nOnboarding curve\nAdoption trend\nCumulative users since launch\nUser growth since launch\nRollout progress\n\n\n\nData source\n\nSchema: ibm_verify\nTable: app_login_counts\nKey fields:\n\napplication_name\nfrom_date\nsince_apr22_unique_users\n\n\n\n\nCalculation logic\nSelect the cumulative unique user field for the relevant application and launch period.\nFor the PrairiesCan example, use since_apr22_unique_users starting on April 22, 2026.\n\n\nExample SQL\nSELECT\n    from_date,\n    application_name,\n    CAST(since_apr22_unique_users AS BIGINT) AS cumulative_unique_users_since_launch\nFROM ibm_verify.app_login_counts\nWHERE application_name = 'PrairiesCan'\n  AND from_date &gt;= DATE '2026-04-22'\nORDER BY from_date;\n\n\nExample SQL for latest adoption value\nSELECT\n    application_name,\n    MAX(from_date) AS latest_date,\n    MAX(CAST(since_apr22_unique_users AS BIGINT)) AS cumulative_unique_users_since_launch\nFROM ibm_verify.app_login_counts\nWHERE application_name = 'PrairiesCan'\n  AND from_date &gt;= DATE '2026-04-22'\nGROUP BY application_name;\n\n\nInterpretation notes\nThis metric assumes that since_apr22_unique_users is cumulative and specific to the April 22, 2026 launch period.\nLonger term, it may be preferable to generalize this field name or calculate cumulative unique users from user-level event data, if available.",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>IBM Verify</span>"
+    ]
+  },
+  {
+    "objectID": "01-ibm-verify.html#average-daily-sign-ins",
+    "href": "01-ibm-verify.html#average-daily-sign-ins",
+    "title": "IBM Verify",
+    "section": "Average Daily Sign-Ins",
+    "text": "Average Daily Sign-Ins\n\nDescription\nThe average number of sign-ins per day for a specific application over a selected reporting period.\nThis metric summarizes daily sign-in activity into a single average value. It is useful for understanding typical daily usage during a launch period, reporting window, or monitoring period.\nFor example, this metric can be used to describe the average daily sign-in volume for PrairiesCan between April 22, 2026 and May 31, 2026.\n\n\nPlain-language alternate names\n\nAverage daily sign-ins\nAverage sign-ins per day\nTypical daily sign-in volume\nMean daily login volume\nAverage daily CanadaLogin activity\n\n\n\nData source\n\nSchema: ibm_verify\nTable: app_login_counts\n\n\n\nCalculation logic\nFor a given reporting period, calculate total sign-ins by day, then take the average of those daily totals.\n\n\nExample SQL\nWITH daily_sign_ins AS (\n    SELECT\n        application_name,\n        from_date,\n        total_logins\n    FROM ibm_verify.app_login_counts\n    --- choose an arbitrary reporting period\n    WHERE from_date BETWEEN DATE '2026-04-22' AND DATE '2026-05-31'\n    GROUP BY\n        application_name,\n        from_date\n)\n\nSELECT\n    application_name,\n    AVG(total_logins) AS average_daily_sign_ins\nFROM daily_sign_ins\nGROUP BY application_name\nORDER BY average_daily_sign_ins DESC;",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>IBM Verify</span>"
+    ]
+  }
+]
