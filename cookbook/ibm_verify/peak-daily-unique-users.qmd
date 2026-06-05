@@ -76,5 +76,5 @@ app_login_counts |>
 :::
 
 
-*Interpretation.* This metric identifies the busiest single day by unique user
+*Interpretation notes.* This metric identifies the busiest single day by unique user
 reach. The query above also returns the date on which that peak occurred.

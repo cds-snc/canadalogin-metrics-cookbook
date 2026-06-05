@@ -52,6 +52,6 @@ auth_total_logins |>
 
 :::
 
-*Interpretation.* The rate is a proportion between 0 and 1. Read it alongside
+*Interpretation notes.* The rate is a proportion between 0 and 1. Read it alongside
 sign-in volume: a low success rate on very low volume may just be noise, while
 the same rate on high volume is a real signal.

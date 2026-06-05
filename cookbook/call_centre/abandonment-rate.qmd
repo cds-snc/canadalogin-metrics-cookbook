@@ -50,5 +50,5 @@ weekly_activity_report |>
 
 :::
 
-*Interpretation.* The rate is a proportion between 0 and 1. Read it together with
+*Interpretation notes.* The rate is a proportion between 0 and 1. Read it together with
 average delay; a spike in abandonment usually coincides with longer waits.

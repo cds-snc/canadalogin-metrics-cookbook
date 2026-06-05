@@ -72,6 +72,6 @@ weekly_topic_dump |>
 
 :::
 
-*Interpretation.* The top 10 view is useful for quick reporting but may hide
+*Interpretation notes.* The top 10 view is useful for quick reporting but may hide
 important lower-volume issues. In cases where there are not many calls, it may be
 useful to limit this list to a top 5, or to truncate ties at the end of the list.

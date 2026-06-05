@@ -73,6 +73,6 @@ app_login_counts |>
 
 :::
 
-*Interpretation.* A sign-in count measures events, not people. Use this metric
+*Interpretation notes.* A sign-in count measures events, not people. Use this metric
 when the question is about system usage or activity volume. Use unique user
 metrics when the question is about reach.

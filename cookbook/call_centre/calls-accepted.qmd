@@ -79,5 +79,5 @@ weekly_activity_report |>
 
 :::
 
-*Interpretation.* Calls accepted may not be identical to calls answered,
+*Interpretation notes.* Calls accepted may not be identical to calls answered,
 depending on call centre definitions and routing logic.

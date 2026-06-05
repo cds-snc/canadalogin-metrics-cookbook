@@ -71,5 +71,5 @@ app_login_counts |>
 
 :::
 
-*Interpretation.* Since `ytd_unique_users` is a cumulative field, it will reset
+*Interpretation notes.* Since `ytd_unique_users` is a cumulative field, it will reset
 every year.

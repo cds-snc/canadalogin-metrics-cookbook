@@ -53,5 +53,5 @@ weekly_activity_report |>
 
 :::
 
-*Interpretation.* Average handle time is always at least as large as average call
+*Interpretation notes.* Average handle time is always at least as large as average call
 length. A widening gap between the two points to growing after-call work.

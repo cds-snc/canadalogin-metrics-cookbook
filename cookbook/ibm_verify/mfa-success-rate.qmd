@@ -51,6 +51,6 @@ mfa_activity |>
 
 :::
 
-*Interpretation.* The rate is a proportion between 0 and 1. Interpret per factor
+*Interpretation notes.* The rate is a proportion between 0 and 1. Interpret per factor
 where possible: a low overall rate may be driven by a single struggling factor
 rather than a system-wide problem.

@@ -60,6 +60,6 @@ mfa_activity |>
 
 :::
 
-*Interpretation.* `factor_share` is a proportion between 0 and 1 and sums to 1
+*Interpretation notes.* `factor_share` is a proportion between 0 and 1 and sums to 1
 across all factors. Combine with the MFA success rate to spot factors that are
 both heavily used and failing often.

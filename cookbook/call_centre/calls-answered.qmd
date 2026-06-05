@@ -79,5 +79,5 @@ weekly_activity_report |>
 
 :::
 
-*Interpretation.* Calls answered is commonly used as the weighting field when
+*Interpretation notes.* Calls answered is commonly used as the weighting field when
 combining weekly average call length or delay values.

@@ -49,6 +49,6 @@ weekly_activity_report |>
 
 :::
 
-*Interpretation.* The rate is a proportion between 0 and 1. A high answer rate
+*Interpretation notes.* The rate is a proportion between 0 and 1. A high answer rate
 with rising delay can still indicate strain: calls are answered eventually, but
 callers wait longer to reach an agent.

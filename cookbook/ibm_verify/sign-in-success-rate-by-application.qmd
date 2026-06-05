@@ -71,7 +71,7 @@ app_login_counts |>
 
 :::
 
-*Interpretation.* Compare applications against each other rather than against an
+*Interpretation notes.* Compare applications against each other rather than against an
 absolute target. Note that this measures authentication against a relying party
 *after already signing-in to CanadaLogin*. It doesn't requiring entering a password
 or two-factor, it simply checks if a given credential is valid for signing in to

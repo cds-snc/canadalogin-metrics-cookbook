@@ -88,6 +88,6 @@ weekly_activity_report |>
 
 :::
 
-*Interpretation.* Average delay should be interpreted alongside call volume. A
+*Interpretation notes.* Average delay should be interpreted alongside call volume. A
 low-volume week can produce unusual wait times that should not dominate the
 overall result.
