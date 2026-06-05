@@ -44,6 +44,8 @@ sourced from `ibm_verify.app_login_counts`.
 
 {{< include ibm_verify/year-to-date-unique-users-by-application.qmd >}}
 
+{{< include ibm_verify/applications-per-credential.qmd >}}
+
 {{< include ibm_verify/average-daily-sign-ins.qmd >}}
 
 ## Multi-factor Authentication Metrics
