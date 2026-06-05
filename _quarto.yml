@@ -11,7 +11,7 @@ book:
     - part: "Metrics Cookbook"
       chapters:
         - 01-ibm-verify.qmd
-#        - 02-call-centre.qmd
+        - 02-call-centre.qmd
 #        - 03-cross-source.qmd
 #        - 90-notes.qmd
     - part: "Data Catalog"
@@ -21,6 +21,8 @@ book:
         - catalog/ibm_verify/app_login_counts.qmd
         - catalog/ibm_verify/auth_total_logins.qmd
         - catalog/ibm_verify/mfa_activity.qmd
+        - catalog/call_centre/weekly_activity_report.qmd
+        - catalog/call_centre/weekly_topic_dump.qmd
 
 format:
   html:

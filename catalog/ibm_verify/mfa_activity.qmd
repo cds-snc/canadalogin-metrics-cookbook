@@ -10,14 +10,11 @@ MFA factor type, and result.
 
 ## Provenance
 
-Derived from the raw IBM Verify event stream (`ibm_verify_raw.ibm_verify`) by
-aggregating MFA authentication events to a per-day, per-factor, per-result grain.
-The `fetched_at` column indicates an automated refresh.
+Queried directly from the IBM Verify production instance via API.
 
-* `Updated`: Appears automated (see `fetched_at`). TODO: confirm exact cadence.
-* `Steward`: TODO
-* `Contact`: TODO
-* `Location`: TODO
+* `Updated`: Daily in the morning
+* `Steward`: EDCP Data and Research Team
+* `Contact`: [Yinlin Zhang](mailto:yinlin.zhang@cds-snc.ca )
 
 ## Fields
 

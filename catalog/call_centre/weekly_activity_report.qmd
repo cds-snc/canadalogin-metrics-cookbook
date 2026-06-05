@@ -1,0 +1,76 @@
+# weekly_activity_report
+
+Weekly summary of call centre operations for the CanadaLogin support queue.
+
+Each row represents one reporting week, summarizing call volume, service levels,
+call outcomes, and call type breakdowns for that week.
+
+`Keywords`: call centre, calls, weekly, volume, wait time, call length, service level
+
+## Provenance
+
+Sourced from a weekly Excel report that is typically send to the EDCP Data and Research 
+team via email. That spreadsheet is exctracted and loaded into the data repository via
+the [call centre weekly activity report](https://github.com/cds-snc/canadalogin-ibm-verify-pipeline/blob/main/infra/modules/upload_source/call_centre_weekly_activity_report/lambda_src/handler.py)
+Lambda. The `extracted_at` field records when each row was last extracted 
+from the source file.
+
+* `Updated`: Weekly, typically on Tuesdays
+* `Steward`: EDCP Data and Research Team
+* `Contact`: [Colin Douglas](mailto:colin.douglas@cds-snc.ca)
+
+## Fields
+
+One row per reporting week.
+
+Many count fields are stored as `float` because they originate from Excel.
+Proportions (fields ending in `_pct`) are stored as values between 0 and 1,
+not 0 and 100.
+
+| Field Name | Type | Description |
+|---|---|---|
+| week_text | string | Report title, extracted from the Excel file |
+| date_range_start | string | Start date of the reporting week as a text date (for example, "2026-04-26") |
+| date_range_end | string | End date of the reporting week as a text date (for example, "2026-05-02") |
+| date | string | Equivalent to `date_range_start`; used as the primary date key |
+| file | string | Source filename the row was extracted from |
+| extracted_at | string | ISO 8601 timestamp of when the row was extracted from the source file |
+| calls_accepted | float | Total calls accepted by the queue during the week |
+| calls_accepted_pct | float | Proportion of calls accepted (typically 1.0) |
+| calls_abandoned | float | Number of calls abandoned before being answered |
+| calls_abandoned_pct | float | Proportion of accepted calls that were abandoned |
+| calls_answered | float | Number of calls answered by an agent |
+| pct_answered_within_60s | float | Proportion of calls answered within 60 seconds |
+| avg_delay_seconds | float | Average wait time before a call was answered, in seconds |
+| avg_call_length_seconds | float | Average duration of answered calls, in seconds |
+| avg_handle_time_seconds | float | Average total handle time per call (call length plus any wrap-up time), in seconds |
+| calls_completed_by_io | float | Number of calls completed by the information officer |
+| calls_completed_by_io_pct | float | Proportion of answered calls completed by the information officer |
+| hangups | float | Number of calls where the caller hung up |
+| hangups_pct | float | Proportion of answered calls that ended in a hangup |
+| test_calls | float | Number of test calls made during the week |
+| test_calls_pct | float | Proportion of accepted calls that were test calls |
+| total_calls_answered | float | Total calls answered (may differ from `calls_answered` depending on reporting logic) |
+| total_calls_answered_pct | float | Proportion of accepted calls that were answered |
+| comments | float | Number of calls where a comment was recorded |
+| comments_pct | float | Proportion of answered calls with a comment |
+| callback | float | Number of calls where a callback was requested or offered |
+| callback_pct | float | Proportion of answered calls that involved a callback |
+| no_information_provided | float | Number of calls where no information was provided to the caller |
+| no_information_provided_pct | float | Proportion of answered calls where no information was provided |
+| transfer_to_crisis_centres | float | Number of calls transferred to a crisis centre |
+| transfer_to_crisis_centres_pct | float | Proportion of answered calls transferred to a crisis centre |
+| program_content_provided | float | Number of calls where program content was provided to the caller |
+| program_content_provided_pct | float | Proportion of answered calls where program content was provided |
+| total_of_call_types | float | Total number of call-type records for the week (used as denominator for call-type proportions) |
+| total_of_call_types_pct | float | Proportion of total call types (typically 1.0) |
+
+## Notes
+
+`avg_delay_seconds` and `avg_call_length_seconds` are weekly averages sourced
+from the report directly. When combining across weeks, use a weighted average
+with `calls_answered` as the weight rather than a simple average. See the
+[Call Centre metrics](../../02-call-centre.qmd) chapter for example SQL.
+
+`date_range_start` and `date_range_end` are stored as strings. Cast to `DATE`
+in SQL when filtering by date range.

@@ -1,0 +1,57 @@
+# weekly_topic_dump
+
+Individual call records from the CanadaLogin support queue, with topic
+classifications for each call.
+
+Each row represents one topic record associated with a single call. A single
+call may have multiple rows if multiple topics were recorded.
+
+`Keywords`: call centre, topics, call reasons, contact drivers, caller issues
+
+## Provenance
+
+Sourced from a weekly Excel report that is typically send to the EDCP Data and Research 
+team via email. That spreadsheet is exctracted and loaded into the data repository via
+the [call_centre_etl.py](https://github.com/cds-snc/canadalogin-ibm-verify-pipeline/blob/main/infra/modules/upload_source/call_centre_etl.py)
+Lambda. The `extracted_at` field records when each row was last extracted 
+from the source file.
+
+* `Updated`: Weekly, typically on Tuesdays
+* `Steward`: EDCP Data and Research Team
+* `Contact`: [Colin Douglas](mailto:colin.douglas@cds-snc.ca)
+
+## Fields
+
+One row per topic record per call. A single call (`call_no`) may appear on
+multiple rows if more than one topic was recorded.
+
+| Field Name | Type | Description |
+|---|---|---|
+| call_no | integer | Identifier for the call. Not unique - multiple rows share the same `call_no` when multiple topics were recorded |
+| call_datetime | integer | Call timestamp stored as a Unix nanosecond integer. Cast to timestamp before use |
+| call_date | date | Date the call took place |
+| date | string | Call date as a text date. Mirrors `call_date` |
+| clienttype | string | Type of caller, for example "Business", "Public", "Government of Canada" |
+| language | string | Language of the call, for example "English", "French" |
+| origin | string | Province or region the caller is calling from |
+| statobject | string | The call topic as recorded in the source system. May contain leading/trailing whitespace or inconsistent spacing |
+| cstat | string | Full topic classification path, including category and topic (for example, "Main Document description::What is CanadaLogin?") |
+| transactiontype | string | Type of transaction recorded for the topic, for example "Search", "Callback" |
+| programcontact | string | Program contact information provided to the caller, if any. Often missing |
+| source | float | Unused |
+
+## Notes
+
+Because a single call can generate multiple topic rows, do not count rows to get
+call volume. Use `COUNT(DISTINCT call_no)` or join to
+[`weekly_activity_report`](weekly_activity_report.qmd) for call counts.
+
+`statobject` frequently contains leading/trailing whitespace and repeated
+internal spaces. Always clean it before grouping:
+
+```sql
+REGEXP_REPLACE(TRIM(statobject), '\s+', ' ') AS call_topic
+```
+
+See the [Call Centre metrics](../../02-call-centre.qmd) chapter for topic count
+and topic share example SQL.
