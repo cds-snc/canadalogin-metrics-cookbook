@@ -53,7 +53,7 @@ mfa_activity |>
     mfa_authentications = sum(count, na.rm = TRUE)
   ) |>
   mutate(
-    factor_share = mfa_authentications / sum(mfa_authentications)
+    factor_share = as.double(mfa_authentications) / sum(mfa_authentications)
   ) |>
   arrange(desc(mfa_authentications))
 ```

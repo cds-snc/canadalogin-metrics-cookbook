@@ -63,7 +63,7 @@ app_login_counts |>
   group_by(application_name) |>
   summarise(
     sign_in_success_rate =
-      sum(successful_logins, na.rm = TRUE) /
+      sum(as.double(successful_logins), na.rm = TRUE) /
         sum(successful_logins + failed_logins, na.rm = TRUE)
   ) |>
   arrange(desc(sign_in_success_rate))

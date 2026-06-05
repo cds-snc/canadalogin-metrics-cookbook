@@ -61,11 +61,12 @@ weekly_topic_dump |>
   ) |>
   count(call_topic, name = "topic_count") |>
   mutate(
-    topic_share = topic_count / sum(topic_count)
+    topic_share = as.double(topic_count) / sum(topic_count)
   ) |>
   slice_max(
     topic_count,
-    n = 10
+    n = 10,
+    with_ties = FALSE
   ) |>
   arrange(desc(topic_count))
 ```

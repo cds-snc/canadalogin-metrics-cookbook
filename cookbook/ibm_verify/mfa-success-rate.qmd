@@ -44,7 +44,7 @@ mfa_activity |>
   ) |>
   summarise(
     mfa_success_rate =
-      sum(if_else(result == "success", count, 0L), na.rm = TRUE) /
+      sum(if_else(result == "success", as.double(count), 0), na.rm = TRUE) /
         sum(count, na.rm = TRUE)
   )
 ```
