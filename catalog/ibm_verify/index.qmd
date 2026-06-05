@@ -1,0 +1,14 @@
+# IBM Verify
+
+Derived tables in the `ibm_verify` schema, populated from the IBM Verify
+reporting API.
+
+- [`app_login_counts`](app_login_counts.qmd) - daily sign-in counts by application
+- [`auth_total_logins`](auth_total_logins.qmd) - daily, CanadaLogin-wide sign-in totals
+- [`mfa_activity`](mfa_activity.qmd) - multi-factor authentication activity by factor and result
+
+The upstream source-of-record for these tables is the raw IBM Verify event
+stream (`ibm_verify_raw.ibm_verify`). The field-level meaning of those raw
+events is documented in the IBM Verify event data dictionary
+(`IBM Verify Data Dictionary.csv`), organized by event type (Authentication
+Event, MFA Authentication Event, SSO, and so on).

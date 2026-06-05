@@ -1,0 +1,11 @@
+# Call Centre
+
+Weekly call centre data extracted from the CanadaLogin support queue Excel
+reports, sent to the EDCP Data and Research team on a weekly basis.
+
+- [`weekly_activity_report`](weekly_activity_report.qmd) - weekly call volume and service-level summary
+- [`weekly_topic_dump`](weekly_topic_dump.qmd) - individual call records with topic classifications
+
+These two tables share the same source report and update cadence but are at
+different grains: `weekly_activity_report` is one row per week, while
+`weekly_topic_dump` is one row per topic record per call.
