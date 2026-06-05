@@ -12,7 +12,7 @@ The cookbook is organized by data source:
 
 Each metric generally includes:
 
-- lead prose describing what it measures and when to use it
+- leading text describing what it measures and when to use it
 - plain-language alternative names
 - the calculation logic
 - an example query, shown in both SQL and R

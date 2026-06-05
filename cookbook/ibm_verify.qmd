@@ -46,7 +46,7 @@ sourced from `ibm_verify.app_login_counts`.
 
 {{< include ibm_verify/average-daily-sign-ins.qmd >}}
 
-## MFA Metrics
+## Multi-factor Authentication Metrics
 
 Metrics in this section describe multi-factor authentication (MFA) activity,
 sourced from `ibm_verify.mfa_activity`. That table has one row per day per MFA
