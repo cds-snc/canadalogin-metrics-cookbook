@@ -15,9 +15,9 @@ the [call centre weekly activity report](https://github.com/cds-snc/canadalogin-
 Lambda. The `extracted_at` field records when each row was last extracted 
 from the source file.
 
-* `Updated`: Weekly, typically on Tuesdays
-* `Steward`: EDCP Data and Research Team
-* `Contact`: [Colin Douglas](mailto:colin.douglas@cds-snc.ca)
+* **Updated**: Weekly, typically on Tuesdays
+* **Steward**: EDCP Data and Research Team
+* **Contact**: [Colin Douglas](mailto:colin.douglas@cds-snc.ca)
 
 ## Fields
 

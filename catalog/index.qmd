@@ -4,21 +4,20 @@ The data catalog describes the tables available to analysts. It is distinct from
 the metrics cookbook; the cookbook explains how to *derive* metrics, while the
 catalog describes the *tables* those metrics are calculated from, field by field.
 
-## IBM Verify
+## [IBM Verify](ibm_verify.qmd)
 
 Derived tables in the `ibm_verify` schema, pulled from the IBM Verify reporting API.
 
-- [`app_login_counts`](ibm_verify/app_login_counts.qmd) - daily sign-in counts by application
-- [`auth_total_logins`](ibm_verify/auth_total_logins.qmd) - daily, CanadaLogin-wide sign-in totals
-- [`mfa_activity`](ibm_verify/mfa_activity.qmd) - multi-factor authentication activity by factor and result
+- [`app_login_counts`](ibm_verify.qmd#app_login_counts) - daily sign-in counts by application
+- [`auth_total_logins`](ibm_verify.qmd#auth_total_logins) - daily, CanadaLogin-wide sign-in totals
+- [`mfa_activity`](ibm_verify.qmd#mfa_activity) - multi-factor authentication activity by factor and result
 
-
-## Call Centre
+## [Call Centre](call_centre.qmd)
 
 Weekly call centre data extracted from the CanadaLogin support weekly Excel reports.
 
-- [`weekly_activity_report`](call_centre/weekly_activity_report.qmd) - weekly call volume and service-level summary
-- [`weekly_topic_dump`](call_centre/weekly_topic_dump.qmd) - individual call records with topic classifications
+- [`weekly_activity_report`](call_centre.qmd#weekly_activity_report) - weekly call volume and service-level summary
+- [`weekly_topic_dump`](call_centre.qmd#weekly_topic_dump) - individual call records with topic classifications
 
 ## Conventions
 

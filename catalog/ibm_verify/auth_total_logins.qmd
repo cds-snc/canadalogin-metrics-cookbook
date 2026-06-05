@@ -3,7 +3,7 @@
 Daily, CanadaLogin-wide sign-in totals across all applications.
 
 Each row represents one day and summarizes overall CanadaLogin authentication
-activity. Unlike [`app_login_counts`](app_login_counts.qmd), there is no
+activity. Unlike [`app_login_counts`](#app_login_counts), there is no
 per-application breakdown.
 
 `Keywords`: sign-ins, logins, totals, CanadaLogin overall, unique users, daily
@@ -12,9 +12,9 @@ per-application breakdown.
 
 Queried directly from the IBM Verify production instance via API.
 
-* `Updated`: Daily in the morning
-* `Steward`: EDCP Data and Research Team
-* `Contact`: [Yinlin Zhang](mailto:yinlin.zhang@cds-snc.ca)
+* **Updated**: Daily, early in the morning
+* **Steward**: EDCP Data and Research Team
+* **Contact**: [Yinlin Zhang](mailto:yinlin.zhang@cds-snc.ca)
 
 ## Fields
 

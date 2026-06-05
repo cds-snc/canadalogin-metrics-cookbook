@@ -17,12 +17,8 @@ book:
     - part: "Data Catalog"
       chapters:
         - catalog/index.qmd
-        - catalog/data-catalog-template.qmd
-        - catalog/ibm_verify/app_login_counts.qmd
-        - catalog/ibm_verify/auth_total_logins.qmd
-        - catalog/ibm_verify/mfa_activity.qmd
-        - catalog/call_centre/weekly_activity_report.qmd
-        - catalog/call_centre/weekly_topic_dump.qmd
+        - catalog/ibm_verify.qmd
+        - catalog/call_centre.qmd
 
 format:
   html:

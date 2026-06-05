@@ -16,9 +16,9 @@ the [call_centre_etl.py](https://github.com/cds-snc/canadalogin-ibm-verify-pipel
 Lambda. The `extracted_at` field records when each row was last extracted 
 from the source file.
 
-* `Updated`: Weekly, typically on Tuesdays
-* `Steward`: EDCP Data and Research Team
-* `Contact`: [Colin Douglas](mailto:colin.douglas@cds-snc.ca)
+* **Updated**: Weekly, typically on Tuesdays
+* **Steward**: EDCP Data and Research Team
+* **Contact**: [Colin Douglas](mailto:colin.douglas@cds-snc.ca)
 
 ## Fields
 
@@ -44,7 +44,7 @@ multiple rows if more than one topic was recorded.
 
 Because a single call can generate multiple topic rows, do not count rows to get
 call volume. Use `COUNT(DISTINCT call_no)` or join to
-[`weekly_activity_report`](weekly_activity_report.qmd) for call counts.
+[`weekly_activity_report`](#weekly_activity_report) for call counts.
 
 `statobject` frequently contains leading/trailing whitespace and repeated
 internal spaces. Always clean it before grouping:

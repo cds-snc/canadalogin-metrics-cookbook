@@ -45,3 +45,7 @@ venv/
 .DS_Store
 Thumbs.db
 **/*.quarto_ipynb
+
+
+table-info.txt
+IBM Verify Data Dictionary.csv

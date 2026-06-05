@@ -1,0 +1,13 @@
+---
+title: IBM Verify
+---
+
+Derived tables in the `ibm_verify` schema, populated from the IBM Verify
+reporting API. Each table is a daily aggregate derived from the raw event stream
+in `ibm_verify_raw.ibm_verify`.
+
+{{< include ibm_verify/app_login_counts.qmd >}}
+
+{{< include ibm_verify/auth_total_logins.qmd >}}
+
+{{< include ibm_verify/mfa_activity.qmd >}}
