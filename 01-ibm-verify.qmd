@@ -37,13 +37,33 @@ failed attempts.
 **Calculation.** Sum `failed_logins` and `successful_logins` over the selected
 reporting period.
 
+::: {.panel-tabset}
+
+## SQL
+
 ```sql
 SELECT
     SUM(failed_logins + successful_logins) AS total_sign_in_attempts
 FROM ibm_verify.auth_total_logins
--- Select an arbitrary reporting period
+-- select an arbitrary reporting period
 WHERE from_date BETWEEN DATE '2026-01-01' AND DATE '2026-05-28';
 ```
+
+## R
+
+```r
+auth_total_logins |>
+  # select an arbitrary reporting period
+  filter(
+    from_date >= as.Date("2026-01-01"),
+    from_date <= as.Date("2026-05-28")
+  ) |>
+  summarise(
+    total_sign_in_attempts = sum(failed_logins + successful_logins, na.rm = TRUE)
+  )
+```
+
+:::
 
 ### Year-to-Date Unique Users
 
@@ -63,6 +83,10 @@ the same day counts as two unique users at the app level but only one overall.
 
 **Calculation.** Take the latest value of `ytd_unique_users`.
 
+::: {.panel-tabset}
+
+## SQL
+
 ```sql
 SELECT
     ytd_unique_users
@@ -70,6 +94,20 @@ FROM ibm_verify.auth_total_logins
 ORDER BY from_date DESC
 LIMIT 1;
 ```
+
+## R
+
+```r
+auth_total_logins |>
+  slice_max(
+    from_date,
+    n = 1,
+    with_ties = FALSE
+  ) |>
+  pull(ytd_unique_users)
+```
+
+:::
 
 ## Application Metrics
 
@@ -99,6 +137,10 @@ reporting language it is usually clearer to describe it as **total sign-ins**.
 **Calculation.** Sum `total_logins` over the selected reporting period, grouped
 by application.
 
+::: {.panel-tabset}
+
+## SQL
+
 ```sql
 SELECT
   application_name,
@@ -115,6 +157,32 @@ WHERE  from_date BETWEEN DATE '2026-01-01' AND DATE '2026-05-28'
 GROUP  BY application_name
 ORDER  BY total_sign_ins DESC;
 ```
+
+## R
+
+```r
+internal_apps <- c(
+  "Flow Application",
+  "GCS Migration Solution",
+  "GC Sign In - Profile Management App"
+)
+
+app_login_counts |>
+  # select an arbitrary reporting period
+  filter(
+    from_date >= as.Date("2026-01-01"),
+    from_date <= as.Date("2026-05-28"),
+    # optionally filter out internal applications
+    !application_name %in% internal_apps
+  ) |>
+  group_by(application_name) |>
+  summarise(
+    total_sign_ins = sum(total_logins, na.rm = TRUE)
+  ) |>
+  arrange(desc(total_sign_ins))
+```
+
+:::
 
 *Interpretation.* A sign-in count measures events, not people. Use this metric
 when the question is about system usage or activity volume. Use unique user
@@ -139,6 +207,10 @@ and for understanding peak demand.
 **Calculation.** Take the maximum value of `unique_users` over the selected
 reporting period, grouped by application.
 
+::: {.panel-tabset}
+
+## SQL
+
 ```sql
 WITH ranked AS (
     SELECT
@@ -150,7 +222,7 @@ WITH ranked AS (
             ORDER BY unique_users DESC, from_date ASC
         ) AS rn
     FROM ibm_verify.app_login_counts
-    -- select an arbitrary reporting period
+    -- calculate over an arbitrary reporting period
     WHERE from_date BETWEEN DATE '2026-01-01' AND DATE '2026-05-28'
 )
 
@@ -162,6 +234,32 @@ FROM ranked
 WHERE rn = 1
 ORDER BY peak_daily_unique_users DESC;
 ```
+
+## R
+
+```r
+app_login_counts |>
+  # calculate over an arbitrary reporting period
+  filter(
+    from_date >= as.Date("2026-01-01"),
+    from_date <= as.Date("2026-05-28")
+  ) |>
+  group_by(application_name) |>
+  slice_max(
+    unique_users,
+    n = 1,
+    with_ties = FALSE
+  ) |>
+  select(
+    application_name,
+    from_date,
+    peak_daily_unique_users = unique_users
+  ) |>
+  arrange(desc(peak_daily_unique_users))
+```
+
+:::
+
 
 *Interpretation.* This metric identifies the busiest single day by unique user
 reach. The query above also returns the date on which that peak occurred.
@@ -185,6 +283,10 @@ application this year" than the daily unique user metrics.
 **Calculation.** Take the latest value of `ytd_unique_users` over the selected
 reporting period, grouped by application.
 
+::: {.panel-tabset}
+
+## SQL
+
 ```sql
 WITH ranked AS (
     SELECT
@@ -206,6 +308,29 @@ FROM ranked
 WHERE rn = 1
 ORDER BY ytd_unique_users DESC;
 ```
+
+## R
+
+```r
+app_login_counts |>
+  filter(
+    from_date >= as.Date("2026-01-01"),
+    from_date <= as.Date("2026-05-28")
+  ) |>
+  group_by(application_name) |>
+  slice_max(
+    from_date,
+    n = 1,
+    with_ties = FALSE
+  ) |>
+  select(
+    application_name,
+    ytd_unique_users
+  ) |>
+  arrange(desc(ytd_unique_users))
+```
+
+:::
 
 *Interpretation.* Since `ytd_unique_users` is a cumulative field, it will reset
 every year.
@@ -229,13 +354,35 @@ window, or monitoring period.
 **Calculation.** For each application, calculate the average of `total_logins`
 across all daily records in the selected reporting period.
 
+::: {.panel-tabset}
+
+## SQL
+
 ```sql
 SELECT
     application_name,
     AVG(total_logins) AS average_daily_sign_ins
 FROM ibm_verify.app_login_counts
--- Choose an arbitrary reporting period
+-- choose an arbitrary reporting period
 WHERE from_date BETWEEN DATE '2026-04-22' AND DATE '2026-05-31'
 GROUP BY application_name
 ORDER BY average_daily_sign_ins DESC;
 ```
+
+## R
+
+```r
+app_login_counts |>
+  # choose an arbitrary reporting period
+  filter(
+    from_date >= as.Date("2026-04-22"),
+    from_date <= as.Date("2026-05-31")
+  ) |>
+  group_by(application_name) |>
+  summarise(
+    average_daily_sign_ins = mean(total_logins, na.rm = TRUE)
+  ) |>
+  arrange(desc(average_daily_sign_ins))
+```
+
+:::
