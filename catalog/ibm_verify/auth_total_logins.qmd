@@ -1,0 +1,44 @@
+# auth_total_logins
+
+Daily, CanadaLogin-wide sign-in totals across all applications.
+
+Each row represents one day and summarizes overall CanadaLogin authentication
+activity. Unlike [`app_login_counts`](app_login_counts.qmd), there is no
+per-application breakdown.
+
+`Keywords`: sign-ins, logins, totals, CanadaLogin overall, unique users, daily
+
+## Provenance
+
+Derived from the raw IBM Verify event stream (`ibm_verify_raw.ibm_verify`) by
+aggregating authentication events to a per-day grain across all applications. The
+`fetched_at` and `last_updated_at` columns indicate an automated refresh.
+
+* `Updated`: Appears automated (see `fetched_at` / `last_updated_at`). TODO: confirm exact cadence.
+* `Steward`: TODO
+* `Contact`: TODO
+* `Location`: TODO
+
+## Fields
+
+One row per day.
+
+| Field Name | Type | Description |
+|---|---|---|
+| from_date | timestamp | Start of the reporting day (midnight) |
+| to_date | timestamp | End of the reporting day (23:59:59) |
+| unique_users | integer | Number of distinct users who signed in to CanadaLogin that day |
+| failed_logins | integer | Number of failed sign-in attempts that day |
+| successful_logins | integer | Number of successful sign-ins that day |
+| mtd_unique_users | integer | Cumulative distinct users month-to-date. Resets at the start of each month |
+| ytd_unique_users | integer | Cumulative distinct users year-to-date. Resets at the start of each year |
+| since_apr22_unique_users | integer | Cumulative distinct users since the April 22, 2026 launch period |
+| last_updated_at | timestamp | When the underlying data for this row was last updated |
+| fetched_at | timestamp | When the aggregation last fetched this row |
+| date | string | The reporting day as a text date (for example, "2026-05-21"). Mirrors `from_date` |
+
+## Notes
+
+`unique_users`, `failed_logins`, and `successful_logins` are daily values. The
+`mtd_`, `ytd_`, and `since_apr22_` unique-user fields are cumulative and should
+not be summed across rows; take the latest value within the window instead.

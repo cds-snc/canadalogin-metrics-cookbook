@@ -1,0 +1,46 @@
+# app_login_counts
+
+Daily sign-in counts for each CanadaLogin-integrated application.
+
+Each row represents one application on one day, summarizing that application's
+sign-in activity and unique-user reach for the day.
+
+`Keywords`: sign-ins, logins, applications, unique users, adoption, daily counts
+
+## Provenance
+
+Derived from the raw IBM Verify event stream (`ibm_verify_raw.ibm_verify`) by
+aggregating authentication events to a per-application, per-day grain. The
+`fetched_at` column records when the aggregation last pulled data, indicating an
+automated refresh.
+
+* `Updated`: Appears automated (see `fetched_at`). TODO: confirm exact cadence.
+* `Steward`: TODO
+* `Contact`: TODO
+* `Location`: TODO
+
+## Fields
+
+One row per `application_name` per day.
+
+| Field Name | Type | Description |
+|---|---|---|
+| application_name | string | Name of the integrated application (for example, "PrairiesCan", "IRIS - PRC - Prod"). Internal applications such as "Flow Application", "GCS Migration Solution", and "GC Sign In - Profile Management App" are typically excluded from public-facing adoption metrics |
+| from_date | timestamp | Start of the reporting day (midnight) |
+| to_date | timestamp | End of the reporting day (23:59:59) |
+| total_logins | integer | Total sign-in events recorded for the application that day. Counts events, not people. Reported as "total sign-ins" |
+| unique_users | integer | Number of distinct users who signed in to the application that day |
+| failed_logins | integer | Number of failed sign-in attempts that day |
+| successful_logins | integer | Number of successful sign-ins that day |
+| mtd_unique_users | integer | Cumulative distinct users for the application month-to-date. Resets at the start of each month |
+| ytd_unique_users | integer | Cumulative distinct users for the application year-to-date. Resets at the start of each year |
+| since_apr22_unique_users | integer | Cumulative distinct users since the April 22, 2026 launch period (used for the PrairiesCan adoption curve) |
+| fetched_at | timestamp | When the aggregation last fetched this row |
+| date | string | The reporting day as a text date (for example, "2026-04-23"). Mirrors `from_date` |
+
+## Notes
+
+`total_logins`, `unique_users`, `failed_logins`, and `successful_logins` are
+daily values. `mtd_unique_users`, `ytd_unique_users`, and
+`since_apr22_unique_users` are cumulative counts of distinct users and should not
+be summed across rows; take the latest value within the window instead.

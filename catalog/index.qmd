@@ -1,0 +1,28 @@
+# About
+
+The data catalog describes the tables available to analysts. It is distinct from
+the metrics cookbook: the cookbook explains how to *derive* metrics, while the
+catalog describes the *tables* those metrics are calculated from, field by field.
+
+This initial version covers the three derived tables in the `ibm_verify` schema:
+
+- [`app_login_counts`](app_login_counts.qmd) - daily sign-in counts by application
+- [`auth_total_logins`](auth_total_logins.qmd) - daily, CanadaLogin-wide sign-in totals
+- [`mfa_activity`](mfa_activity.qmd) - multi-factor authentication activity by factor and result
+
+## Lineage
+
+These three tables are *derived* (aggregated) tables. Their upstream
+source-of-record is the raw IBM Verify event stream, stored in
+`ibm_verify_raw.ibm_verify`. The field-level meaning of those raw events is
+documented in the IBM Verify event data dictionary (`IBM Verify Data
+Dictionary.csv`), which is organized by event type (Authentication Event, MFA
+Authentication Event, SSO, and so on). The raw event table and the `call_centre`
+schema are not yet documented here.
+
+## Conventions
+
+Field types use Parquet-style names (boolean, date, float, integer, string, time,
+timestamp). For string columns that behave as factors, the possible values are
+listed. Cumulative fields (those that only increase within a window and then
+reset) are called out explicitly.

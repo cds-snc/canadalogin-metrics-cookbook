@@ -1,0 +1,40 @@
+# mfa_activity
+
+Daily multi-factor authentication (MFA) activity, broken down by factor type and
+outcome.
+
+Each row represents the count of MFA attempts for a single combination of day,
+MFA factor type, and result.
+
+`Keywords`: MFA, multi-factor, second factor, OTP, FIDO2, authentication, security
+
+## Provenance
+
+Derived from the raw IBM Verify event stream (`ibm_verify_raw.ibm_verify`) by
+aggregating MFA authentication events to a per-day, per-factor, per-result grain.
+The `fetched_at` column indicates an automated refresh.
+
+* `Updated`: Appears automated (see `fetched_at`). TODO: confirm exact cadence.
+* `Steward`: TODO
+* `Contact`: TODO
+* `Location`: TODO
+
+## Fields
+
+One row per day per `mfa_type` per `result`.
+
+| Field Name | Type | Description |
+|---|---|---|
+| from_date | timestamp | Start of the reporting day (midnight) |
+| to_date | timestamp | End of the reporting day (23:59:59) |
+| mfa_type | string | The MFA factor used. One of "sms_otp", "fido2", "kq", "totp", "voice_otp", "qr", "ibm_verify_push", "email_otp" |
+| result | string | Outcome of the MFA attempts. One of "success" or "failure" |
+| count | integer | Number of MFA attempts for this day, factor, and result |
+| fetched_at | timestamp | When the aggregation last fetched this row |
+| date | string | The reporting day as a text date (for example, "2026-05-31"). Mirrors `from_date` |
+
+## Notes
+
+Because the grain is day x factor x result, totalling MFA activity for a day
+requires summing `count` across all `mfa_type` and `result` rows for that day.
+Filter on `result = 'success'` to count successful second-factor authentications.
