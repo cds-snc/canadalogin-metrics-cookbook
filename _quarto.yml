@@ -8,15 +8,25 @@ book:
   date: today
   chapters:
     - index.qmd
-    - 01-ibm-verify.qmd
-#    - 02-call-centre.qmd
-#    - 03-cross-source.qmd
-#    - 90-notes.qmd
+    - part: "Metrics Cookbook"
+      chapters:
+        - 01-ibm-verify.qmd
+#        - 02-call-centre.qmd
+#        - 03-cross-source.qmd
+#        - 90-notes.qmd
+    - part: "Data Catalog"
+      chapters:
+        - catalog/index.qmd
+        - catalog/data-catalog-template.qmd
+        - catalog/ibm_verify/app_login_counts.qmd
+        - catalog/ibm_verify/auth_total_logins.qmd
+        - catalog/ibm_verify/mfa_activity.qmd
 
 format:
   html:
     toc: true
     toc-depth: 3
+    toc-location: left
     code-fold: true
     number-sections: false
     theme: cosmo

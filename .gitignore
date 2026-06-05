@@ -44,3 +44,4 @@ venv/
 # OS-specific metadata files
 .DS_Store
 Thumbs.db
+**/*.quarto_ipynb

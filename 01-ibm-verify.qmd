@@ -1,17 +1,10 @@
 # IBM Verify
 
-Metrics in this section are calculated from IBM Verify authentication and 
+Metrics in this section are calculated from IBM Verify authentication and
 application sign-in data.
 
-## Important Tables
-
-- `ibm_verify.auth_total_logins` contains info about CanadaLogin in general
-- `ibm_verify.mfa_activity` contains information about multi-factor authentication
-- `ibm_verify.app_login_counts` contains info about which apps users are authenticating against
-
-## Internal Applications
-
-The following applications are typically excluded from public-facing adoption metrics:
+**Internal applications.** The following applications are typically excluded from
+public-facing adoption metrics:
 
 ```sql
 'Flow Application',
@@ -19,144 +12,182 @@ The following applications are typically excluded from public-facing adoption me
 'GC Sign In - Profile Management App'
 ```
 
-## Total Sign-Ins by Application
+## CanadaLogin Metrics
 
-### Description
+Metrics in this section describe CanadaLogin overall, across all applications,
+sourced from `ibm_verify.auth_total_logins`.
+
+### Sign-Ins
+
+**Source**: [`ibm_verify.auth_total_logins`](catalog/auth_total_logins.qmd)
+
+The total number of sign-in events to CanadaLogin, including both successful and
+failed attempts.
+
+*Alternative names*:
+
+- total sign-in attempts
+- sign-ins to CanadaLogin in a reporting period
+- total sign-ins to CanadaLogin
+
+**Calculation.** Sum `failed_logins` and `successful_logins` over the selected
+reporting period.
+
+```sql
+SELECT
+    SUM(failed_logins + successful_logins) AS total_sign_in_attempts
+FROM ibm_verify.auth_total_logins
+-- Select an arbitrary reporting period
+WHERE from_date BETWEEN DATE '2026-01-01' AND DATE '2026-05-28';
+```
+
+### Year-to-Date Unique Users
+
+**Source**: [`ibm_verify.auth_total_logins`](catalog/auth_total_logins.qmd)
+
+The total number of unique users who have signed in to CanadaLogin since the
+beginning of the current calendar year.
+
+This metric is useful for understanding the overall reach and adoption of
+CanadaLogin over time. Note that this metric will not align with the sum of
+unique users across individual apps: a user who signs into App A and App B on
+the same day counts as two unique users at the app level but only one overall.
+
+*Alternative names*:
+
+- total overall unique users this year
+- overall unique users YTD
+- year-to-date unique users of CanadaLogin
+
+**Calculation.** Take the latest value of `ytd_unique_users`.
+
+```sql
+SELECT
+    ytd_unique_users
+FROM ibm_verify.auth_total_logins
+ORDER BY from_date DESC
+LIMIT 1;
+```
+
+## Application Metrics
+
+Metrics in this section describe sign-in activity broken down by application,
+sourced from `ibm_verify.app_login_counts`.
+
+### Sign-Ins by Application
+
+**Source**: [`ibm_verify.app_login_counts`](catalog/app_login_counts.qmd)
 
 The total number of sign-ins recorded for each application over a selected time
 period.
 
-This metric is useful for understanding overall usage volume across 
-CanadaLogin-integrated applications. It counts sign-in events, not people.
-A single user may sign in multiple times and contribute multiple sign-ins.
+This metric is useful for understanding overall usage volume across
+CanadaLogin-integrated applications. It counts sign-in events, not people. A
+single user may sign in multiple times and contribute multiple sign-ins.
 
-This metric is currently referred to in the source data as `total_logins`, but
-in reporting language it is usually clearer to describe it as **total sign-ins**.
+This metric is referred to in the source data as `total_logins`, but in
+reporting language it is usually clearer to describe it as **total sign-ins**.
 
-### Plain-language alternate names
+*Alternative names*:
 
-- Total sign-ins
-- Sign-in volume
-- Number of sign-ins
-- Application sign-in count
-- Total uses of CanadaLogin by application
+- total sign-ins
+- sign-in volume
+- number of sign-ins
+- application sign-in count
+- total uses of CanadaLogin by application
 
-### Data source
-
-- Schema: `ibm_verify`
-- Table: `app_login_counts`
-
-### Calculation logic
-
-Sum `total_logins` over the selected reporting period, grouped by application.
-
-### Example SQL
+**Calculation.** Sum `total_logins` over the selected reporting period, grouped
+by application.
 
 ```sql
-SELECT 
+SELECT
   application_name,
   SUM(total_logins) AS total_sign_ins
 FROM   ibm_verify.app_login_counts
+-- select an arbitrary reporting period
 WHERE  from_date BETWEEN DATE '2026-01-01' AND DATE '2026-05-28'
---- optionally filter out internal applications
+-- optionally filter out internal applications
   AND application_name NOT IN (
       'Flow Application',
       'GCS Migration Solution',
       'GC Sign In - Profile Management App'
   )
 GROUP  BY application_name
-ORDER  BY total_sign_ins DESC; 
+ORDER  BY total_sign_ins DESC;
 ```
 
-### Interpretation notes
+*Interpretation.* A sign-in count measures events, not people. Use this metric
+when the question is about system usage or activity volume. Use unique user
+metrics when the question is about reach.
 
-A sign-in count measures events, not people. Use this metric when the question is about 
-system usage or activity volume.
+### Peak Daily Unique Users
 
-Use unique user metrics when the question is about reach.
+**Source**: [`ibm_verify.app_login_counts`](catalog/app_login_counts.qmd)
 
-## Peak Daily Unique Users
+The highest number of unique users observed on any single day during the
+reporting period.
 
-### Description
+This metric is useful for identifying the maximum daily reach of an application
+and for understanding peak demand.
 
-The highest number of unique users observed on any single day during the reporting 
-period.
+*Alternative names*:
 
-This metric is useful for identifying the maximum daily reach of an application and for
-understanding peak demand.
+- peak daily users
+- highest daily unique users
+- maximum daily active users
+- busiest day by unique users
+- peak daily reach
 
-Unlike total daily unique users, this metric does not sum across days. It identifies the
-single highest daily value.
-
-### Plain-language alternate names
-
-- Peak daily users
-- Highest daily unique users
-- Maximum daily active users
-- Busiest day by unique users
-- Peak daily reach
-
-### Data source
-
-- Schema: `ibm_verify`
-- Table: `app_login_counts`
-
-### Calculation logic
-
-Take the maximum value of `unique_users` over the selected reporting period, grouped by
-application.
-
-### Example SQL
+**Calculation.** Take the maximum value of `unique_users` over the selected
+reporting period, grouped by application.
 
 ```sql
+WITH ranked AS (
+    SELECT
+        application_name,
+        from_date,
+        unique_users,
+        ROW_NUMBER() OVER (
+            PARTITION BY application_name
+            ORDER BY unique_users DESC, from_date ASC
+        ) AS rn
+    FROM ibm_verify.app_login_counts
+    -- select an arbitrary reporting period
+    WHERE from_date BETWEEN DATE '2026-01-01' AND DATE '2026-05-28'
+)
+
 SELECT
     application_name,
-    MAX(unique_users) AS peak_daily_unique_users
-FROM ibm_verify.app_login_counts
-WHERE from_date BETWEEN DATE '2026-01-01' AND DATE '2026-05-28'
-GROUP BY application_name
+    from_date,
+    unique_users AS peak_daily_unique_users
+FROM ranked
+WHERE rn = 1
 ORDER BY peak_daily_unique_users DESC;
 ```
 
-### Interpretation notes
+*Interpretation.* This metric identifies the busiest single day by unique user
+reach. The query above also returns the date on which that peak occurred.
 
-This metric is useful for identifying the busiest single day by unique user reach.
+### Year-to-Date Unique Users
 
-## Year-to-Date Unique Users
-
-### Description
+**Source**: [`ibm_verify.app_login_counts`](catalog/app_login_counts.qmd) (`application_name`, `from_date`, `ytd_unique_users`)
 
 The number of unique users observed year-to-date for each application.
 
-Generally, this is calculated by taking the last value of `ytd_unique_users` over the 
-reporting period or within a year. `ytd_unique_users` is a cumulative field that 
-increases or remains stable over time.
+`ytd_unique_users` is a cumulative field that increases or remains stable over
+time. This metric is closer to "how many distinct people have used the
+application this year" than the daily unique user metrics.
 
-This metric is closer to “how many distinct people have used the application this year”
-than the daily unique user metrics.
-
-### Plain-language alternate names
+*Alternative names*:
 
 - YTD unique users
-- Unique users this year
-- Year-to-date user reach
-- Distinct users this year
-- Total unique people reached this year
+- unique users this year
+- year-to-date user reach
+- distinct users this year
+- total unique people reached this year
 
-### Data source
-
-- Schema: `ibm_verify`
-- Table: `app_login_counts`
-- Key fields:
-  - `application_name`
-  - `from_date`
-  - `ytd_unique_users`
-
-### Calculation logic
-
-Take the maximum value of `ytd_unique_users` over the selected reporting period, grouped by application.
-
-### Example SQL
+**Calculation.** Take the latest value of `ytd_unique_users` over the selected
+reporting period, grouped by application.
 
 ```sql
 WITH ranked AS (
@@ -174,133 +205,43 @@ WITH ranked AS (
 
 SELECT
     application_name,
-    CAST(ytd_unique_users AS BIGINT) AS ytd_unique_users
+    ytd_unique_users
 FROM ranked
 WHERE rn = 1
 ORDER BY ytd_unique_users DESC;
-
 ```
 
-### Interpretation notes
+*Interpretation.* Since `ytd_unique_users` is a cumulative field, it will reset
+every year.
 
-Since `ytd_unique_users` is a cumulative field, it will reset every year.
+### Average Daily Sign-Ins
 
-### Description
+**Source**: [`ibm_verify.app_login_counts`](catalog/app_login_counts.qmd)
 
-The adoption curve shows the cumulative number of unique users for an application since a defined launch or onboarding date.
+The average number of sign-ins per day for a specific application over a
+selected reporting period.
 
-In the notebook, this is shown using `since_apr22_unique_users`, with April 22, 2026 used as the launch date for PrairiesCan.
+This metric summarizes daily sign-in activity into a single average value. It is
+useful for understanding typical daily usage during a launch period, reporting
+window, or monitoring period.
 
-This metric is useful for answering questions such as:
+*Alternative names*:
 
-- How quickly is an application gaining users?
-- Has adoption plateaued?
-- Is onboarding complete?
-- How much user reach has been achieved since launch?
+- average sign-ins per day
+- typical daily sign-in volume
+- mean daily login volume
+- average daily CanadaLogin activity
 
-### Plain-language alternate names
-
-- Onboarding curve
-- Adoption trend
-- Cumulative users since launch
-- User growth since launch
-- Rollout progress
-
-### Data source
-
-- Schema: `ibm_verify`
-- Table: `app_login_counts`
-- Key fields:
-  - `application_name`
-  - `from_date`
-  - `since_apr22_unique_users`
-
-### Calculation logic
-
-Select the cumulative unique user field for the relevant application and launch period.
-
-For the PrairiesCan example, use `since_apr22_unique_users` starting on April 22, 2026.
-
-### Example SQL
+**Calculation.** For each application, calculate the average of `total_logins`
+across all daily records in the selected reporting period.
 
 ```sql
-SELECT
-    from_date,
-    application_name,
-    CAST(since_apr22_unique_users AS BIGINT) AS cumulative_unique_users_since_launch
-FROM ibm_verify.app_login_counts
-WHERE application_name = 'PrairiesCan'
-  AND from_date >= DATE '2026-04-22'
-ORDER BY from_date;
-```
-
-### Example SQL for latest adoption value
-
-```sql
-SELECT
-    application_name,
-    MAX(from_date) AS latest_date,
-    MAX(CAST(since_apr22_unique_users AS BIGINT)) AS cumulative_unique_users_since_launch
-FROM ibm_verify.app_login_counts
-WHERE application_name = 'PrairiesCan'
-  AND from_date >= DATE '2026-04-22'
-GROUP BY application_name;
-```
-
-### Interpretation notes
-
-This metric assumes that `since_apr22_unique_users` is cumulative and specific to the April 22, 2026 launch period.
-
-Longer term, it may be preferable to generalize this field name or calculate cumulative unique users from user-level event data, if available.
-
-## Average Daily Sign-Ins
-
-### Description
-
-The average number of sign-ins per day for a specific application over a selected reporting period.
-
-This metric summarizes daily sign-in activity into a single average value. It is useful for understanding typical daily usage during a launch period, reporting window, or monitoring period.
-
-For example, this metric can be used to describe the average daily sign-in volume for PrairiesCan between April 22, 2026 and May 31, 2026.
-
-### Plain-language alternate names
-
-- Average daily sign-ins
-- Average sign-ins per day
-- Typical daily sign-in volume
-- Mean daily login volume
-- Average daily CanadaLogin activity
-
-### Data source
-
-- Schema: `ibm_verify`
-- Table: `app_login_counts`
-
-### Calculation logic
-
-For a given reporting period, calculate total sign-ins by day, then take the average of
-those daily totals.
-
-### Example SQL
-
-```sql
-WITH daily_sign_ins AS (
-    SELECT
-        application_name,
-        from_date,
-        total_logins
-    FROM ibm_verify.app_login_counts
-    --- choose an arbitrary reporting period
-    WHERE from_date BETWEEN DATE '2026-04-22' AND DATE '2026-05-31'
-    GROUP BY
-        application_name,
-        from_date
-)
-
 SELECT
     application_name,
     AVG(total_logins) AS average_daily_sign_ins
-FROM daily_sign_ins
+FROM ibm_verify.app_login_counts
+-- Choose an arbitrary reporting period
+WHERE from_date BETWEEN DATE '2026-04-22' AND DATE '2026-05-31'
 GROUP BY application_name
 ORDER BY average_daily_sign_ins DESC;
 ```

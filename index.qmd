@@ -19,8 +19,11 @@ Each metric generally includes:
 - example SQL
 - interpretation notes, where relevant
 
-The goal is to make metric definitions easier to reuse, explain, and validate 
+The goal is to make metric definitions easier to reuse, explain, and validate
 across reporting products.
+
+The companion [Data Catalog](catalog/index.qmd) describes the underlying tables
+that these metrics are calculated from, field by field.
 
 ## How to use this cookbook
 
