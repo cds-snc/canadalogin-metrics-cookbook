@@ -6,10 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Colin Douglas">
-<meta name="dcterms.date" content="2026-06-05">
 
-<title>CanadaLogin Metrics Cookbook</title>
+<title>IBM Verify – CanadaLogin Metrics Cookbook</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -28,24 +26,25 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<link href="./01-ibm-verify.html" rel="next">
-<script src="site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-5ccb035bea26c1e21f80f44cf7c27909.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../catalog/call_centre.html" rel="next">
+<link href="../catalog/index.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-5ccb035bea26c1e21f80f44cf7c27909.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -86,7 +85,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html"><span class="chapter-title">Introduction</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../catalog/index.html">Data Catalog</a></li><li class="breadcrumb-item"><a href="../catalog/ibm_verify.html"><span class="chapter-title">IBM Verify</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -101,7 +100,7 @@ ul.task-list li input[type="checkbox"] {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">CanadaLogin Metrics Cookbook</a> 
+      <a href="../">CanadaLogin Metrics Cookbook</a> 
     </div>
       </div>
         <div class="mt-2 flex-shrink-0 align-items-center">
@@ -113,7 +112,7 @@ ul.task-list li input[type="checkbox"] {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">Introduction</span></a>
+  <a href="../index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Introduction</span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -127,12 +126,12 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./01-ibm-verify.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">IBM Verify</span></a>
+  <a href="../01-ibm-verify.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">IBM Verify</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./02-call-centre.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Call Centre</span></a>
+  <a href="../02-call-centre.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Call Centre</span></a>
   </div>
 </li>
       </ul>
@@ -148,17 +147,17 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./catalog/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">About</span></a>
+  <a href="../catalog/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">About</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./catalog/ibm_verify.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">IBM Verify</span></a>
+  <a href="../catalog/ibm_verify.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">IBM Verify</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./catalog/call_centre.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Call Centre</span></a>
+  <a href="../catalog/call_centre.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Call Centre</span></a>
   </div>
 </li>
       </ul>
@@ -169,11 +168,23 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a>
+  <li><a href="#app_login_counts" id="toc-app_login_counts" class="nav-link active" data-scroll-target="#app_login_counts">app_login_counts</a>
   <ul class="collapse">
-  <li><a href="#how-to-use-this-cookbook" id="toc-how-to-use-this-cookbook" class="nav-link" data-scroll-target="#how-to-use-this-cookbook">How to use this cookbook</a></li>
-  <li><a href="#conventions" id="toc-conventions" class="nav-link" data-scroll-target="#conventions">Conventions</a></li>
-  <li><a href="#scope" id="toc-scope" class="nav-link" data-scroll-target="#scope">Scope</a></li>
+  <li><a href="#provenance" id="toc-provenance" class="nav-link" data-scroll-target="#provenance">Provenance</a></li>
+  <li><a href="#fields" id="toc-fields" class="nav-link" data-scroll-target="#fields">Fields</a></li>
+  <li><a href="#notes" id="toc-notes" class="nav-link" data-scroll-target="#notes">Notes</a></li>
+  </ul></li>
+  <li><a href="#auth_total_logins" id="toc-auth_total_logins" class="nav-link" data-scroll-target="#auth_total_logins">auth_total_logins</a>
+  <ul class="collapse">
+  <li><a href="#provenance-1" id="toc-provenance-1" class="nav-link" data-scroll-target="#provenance-1">Provenance</a></li>
+  <li><a href="#fields-1" id="toc-fields-1" class="nav-link" data-scroll-target="#fields-1">Fields</a></li>
+  <li><a href="#notes-1" id="toc-notes-1" class="nav-link" data-scroll-target="#notes-1">Notes</a></li>
+  </ul></li>
+  <li><a href="#mfa_activity" id="toc-mfa_activity" class="nav-link" data-scroll-target="#mfa_activity">mfa_activity</a>
+  <ul class="collapse">
+  <li><a href="#provenance-2" id="toc-provenance-2" class="nav-link" data-scroll-target="#provenance-2">Provenance</a></li>
+  <li><a href="#fields-2" id="toc-fields-2" class="nav-link" data-scroll-target="#fields-2">Fields</a></li>
+  <li><a href="#notes-2" id="toc-notes-2" class="nav-link" data-scroll-target="#notes-2">Notes</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -185,28 +196,16 @@ ul.task-list li input[type="checkbox"] {
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../catalog/index.html">Data Catalog</a></li><li class="breadcrumb-item"><a href="../catalog/ibm_verify.html"><span class="chapter-title">IBM Verify</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">CanadaLogin Metrics Cookbook</h1>
+<h1 class="title"><span class="chapter-title">IBM Verify</span></h1>
 </div>
 
 
 
 <div class="quarto-title-meta">
 
-    <div>
-    <div class="quarto-title-meta-heading">Author</div>
-    <div class="quarto-title-meta-contents">
-             <p>Colin Douglas </p>
-          </div>
-  </div>
     
-    <div>
-    <div class="quarto-title-meta-heading">Published</div>
-    <div class="quarto-title-meta-contents">
-      <p class="date">June 5, 2026</p>
-    </div>
-  </div>
   
     
   </div>
@@ -216,59 +215,272 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="introduction" class="level1">
-<h1>Introduction</h1>
-<p>This cookbook documents commonly used CanadaLogin metrics, including their definitions, plain-language alternate names, calculation logic, and example SQL queries.</p>
-<p>The cookbook is organized by data source:</p>
+<p>Derived tables in the <code>ibm_verify</code> schema, populated from the IBM Verify reporting API. Each table is a daily aggregate derived from the raw event stream in <code>ibm_verify_raw.ibm_verify</code>.</p>
+<section id="app_login_counts" class="level1">
+<h1>app_login_counts</h1>
+<p>Daily sign-in counts for each CanadaLogin-integrated application.</p>
+<p>Each row represents one application on one day, summarizing that application’s sign-in activity and unique-user reach for the day.</p>
+<p><code>Keywords</code>: sign-ins, logins, applications, unique users, adoption, daily counts</p>
+<section id="provenance" class="level2">
+<h2 class="anchored" data-anchor-id="provenance">Provenance</h2>
+<p>Queried directly from the IBM Verify production instance via API.</p>
 <ul>
-<li>IBM Verify</li>
-<li>Call Centre</li>
-<li>Cross-source / interpretive metrics</li>
-</ul>
-<p>Each metric generally includes:</p>
-<ul>
-<li>a description</li>
-<li>plain-language alternate names</li>
-<li>data source information</li>
-<li>calculation logic</li>
-<li>example SQL</li>
-<li>interpretation notes, where relevant</li>
-</ul>
-<p>The goal is to make metric definitions easier to reuse, explain, and validate across reporting products.</p>
-<p>The companion <a href="./catalog/index.html">Data Catalog</a> describes the underlying tables that these metrics are calculated from, field by field.</p>
-<section id="how-to-use-this-cookbook" class="level2">
-<h2 class="anchored" data-anchor-id="how-to-use-this-cookbook">How to use this cookbook</h2>
-<p>Use this cookbook as a reference when building dashboards, reports, briefing materials, or ad hoc analyses.</p>
-<p>For each metric, confirm:</p>
-<ol type="1">
-<li>Does it measure what I think it does?</li>
-<li>What table and columns are used?</li>
-<li>Should I apply any filters?</li>
-<li>Is this metric a count, a rate, a cumulative value, or an average?</li>
-</ol>
-</section>
-<section id="conventions" class="level2">
-<h2 class="anchored" data-anchor-id="conventions">Conventions</h2>
-<p>In reporting language, prefer the noun <strong>sign-in</strong> over <strong>login</strong> where possible. The underlying IBM Verify field may be called <code>total_logins</code>, but “sign-ins” is preferred (and often enforced) when talking about CanadaLogin.</p>
-<p>Where applicable, internal applications are excluded from external-facing adoption reporting.</p>
-<p>As of June 3, 2026, the current internal application exclusion list is:</p>
-<ul>
-<li>Flow Application</li>
-<li>GCS Migration Solution</li>
-<li>GC Sign In - Profile Management App</li>
+<li><code>Updated</code>: Daily in the morning</li>
+<li><code>Steward</code>: EDCP Data and Research Team</li>
+<li><code>Contact</code>: <a href="mailto:yinlin.zhang@cds-snc.ca">Yinlin Zhang</a></li>
 </ul>
 </section>
-<section id="scope" class="level2">
-<h2 class="anchored" data-anchor-id="scope">Scope</h2>
-<p>This is a preliminary metrics cookbook to help with <em>ad hoc</em> CanadaLogin analyses. It generally deals with <em>calculated</em> metrics. Metrics that are already present in a table and don’t require any calculation do not need to be included, although they can be if they need clarification.</p>
-<p>The initial version focuses on:</p>
+<section id="fields" class="level2">
+<h2 class="anchored" data-anchor-id="fields">Fields</h2>
+<p>One row per <code>application_name</code> per day.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Field Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>application_name</td>
+<td>string</td>
+<td>Name of the integrated application (for example, “IRIS - PRC - Prod”)</td>
+</tr>
+<tr class="even">
+<td>from_date</td>
+<td>timestamp</td>
+<td>Start of the reporting day (midnight)</td>
+</tr>
+<tr class="odd">
+<td>to_date</td>
+<td>timestamp</td>
+<td>End of the reporting day (23:59:59)</td>
+</tr>
+<tr class="even">
+<td>total_logins</td>
+<td>integer</td>
+<td>Total sign-in events recorded for the application that day. Counts events, not people. Reported as “total sign-ins”</td>
+</tr>
+<tr class="odd">
+<td>unique_users</td>
+<td>integer</td>
+<td>Number of distinct users who signed in to the application that day</td>
+</tr>
+<tr class="even">
+<td>failed_logins</td>
+<td>integer</td>
+<td>Number of failed sign-in attempts that day</td>
+</tr>
+<tr class="odd">
+<td>successful_logins</td>
+<td>integer</td>
+<td>Number of successful sign-ins that day</td>
+</tr>
+<tr class="even">
+<td>mtd_unique_users</td>
+<td>integer</td>
+<td>Cumulative distinct users for the application month-to-date. Resets at the start of each month</td>
+</tr>
+<tr class="odd">
+<td>ytd_unique_users</td>
+<td>integer</td>
+<td>Cumulative distinct users for the application year-to-date. Resets at the start of each calendar year</td>
+</tr>
+<tr class="even">
+<td>since_apr22_unique_users</td>
+<td>integer</td>
+<td>Cumulative distinct users since the April 22, 2026 public launch</td>
+</tr>
+<tr class="odd">
+<td>fetched_at</td>
+<td>timestamp</td>
+<td>When the aggregation last fetched this row</td>
+</tr>
+<tr class="even">
+<td>date</td>
+<td>string</td>
+<td>The reporting day as a text date (for example, “2026-04-23”). Mirrors <code>from_date</code></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="notes" class="level2">
+<h2 class="anchored" data-anchor-id="notes">Notes</h2>
+<p><code>total_logins</code>, <code>unique_users</code>, <code>failed_logins</code>, and <code>successful_logins</code> are daily values. <code>mtd_unique_users</code>, <code>ytd_unique_users</code>, and <code>since_apr22_unique_users</code> are cumulative counts of distinct users and should not be summed across rows; take the latest value within the window instead.</p>
+</section>
+</section>
+<section id="auth_total_logins" class="level1">
+<h1>auth_total_logins</h1>
+<p>Daily, CanadaLogin-wide sign-in totals across all applications.</p>
+<p>Each row represents one day and summarizes overall CanadaLogin authentication activity. Unlike <a href="#app_login_counts"><code>app_login_counts</code></a>, there is no per-application breakdown.</p>
+<p><code>Keywords</code>: sign-ins, logins, totals, CanadaLogin overall, unique users, daily</p>
+<section id="provenance-1" class="level2">
+<h2 class="anchored" data-anchor-id="provenance-1">Provenance</h2>
+<p>Queried directly from the IBM Verify production instance via API.</p>
 <ul>
-<li>IBM Verify application sign-in metrics</li>
-<li>call centre activity metrics</li>
-<li>call centre topic metrics</li>
-<li>simple cross-source interpretive metrics comparing sign-in activity and call volume</li>
+<li><strong>Updated</strong>: Daily, early in the morning</li>
+<li><strong>Steward</strong>: EDCP Data and Research Team</li>
+<li><strong>Contact</strong>: <a href="mailto:yinlin.zhang@cds-snc.ca">Yinlin Zhang</a></li>
 </ul>
-<p>Additional data sources, metric definitions, and validation notes can be added as the cookbook matures.</p>
+</section>
+<section id="fields-1" class="level2">
+<h2 class="anchored" data-anchor-id="fields-1">Fields</h2>
+<p>One row per day.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Field Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>from_date</td>
+<td>timestamp</td>
+<td>Start of the reporting day (midnight)</td>
+</tr>
+<tr class="even">
+<td>to_date</td>
+<td>timestamp</td>
+<td>End of the reporting day (23:59:59)</td>
+</tr>
+<tr class="odd">
+<td>unique_users</td>
+<td>integer</td>
+<td>Number of distinct users who signed in to CanadaLogin that day</td>
+</tr>
+<tr class="even">
+<td>failed_logins</td>
+<td>integer</td>
+<td>Number of failed sign-in attempts that day</td>
+</tr>
+<tr class="odd">
+<td>successful_logins</td>
+<td>integer</td>
+<td>Number of successful sign-ins that day</td>
+</tr>
+<tr class="even">
+<td>mtd_unique_users</td>
+<td>integer</td>
+<td>Cumulative distinct users month-to-date. Resets at the start of each month</td>
+</tr>
+<tr class="odd">
+<td>ytd_unique_users</td>
+<td>integer</td>
+<td>Cumulative distinct users year-to-date. Resets at the start of each calandar year</td>
+</tr>
+<tr class="even">
+<td>since_apr22_unique_users</td>
+<td>integer</td>
+<td>Cumulative distinct users since the April 22, 2026 launch period</td>
+</tr>
+<tr class="odd">
+<td>last_updated_at</td>
+<td>timestamp</td>
+<td>When the underlying data for this row was last updated</td>
+</tr>
+<tr class="even">
+<td>fetched_at</td>
+<td>timestamp</td>
+<td>When the aggregation last fetched this row</td>
+</tr>
+<tr class="odd">
+<td>date</td>
+<td>string</td>
+<td>The reporting day as a text date (for example, “2026-05-21”). Mirrors <code>from_date</code></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="notes-1" class="level2">
+<h2 class="anchored" data-anchor-id="notes-1">Notes</h2>
+<p><code>unique_users</code>, <code>failed_logins</code>, and <code>successful_logins</code> are daily values. The <code>mtd_</code>, <code>ytd_</code>, and <code>since_apr22_</code> unique-user fields are cumulative and should not be summed across rows; take the latest value within the window instead.</p>
+</section>
+</section>
+<section id="mfa_activity" class="level1">
+<h1>mfa_activity</h1>
+<p>Daily multi-factor authentication (MFA) activity, broken down by factor type and outcome.</p>
+<p>Each row represents the count of MFA attempts for a single combination of day, MFA factor type, and result.</p>
+<p><code>Keywords</code>: MFA, multi-factor, second factor, OTP, FIDO2, authentication, security</p>
+<section id="provenance-2" class="level2">
+<h2 class="anchored" data-anchor-id="provenance-2">Provenance</h2>
+<p>Queried directly from the IBM Verify production instance via API.</p>
+<ul>
+<li><strong>Updated</strong>: Daily, early in the morning</li>
+<li><strong>Steward</strong>: EDCP Data and Research Team</li>
+<li><strong>Contact</strong>: <a href="mailto:yinlin.zhang@cds-snc.ca">Yinlin Zhang</a></li>
+</ul>
+</section>
+<section id="fields-2" class="level2">
+<h2 class="anchored" data-anchor-id="fields-2">Fields</h2>
+<p>One row per day per <code>mfa_type</code> per <code>result</code>.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Field Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>from_date</td>
+<td>timestamp</td>
+<td>Start of the reporting day (midnight)</td>
+</tr>
+<tr class="even">
+<td>to_date</td>
+<td>timestamp</td>
+<td>End of the reporting day (23:59:59)</td>
+</tr>
+<tr class="odd">
+<td>mfa_type</td>
+<td>string</td>
+<td>The MFA factor used. One of “sms_otp”, “fido2”, “kq”, “totp”, “voice_otp”, “qr”, “ibm_verify_push”, “email_otp”</td>
+</tr>
+<tr class="even">
+<td>result</td>
+<td>string</td>
+<td>Outcome of the MFA attempts. One of “success” or “failure”</td>
+</tr>
+<tr class="odd">
+<td>count</td>
+<td>integer</td>
+<td>Number of MFA attempts for this day, factor, and result</td>
+</tr>
+<tr class="even">
+<td>fetched_at</td>
+<td>timestamp</td>
+<td>When the aggregation last fetched this row</td>
+</tr>
+<tr class="odd">
+<td>date</td>
+<td>string</td>
+<td>The reporting day as a text date (for example, “2026-05-31”). Mirrors <code>from_date</code></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="notes-2" class="level2">
+<h2 class="anchored" data-anchor-id="notes-2">Notes</h2>
+<p>Because the grain is day x factor x result, totalling MFA activity for a day requires summing <code>count</code> across all <code>mfa_type</code> and <code>result</code> rows for that day. Filter on <code>result = 'success'</code> to count successful second-factor authentications.</p>
 
 
 </section>
@@ -677,10 +889,13 @@ ul.task-list li input[type="checkbox"] {
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
+      <a href="../catalog/index.html" class="pagination-link" aria-label="About">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-title">About</span></span>
+      </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./01-ibm-verify.html" class="pagination-link" aria-label="IBM Verify">
-        <span class="nav-page-text"><span class="chapter-title">IBM Verify</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../catalog/call_centre.html" class="pagination-link" aria-label="Call Centre">
+        <span class="nav-page-text"><span class="chapter-title">Call Centre</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

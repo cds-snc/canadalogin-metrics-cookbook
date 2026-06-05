@@ -4,7 +4,7 @@
     "href": "index.html",
     "title": "CanadaLogin Metrics Cookbook",
     "section": "",
-    "text": "Introduction\nThis cookbook documents commonly used CanadaLogin metrics, including their definitions, plain-language alternate names, calculation logic, and example SQL queries.\nThe cookbook is organized by data source:\nEach metric generally includes:\nThe goal is to make metric definitions easier to reuse, explain, and validate across reporting products.",
+    "text": "Introduction\nThis cookbook documents commonly used CanadaLogin metrics, including their definitions, plain-language alternate names, calculation logic, and example SQL queries.\nThe cookbook is organized by data source:\nEach metric generally includes:\nThe goal is to make metric definitions easier to reuse, explain, and validate across reporting products.\nThe companion Data Catalog describes the underlying tables that these metrics are calculated from, field by field.",
     "crumbs": [
       "<span class='chapter-number'>1</span>  <span class='chapter-title'>Introduction</span>"
     ]
@@ -44,28 +44,9 @@
     "href": "01-ibm-verify.html",
     "title": "IBM Verify",
     "section": "",
-    "text": "Important Tables\nMetrics in this section are calculated from IBM Verify authentication and application sign-in data.",
+    "text": "CanadaLogin Metrics\nMetrics in this section are calculated from IBM Verify authentication and application sign-in data.\nInternal applications. The following applications are typically excluded from public-facing adoption metrics:\nMetrics in this section describe CanadaLogin overall, across all applications, sourced from ibm_verify.auth_total_logins.",
     "crumbs": [
-      "<span class='chapter-number'>2</span>  <span class='chapter-title'>IBM Verify</span>"
-    ]
-  },
-  {
-    "objectID": "01-ibm-verify.html#important-tables",
-    "href": "01-ibm-verify.html#important-tables",
-    "title": "IBM Verify",
-    "section": "",
-    "text": "ibm_verify.auth_total_logins contains info about CanadaLogin in general\nibm_verify.mfa_activity contains information about multi-factor authentication\nibm_verify.app_login_counts contains info about which apps users are authenticating against",
-    "crumbs": [
-      "<span class='chapter-number'>2</span>  <span class='chapter-title'>IBM Verify</span>"
-    ]
-  },
-  {
-    "objectID": "01-ibm-verify.html#internal-applications",
-    "href": "01-ibm-verify.html#internal-applications",
-    "title": "IBM Verify",
-    "section": "Internal Applications",
-    "text": "Internal Applications\nThe following applications are typically excluded from public-facing adoption metrics:\n'Flow Application',\n'GCS Migration Solution',\n'GC Sign In - Profile Management App'",
-    "crumbs": [
+      "Metrics Cookbook",
       "<span class='chapter-number'>2</span>  <span class='chapter-title'>IBM Verify</span>"
     ]
   },
@@ -73,9 +54,10 @@
     "objectID": "01-ibm-verify.html#canadalogin-metrics",
     "href": "01-ibm-verify.html#canadalogin-metrics",
     "title": "IBM Verify",
-    "section": "CanadaLogin Metrics",
-    "text": "CanadaLogin Metrics\n\nSign-Ins\n\nDescription\nThe total number of sign-in events to CanadaLogin. It includes both successful attempts and failed attempts to sign in.\n\n\nPlain-language alternative names\n\nTotal sign-in attempts\nSign-ins to CanadaLogin in a reporting period\nTotal sign-ins to CanadaLogin\n\n\n\nData source\n\nSchema: ibm_verify\nTable: auth_total_logins\n\n\n\nCalculation logic\nThe sum of failed_logins and successful_logins over a given reporting period.\n\n\nExample SQL\nSELECT \n    SUM(failed_logins + successful_logins) AS total_sign_in_attempts\nFROM ibm_verify.auth_total_logins\n-- Select an arbitrary reporting period\nWHERE from_date BETWEEN DATE '2026-01-01' AND DATE '2026-05-28'\nORDER BY total_sign_in_attempts DESC;\n\n\n\nYear-to-Date Unique Users\n\nDescription\nThe total number of unique users who have signed in to CanadaLogin since the beginning of the current calendar year.\nThis metric is useful for understanding the overall reach and adoption of CanadaLogin over time.\nNote that this metric will not align with the sum of all of the unique users for each app. If I sign into App #1 and App #2 in the same day, I will count as a unique user in each app (which sums to 2) but only a single unique user overall.\n\n\nPlain-language alternative names\n\nTotal overall unique users this year\nOverall unique users YTD\nYear-to-date unique users of CanadaLogin\n\n\n\nData source\n\nSchema: ibm_verify\nTable: auth_total_logins\n\n\n\nCalculation logic\nThe latest value of the ytd_unique_users table.\n\n\nExample SQL\nSELECT\n    ytd_unique_users\nFROM ibm_verify.auth_total_logins\nORDER BY from_date DESC\nLIMIT 1;",
+    "section": "",
+    "text": "Sign-Ins\nSource: ibm_verify.auth_total_logins\nThe total number of sign-in events to CanadaLogin, including both successful and failed attempts.\nAlternative names:\n\ntotal sign-in attempts\nsign-ins to CanadaLogin in a reporting period\ntotal sign-ins to CanadaLogin\n\nCalculation. Sum failed_logins and successful_logins over the selected reporting period.\nSELECT\n    SUM(failed_logins + successful_logins) AS total_sign_in_attempts\nFROM ibm_verify.auth_total_logins\n-- Select an arbitrary reporting period\nWHERE from_date BETWEEN DATE '2026-01-01' AND DATE '2026-05-28';\n\n\nYear-to-Date Unique Users\nSource: ibm_verify.auth_total_logins\nThe total number of unique users who have signed in to CanadaLogin since the beginning of the current calendar year.\nThis metric is useful for understanding the overall reach and adoption of CanadaLogin over time. Note that this metric will not align with the sum of unique users across individual apps: a user who signs into App A and App B on the same day counts as two unique users at the app level but only one overall.\nAlternative names:\n\ntotal overall unique users this year\noverall unique users YTD\nyear-to-date unique users of CanadaLogin\n\nCalculation. Take the latest value of ytd_unique_users.\nSELECT\n    ytd_unique_users\nFROM ibm_verify.auth_total_logins\nORDER BY from_date DESC\nLIMIT 1;",
     "crumbs": [
+      "Metrics Cookbook",
       "<span class='chapter-number'>2</span>  <span class='chapter-title'>IBM Verify</span>"
     ]
   },
@@ -84,9 +66,274 @@
     "href": "01-ibm-verify.html#application-metrics",
     "title": "IBM Verify",
     "section": "Application Metrics",
-    "text": "Application Metrics\n\nSign-Ins\n\nDescription\nThe total number of sign-ins recorded for each application over a selected time period.\nThis metric is useful for understanding overall usage volume across CanadaLogin-integrated applications. It counts sign-in events, not people. A single user may sign in multiple times and contribute multiple sign-ins.\nThis metric is currently referred to in the source data as total_logins, but in reporting language it is usually clearer to describe it as total sign-ins.\nA sign-in count measures events, not people. Use this metric when the question is about system usage or activity volume.\n\n\nPlain-language alternate names\n\nTotal sign-ins\nSign-in volume\nNumber of sign-ins\nApplication sign-in count\nTotal uses of CanadaLogin by application\n\n\n\nData source\n\nSchema: ibm_verify\nTable: app_login_counts\n\n\n\nCalculation logic\nSum total_logins over the selected reporting period, grouped by application.\n\n\nExample SQL\nSELECT \n  application_name,\n  SUM(total_logins) AS total_sign_ins\nFROM   ibm_verify.app_login_counts\n-- select an arbitrary reporting period\nWHERE  from_date BETWEEN DATE '2026-01-01' AND DATE '2026-05-28'\n-- optionally filter out internal applications\n  AND application_name NOT IN (\n      'Flow Application',\n      'GCS Migration Solution',\n      'GC Sign In - Profile Management App'\n  )\nGROUP  BY application_name\nORDER  BY total_sign_ins DESC; \n\n\n\nPeak Daily Users\n\nDescription\nThe highest number of unique users observed on any single day during the reporting period. This metric is useful for identifying the maximum daily reach of an application and for understanding peak demand. This metric is useful for identifying the busiest single day by unique user reach.\n\n\nPlain-language alternate names\n\nPeak daily users\nHighest daily unique users\nMaximum daily active users\nBusiest day by unique users\nPeak daily reach\n\n\n\nData source\n\nSchema: ibm_verify\nTable: app_login_counts\n\n\n\nCalculation logic\nTake the maximum value of unique_users over the selected reporting period, grouped by application.\n\n\nExample SQL\nWITH ranked AS (\n    SELECT\n        application_name,\n        from_date,\n        unique_users,\n        ROW_NUMBER() OVER (\n            PARTITION BY application_name\n            ORDER BY unique_users DESC, from_date ASC\n        ) AS rn\n    FROM ibm_verify.app_login_counts\n    -- select an arbitrary reporting period\n    WHERE from_date BETWEEN DATE '2026-01-01' AND DATE '2026-05-28'\n)\n\nSELECT\n    application_name,\n    from_date,\n    unique_users AS peak_daily_unique_users\nFROM ranked\nWHERE rn = 1\nORDER BY peak_daily_unique_users DESC;\n\n\n\nYear-to-Date Unique Users\n\nDescription\nThe number of unique users observed year-to-date for each application.\nGenerally, this is calculated by taking the last value of ytd_unique_users over the reporting period or within a year. ytd_unique_users is a cumulative field that increases or remains stable over time.\nThis metric is closer to “how many distinct people have used the application this year” than the daily unique user metrics.\nSince ytd_unique_users is a cumulative field, it will reset every year.\n\n\nPlain-language alternate names\n\nYTD unique users\nUnique users this year\nYear-to-date user reach\nDistinct users this year\nTotal unique people reached this year\n\n\n\nData source\n\nSchema: ibm_verify\nTable: app_login_counts\n\n\n\nCalculation logic\nTake the latest value of ytd_unique_users over the selected reporting period, grouped by application.\n\n\nExample SQL\nWITH ranked AS (\n    SELECT\n        application_name,\n        from_date,\n        ytd_unique_users,\n        ROW_NUMBER() OVER (\n            PARTITION BY application_name\n            ORDER BY from_date DESC\n        ) AS rn\n    FROM ibm_verify.app_login_counts\n    WHERE from_date BETWEEN DATE '2026-01-01' AND DATE '2026-05-28'\n)\n\nSELECT\n    application_name,\n    ytd_unique_users AS ytd_unique_users\nFROM ranked\nWHERE rn = 1\nORDER BY ytd_unique_users DESC;\n\n\n\nAverage Daily Sign-Ins\n\nDescription\nThe average number of sign-ins per day for a specific application over a selected reporting period. This metric summarizes daily sign-in activity into a single average value. It is useful for understanding typical daily usage during a launch period, reporting window, or monitoring period.\n\n\nPlain-language alternate names\n\nAverage daily sign-ins\nAverage sign-ins per day\nTypical daily sign-in volume\nMean daily login volume\nAverage daily CanadaLogin activity\n\n\n\nData source\n\nSchema: ibm_verify\nTable: app_login_counts\n\n\n\nCalculation logic\nFor each application, calculate the average of total_logins across all daily records in the selected reporting period. This assumes there is one row per application per date.\n\n\nExample SQL\nSELECT\n    application_name,\n    AVG(total_logins) AS average_daily_sign_ins\nFROM ibm_verify.app_login_counts\n-- Choose an arbitrary reporting period\nWHERE from_date BETWEEN DATE '2026-04-22' AND DATE '2026-05-31'\nGROUP BY application_name\nORDER BY average_daily_sign_ins DESC;",
+    "text": "Application Metrics\nMetrics in this section describe sign-in activity broken down by application, sourced from ibm_verify.app_login_counts.\n\nSign-Ins by Application\nSource: ibm_verify.app_login_counts\nThe total number of sign-ins recorded for each application over a selected time period.\nThis metric is useful for understanding overall usage volume across CanadaLogin-integrated applications. It counts sign-in events, not people. A single user may sign in multiple times and contribute multiple sign-ins.\nThis metric is referred to in the source data as total_logins, but in reporting language it is usually clearer to describe it as total sign-ins.\nAlternative names:\n\ntotal sign-ins\nsign-in volume\nnumber of sign-ins\napplication sign-in count\ntotal uses of CanadaLogin by application\n\nCalculation. Sum total_logins over the selected reporting period, grouped by application.\nSELECT\n  application_name,\n  SUM(total_logins) AS total_sign_ins\nFROM   ibm_verify.app_login_counts\n-- select an arbitrary reporting period\nWHERE  from_date BETWEEN DATE '2026-01-01' AND DATE '2026-05-28'\n-- optionally filter out internal applications\n  AND application_name NOT IN (\n      'Flow Application',\n      'GCS Migration Solution',\n      'GC Sign In - Profile Management App'\n  )\nGROUP  BY application_name\nORDER  BY total_sign_ins DESC;\nInterpretation. A sign-in count measures events, not people. Use this metric when the question is about system usage or activity volume. Use unique user metrics when the question is about reach.\n\n\nPeak Daily Unique Users\nSource: ibm_verify.app_login_counts\nThe highest number of unique users observed on any single day during the reporting period.\nThis metric is useful for identifying the maximum daily reach of an application and for understanding peak demand.\nAlternative names:\n\npeak daily users\nhighest daily unique users\nmaximum daily active users\nbusiest day by unique users\npeak daily reach\n\nCalculation. Take the maximum value of unique_users over the selected reporting period, grouped by application.\nWITH ranked AS (\n    SELECT\n        application_name,\n        from_date,\n        unique_users,\n        ROW_NUMBER() OVER (\n            PARTITION BY application_name\n            ORDER BY unique_users DESC, from_date ASC\n        ) AS rn\n    FROM ibm_verify.app_login_counts\n    -- select an arbitrary reporting period\n    WHERE from_date BETWEEN DATE '2026-01-01' AND DATE '2026-05-28'\n)\n\nSELECT\n    application_name,\n    from_date,\n    unique_users AS peak_daily_unique_users\nFROM ranked\nWHERE rn = 1\nORDER BY peak_daily_unique_users DESC;\nInterpretation. This metric identifies the busiest single day by unique user reach. The query above also returns the date on which that peak occurred.\n\n\nYear-to-Date Unique Users\nSource: ibm_verify.app_login_counts (application_name, from_date, ytd_unique_users)\nThe number of unique users observed year-to-date for each application.\nytd_unique_users is a cumulative field that increases or remains stable over time. This metric is closer to “how many distinct people have used the application this year” than the daily unique user metrics.\nAlternative names:\n\nYTD unique users\nunique users this year\nyear-to-date user reach\ndistinct users this year\ntotal unique people reached this year\n\nCalculation. Take the latest value of ytd_unique_users over the selected reporting period, grouped by application.\nWITH ranked AS (\n    SELECT\n        application_name,\n        from_date,\n        ytd_unique_users,\n        ROW_NUMBER() OVER (\n            PARTITION BY application_name\n            ORDER BY from_date DESC\n        ) AS rn\n    FROM ibm_verify.app_login_counts\n    WHERE from_date BETWEEN DATE '2026-01-01' AND DATE '2026-05-28'\n)\n\nSELECT\n    application_name,\n    ytd_unique_users\nFROM ranked\nWHERE rn = 1\nORDER BY ytd_unique_users DESC;\nInterpretation. Since ytd_unique_users is a cumulative field, it will reset every year.\n\n\nAverage Daily Sign-Ins\nSource: ibm_verify.app_login_counts\nThe average number of sign-ins per day for a specific application over a selected reporting period.\nThis metric summarizes daily sign-in activity into a single average value. It is useful for understanding typical daily usage during a launch period, reporting window, or monitoring period.\nAlternative names:\n\naverage sign-ins per day\ntypical daily sign-in volume\nmean daily login volume\naverage daily CanadaLogin activity\n\nCalculation. For each application, calculate the average of total_logins across all daily records in the selected reporting period.\nSELECT\n    application_name,\n    AVG(total_logins) AS average_daily_sign_ins\nFROM ibm_verify.app_login_counts\n-- Choose an arbitrary reporting period\nWHERE from_date BETWEEN DATE '2026-04-22' AND DATE '2026-05-31'\nGROUP BY application_name\nORDER BY average_daily_sign_ins DESC;",
     "crumbs": [
+      "Metrics Cookbook",
       "<span class='chapter-number'>2</span>  <span class='chapter-title'>IBM Verify</span>"
+    ]
+  },
+  {
+    "objectID": "02-call-centre.html",
+    "href": "02-call-centre.html",
+    "title": "Call Centre",
+    "section": "",
+    "text": "Activity Metrics\nMetrics in this section are calculated from call centre activity and topic data.\nCall centre metrics are useful for understanding support demand, service responsiveness, caller wait times, average call duration, and common reasons for contact. The source data is weekly, so these metrics are typically reported at a weekly level or aggregated across weeks.\nThe call centre tables analysts work with are:\nMetrics in this section describe call centre operations, sourced from call_centre.weekly_activity_report.",
+    "crumbs": [
+      "Metrics Cookbook",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Call Centre</span>"
+    ]
+  },
+  {
+    "objectID": "02-call-centre.html#activity-metrics",
+    "href": "02-call-centre.html#activity-metrics",
+    "title": "Call Centre",
+    "section": "",
+    "text": "Calls Accepted\nSource: call_centre.weekly_activity_report\nThe number of calls accepted by the call centre during a reporting period.\nThis metric is useful for tracking call centre demand and understanding how contact volume changes over time.\nAlternative names:\n\ncalls received\naccepted calls\nweekly call volume\ncall centre demand\nnumber of calls handled by the queue\n\nCalculation. Use calls_accepted by reporting period, or sum across periods for a total.\nBy week:\nSELECT\n    date_range_start,\n    date_range_end,\n    CAST(calls_accepted AS BIGINT) AS calls_accepted\nFROM call_centre.weekly_activity_report\nORDER BY date_range_start;\nTotal over a period:\nSELECT\n    SUM(CAST(calls_accepted AS BIGINT)) AS total_calls_accepted\nFROM call_centre.weekly_activity_report\nWHERE date_range_start BETWEEN DATE '2026-01-01' AND DATE '2026-05-31';\nInterpretation. Calls accepted may not be identical to calls answered, depending on call centre definitions and routing logic.\n\n\nCalls Answered\nSource: call_centre.weekly_activity_report\nThe number of calls answered by call centre agents during a reporting period.\nThis metric is also used as a weighting variable when calculating weighted average call length and weighted average delay.\nAlternative names:\n\nanswered calls\ncalls handled\nagent-answered calls\ncompleted calls\ncalls taken by agents\n\nCalculation. Use calls_answered by reporting period, or sum across periods for a total.\nBy week:\nSELECT\n    date_range_start,\n    date_range_end,\n    CAST(calls_answered AS BIGINT) AS calls_answered\nFROM call_centre.weekly_activity_report\nORDER BY date_range_start;\nTotal over a period:\nSELECT\n    SUM(CAST(calls_answered AS BIGINT)) AS total_calls_answered\nFROM call_centre.weekly_activity_report\nWHERE date_range_start BETWEEN DATE '2026-01-01' AND DATE '2026-05-31';\nInterpretation. Calls answered is commonly used as the weighting field when combining weekly average call length or delay values.\n\n\nAverage Call Length\nSource: call_centre.weekly_activity_report (avg_call_length_seconds, calls_answered)\nThe average length of answered calls.\nThe overall average call length is calculated as a weighted mean of avg_call_length_seconds, weighted by calls_answered. This is preferable to a simple average of weekly averages because weeks with more answered calls should contribute more to the overall result.\nAlternative names:\n\naverage call duration\naverage handle time\naverage length of call\ntypical call length\naverage time on call\n\nCalculation. Calculate a weighted average of weekly average call length, weighted by the number of answered calls.\nWeighted average over a period:\nSELECT\n    SUM(\n        CAST(avg_call_length_seconds AS DOUBLE)\n        * CAST(calls_answered AS DOUBLE)\n    )\n    / NULLIF(SUM(CAST(calls_answered AS DOUBLE)), 0) AS weighted_avg_call_length_seconds\nFROM call_centre.weekly_activity_report\nWHERE date_range_start BETWEEN DATE '2026-01-01' AND DATE '2026-05-31';\nBy week:\nSELECT\n    date_range_start,\n    date_range_end,\n    CAST(avg_call_length_seconds AS DOUBLE) AS avg_call_length_seconds,\n    CAST(calls_answered AS BIGINT) AS calls_answered\nFROM call_centre.weekly_activity_report\nORDER BY date_range_start;\nInterpretation. Use a weighted average rather than a simple average of weekly averages. A simple average may give too much influence to low-volume weeks.\n\n\nAverage Delay\nSource: call_centre.weekly_activity_report (avg_delay_seconds, calls_answered)\nThe average delay before calls are answered.\nThis metric is useful for understanding caller wait times and call centre responsiveness. Like average call length, it should be calculated as a weighted mean to avoid low-volume weeks distorting the result.\nAlternative names:\n\naverage wait time\naverage delay before answer\ncaller wait time\ntime to answer\naverage queue delay\n\nCalculation. Calculate a weighted average of weekly average delay, weighted by the number of answered calls.\nWeighted average over a period:\nSELECT\n    SUM(\n        CAST(avg_delay_seconds AS DOUBLE)\n        * CAST(calls_answered AS DOUBLE)\n    )\n    / NULLIF(SUM(CAST(calls_answered AS DOUBLE)), 0) AS weighted_avg_delay_seconds\nFROM call_centre.weekly_activity_report\nWHERE date_range_start BETWEEN DATE '2026-01-01' AND DATE '2026-05-31';\nBy week:\nSELECT\n    date_range_start,\n    date_range_end,\n    CAST(avg_delay_seconds AS DOUBLE) AS avg_delay_seconds,\n    CAST(calls_answered AS BIGINT) AS calls_answered\nFROM call_centre.weekly_activity_report\nORDER BY date_range_start;\nInterpretation. Average delay should be interpreted alongside call volume. A low-volume week can produce unusual wait times that should not dominate the overall result.\n\n\nWeekly Activity Summary\nSource: call_centre.weekly_activity_report\nA weekly summary of call centre activity combining volume and service-level fields. Useful for dashboards and trend reporting, or as a base for the weighted average calculations above.\nAlternative names:\n\nweekly call centre summary\nweekly call activity\ncall centre weekly report\nweekly service volume\nweekly caller demand\n\nCalculation. Select the key weekly reporting fields from weekly_activity_report.\nSELECT\n    date_range_start,\n    date_range_end,\n    CAST(calls_accepted AS BIGINT) AS calls_accepted,\n    CAST(calls_answered AS BIGINT) AS calls_answered,\n    CAST(avg_call_length_seconds AS DOUBLE) AS avg_call_length_seconds,\n    CAST(avg_delay_seconds AS DOUBLE) AS avg_delay_seconds\nFROM call_centre.weekly_activity_report\nORDER BY date_range_start;\nInterpretation. Higher-level metrics derived from this table (averages, totals) should be clearly defined to avoid mixing counts and averages.",
+    "crumbs": [
+      "Metrics Cookbook",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Call Centre</span>"
+    ]
+  },
+  {
+    "objectID": "02-call-centre.html#topic-metrics",
+    "href": "02-call-centre.html#topic-metrics",
+    "title": "Call Centre",
+    "section": "Topic Metrics",
+    "text": "Topic Metrics\nMetrics in this section describe why callers contact the call centre, sourced from call_centre.weekly_topic_dump.\n\nCall Topic Count\nSource: call_centre.weekly_topic_dump\nThe number of call records associated with each call topic.\nThe field statobject is cleaned by trimming and squishing whitespace before counting. This metric helps answer: “What are people calling about?”\nAlternative names:\n\ncall reasons\ncall topics\nreasons for calling\ntop caller issues\ncontact drivers\n\nCalculation. Clean the statobject field by trimming whitespace and collapsing repeated whitespace to a single space, then count records by cleaned topic.\nSELECT\n    REGEXP_REPLACE(TRIM(statobject), '\\s+', ' ') AS call_topic,\n    COUNT(*) AS topic_count\nFROM call_centre.weekly_topic_dump\nGROUP BY REGEXP_REPLACE(TRIM(statobject), '\\s+', ' ')\nORDER BY topic_count DESC;\nInterpretation. Call topic counts depend on how topics are coded in the source system. Topic naming, duplicates, and inconsistent spelling can affect results.\n\n\nCall Topic Share\nSource: call_centre.weekly_topic_dump\nThe percentage of all topic records represented by each call topic.\nThis is useful for understanding the relative importance of each call driver compared to the overall volume.\nAlternative names:\n\nshare of calls by topic\npercentage of calls by reason\ntopic distribution\ncall reason mix\ncontact driver share\n\nCalculation. Count records by cleaned topic, then divide each topic count by the total count across all topics.\nWITH topic_counts AS (\n    SELECT\n        REGEXP_REPLACE(TRIM(statobject), '\\s+', ' ') AS call_topic,\n        COUNT(*) AS topic_count\n    FROM call_centre.weekly_topic_dump\n    GROUP BY REGEXP_REPLACE(TRIM(statobject), '\\s+', ' ')\n)\n\nSELECT\n    call_topic,\n    topic_count,\n    CAST(topic_count AS DOUBLE)\n        / NULLIF(SUM(topic_count) OVER (), 0) AS topic_share\nFROM topic_counts\nORDER BY topic_count DESC;\nInterpretation. Topic share is useful for comparing relative demand across contact reasons. Interpret alongside total call volume.\n\n\nTop 10 Call Topics\nSource: call_centre.weekly_topic_dump\nThe ten most common call topics in the call centre topic data.\nThis is useful for quickly identifying the most common reasons people contact the call centre.\nAlternative names:\n\ntop 10 call reasons\nmost common call topics\ntop contact drivers\nmain reasons for calling\ntop caller issues\n\nCalculation. Count records by cleaned topic, calculate topic share, and return the top 10 by topic count.\nWITH topic_counts AS (\n    SELECT\n        REGEXP_REPLACE(TRIM(statobject), '\\s+', ' ') AS call_topic,\n        COUNT(*) AS topic_count\n    FROM call_centre.weekly_topic_dump\n    GROUP BY REGEXP_REPLACE(TRIM(statobject), '\\s+', ' ')\n),\n\ntopic_shares AS (\n    SELECT\n        call_topic,\n        topic_count,\n        CAST(topic_count AS DOUBLE)\n            / NULLIF(SUM(topic_count) OVER (), 0) AS topic_share\n    FROM topic_counts\n)\n\nSELECT\n    call_topic,\n    topic_count,\n    topic_share\nFROM topic_shares\nORDER BY topic_count DESC\nLIMIT 10;\nInterpretation. The top 10 view is useful for quick reporting but may hide important lower-volume issues. For diagnostic work, review the full topic distribution.",
+    "crumbs": [
+      "Metrics Cookbook",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Call Centre</span>"
+    ]
+  },
+  {
+    "objectID": "catalog/index.html",
+    "href": "catalog/index.html",
+    "title": "About",
+    "section": "",
+    "text": "IBM Verify\nThe data catalog describes the tables available to analysts. It is distinct from the metrics cookbook; the cookbook explains how to derive metrics, while the catalog describes the tables those metrics are calculated from, field by field.\nDerived tables in the ibm_verify schema, pulled from the IBM Verify reporting API.",
+    "crumbs": [
+      "Data Catalog",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>About</span>"
+    ]
+  },
+  {
+    "objectID": "catalog/index.html#ibm-verify",
+    "href": "catalog/index.html#ibm-verify",
+    "title": "About",
+    "section": "",
+    "text": "app_login_counts - daily sign-in counts by application\nauth_total_logins - daily, CanadaLogin-wide sign-in totals\nmfa_activity - multi-factor authentication activity by factor and result",
+    "crumbs": [
+      "Data Catalog",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>About</span>"
+    ]
+  },
+  {
+    "objectID": "catalog/index.html#call-centre",
+    "href": "catalog/index.html#call-centre",
+    "title": "About",
+    "section": "Call Centre",
+    "text": "Call Centre\nWeekly call centre data extracted from the CanadaLogin support weekly Excel reports.\n\nweekly_activity_report - weekly call volume and service-level summary\nweekly_topic_dump - individual call records with topic classifications",
+    "crumbs": [
+      "Data Catalog",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>About</span>"
+    ]
+  },
+  {
+    "objectID": "catalog/index.html#conventions",
+    "href": "catalog/index.html#conventions",
+    "title": "About",
+    "section": "Conventions",
+    "text": "Conventions\nField types use Parquet-style names (boolean, date, float, integer, string, time, timestamp). For string columns that behave as factors, the possible values are listed. Cumulative fields (those that only increase within a window and then reset) are called out explicitly. Proportions are stored as values between 0 and 1, not 0 and 100.",
+    "crumbs": [
+      "Data Catalog",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>About</span>"
+    ]
+  },
+  {
+    "objectID": "catalog/ibm_verify.html",
+    "href": "catalog/ibm_verify.html",
+    "title": "IBM Verify",
+    "section": "",
+    "text": "app_login_counts\nDerived tables in the ibm_verify schema, populated from the IBM Verify reporting API. Each table is a daily aggregate derived from the raw event stream in ibm_verify_raw.ibm_verify.\nDaily sign-in counts for each CanadaLogin-integrated application.\nEach row represents one application on one day, summarizing that application’s sign-in activity and unique-user reach for the day.\nKeywords: sign-ins, logins, applications, unique users, adoption, daily counts",
+    "crumbs": [
+      "Data Catalog",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>IBM Verify</span>"
+    ]
+  },
+  {
+    "objectID": "catalog/ibm_verify.html#provenance",
+    "href": "catalog/ibm_verify.html#provenance",
+    "title": "IBM Verify",
+    "section": "Provenance",
+    "text": "Provenance\nQueried directly from the IBM Verify production instance via API.\n\nUpdated: Daily in the morning\nSteward: EDCP Data and Research Team\nContact: Yinlin Zhang",
+    "crumbs": [
+      "Data Catalog",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>IBM Verify</span>"
+    ]
+  },
+  {
+    "objectID": "catalog/ibm_verify.html#fields",
+    "href": "catalog/ibm_verify.html#fields",
+    "title": "IBM Verify",
+    "section": "Fields",
+    "text": "Fields\nOne row per application_name per day.\n\n\n\n\n\n\n\n\nField Name\nType\nDescription\n\n\n\n\napplication_name\nstring\nName of the integrated application (for example, “IRIS - PRC - Prod”)\n\n\nfrom_date\ntimestamp\nStart of the reporting day (midnight)\n\n\nto_date\ntimestamp\nEnd of the reporting day (23:59:59)\n\n\ntotal_logins\ninteger\nTotal sign-in events recorded for the application that day. Counts events, not people. Reported as “total sign-ins”\n\n\nunique_users\ninteger\nNumber of distinct users who signed in to the application that day\n\n\nfailed_logins\ninteger\nNumber of failed sign-in attempts that day\n\n\nsuccessful_logins\ninteger\nNumber of successful sign-ins that day\n\n\nmtd_unique_users\ninteger\nCumulative distinct users for the application month-to-date. Resets at the start of each month\n\n\nytd_unique_users\ninteger\nCumulative distinct users for the application year-to-date. Resets at the start of each calendar year\n\n\nsince_apr22_unique_users\ninteger\nCumulative distinct users since the April 22, 2026 public launch\n\n\nfetched_at\ntimestamp\nWhen the aggregation last fetched this row\n\n\ndate\nstring\nThe reporting day as a text date (for example, “2026-04-23”). Mirrors from_date",
+    "crumbs": [
+      "Data Catalog",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>IBM Verify</span>"
+    ]
+  },
+  {
+    "objectID": "catalog/ibm_verify.html#notes",
+    "href": "catalog/ibm_verify.html#notes",
+    "title": "IBM Verify",
+    "section": "Notes",
+    "text": "Notes\ntotal_logins, unique_users, failed_logins, and successful_logins are daily values. mtd_unique_users, ytd_unique_users, and since_apr22_unique_users are cumulative counts of distinct users and should not be summed across rows; take the latest value within the window instead.",
+    "crumbs": [
+      "Data Catalog",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>IBM Verify</span>"
+    ]
+  },
+  {
+    "objectID": "catalog/ibm_verify.html#provenance-1",
+    "href": "catalog/ibm_verify.html#provenance-1",
+    "title": "IBM Verify",
+    "section": "Provenance",
+    "text": "Provenance\nQueried directly from the IBM Verify production instance via API.\n\nUpdated: Daily, early in the morning\nSteward: EDCP Data and Research Team\nContact: Yinlin Zhang",
+    "crumbs": [
+      "Data Catalog",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>IBM Verify</span>"
+    ]
+  },
+  {
+    "objectID": "catalog/ibm_verify.html#fields-1",
+    "href": "catalog/ibm_verify.html#fields-1",
+    "title": "IBM Verify",
+    "section": "Fields",
+    "text": "Fields\nOne row per day.\n\n\n\n\n\n\n\n\nField Name\nType\nDescription\n\n\n\n\nfrom_date\ntimestamp\nStart of the reporting day (midnight)\n\n\nto_date\ntimestamp\nEnd of the reporting day (23:59:59)\n\n\nunique_users\ninteger\nNumber of distinct users who signed in to CanadaLogin that day\n\n\nfailed_logins\ninteger\nNumber of failed sign-in attempts that day\n\n\nsuccessful_logins\ninteger\nNumber of successful sign-ins that day\n\n\nmtd_unique_users\ninteger\nCumulative distinct users month-to-date. Resets at the start of each month\n\n\nytd_unique_users\ninteger\nCumulative distinct users year-to-date. Resets at the start of each calandar year\n\n\nsince_apr22_unique_users\ninteger\nCumulative distinct users since the April 22, 2026 launch period\n\n\nlast_updated_at\ntimestamp\nWhen the underlying data for this row was last updated\n\n\nfetched_at\ntimestamp\nWhen the aggregation last fetched this row\n\n\ndate\nstring\nThe reporting day as a text date (for example, “2026-05-21”). Mirrors from_date",
+    "crumbs": [
+      "Data Catalog",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>IBM Verify</span>"
+    ]
+  },
+  {
+    "objectID": "catalog/ibm_verify.html#notes-1",
+    "href": "catalog/ibm_verify.html#notes-1",
+    "title": "IBM Verify",
+    "section": "Notes",
+    "text": "Notes\nunique_users, failed_logins, and successful_logins are daily values. The mtd_, ytd_, and since_apr22_ unique-user fields are cumulative and should not be summed across rows; take the latest value within the window instead.",
+    "crumbs": [
+      "Data Catalog",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>IBM Verify</span>"
+    ]
+  },
+  {
+    "objectID": "catalog/ibm_verify.html#provenance-2",
+    "href": "catalog/ibm_verify.html#provenance-2",
+    "title": "IBM Verify",
+    "section": "Provenance",
+    "text": "Provenance\nQueried directly from the IBM Verify production instance via API.\n\nUpdated: Daily, early in the morning\nSteward: EDCP Data and Research Team\nContact: Yinlin Zhang",
+    "crumbs": [
+      "Data Catalog",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>IBM Verify</span>"
+    ]
+  },
+  {
+    "objectID": "catalog/ibm_verify.html#fields-2",
+    "href": "catalog/ibm_verify.html#fields-2",
+    "title": "IBM Verify",
+    "section": "Fields",
+    "text": "Fields\nOne row per day per mfa_type per result.\n\n\n\n\n\n\n\n\nField Name\nType\nDescription\n\n\n\n\nfrom_date\ntimestamp\nStart of the reporting day (midnight)\n\n\nto_date\ntimestamp\nEnd of the reporting day (23:59:59)\n\n\nmfa_type\nstring\nThe MFA factor used. One of “sms_otp”, “fido2”, “kq”, “totp”, “voice_otp”, “qr”, “ibm_verify_push”, “email_otp”\n\n\nresult\nstring\nOutcome of the MFA attempts. One of “success” or “failure”\n\n\ncount\ninteger\nNumber of MFA attempts for this day, factor, and result\n\n\nfetched_at\ntimestamp\nWhen the aggregation last fetched this row\n\n\ndate\nstring\nThe reporting day as a text date (for example, “2026-05-31”). Mirrors from_date",
+    "crumbs": [
+      "Data Catalog",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>IBM Verify</span>"
+    ]
+  },
+  {
+    "objectID": "catalog/ibm_verify.html#notes-2",
+    "href": "catalog/ibm_verify.html#notes-2",
+    "title": "IBM Verify",
+    "section": "Notes",
+    "text": "Notes\nBecause the grain is day x factor x result, totalling MFA activity for a day requires summing count across all mfa_type and result rows for that day. Filter on result = 'success' to count successful second-factor authentications.",
+    "crumbs": [
+      "Data Catalog",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>IBM Verify</span>"
+    ]
+  },
+  {
+    "objectID": "catalog/call_centre.html",
+    "href": "catalog/call_centre.html",
+    "title": "Call Centre",
+    "section": "",
+    "text": "weekly_activity_report\nWeekly call centre data extracted from the CanadaLogin support queue Excel reports. These two tables share the same source and update cadence but are at different grains: weekly_activity_report is one row per week, while weekly_topic_dump is one row per topic record per call.\nWeekly summary of call centre operations for the CanadaLogin support queue.\nEach row represents one reporting week, summarizing call volume, service levels, call outcomes, and call type breakdowns for that week.\nKeywords: call centre, calls, weekly, volume, wait time, call length, service level",
+    "crumbs": [
+      "Data Catalog",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Call Centre</span>"
+    ]
+  },
+  {
+    "objectID": "catalog/call_centre.html#provenance",
+    "href": "catalog/call_centre.html#provenance",
+    "title": "Call Centre",
+    "section": "Provenance",
+    "text": "Provenance\nSourced from a weekly Excel report that is typically send to the EDCP Data and Research team via email. That spreadsheet is exctracted and loaded into the data repository via the call centre weekly activity report Lambda. The extracted_at field records when each row was last extracted from the source file.\n\nUpdated: Weekly, typically on Tuesdays\nSteward: EDCP Data and Research Team\nContact: Colin Douglas",
+    "crumbs": [
+      "Data Catalog",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Call Centre</span>"
+    ]
+  },
+  {
+    "objectID": "catalog/call_centre.html#fields",
+    "href": "catalog/call_centre.html#fields",
+    "title": "Call Centre",
+    "section": "Fields",
+    "text": "Fields\nOne row per reporting week.\nMany count fields are stored as float because they originate from Excel. Proportions (fields ending in _pct) are stored as values between 0 and 1, not 0 and 100.\n\n\n\n\n\n\n\n\nField Name\nType\nDescription\n\n\n\n\nweek_text\nstring\nReport title, extracted from the Excel file\n\n\ndate_range_start\nstring\nStart date of the reporting week as a text date (for example, “2026-04-26”)\n\n\ndate_range_end\nstring\nEnd date of the reporting week as a text date (for example, “2026-05-02”)\n\n\ndate\nstring\nEquivalent to date_range_start; used as the primary date key\n\n\nfile\nstring\nSource filename the row was extracted from\n\n\nextracted_at\nstring\nISO 8601 timestamp of when the row was extracted from the source file\n\n\ncalls_accepted\nfloat\nTotal calls accepted by the queue during the week\n\n\ncalls_accepted_pct\nfloat\nProportion of calls accepted (typically 1.0)\n\n\ncalls_abandoned\nfloat\nNumber of calls abandoned before being answered\n\n\ncalls_abandoned_pct\nfloat\nProportion of accepted calls that were abandoned\n\n\ncalls_answered\nfloat\nNumber of calls answered by an agent\n\n\npct_answered_within_60s\nfloat\nProportion of calls answered within 60 seconds\n\n\navg_delay_seconds\nfloat\nAverage wait time before a call was answered, in seconds\n\n\navg_call_length_seconds\nfloat\nAverage duration of answered calls, in seconds\n\n\navg_handle_time_seconds\nfloat\nAverage total handle time per call (call length plus any wrap-up time), in seconds\n\n\ncalls_completed_by_io\nfloat\nNumber of calls completed by the information officer\n\n\ncalls_completed_by_io_pct\nfloat\nProportion of answered calls completed by the information officer\n\n\nhangups\nfloat\nNumber of calls where the caller hung up\n\n\nhangups_pct\nfloat\nProportion of answered calls that ended in a hangup\n\n\ntest_calls\nfloat\nNumber of test calls made during the week\n\n\ntest_calls_pct\nfloat\nProportion of accepted calls that were test calls\n\n\ntotal_calls_answered\nfloat\nTotal calls answered (may differ from calls_answered depending on reporting logic)\n\n\ntotal_calls_answered_pct\nfloat\nProportion of accepted calls that were answered\n\n\ncomments\nfloat\nNumber of calls where a comment was recorded\n\n\ncomments_pct\nfloat\nProportion of answered calls with a comment\n\n\ncallback\nfloat\nNumber of calls where a callback was requested or offered\n\n\ncallback_pct\nfloat\nProportion of answered calls that involved a callback\n\n\nno_information_provided\nfloat\nNumber of calls where no information was provided to the caller\n\n\nno_information_provided_pct\nfloat\nProportion of answered calls where no information was provided\n\n\ntransfer_to_crisis_centres\nfloat\nNumber of calls transferred to a crisis centre\n\n\ntransfer_to_crisis_centres_pct\nfloat\nProportion of answered calls transferred to a crisis centre\n\n\nprogram_content_provided\nfloat\nNumber of calls where program content was provided to the caller\n\n\nprogram_content_provided_pct\nfloat\nProportion of answered calls where program content was provided\n\n\ntotal_of_call_types\nfloat\nTotal number of call-type records for the week (used as denominator for call-type proportions)\n\n\ntotal_of_call_types_pct\nfloat\nProportion of total call types (typically 1.0)",
+    "crumbs": [
+      "Data Catalog",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Call Centre</span>"
+    ]
+  },
+  {
+    "objectID": "catalog/call_centre.html#notes",
+    "href": "catalog/call_centre.html#notes",
+    "title": "Call Centre",
+    "section": "Notes",
+    "text": "Notes\navg_delay_seconds and avg_call_length_seconds are weekly averages sourced from the report directly. When combining across weeks, use a weighted average with calls_answered as the weight rather than a simple average. See the Call Centre metrics chapter for example SQL.\ndate_range_start and date_range_end are stored as strings. Cast to DATE in SQL when filtering by date range.",
+    "crumbs": [
+      "Data Catalog",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Call Centre</span>"
+    ]
+  },
+  {
+    "objectID": "catalog/call_centre.html#provenance-1",
+    "href": "catalog/call_centre.html#provenance-1",
+    "title": "Call Centre",
+    "section": "Provenance",
+    "text": "Provenance\nSourced from a weekly Excel report that is typically send to the EDCP Data and Research team via email. That spreadsheet is exctracted and loaded into the data repository via the call_centre_etl.py Lambda. The extracted_at field records when each row was last extracted from the source file.\n\nUpdated: Weekly, typically on Tuesdays\nSteward: EDCP Data and Research Team\nContact: Colin Douglas",
+    "crumbs": [
+      "Data Catalog",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Call Centre</span>"
+    ]
+  },
+  {
+    "objectID": "catalog/call_centre.html#fields-1",
+    "href": "catalog/call_centre.html#fields-1",
+    "title": "Call Centre",
+    "section": "Fields",
+    "text": "Fields\nOne row per topic record per call. A single call (call_no) may appear on multiple rows if more than one topic was recorded.\n\n\n\n\n\n\n\n\nField Name\nType\nDescription\n\n\n\n\ncall_no\ninteger\nIdentifier for the call. Not unique - multiple rows share the same call_no when multiple topics were recorded\n\n\ncall_datetime\ninteger\nCall timestamp stored as a Unix nanosecond integer. Cast to timestamp before use\n\n\ncall_date\ndate\nDate the call took place\n\n\ndate\nstring\nCall date as a text date. Mirrors call_date\n\n\nclienttype\nstring\nType of caller, for example “Business”, “Public”, “Government of Canada”\n\n\nlanguage\nstring\nLanguage of the call, for example “English”, “French”\n\n\norigin\nstring\nProvince or region the caller is calling from\n\n\nstatobject\nstring\nThe call topic as recorded in the source system. May contain leading/trailing whitespace or inconsistent spacing\n\n\ncstat\nstring\nFull topic classification path, including category and topic (for example, “Main Document description::What is CanadaLogin?”)\n\n\ntransactiontype\nstring\nType of transaction recorded for the topic, for example “Search”, “Callback”\n\n\nprogramcontact\nstring\nProgram contact information provided to the caller, if any. Often missing\n\n\nsource\nfloat\nUnused",
+    "crumbs": [
+      "Data Catalog",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Call Centre</span>"
+    ]
+  },
+  {
+    "objectID": "catalog/call_centre.html#notes-1",
+    "href": "catalog/call_centre.html#notes-1",
+    "title": "Call Centre",
+    "section": "Notes",
+    "text": "Notes\nBecause a single call can generate multiple topic rows, do not count rows to get call volume. Use COUNT(DISTINCT call_no) or join to weekly_activity_report for call counts.\nstatobject frequently contains leading/trailing whitespace and repeated internal spaces. Always clean it before grouping:\nREGEXP_REPLACE(TRIM(statobject), '\\s+', ' ') AS call_topic\nSee the Call Centre metrics chapter for topic count and topic share example SQL.",
+    "crumbs": [
+      "Data Catalog",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Call Centre</span>"
     ]
   }
 ]

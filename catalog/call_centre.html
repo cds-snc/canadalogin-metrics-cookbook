@@ -6,10 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Colin Douglas">
-<meta name="dcterms.date" content="2026-06-05">
 
-<title>CanadaLogin Metrics Cookbook</title>
+<title>Call Centre – CanadaLogin Metrics Cookbook</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -25,27 +23,62 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<link href="./01-ibm-verify.html" rel="next">
-<script src="site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-5ccb035bea26c1e21f80f44cf7c27909.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../catalog/ibm_verify.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-5ccb035bea26c1e21f80f44cf7c27909.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -86,7 +119,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html"><span class="chapter-title">Introduction</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../catalog/index.html">Data Catalog</a></li><li class="breadcrumb-item"><a href="../catalog/call_centre.html"><span class="chapter-title">Call Centre</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -101,7 +134,7 @@ ul.task-list li input[type="checkbox"] {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">CanadaLogin Metrics Cookbook</a> 
+      <a href="../">CanadaLogin Metrics Cookbook</a> 
     </div>
       </div>
         <div class="mt-2 flex-shrink-0 align-items-center">
@@ -113,7 +146,7 @@ ul.task-list li input[type="checkbox"] {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">Introduction</span></a>
+  <a href="../index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Introduction</span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -127,12 +160,12 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./01-ibm-verify.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">IBM Verify</span></a>
+  <a href="../01-ibm-verify.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">IBM Verify</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./02-call-centre.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Call Centre</span></a>
+  <a href="../02-call-centre.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Call Centre</span></a>
   </div>
 </li>
       </ul>
@@ -148,17 +181,17 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./catalog/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">About</span></a>
+  <a href="../catalog/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">About</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./catalog/ibm_verify.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">IBM Verify</span></a>
+  <a href="../catalog/ibm_verify.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">IBM Verify</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./catalog/call_centre.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Call Centre</span></a>
+  <a href="../catalog/call_centre.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">Call Centre</span></a>
   </div>
 </li>
       </ul>
@@ -169,11 +202,17 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a>
+  <li><a href="#weekly_activity_report" id="toc-weekly_activity_report" class="nav-link active" data-scroll-target="#weekly_activity_report">weekly_activity_report</a>
   <ul class="collapse">
-  <li><a href="#how-to-use-this-cookbook" id="toc-how-to-use-this-cookbook" class="nav-link" data-scroll-target="#how-to-use-this-cookbook">How to use this cookbook</a></li>
-  <li><a href="#conventions" id="toc-conventions" class="nav-link" data-scroll-target="#conventions">Conventions</a></li>
-  <li><a href="#scope" id="toc-scope" class="nav-link" data-scroll-target="#scope">Scope</a></li>
+  <li><a href="#provenance" id="toc-provenance" class="nav-link" data-scroll-target="#provenance">Provenance</a></li>
+  <li><a href="#fields" id="toc-fields" class="nav-link" data-scroll-target="#fields">Fields</a></li>
+  <li><a href="#notes" id="toc-notes" class="nav-link" data-scroll-target="#notes">Notes</a></li>
+  </ul></li>
+  <li><a href="#weekly_topic_dump" id="toc-weekly_topic_dump" class="nav-link" data-scroll-target="#weekly_topic_dump">weekly_topic_dump</a>
+  <ul class="collapse">
+  <li><a href="#provenance-1" id="toc-provenance-1" class="nav-link" data-scroll-target="#provenance-1">Provenance</a></li>
+  <li><a href="#fields-1" id="toc-fields-1" class="nav-link" data-scroll-target="#fields-1">Fields</a></li>
+  <li><a href="#notes-1" id="toc-notes-1" class="nav-link" data-scroll-target="#notes-1">Notes</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -185,28 +224,16 @@ ul.task-list li input[type="checkbox"] {
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../catalog/index.html">Data Catalog</a></li><li class="breadcrumb-item"><a href="../catalog/call_centre.html"><span class="chapter-title">Call Centre</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">CanadaLogin Metrics Cookbook</h1>
+<h1 class="title"><span class="chapter-title">Call Centre</span></h1>
 </div>
 
 
 
 <div class="quarto-title-meta">
 
-    <div>
-    <div class="quarto-title-meta-heading">Author</div>
-    <div class="quarto-title-meta-contents">
-             <p>Colin Douglas </p>
-          </div>
-  </div>
     
-    <div>
-    <div class="quarto-title-meta-heading">Published</div>
-    <div class="quarto-title-meta-contents">
-      <p class="date">June 5, 2026</p>
-    </div>
-  </div>
   
     
   </div>
@@ -216,59 +243,323 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="introduction" class="level1">
-<h1>Introduction</h1>
-<p>This cookbook documents commonly used CanadaLogin metrics, including their definitions, plain-language alternate names, calculation logic, and example SQL queries.</p>
-<p>The cookbook is organized by data source:</p>
+<p>Weekly call centre data extracted from the CanadaLogin support queue Excel reports. These two tables share the same source and update cadence but are at different grains: <code>weekly_activity_report</code> is one row per week, while <code>weekly_topic_dump</code> is one row per topic record per call.</p>
+<section id="weekly_activity_report" class="level1">
+<h1>weekly_activity_report</h1>
+<p>Weekly summary of call centre operations for the CanadaLogin support queue.</p>
+<p>Each row represents one reporting week, summarizing call volume, service levels, call outcomes, and call type breakdowns for that week.</p>
+<p><code>Keywords</code>: call centre, calls, weekly, volume, wait time, call length, service level</p>
+<section id="provenance" class="level2">
+<h2 class="anchored" data-anchor-id="provenance">Provenance</h2>
+<p>Sourced from a weekly Excel report that is typically send to the EDCP Data and Research team via email. That spreadsheet is exctracted and loaded into the data repository via the <a href="https://github.com/cds-snc/canadalogin-ibm-verify-pipeline/blob/main/infra/modules/upload_source/call_centre_weekly_activity_report/lambda_src/handler.py">call centre weekly activity report</a> Lambda. The <code>extracted_at</code> field records when each row was last extracted from the source file.</p>
 <ul>
-<li>IBM Verify</li>
-<li>Call Centre</li>
-<li>Cross-source / interpretive metrics</li>
-</ul>
-<p>Each metric generally includes:</p>
-<ul>
-<li>a description</li>
-<li>plain-language alternate names</li>
-<li>data source information</li>
-<li>calculation logic</li>
-<li>example SQL</li>
-<li>interpretation notes, where relevant</li>
-</ul>
-<p>The goal is to make metric definitions easier to reuse, explain, and validate across reporting products.</p>
-<p>The companion <a href="./catalog/index.html">Data Catalog</a> describes the underlying tables that these metrics are calculated from, field by field.</p>
-<section id="how-to-use-this-cookbook" class="level2">
-<h2 class="anchored" data-anchor-id="how-to-use-this-cookbook">How to use this cookbook</h2>
-<p>Use this cookbook as a reference when building dashboards, reports, briefing materials, or ad hoc analyses.</p>
-<p>For each metric, confirm:</p>
-<ol type="1">
-<li>Does it measure what I think it does?</li>
-<li>What table and columns are used?</li>
-<li>Should I apply any filters?</li>
-<li>Is this metric a count, a rate, a cumulative value, or an average?</li>
-</ol>
-</section>
-<section id="conventions" class="level2">
-<h2 class="anchored" data-anchor-id="conventions">Conventions</h2>
-<p>In reporting language, prefer the noun <strong>sign-in</strong> over <strong>login</strong> where possible. The underlying IBM Verify field may be called <code>total_logins</code>, but “sign-ins” is preferred (and often enforced) when talking about CanadaLogin.</p>
-<p>Where applicable, internal applications are excluded from external-facing adoption reporting.</p>
-<p>As of June 3, 2026, the current internal application exclusion list is:</p>
-<ul>
-<li>Flow Application</li>
-<li>GCS Migration Solution</li>
-<li>GC Sign In - Profile Management App</li>
+<li><strong>Updated</strong>: Weekly, typically on Tuesdays</li>
+<li><strong>Steward</strong>: EDCP Data and Research Team</li>
+<li><strong>Contact</strong>: <a href="mailto:colin.douglas@cds-snc.ca">Colin Douglas</a></li>
 </ul>
 </section>
-<section id="scope" class="level2">
-<h2 class="anchored" data-anchor-id="scope">Scope</h2>
-<p>This is a preliminary metrics cookbook to help with <em>ad hoc</em> CanadaLogin analyses. It generally deals with <em>calculated</em> metrics. Metrics that are already present in a table and don’t require any calculation do not need to be included, although they can be if they need clarification.</p>
-<p>The initial version focuses on:</p>
+<section id="fields" class="level2">
+<h2 class="anchored" data-anchor-id="fields">Fields</h2>
+<p>One row per reporting week.</p>
+<p>Many count fields are stored as <code>float</code> because they originate from Excel. Proportions (fields ending in <code>_pct</code>) are stored as values between 0 and 1, not 0 and 100.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Field Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>week_text</td>
+<td>string</td>
+<td>Report title, extracted from the Excel file</td>
+</tr>
+<tr class="even">
+<td>date_range_start</td>
+<td>string</td>
+<td>Start date of the reporting week as a text date (for example, “2026-04-26”)</td>
+</tr>
+<tr class="odd">
+<td>date_range_end</td>
+<td>string</td>
+<td>End date of the reporting week as a text date (for example, “2026-05-02”)</td>
+</tr>
+<tr class="even">
+<td>date</td>
+<td>string</td>
+<td>Equivalent to <code>date_range_start</code>; used as the primary date key</td>
+</tr>
+<tr class="odd">
+<td>file</td>
+<td>string</td>
+<td>Source filename the row was extracted from</td>
+</tr>
+<tr class="even">
+<td>extracted_at</td>
+<td>string</td>
+<td>ISO 8601 timestamp of when the row was extracted from the source file</td>
+</tr>
+<tr class="odd">
+<td>calls_accepted</td>
+<td>float</td>
+<td>Total calls accepted by the queue during the week</td>
+</tr>
+<tr class="even">
+<td>calls_accepted_pct</td>
+<td>float</td>
+<td>Proportion of calls accepted (typically 1.0)</td>
+</tr>
+<tr class="odd">
+<td>calls_abandoned</td>
+<td>float</td>
+<td>Number of calls abandoned before being answered</td>
+</tr>
+<tr class="even">
+<td>calls_abandoned_pct</td>
+<td>float</td>
+<td>Proportion of accepted calls that were abandoned</td>
+</tr>
+<tr class="odd">
+<td>calls_answered</td>
+<td>float</td>
+<td>Number of calls answered by an agent</td>
+</tr>
+<tr class="even">
+<td>pct_answered_within_60s</td>
+<td>float</td>
+<td>Proportion of calls answered within 60 seconds</td>
+</tr>
+<tr class="odd">
+<td>avg_delay_seconds</td>
+<td>float</td>
+<td>Average wait time before a call was answered, in seconds</td>
+</tr>
+<tr class="even">
+<td>avg_call_length_seconds</td>
+<td>float</td>
+<td>Average duration of answered calls, in seconds</td>
+</tr>
+<tr class="odd">
+<td>avg_handle_time_seconds</td>
+<td>float</td>
+<td>Average total handle time per call (call length plus any wrap-up time), in seconds</td>
+</tr>
+<tr class="even">
+<td>calls_completed_by_io</td>
+<td>float</td>
+<td>Number of calls completed by the information officer</td>
+</tr>
+<tr class="odd">
+<td>calls_completed_by_io_pct</td>
+<td>float</td>
+<td>Proportion of answered calls completed by the information officer</td>
+</tr>
+<tr class="even">
+<td>hangups</td>
+<td>float</td>
+<td>Number of calls where the caller hung up</td>
+</tr>
+<tr class="odd">
+<td>hangups_pct</td>
+<td>float</td>
+<td>Proportion of answered calls that ended in a hangup</td>
+</tr>
+<tr class="even">
+<td>test_calls</td>
+<td>float</td>
+<td>Number of test calls made during the week</td>
+</tr>
+<tr class="odd">
+<td>test_calls_pct</td>
+<td>float</td>
+<td>Proportion of accepted calls that were test calls</td>
+</tr>
+<tr class="even">
+<td>total_calls_answered</td>
+<td>float</td>
+<td>Total calls answered (may differ from <code>calls_answered</code> depending on reporting logic)</td>
+</tr>
+<tr class="odd">
+<td>total_calls_answered_pct</td>
+<td>float</td>
+<td>Proportion of accepted calls that were answered</td>
+</tr>
+<tr class="even">
+<td>comments</td>
+<td>float</td>
+<td>Number of calls where a comment was recorded</td>
+</tr>
+<tr class="odd">
+<td>comments_pct</td>
+<td>float</td>
+<td>Proportion of answered calls with a comment</td>
+</tr>
+<tr class="even">
+<td>callback</td>
+<td>float</td>
+<td>Number of calls where a callback was requested or offered</td>
+</tr>
+<tr class="odd">
+<td>callback_pct</td>
+<td>float</td>
+<td>Proportion of answered calls that involved a callback</td>
+</tr>
+<tr class="even">
+<td>no_information_provided</td>
+<td>float</td>
+<td>Number of calls where no information was provided to the caller</td>
+</tr>
+<tr class="odd">
+<td>no_information_provided_pct</td>
+<td>float</td>
+<td>Proportion of answered calls where no information was provided</td>
+</tr>
+<tr class="even">
+<td>transfer_to_crisis_centres</td>
+<td>float</td>
+<td>Number of calls transferred to a crisis centre</td>
+</tr>
+<tr class="odd">
+<td>transfer_to_crisis_centres_pct</td>
+<td>float</td>
+<td>Proportion of answered calls transferred to a crisis centre</td>
+</tr>
+<tr class="even">
+<td>program_content_provided</td>
+<td>float</td>
+<td>Number of calls where program content was provided to the caller</td>
+</tr>
+<tr class="odd">
+<td>program_content_provided_pct</td>
+<td>float</td>
+<td>Proportion of answered calls where program content was provided</td>
+</tr>
+<tr class="even">
+<td>total_of_call_types</td>
+<td>float</td>
+<td>Total number of call-type records for the week (used as denominator for call-type proportions)</td>
+</tr>
+<tr class="odd">
+<td>total_of_call_types_pct</td>
+<td>float</td>
+<td>Proportion of total call types (typically 1.0)</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="notes" class="level2">
+<h2 class="anchored" data-anchor-id="notes">Notes</h2>
+<p><code>avg_delay_seconds</code> and <code>avg_call_length_seconds</code> are weekly averages sourced from the report directly. When combining across weeks, use a weighted average with <code>calls_answered</code> as the weight rather than a simple average. See the <a href="../../02-call-centre.qmd">Call Centre metrics</a> chapter for example SQL.</p>
+<p><code>date_range_start</code> and <code>date_range_end</code> are stored as strings. Cast to <code>DATE</code> in SQL when filtering by date range.</p>
+</section>
+</section>
+<section id="weekly_topic_dump" class="level1">
+<h1>weekly_topic_dump</h1>
+<p>Individual call records from the CanadaLogin support queue, with topic classifications for each call.</p>
+<p>Each row represents one topic record associated with a single call. A single call may have multiple rows if multiple topics were recorded.</p>
+<p><code>Keywords</code>: call centre, topics, call reasons, contact drivers, caller issues</p>
+<section id="provenance-1" class="level2">
+<h2 class="anchored" data-anchor-id="provenance-1">Provenance</h2>
+<p>Sourced from a weekly Excel report that is typically send to the EDCP Data and Research team via email. That spreadsheet is exctracted and loaded into the data repository via the <a href="https://github.com/cds-snc/canadalogin-ibm-verify-pipeline/blob/main/infra/modules/upload_source/call_centre_etl.py">call_centre_etl.py</a> Lambda. The <code>extracted_at</code> field records when each row was last extracted from the source file.</p>
 <ul>
-<li>IBM Verify application sign-in metrics</li>
-<li>call centre activity metrics</li>
-<li>call centre topic metrics</li>
-<li>simple cross-source interpretive metrics comparing sign-in activity and call volume</li>
+<li><strong>Updated</strong>: Weekly, typically on Tuesdays</li>
+<li><strong>Steward</strong>: EDCP Data and Research Team</li>
+<li><strong>Contact</strong>: <a href="mailto:colin.douglas@cds-snc.ca">Colin Douglas</a></li>
 </ul>
-<p>Additional data sources, metric definitions, and validation notes can be added as the cookbook matures.</p>
+</section>
+<section id="fields-1" class="level2">
+<h2 class="anchored" data-anchor-id="fields-1">Fields</h2>
+<p>One row per topic record per call. A single call (<code>call_no</code>) may appear on multiple rows if more than one topic was recorded.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Field Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>call_no</td>
+<td>integer</td>
+<td>Identifier for the call. Not unique - multiple rows share the same <code>call_no</code> when multiple topics were recorded</td>
+</tr>
+<tr class="even">
+<td>call_datetime</td>
+<td>integer</td>
+<td>Call timestamp stored as a Unix nanosecond integer. Cast to timestamp before use</td>
+</tr>
+<tr class="odd">
+<td>call_date</td>
+<td>date</td>
+<td>Date the call took place</td>
+</tr>
+<tr class="even">
+<td>date</td>
+<td>string</td>
+<td>Call date as a text date. Mirrors <code>call_date</code></td>
+</tr>
+<tr class="odd">
+<td>clienttype</td>
+<td>string</td>
+<td>Type of caller, for example “Business”, “Public”, “Government of Canada”</td>
+</tr>
+<tr class="even">
+<td>language</td>
+<td>string</td>
+<td>Language of the call, for example “English”, “French”</td>
+</tr>
+<tr class="odd">
+<td>origin</td>
+<td>string</td>
+<td>Province or region the caller is calling from</td>
+</tr>
+<tr class="even">
+<td>statobject</td>
+<td>string</td>
+<td>The call topic as recorded in the source system. May contain leading/trailing whitespace or inconsistent spacing</td>
+</tr>
+<tr class="odd">
+<td>cstat</td>
+<td>string</td>
+<td>Full topic classification path, including category and topic (for example, “Main Document description::What is CanadaLogin?”)</td>
+</tr>
+<tr class="even">
+<td>transactiontype</td>
+<td>string</td>
+<td>Type of transaction recorded for the topic, for example “Search”, “Callback”</td>
+</tr>
+<tr class="odd">
+<td>programcontact</td>
+<td>string</td>
+<td>Program contact information provided to the caller, if any. Often missing</td>
+</tr>
+<tr class="even">
+<td>source</td>
+<td>float</td>
+<td>Unused</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="notes-1" class="level2">
+<h2 class="anchored" data-anchor-id="notes-1">Notes</h2>
+<p>Because a single call can generate multiple topic rows, do not count rows to get call volume. Use <code>COUNT(DISTINCT call_no)</code> or join to <a href="#weekly_activity_report"><code>weekly_activity_report</code></a> for call counts.</p>
+<p><code>statobject</code> frequently contains leading/trailing whitespace and repeated internal spaces. Always clean it before grouping:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">REGEXP_REPLACE</span>(<span class="fu">TRIM</span>(statobject), <span class="st">'\s+'</span>, <span class="st">' '</span>) <span class="kw">AS</span> call_topic</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>See the <a href="../../02-call-centre.qmd">Call Centre metrics</a> chapter for topic count and topic share example SQL.</p>
 
 
 </section>
@@ -677,11 +968,11 @@ ul.task-list li input[type="checkbox"] {
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
+      <a href="../catalog/ibm_verify.html" class="pagination-link" aria-label="IBM Verify">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-title">IBM Verify</span></span>
+      </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./01-ibm-verify.html" class="pagination-link" aria-label="IBM Verify">
-        <span class="nav-page-text"><span class="chapter-title">IBM Verify</span></span> <i class="bi bi-arrow-right-short"></i>
-      </a>
   </div>
 </nav>
 </div> <!-- /content -->
