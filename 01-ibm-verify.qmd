@@ -3,6 +3,12 @@
 Metrics in this section are calculated from IBM Verify authentication and
 application sign-in data.
 
+The relevant IBM Verify tables are are:
+
+- [`ibm_verify.auth_total_logins`](catalog/ibm_verify.qmd#auth_total_logins) - daily, CanadaLogin-wide sign-in totals
+- [`ibm_verify.app_login_counts`](catalog/ibm_verify.qmd#app_login_counts) - daily sign-in counts broken down by application
+- [`ibm_verify.mfa_activity`](catalog/ibm_verify.qmd#mfa_activity) - multi-factor authentication activity by factor and result
+
 **Internal applications.** The following applications are typically excluded from
 public-facing adoption metrics:
 
@@ -18,8 +24,6 @@ Metrics in this section describe CanadaLogin overall, across all applications,
 sourced from `ibm_verify.auth_total_logins`.
 
 ### Sign-Ins
-
-**Source**: [`ibm_verify.auth_total_logins`](catalog/ibm_verify.qmd#auth_total_logins)
 
 The total number of sign-in events to CanadaLogin, including both successful and
 failed attempts.
@@ -42,8 +46,6 @@ WHERE from_date BETWEEN DATE '2026-01-01' AND DATE '2026-05-28';
 ```
 
 ### Year-to-Date Unique Users
-
-**Source**: [`ibm_verify.auth_total_logins`](catalog/ibm_verify.qmd#auth_total_logins)
 
 The total number of unique users who have signed in to CanadaLogin since the
 beginning of the current calendar year.
@@ -75,8 +77,6 @@ Metrics in this section describe sign-in activity broken down by application,
 sourced from `ibm_verify.app_login_counts`.
 
 ### Sign-Ins by Application
-
-**Source**: [`ibm_verify.app_login_counts`](catalog/ibm_verify.qmd#app_login_counts)
 
 The total number of sign-ins recorded for each application over a selected time
 period.
@@ -121,8 +121,6 @@ when the question is about system usage or activity volume. Use unique user
 metrics when the question is about reach.
 
 ### Peak Daily Unique Users
-
-**Source**: [`ibm_verify.app_login_counts`](catalog/ibm_verify.qmd#app_login_counts)
 
 The highest number of unique users observed on any single day during the
 reporting period.
@@ -170,8 +168,6 @@ reach. The query above also returns the date on which that peak occurred.
 
 ### Year-to-Date Unique Users
 
-**Source**: [`ibm_verify.app_login_counts`](catalog/ibm_verify.qmd#app_login_counts) (`application_name`, `from_date`, `ytd_unique_users`)
-
 The number of unique users observed year-to-date for each application.
 
 `ytd_unique_users` is a cumulative field that increases or remains stable over
@@ -215,8 +211,6 @@ ORDER BY ytd_unique_users DESC;
 every year.
 
 ### Average Daily Sign-Ins
-
-**Source**: [`ibm_verify.app_login_counts`](catalog/ibm_verify.qmd#app_login_counts)
 
 The average number of sign-ins per day for a specific application over a
 selected reporting period.
