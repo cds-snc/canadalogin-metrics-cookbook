@@ -160,12 +160,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../01-ibm-verify.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">IBM Verify</span></a>
+  <a href="../cookbook/ibm_verify.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">IBM Verify</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../02-call-centre.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Call Centre</span></a>
+  <a href="../cookbook/call_centre.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Call Centre</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/notes.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Notes on Metric Interpretation</span></a>
   </div>
 </li>
       </ul>
@@ -251,7 +256,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><code>Keywords</code>: call centre, calls, weekly, volume, wait time, call length, service level</p>
 <section id="provenance" class="level2">
 <h2 class="anchored" data-anchor-id="provenance">Provenance</h2>
-<p>Sourced from a weekly Excel report that is typically send to the EDCP Data and Research team via email. That spreadsheet is exctracted and loaded into the data repository via the <a href="https://github.com/cds-snc/canadalogin-ibm-verify-pipeline/blob/main/infra/modules/upload_source/call_centre_weekly_activity_report/lambda_src/handler.py">call centre weekly activity report</a> Lambda. The <code>extracted_at</code> field records when each row was last extracted from the source file.</p>
+<p>Sourced from a weekly Excel report that is typically sent to the EDCP Data and Research team via email. That spreadsheet is extracted and loaded into the data repository via the <a href="https://github.com/cds-snc/canadalogin-ibm-verify-pipeline/blob/main/infra/modules/upload_source/call_centre_weekly_activity_report/lambda_src/handler.py">call centre weekly activity report</a> Lambda. The <code>extracted_at</code> field records when each row was last extracted from the source file.</p>
 <ul>
 <li><strong>Updated</strong>: Weekly, typically on Tuesdays</li>
 <li><strong>Steward</strong>: EDCP Data and Research Team</li>
@@ -456,7 +461,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="notes" class="level2">
 <h2 class="anchored" data-anchor-id="notes">Notes</h2>
-<p><code>avg_delay_seconds</code> and <code>avg_call_length_seconds</code> are weekly averages sourced from the report directly. When combining across weeks, use a weighted average with <code>calls_answered</code> as the weight rather than a simple average. See the <a href="../../02-call-centre.qmd">Call Centre metrics</a> chapter for example SQL.</p>
+<p><code>avg_delay_seconds</code> and <code>avg_call_length_seconds</code> are weekly averages sourced from the report directly. When combining across weeks, use a weighted average with <code>calls_answered</code> as the weight rather than a simple average. See the <a href="../cookbook/call_centre.html">Call Centre metrics</a> chapter for example SQL.</p>
 <p><code>date_range_start</code> and <code>date_range_end</code> are stored as strings. Cast to <code>DATE</code> in SQL when filtering by date range.</p>
 </section>
 </section>
@@ -467,7 +472,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><code>Keywords</code>: call centre, topics, call reasons, contact drivers, caller issues</p>
 <section id="provenance-1" class="level2">
 <h2 class="anchored" data-anchor-id="provenance-1">Provenance</h2>
-<p>Sourced from a weekly Excel report that is typically send to the EDCP Data and Research team via email. That spreadsheet is exctracted and loaded into the data repository via the <a href="https://github.com/cds-snc/canadalogin-ibm-verify-pipeline/blob/main/infra/modules/upload_source/call_centre_etl.py">call_centre_etl.py</a> Lambda. The <code>extracted_at</code> field records when each row was last extracted from the source file.</p>
+<p>Sourced from a weekly Excel report that is typically sent to the EDCP Data and Research team via email. That spreadsheet is extracted and loaded into the data repository via the <a href="https://github.com/cds-snc/canadalogin-ibm-verify-pipeline/blob/main/infra/modules/upload_source/call_centre_etl.py">call_centre_etl.py</a> Lambda. The <code>extracted_at</code> field records when each row was last extracted from the source file.</p>
 <ul>
 <li><strong>Updated</strong>: Weekly, typically on Tuesdays</li>
 <li><strong>Steward</strong>: EDCP Data and Research Team</li>
@@ -559,7 +564,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Because a single call can generate multiple topic rows, do not count rows to get call volume. Use <code>COUNT(DISTINCT call_no)</code> or join to <a href="#weekly_activity_report"><code>weekly_activity_report</code></a> for call counts.</p>
 <p><code>statobject</code> frequently contains leading/trailing whitespace and repeated internal spaces. Always clean it before grouping:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">REGEXP_REPLACE</span>(<span class="fu">TRIM</span>(statobject), <span class="st">'\s+'</span>, <span class="st">' '</span>) <span class="kw">AS</span> call_topic</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>See the <a href="../../02-call-centre.qmd">Call Centre metrics</a> chapter for topic count and topic share example SQL.</p>
+<p>See the <a href="../cookbook/call_centre.html">Call Centre metrics</a> chapter for topic count and topic share example SQL.</p>
+<p><code>call_datetime</code> is a Unix timestamp in nanoseconds. Divide by 1,000,000,000 before converting to a timestamp:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>from_unixtime(call_datetime <span class="op">/</span> <span class="dv">1000000000</span>) <span class="kw">AS</span> call_timestamp</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 
 
 </section>

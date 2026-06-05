@@ -6,10 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Colin Douglas">
-<meta name="dcterms.date" content="2026-06-05">
 
-<title>CanadaLogin Metrics Cookbook</title>
+<title>Notes on Metric Interpretation – CanadaLogin Metrics Cookbook</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -28,24 +26,25 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<link href="./cookbook/ibm_verify.html" rel="next">
-<script src="site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-5ccb035bea26c1e21f80f44cf7c27909.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../catalog/index.html" rel="next">
+<link href="../cookbook/call_centre.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-5ccb035bea26c1e21f80f44cf7c27909.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -86,7 +85,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html"><span class="chapter-title">Introduction</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../cookbook/ibm_verify.html">Metrics Cookbook</a></li><li class="breadcrumb-item"><a href="../cookbook/notes.html"><span class="chapter-title">Notes on Metric Interpretation</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -101,7 +100,7 @@ ul.task-list li input[type="checkbox"] {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">CanadaLogin Metrics Cookbook</a> 
+      <a href="../">CanadaLogin Metrics Cookbook</a> 
     </div>
       </div>
         <div class="mt-2 flex-shrink-0 align-items-center">
@@ -113,7 +112,7 @@ ul.task-list li input[type="checkbox"] {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">Introduction</span></a>
+  <a href="../index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Introduction</span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -127,17 +126,17 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./cookbook/ibm_verify.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">IBM Verify</span></a>
+  <a href="../cookbook/ibm_verify.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">IBM Verify</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./cookbook/call_centre.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Call Centre</span></a>
+  <a href="../cookbook/call_centre.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Call Centre</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./cookbook/notes.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Notes on Metric Interpretation</span></a>
+  <a href="../cookbook/notes.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">Notes on Metric Interpretation</span></a>
   </div>
 </li>
       </ul>
@@ -153,17 +152,17 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./catalog/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">About</span></a>
+  <a href="../catalog/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">About</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./catalog/ibm_verify.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">IBM Verify</span></a>
+  <a href="../catalog/ibm_verify.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">IBM Verify</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./catalog/call_centre.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Call Centre</span></a>
+  <a href="../catalog/call_centre.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Call Centre</span></a>
   </div>
 </li>
       </ul>
@@ -174,12 +173,10 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a>
-  <ul class="collapse">
-  <li><a href="#how-to-use-this-cookbook" id="toc-how-to-use-this-cookbook" class="nav-link" data-scroll-target="#how-to-use-this-cookbook">How to use this cookbook</a></li>
-  <li><a href="#conventions" id="toc-conventions" class="nav-link" data-scroll-target="#conventions">Conventions</a></li>
-  <li><a href="#scope" id="toc-scope" class="nav-link" data-scroll-target="#scope">Scope</a></li>
-  </ul></li>
+  <li><a href="#sign-ins-are-not-users" id="toc-sign-ins-are-not-users" class="nav-link active" data-scroll-target="#sign-ins-are-not-users">Sign-ins are not users</a></li>
+  <li><a href="#daily-unique-users-are-not-the-same-as-period-unique-users" id="toc-daily-unique-users-are-not-the-same-as-period-unique-users" class="nav-link" data-scroll-target="#daily-unique-users-are-not-the-same-as-period-unique-users">Daily unique users are not the same as period unique users</a></li>
+  <li><a href="#weighted-averages-should-be-used-for-call-centre-averages" id="toc-weighted-averages-should-be-used-for-call-centre-averages" class="nav-link" data-scroll-target="#weighted-averages-should-be-used-for-call-centre-averages">Weighted averages should be used for call centre averages</a></li>
+  <li><a href="#internal-applications-should-usually-be-excluded-from-external-adoption-reporting" id="toc-internal-applications-should-usually-be-excluded-from-external-adoption-reporting" class="nav-link" data-scroll-target="#internal-applications-should-usually-be-excluded-from-external-adoption-reporting">Internal applications should usually be excluded from external adoption reporting</a></li>
   </ul>
 </nav>
 </nav>
@@ -190,28 +187,16 @@ ul.task-list li input[type="checkbox"] {
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../cookbook/ibm_verify.html">Metrics Cookbook</a></li><li class="breadcrumb-item"><a href="../cookbook/notes.html"><span class="chapter-title">Notes on Metric Interpretation</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">CanadaLogin Metrics Cookbook</h1>
+<h1 class="title"><span class="chapter-title">Notes on Metric Interpretation</span></h1>
 </div>
 
 
 
 <div class="quarto-title-meta">
 
-    <div>
-    <div class="quarto-title-meta-heading">Author</div>
-    <div class="quarto-title-meta-contents">
-             <p>Colin Douglas </p>
-          </div>
-  </div>
     
-    <div>
-    <div class="quarto-title-meta-heading">Published</div>
-    <div class="quarto-title-meta-contents">
-      <p class="date">June 5, 2026</p>
-    </div>
-  </div>
   
     
   </div>
@@ -221,63 +206,33 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="introduction" class="level1">
-<h1>Introduction</h1>
-<p>This cookbook documents commonly used CanadaLogin metrics, including their definitions, plain-language alternate names, calculation logic, and example SQL queries.</p>
-<p>The cookbook is organized by data source:</p>
-<ul>
-<li>IBM Verify</li>
-<li>Call Centre</li>
-<li>Cross-source / interpretive metrics (planned)</li>
-</ul>
-<p>Each metric generally includes:</p>
-<ul>
-<li>lead prose describing what it measures and when to use it</li>
-<li>plain-language alternative names</li>
-<li>the calculation logic</li>
-<li>an example query, shown in both SQL and R</li>
-<li>interpretation notes, where relevant</li>
-</ul>
-<p>The data source for each group of metrics is noted at the start of its section.</p>
-<p>The goal is to make metric definitions easier to reuse, explain, and validate across reporting products.</p>
-<p>The companion <a href="./catalog/index.html">Data Catalog</a> describes the underlying tables that these metrics are calculated from, field by field.</p>
-<section id="how-to-use-this-cookbook" class="level2">
-<h2 class="anchored" data-anchor-id="how-to-use-this-cookbook">How to use this cookbook</h2>
-<p>Use this cookbook as a reference when building dashboards, reports, briefing materials, or ad hoc analyses.</p>
-<p>For each metric, confirm:</p>
-<ol type="1">
-<li>Does it measure what I think it does?</li>
-<li>What table and columns are used?</li>
-<li>Should I apply any filters?</li>
-<li>Is this metric a count, a rate, a cumulative value, or an average?</li>
-</ol>
+<section id="sign-ins-are-not-users" class="level2">
+<h2 class="anchored" data-anchor-id="sign-ins-are-not-users">Sign-ins are not users</h2>
+<p>A sign-in count measures events. One person can sign in multiple times.</p>
+<p>Use sign-ins when the question is about volume or system usage.</p>
+<p>Use unique users when the question is about reach.</p>
 </section>
-<section id="conventions" class="level2">
-<h2 class="anchored" data-anchor-id="conventions">Conventions</h2>
-<p>All example SQL targets Amazon Athena (Trino dialect), since the tables live in the AWS Glue Data Catalog. Constructs such as <code>DATE '...'</code> literals, <code>ROW_NUMBER() OVER (...)</code>, and <code>REGEXP_REPLACE</code> follow Trino semantics.</p>
-<p>In reporting language, prefer the noun <strong>sign-in</strong> over <strong>login</strong> where possible. The underlying IBM Verify field may be called <code>total_logins</code>, but “sign-ins” is preferred (and often enforced) when talking about CanadaLogin.</p>
-<p>Where applicable, internal applications are excluded from external-facing adoption reporting.</p>
-<p>As of June 3, 2026, the current internal application exclusion list is:</p>
+<section id="daily-unique-users-are-not-the-same-as-period-unique-users" class="level2">
+<h2 class="anchored" data-anchor-id="daily-unique-users-are-not-the-same-as-period-unique-users">Daily unique users are not the same as period unique users</h2>
+<p>Summing daily unique users gives a measure of user-days, not distinct people over the full period.</p>
+<p>For distinct people over a longer period, use a cumulative unique user field such as <code>ytd_unique_users</code> or <code>since_apr22_unique_users</code>, if available and valid.</p>
+</section>
+<section id="weighted-averages-should-be-used-for-call-centre-averages" class="level2">
+<h2 class="anchored" data-anchor-id="weighted-averages-should-be-used-for-call-centre-averages">Weighted averages should be used for call centre averages</h2>
+<p>When calculating average call length or average delay across multiple weeks, use a weighted average based on <code>calls_answered</code>.</p>
+<p>A simple average of weekly averages may give too much influence to low-volume weeks.</p>
+</section>
+<section id="internal-applications-should-usually-be-excluded-from-external-adoption-reporting" class="level2">
+<h2 class="anchored" data-anchor-id="internal-applications-should-usually-be-excluded-from-external-adoption-reporting">Internal applications should usually be excluded from external adoption reporting</h2>
+<p>The following applications are currently treated as internal:</p>
 <ul>
 <li>Flow Application</li>
 <li>GCS Migration Solution</li>
 <li>GC Sign In - Profile Management App</li>
 </ul>
-</section>
-<section id="scope" class="level2">
-<h2 class="anchored" data-anchor-id="scope">Scope</h2>
-<p>This is a preliminary metrics cookbook to help with <em>ad hoc</em> CanadaLogin analyses. It generally deals with <em>calculated</em> metrics. Metrics that are already present in a table and don’t require any calculation do not need to be included, although they can be if they need clarification.</p>
-<p>The initial version focuses on:</p>
-<ul>
-<li>IBM Verify application sign-in metrics</li>
-<li>call centre activity metrics</li>
-<li>call centre topic metrics</li>
-</ul>
-<p>Simple cross-source interpretive metrics comparing sign-in activity and call volume are planned for a future revision.</p>
-<p>Additional data sources, metric definitions, and validation notes can be added as the cookbook matures.</p>
+<p>Whether to exclude them depends on the reporting question.</p>
 
 
-</section>
 </section>
 
 </main> <!-- /main -->
@@ -683,10 +638,13 @@ ul.task-list li input[type="checkbox"] {
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
+      <a href="../cookbook/call_centre.html" class="pagination-link" aria-label="Call Centre">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-title">Call Centre</span></span>
+      </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./cookbook/ibm_verify.html" class="pagination-link" aria-label="IBM Verify">
-        <span class="nav-page-text"><span class="chapter-title">IBM Verify</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../catalog/index.html" class="pagination-link" aria-label="About">
+        <span class="nav-page-text"><span class="chapter-title">About</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
