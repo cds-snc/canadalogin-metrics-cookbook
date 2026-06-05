@@ -1,0 +1,31 @@
+# Notes on Metric Interpretation
+
+## Sign-ins are not users
+
+A sign-in count measures events. One person can sign in multiple times.
+
+Use sign-ins when the question is about volume or system usage.
+
+Use unique users when the question is about reach.
+
+## Daily unique users are not the same as period unique users
+
+Summing daily unique users gives a measure of user-days, not distinct people over the full period.
+
+For distinct people over a longer period, use a cumulative unique user field such as `ytd_unique_users` or `since_apr22_unique_users`, if available and valid.
+
+## Weighted averages should be used for call centre averages
+
+When calculating average call length or average delay across multiple weeks, use a weighted average based on `calls_answered`.
+
+A simple average of weekly averages may give too much influence to low-volume weeks.
+
+## Internal applications should usually be excluded from external adoption reporting
+
+The following applications are currently treated as internal:
+  
+- Flow Application
+- GCS Migration Solution
+- GC Sign In - Profile Management App
+
+Whether to exclude them depends on the reporting question.
