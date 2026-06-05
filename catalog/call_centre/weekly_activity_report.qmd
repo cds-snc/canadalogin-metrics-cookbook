@@ -9,8 +9,8 @@ call outcomes, and call type breakdowns for that week.
 
 ## Provenance
 
-Sourced from a weekly Excel report that is typically send to the EDCP Data and Research 
-team via email. That spreadsheet is exctracted and loaded into the data repository via
+Sourced from a weekly Excel report that is typically sent to the EDCP Data and Research
+team via email. That spreadsheet is extracted and loaded into the data repository via
 the [call centre weekly activity report](https://github.com/cds-snc/canadalogin-ibm-verify-pipeline/blob/main/infra/modules/upload_source/call_centre_weekly_activity_report/lambda_src/handler.py)
 Lambda. The `extracted_at` field records when each row was last extracted 
 from the source file.
@@ -70,7 +70,7 @@ not 0 and 100.
 `avg_delay_seconds` and `avg_call_length_seconds` are weekly averages sourced
 from the report directly. When combining across weeks, use a weighted average
 with `calls_answered` as the weight rather than a simple average. See the
-[Call Centre metrics](../../02-call-centre.qmd) chapter for example SQL.
+[Call Centre metrics](../cookbook/call_centre.qmd) chapter for example SQL.
 
 `date_range_start` and `date_range_end` are stored as strings. Cast to `DATE`
 in SQL when filtering by date range.

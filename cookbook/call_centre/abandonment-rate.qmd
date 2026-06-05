@@ -1,0 +1,49 @@
+### Abandonment Rate
+
+The proportion of accepted calls that were abandoned before being answered.
+
+This metric is useful for understanding how often callers give up while waiting.
+It is closely tied to wait times: rising delay often drives rising abandonment.
+
+*Alternative names*:
+
+- abandon rate
+- call abandonment rate
+- drop rate
+- proportion of calls abandoned
+
+**Calculation.** Divide the sum of `calls_abandoned` by the sum of
+`calls_accepted` over the selected reporting period. Summing the raw counts gives
+a volume-weighted rate; do not average the weekly `calls_abandoned_pct` column.
+
+::: {.panel-tabset}
+
+## SQL
+
+```sql
+SELECT
+    SUM(CAST(calls_abandoned AS DOUBLE))
+        / NULLIF(SUM(CAST(calls_accepted AS DOUBLE)), 0) AS abandonment_rate
+FROM call_centre.weekly_activity_report
+WHERE CAST(date_range_start AS DATE) BETWEEN DATE '2026-01-01' AND DATE '2026-05-31';
+```
+
+## R
+
+```r
+weekly_activity_report |>
+  filter(
+    as.Date(date_range_start) >= as.Date("2026-01-01"),
+    as.Date(date_range_start) <= as.Date("2026-05-31")
+  ) |>
+  summarise(
+    abandonment_rate =
+      sum(calls_abandoned, na.rm = TRUE) /
+        sum(calls_accepted, na.rm = TRUE)
+  )
+```
+
+:::
+
+*Interpretation.* The rate is a proportion between 0 and 1. Read it together with
+average delay; a spike in abandonment usually coincides with longer waits.

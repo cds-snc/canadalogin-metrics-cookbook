@@ -1,0 +1,51 @@
+---
+title: Call Centre
+---
+
+Metrics in this section are calculated from call centre activity and topic data.
+
+Call centre metrics are useful for understanding support demand, service
+responsiveness, caller wait times, average call duration, and common reasons for
+contact. The source data is weekly, so these metrics are typically reported at a
+weekly level or aggregated across weeks.
+
+The relevant call centre tables are:
+
+- [`call_centre.weekly_activity_report`](../catalog/call_centre.qmd#weekly_activity_report) - weekly call volume and service-level summary
+- [`call_centre.weekly_topic_dump`](../catalog/call_centre.qmd#weekly_topic_dump) - individual call records with topic classifications
+
+`date_range_start` and `date_range_end` are stored as text, so date-range filters
+cast them to `DATE` before comparing to date literals.
+
+## Activity Metrics
+
+Metrics in this section describe call centre operations, sourced from
+`call_centre.weekly_activity_report`.
+
+{{< include call_centre/calls-accepted.qmd >}}
+
+{{< include call_centre/calls-answered.qmd >}}
+
+{{< include call_centre/average-call-length.qmd >}}
+
+{{< include call_centre/average-delay.qmd >}}
+
+{{< include call_centre/abandonment-rate.qmd >}}
+
+{{< include call_centre/answer-rate.qmd >}}
+
+{{< include call_centre/service-level.qmd >}}
+
+{{< include call_centre/average-handle-time.qmd >}}
+
+## Topic Metrics
+
+Metrics in this section describe why people contact the call centre, sourced from
+`call_centre.weekly_topic_dump`. Because a single call can generate multiple
+topic rows, these metrics count topic records rather than distinct calls. Clean
+`statobject` before grouping, since it often carries leading, trailing, or
+repeated whitespace.
+
+{{< include call_centre/call-topic-share.qmd >}}
+
+{{< include call_centre/top-10-call-topics.qmd >}}

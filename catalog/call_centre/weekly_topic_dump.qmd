@@ -10,8 +10,8 @@ call may have multiple rows if multiple topics were recorded.
 
 ## Provenance
 
-Sourced from a weekly Excel report that is typically send to the EDCP Data and Research 
-team via email. That spreadsheet is exctracted and loaded into the data repository via
+Sourced from a weekly Excel report that is typically sent to the EDCP Data and Research
+team via email. That spreadsheet is extracted and loaded into the data repository via
 the [call_centre_etl.py](https://github.com/cds-snc/canadalogin-ibm-verify-pipeline/blob/main/infra/modules/upload_source/call_centre_etl.py)
 Lambda. The `extracted_at` field records when each row was last extracted 
 from the source file.
@@ -53,5 +53,12 @@ internal spaces. Always clean it before grouping:
 REGEXP_REPLACE(TRIM(statobject), '\s+', ' ') AS call_topic
 ```
 
-See the [Call Centre metrics](../../02-call-centre.qmd) chapter for topic count
+See the [Call Centre metrics](../cookbook/call_centre.qmd) chapter for topic count
 and topic share example SQL.
+
+`call_datetime` is a Unix timestamp in nanoseconds. Divide by 1,000,000,000
+before converting to a timestamp:
+
+```sql
+from_unixtime(call_datetime / 1000000000) AS call_timestamp
+```

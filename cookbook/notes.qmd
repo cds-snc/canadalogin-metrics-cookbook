@@ -1,4 +1,6 @@
-# Notes on Metric Interpretation
+---
+title: Notes on Metric Interpretation
+---
 
 ## Sign-ins are not users
 

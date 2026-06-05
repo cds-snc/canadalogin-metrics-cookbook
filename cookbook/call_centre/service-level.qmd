@@ -1,0 +1,55 @@
+### Service Level (Answered Within 60s)
+
+The proportion of calls answered within 60 seconds.
+
+This metric is a standard call centre service-level measure of how quickly the
+queue is cleared. The source data stores only the weekly proportion
+(`pct_answered_within_60s`), not the underlying within-60s count, so combine
+weeks with a weighted average rather than re-deriving from counts.
+
+*Alternative names*:
+
+- service level
+- SLA
+- grade of service
+- percent answered within 60 seconds
+- speed of answer
+
+**Calculation.** Calculate a weighted average of `pct_answered_within_60s`,
+weighted by `calls_answered`.
+
+::: {.panel-tabset}
+
+## SQL
+
+```sql
+SELECT
+    SUM(
+        CAST(pct_answered_within_60s AS DOUBLE)
+        * CAST(calls_answered AS DOUBLE)
+    )
+    / NULLIF(SUM(CAST(calls_answered AS DOUBLE)), 0) AS service_level_60s
+FROM call_centre.weekly_activity_report
+WHERE CAST(date_range_start AS DATE) BETWEEN DATE '2026-01-01' AND DATE '2026-05-31';
+```
+
+## R
+
+```r
+weekly_activity_report |>
+  filter(
+    as.Date(date_range_start) >= as.Date("2026-01-01"),
+    as.Date(date_range_start) <= as.Date("2026-05-31")
+  ) |>
+  summarise(
+    service_level_60s =
+      sum(pct_answered_within_60s * calls_answered, na.rm = TRUE) /
+        sum(calls_answered, na.rm = TRUE)
+  )
+```
+
+:::
+
+*Interpretation.* The result is a proportion between 0 and 1. Because only the
+weekly proportion is stored, the weighted average is an approximation of the true
+within-60s rate, but it is far closer than a simple average of weekly values.

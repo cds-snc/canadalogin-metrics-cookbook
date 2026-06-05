@@ -1,0 +1,83 @@
+### Average Delay
+
+The average delay before calls are answered.
+
+This metric is useful for understanding caller wait times and call centre
+responsiveness. Like average call length, it should be calculated as a weighted
+mean to avoid low-volume weeks distorting the result.
+
+*Alternative names*:
+
+- average wait time
+- average delay before answer
+- caller wait time
+- time to answer
+- average queue delay
+
+**Calculation.** Calculate a weighted average of weekly average delay, weighted
+by the number of answered calls.
+
+::: {.panel-tabset}
+
+## SQL
+
+Weighted average over a period:
+
+```sql
+SELECT
+    SUM(
+        CAST(avg_delay_seconds AS DOUBLE)
+        * CAST(calls_answered AS DOUBLE)
+    )
+    / NULLIF(SUM(CAST(calls_answered AS DOUBLE)), 0) AS weighted_avg_delay_seconds
+FROM call_centre.weekly_activity_report
+WHERE CAST(date_range_start AS DATE) BETWEEN DATE '2026-01-01' AND DATE '2026-05-31';
+```
+
+By week:
+
+```sql
+SELECT
+    date_range_start,
+    date_range_end,
+    CAST(avg_delay_seconds AS DOUBLE) AS avg_delay_seconds,
+    CAST(calls_answered AS BIGINT) AS calls_answered
+FROM call_centre.weekly_activity_report
+ORDER BY date_range_start;
+```
+
+## R
+
+Weighted average over a period:
+
+```r
+weekly_activity_report |>
+  filter(
+    as.Date(date_range_start) >= as.Date("2026-01-01"),
+    as.Date(date_range_start) <= as.Date("2026-05-31")
+  ) |>
+  summarise(
+    weighted_avg_delay_seconds =
+      sum(avg_delay_seconds * calls_answered, na.rm = TRUE) /
+        sum(calls_answered, na.rm = TRUE)
+  )
+```
+
+By week:
+
+```r
+weekly_activity_report |>
+  arrange(date_range_start) |>
+  select(
+    date_range_start,
+    date_range_end,
+    avg_delay_seconds,
+    calls_answered
+  )
+```
+
+:::
+
+*Interpretation.* Average delay should be interpreted alongside call volume. A
+low-volume week can produce unusual wait times that should not dominate the
+overall result.

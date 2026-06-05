@@ -1,0 +1,83 @@
+### Average Call Length
+
+The average length of answered calls.
+
+The overall average call length is calculated as a weighted mean of
+`avg_call_length_seconds`, weighted by `calls_answered`. This is preferable to a
+simple average of weekly averages because weeks with more answered calls should
+contribute more to the overall result.
+
+*Alternative names*:
+
+- average call duration
+- average handle time
+- average length of call
+- typical call length
+- average time on call
+
+**Calculation.** Calculate a weighted average of weekly average call length,
+weighted by the number of answered calls.
+
+::: {.panel-tabset}
+
+## SQL
+
+Weighted average over a period:
+
+```sql
+SELECT
+    SUM(
+        CAST(avg_call_length_seconds AS DOUBLE)
+        * CAST(calls_answered AS DOUBLE)
+    )
+    / NULLIF(SUM(CAST(calls_answered AS DOUBLE)), 0) AS weighted_avg_call_length_seconds
+FROM call_centre.weekly_activity_report
+WHERE CAST(date_range_start AS DATE) BETWEEN DATE '2026-01-01' AND DATE '2026-05-31';
+```
+
+By week:
+
+```sql
+SELECT
+    date_range_start,
+    date_range_end,
+    CAST(avg_call_length_seconds AS DOUBLE) AS avg_call_length_seconds,
+    CAST(calls_answered AS BIGINT) AS calls_answered
+FROM call_centre.weekly_activity_report
+ORDER BY date_range_start;
+```
+
+## R
+
+Weighted average over a period:
+
+```r
+weekly_activity_report |>
+  filter(
+    as.Date(date_range_start) >= as.Date("2026-01-01"),
+    as.Date(date_range_start) <= as.Date("2026-05-31")
+  ) |>
+  summarise(
+    weighted_avg_call_length_seconds =
+      sum(avg_call_length_seconds * calls_answered, na.rm = TRUE) /
+        sum(calls_answered, na.rm = TRUE)
+  )
+```
+
+By week:
+
+```r
+weekly_activity_report |>
+  arrange(date_range_start) |>
+  select(
+    date_range_start,
+    date_range_end,
+    avg_call_length_seconds,
+    calls_answered
+  )
+```
+
+:::
+
+*Interpretation.* Use a weighted average rather than a simple average of weekly
+averages. A simple average may give too much influence to low-volume weeks.

@@ -1,0 +1,75 @@
+### Peak Daily Unique Users
+
+The highest number of unique users observed on any single day during the
+reporting period.
+
+This metric is useful for identifying the maximum daily reach of an application
+and for understanding peak demand.
+
+*Alternative names*:
+
+- peak daily users
+- highest daily unique users
+- maximum daily active users
+- busiest day by unique users
+- peak daily reach
+
+**Calculation.** Take the maximum value of `unique_users` over the selected
+reporting period, grouped by application.
+
+::: {.panel-tabset}
+
+## SQL
+
+```sql
+WITH ranked AS (
+    SELECT
+        application_name,
+        from_date,
+        unique_users,
+        ROW_NUMBER() OVER (
+            PARTITION BY application_name
+            ORDER BY unique_users DESC, from_date ASC
+        ) AS rn
+    FROM ibm_verify.app_login_counts
+    -- calculate over an arbitrary reporting period
+    WHERE from_date BETWEEN DATE '2026-01-01' AND DATE '2026-05-28'
+)
+
+SELECT
+    application_name,
+    from_date,
+    unique_users AS peak_daily_unique_users
+FROM ranked
+WHERE rn = 1
+ORDER BY peak_daily_unique_users DESC;
+```
+
+## R
+
+```r
+app_login_counts |>
+  # calculate over an arbitrary reporting period
+  filter(
+    from_date >= as.Date("2026-01-01"),
+    from_date <= as.Date("2026-05-28")
+  ) |>
+  group_by(application_name) |>
+  slice_max(
+    unique_users,
+    n = 1,
+    with_ties = FALSE
+  ) |>
+  select(
+    application_name,
+    from_date,
+    peak_daily_unique_users = unique_users
+  ) |>
+  arrange(desc(peak_daily_unique_users))
+```
+
+:::
+
+
+*Interpretation.* This metric identifies the busiest single day by unique user
+reach. The query above also returns the date on which that peak occurred.

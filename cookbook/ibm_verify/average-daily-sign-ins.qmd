@@ -1,0 +1,51 @@
+### Average Daily Sign-Ins
+
+The average number of sign-ins per day for a specific application over a
+selected reporting period.
+
+This metric summarizes daily sign-in activity into a single average value. It is
+useful for understanding typical daily usage during a launch period, reporting
+window, or monitoring period.
+
+*Alternative names*:
+
+- average sign-ins per day
+- typical daily sign-in volume
+- mean daily login volume
+- average daily CanadaLogin activity
+
+**Calculation.** For each application, calculate the average of `total_logins`
+across all daily records in the selected reporting period.
+
+::: {.panel-tabset}
+
+## SQL
+
+```sql
+SELECT
+    application_name,
+    AVG(total_logins) AS average_daily_sign_ins
+FROM ibm_verify.app_login_counts
+-- choose an arbitrary reporting period
+WHERE from_date BETWEEN DATE '2026-04-22' AND DATE '2026-05-31'
+GROUP BY application_name
+ORDER BY average_daily_sign_ins DESC;
+```
+
+## R
+
+```r
+app_login_counts |>
+  # choose an arbitrary reporting period
+  filter(
+    from_date >= as.Date("2026-04-22"),
+    from_date <= as.Date("2026-05-31")
+  ) |>
+  group_by(application_name) |>
+  summarise(
+    average_daily_sign_ins = mean(total_logins, na.rm = TRUE)
+  ) |>
+  arrange(desc(average_daily_sign_ins))
+```
+
+:::

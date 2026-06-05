@@ -1,0 +1,51 @@
+### MFA Success Rate
+
+The proportion of MFA attempts that succeeded over a selected reporting period.
+
+This metric is useful for monitoring how often users clear the second factor. A
+falling rate can point to user friction with a particular factor, delivery
+problems (for example, undelivered SMS or email OTPs), or attack traffic.
+
+*Alternative names*:
+
+- MFA pass rate
+- second-factor success rate
+- MFA completion rate
+
+**Calculation.** Divide the sum of `count` where `result = 'success'` by the sum
+of `count` across all results.
+
+::: {.panel-tabset}
+
+## SQL
+
+```sql
+SELECT
+    CAST(SUM(count) FILTER (WHERE result = 'success') AS DOUBLE)
+        / NULLIF(SUM(count), 0) AS mfa_success_rate
+FROM ibm_verify.mfa_activity
+-- select an arbitrary reporting period
+WHERE from_date BETWEEN DATE '2026-01-01' AND DATE '2026-05-28';
+```
+
+## R
+
+```r
+mfa_activity |>
+  # select an arbitrary reporting period
+  filter(
+    from_date >= as.Date("2026-01-01"),
+    from_date <= as.Date("2026-05-28")
+  ) |>
+  summarise(
+    mfa_success_rate =
+      sum(if_else(result == "success", count, 0L), na.rm = TRUE) /
+        sum(count, na.rm = TRUE)
+  )
+```
+
+:::
+
+*Interpretation.* The rate is a proportion between 0 and 1. Interpret per factor
+where possible: a low overall rate may be driven by a single struggling factor
+rather than a system-wide problem.

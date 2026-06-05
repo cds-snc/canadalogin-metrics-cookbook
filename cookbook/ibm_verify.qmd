@@ -1,0 +1,60 @@
+---
+title: IBM Verify
+---
+
+Metrics in this section are calculated from IBM Verify authentication and
+application sign-in data.
+
+The relevant IBM Verify tables are:
+
+- [`ibm_verify.auth_total_logins`](../catalog/ibm_verify.qmd#auth_total_logins) - daily, CanadaLogin-wide sign-in totals
+- [`ibm_verify.app_login_counts`](../catalog/ibm_verify.qmd#app_login_counts) - daily sign-in counts broken down by application
+- [`ibm_verify.mfa_activity`](../catalog/ibm_verify.qmd#mfa_activity) - multi-factor authentication activity by factor and result
+
+**Internal applications.** The following applications are typically excluded from
+public-facing adoption metrics:
+
+```sql
+'Flow Application',
+'GCS Migration Solution',
+'GC Sign In - Profile Management App'
+```
+
+## CanadaLogin Metrics
+
+Metrics in this section describe CanadaLogin overall, across all applications,
+sourced from `ibm_verify.auth_total_logins`.
+
+{{< include ibm_verify/sign-ins.qmd >}}
+
+{{< include ibm_verify/sign-in-success-rate.qmd >}}
+
+{{< include ibm_verify/year-to-date-unique-users.qmd >}}
+
+## Application Metrics
+
+Metrics in this section describe sign-in activity broken down by application,
+sourced from `ibm_verify.app_login_counts`.
+
+{{< include ibm_verify/sign-ins-by-application.qmd >}}
+
+{{< include ibm_verify/sign-in-success-rate-by-application.qmd >}}
+
+{{< include ibm_verify/peak-daily-unique-users.qmd >}}
+
+{{< include ibm_verify/year-to-date-unique-users-by-application.qmd >}}
+
+{{< include ibm_verify/average-daily-sign-ins.qmd >}}
+
+## MFA Metrics
+
+Metrics in this section describe multi-factor authentication (MFA) activity,
+sourced from `ibm_verify.mfa_activity`. That table has one row per day per MFA
+factor (`mfa_type`) per outcome (`result`), with the number of attempts in
+`count`.
+
+{{< include ibm_verify/mfa-authentications.qmd >}}
+
+{{< include ibm_verify/mfa-success-rate.qmd >}}
+
+{{< include ibm_verify/mfa-activity-by-factor.qmd >}}

@@ -28,7 +28,7 @@ One row per day.
 | failed_logins | integer | Number of failed sign-in attempts that day |
 | successful_logins | integer | Number of successful sign-ins that day |
 | mtd_unique_users | integer | Cumulative distinct users month-to-date. Resets at the start of each month |
-| ytd_unique_users | integer | Cumulative distinct users year-to-date. Resets at the start of each calandar year |
+| ytd_unique_users | integer | Cumulative distinct users year-to-date. Resets at the start of each calendar year |
 | since_apr22_unique_users | integer | Cumulative distinct users since the April 22, 2026 launch period |
 | last_updated_at | timestamp | When the underlying data for this row was last updated |
 | fetched_at | timestamp | When the aggregation last fetched this row |

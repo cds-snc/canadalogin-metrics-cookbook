@@ -1,0 +1,71 @@
+### Sign-In Success Rate by Application
+
+The proportion of sign-in attempts that succeeded, broken down by application.
+
+This metric helps isolate authentication problems to a specific application. An
+application with a markedly lower success rate than its peers is worth
+investigating for integration or configuration issues.
+
+*Alternative names*:
+
+- authentication success rate by application
+- login success rate by application
+- per-application sign-in success rate
+
+**Calculation.** Divide the sum of `successful_logins` by the sum of all attempts
+(`successful_logins + failed_logins`) over the selected reporting period, grouped
+by application.
+
+::: {.panel-tabset}
+
+## SQL
+
+```sql
+SELECT
+    application_name,
+    CAST(SUM(successful_logins) AS DOUBLE)
+        / NULLIF(SUM(successful_logins + failed_logins), 0) AS sign_in_success_rate
+FROM ibm_verify.app_login_counts
+-- select an arbitrary reporting period
+WHERE from_date BETWEEN DATE '2026-01-01' AND DATE '2026-05-28'
+-- optionally filter out internal applications
+  AND application_name NOT IN (
+      'Flow Application',
+      'GCS Migration Solution',
+      'GC Sign In - Profile Management App'
+  )
+GROUP BY application_name
+ORDER BY sign_in_success_rate DESC;
+```
+
+## R
+
+```r
+internal_apps <- c(
+  "Flow Application",
+  "GCS Migration Solution",
+  "GC Sign In - Profile Management App"
+)
+
+app_login_counts |>
+  # select an arbitrary reporting period
+  filter(
+    from_date >= as.Date("2026-01-01"),
+    from_date <= as.Date("2026-05-28"),
+    # optionally filter out internal applications
+    !application_name %in% internal_apps
+  ) |>
+  group_by(application_name) |>
+  summarise(
+    sign_in_success_rate =
+      sum(successful_logins, na.rm = TRUE) /
+        sum(successful_logins + failed_logins, na.rm = TRUE)
+  ) |>
+  arrange(desc(sign_in_success_rate))
+```
+
+:::
+
+*Interpretation.* Compare applications against each other rather than against an
+absolute target. Low-volume applications can show extreme rates from only a
+handful of attempts, so weigh the rate against each application's sign-in volume.

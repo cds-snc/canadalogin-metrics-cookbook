@@ -1,0 +1,73 @@
+### Calls Accepted
+
+The number of calls accepted by the call centre during a reporting period.
+
+This metric is useful for tracking call centre demand and understanding how
+contact volume changes over time.
+
+*Alternative names*:
+
+- calls received
+- accepted calls
+- weekly call volume
+- call centre demand
+- number of calls handled by the queue
+
+**Calculation.** Use `calls_accepted` by reporting period, or sum across periods
+for a total.
+
+::: {.panel-tabset}
+
+## SQL
+
+By week:
+
+```sql
+SELECT
+    date_range_start,
+    date_range_end,
+    CAST(calls_accepted AS BIGINT) AS calls_accepted
+FROM call_centre.weekly_activity_report
+ORDER BY date_range_start;
+```
+
+Total over a period:
+
+```sql
+SELECT
+    SUM(CAST(calls_accepted AS BIGINT)) AS total_calls_accepted
+FROM call_centre.weekly_activity_report
+WHERE CAST(date_range_start AS DATE) BETWEEN DATE '2026-01-01' AND DATE '2026-05-31';
+```
+
+## R
+
+By week:
+
+```r
+weekly_activity_report |>
+  arrange(date_range_start) |>
+  select(
+    date_range_start,
+    date_range_end,
+    calls_accepted
+  )
+```
+
+Total over a period:
+
+```r
+weekly_activity_report |>
+  filter(
+    as.Date(date_range_start) >= as.Date("2026-01-01"),
+    as.Date(date_range_start) <= as.Date("2026-05-31")
+  ) |>
+  summarise(
+    total_calls_accepted = sum(calls_accepted, na.rm = TRUE)
+  )
+```
+
+:::
+
+*Interpretation.* Calls accepted may not be identical to calls answered,
+depending on call centre definitions and routing logic.

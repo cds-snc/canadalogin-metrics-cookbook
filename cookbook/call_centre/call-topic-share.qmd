@@ -1,0 +1,58 @@
+### Call Topic Share
+
+The percentage of all topic records represented by each call topic.
+
+This is useful for understanding the relative importance of each call driver
+compared to the overall volume.
+
+*Alternative names*:
+
+- share of calls by topic
+- percentage of calls by reason
+- topic distribution
+- call reason mix
+- contact driver share
+
+**Calculation.** Count records by cleaned topic, then divide each topic count by
+the total count across all topics.
+
+::: {.panel-tabset}
+
+## SQL
+
+```sql
+WITH topic_counts AS (
+    SELECT
+        REGEXP_REPLACE(TRIM(statobject), '\s+', ' ') AS call_topic,
+        COUNT(*) AS topic_count
+    FROM call_centre.weekly_topic_dump
+    GROUP BY REGEXP_REPLACE(TRIM(statobject), '\s+', ' ')
+)
+
+SELECT
+    call_topic,
+    topic_count,
+    CAST(topic_count AS DOUBLE)
+        / NULLIF(SUM(topic_count) OVER (), 0) AS topic_share
+FROM topic_counts
+ORDER BY topic_count DESC;
+```
+
+## R
+
+```r
+weekly_topic_dump |>
+  mutate(
+    call_topic = str_squish(statobject)
+  ) |>
+  count(call_topic, name = "topic_count") |>
+  mutate(
+    topic_share = topic_count / sum(topic_count)
+  ) |>
+  arrange(desc(topic_count))
+```
+
+:::
+
+*Interpretation.* Topic share is useful for comparing relative demand across
+contact reasons. Interpret alongside total call volume.

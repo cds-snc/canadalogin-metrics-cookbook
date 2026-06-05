@@ -8,16 +8,17 @@ The cookbook is organized by data source:
 
 - IBM Verify
 - Call Centre
-- Cross-source / interpretive metrics
+- Cross-source / interpretive metrics (planned)
 
 Each metric generally includes:
 
-- a description
-- plain-language alternate names
-- data source information
-- calculation logic
-- example SQL
+- lead prose describing what it measures and when to use it
+- plain-language alternative names
+- the calculation logic
+- an example query, shown in both SQL and R
 - interpretation notes, where relevant
+
+The data source for each group of metrics is noted at the start of its section.
 
 The goal is to make metric definitions easier to reuse, explain, and validate
 across reporting products.
@@ -39,7 +40,11 @@ For each metric, confirm:
 
 ## Conventions
 
-In reporting language, prefer the noun **sign-in** over **login** where 
+All example SQL targets Amazon Athena (Trino dialect), since the tables live in
+the AWS Glue Data Catalog. Constructs such as `DATE '...'` literals,
+`ROW_NUMBER() OVER (...)`, and `REGEXP_REPLACE` follow Trino semantics.
+
+In reporting language, prefer the noun **sign-in** over **login** where
 possible. The underlying IBM Verify field may be called `total_logins`, but 
 “sign-ins” is preferred (and often enforced) when talking about CanadaLogin.
 
@@ -64,6 +69,8 @@ The initial version focuses on:
 - IBM Verify application sign-in metrics
 - call centre activity metrics
 - call centre topic metrics
-- simple cross-source interpretive metrics comparing sign-in activity and call volume
+
+Simple cross-source interpretive metrics comparing sign-in activity and call
+volume are planned for a future revision.
 
 Additional data sources, metric definitions, and validation notes can be added as the cookbook matures.

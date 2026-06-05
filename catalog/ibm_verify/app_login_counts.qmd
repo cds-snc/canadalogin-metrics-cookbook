@@ -11,9 +11,9 @@ sign-in activity and unique-user reach for the day.
 
 Queried directly from the IBM Verify production instance via API.
 
-* `Updated`: Daily in the morning
-* `Steward`: EDCP Data and Research Team
-* `Contact`: [Yinlin Zhang](mailto:yinlin.zhang@cds-snc.ca)
+* **Updated**: Daily, early in the morning
+* **Steward**: EDCP Data and Research Team
+* **Contact**: [Yinlin Zhang](mailto:yinlin.zhang@cds-snc.ca)
 
 ## Fields
 

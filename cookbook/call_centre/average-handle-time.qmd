@@ -1,0 +1,52 @@
+### Average Handle Time
+
+The average total time agents spend per call, including any after-call wrap-up.
+
+`avg_handle_time_seconds` covers more than `avg_call_length_seconds`: it adds
+wrap-up work after the caller disconnects. Like the other averages, combine weeks
+with a weighted mean.
+
+*Alternative names*:
+
+- AHT
+- average handling time
+- total handle time per call
+- average talk plus wrap time
+
+**Calculation.** Calculate a weighted average of `avg_handle_time_seconds`,
+weighted by `calls_answered`.
+
+::: {.panel-tabset}
+
+## SQL
+
+```sql
+SELECT
+    SUM(
+        CAST(avg_handle_time_seconds AS DOUBLE)
+        * CAST(calls_answered AS DOUBLE)
+    )
+    / NULLIF(SUM(CAST(calls_answered AS DOUBLE)), 0) AS weighted_avg_handle_time_seconds
+FROM call_centre.weekly_activity_report
+WHERE CAST(date_range_start AS DATE) BETWEEN DATE '2026-01-01' AND DATE '2026-05-31';
+```
+
+## R
+
+```r
+weekly_activity_report |>
+  filter(
+    as.Date(date_range_start) >= as.Date("2026-01-01"),
+    as.Date(date_range_start) <= as.Date("2026-05-31")
+  ) |>
+  summarise(
+    weighted_avg_handle_time_seconds =
+      sum(avg_handle_time_seconds * calls_answered, na.rm = TRUE) /
+        sum(calls_answered, na.rm = TRUE)
+  )
+```
+
+:::
+
+*Interpretation.* Average handle time is always at least as large as average call
+length. A widening gap between the two points to growing after-call work.

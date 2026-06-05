@@ -1,0 +1,60 @@
+### MFA Activity by Factor
+
+The volume of MFA attempts broken down by factor type, with each factor's share
+of total activity.
+
+This metric shows which second factors users actually rely on. In the current
+data the mix is dominated by `sms_otp` and `email_otp`, with factors such as
+`fido2`, `totp`, `kq`, `qr`, and `ibm_verify_push` seeing little or no use.
+
+*Alternative names*:
+
+- MFA factor mix
+- second-factor distribution
+- MFA usage by method
+- MFA factor share
+
+**Calculation.** Sum `count` grouped by `mfa_type`, then divide each factor's
+total by the overall total to get its share.
+
+::: {.panel-tabset}
+
+## SQL
+
+```sql
+SELECT
+    mfa_type,
+    SUM(count) AS mfa_authentications,
+    CAST(SUM(count) AS DOUBLE)
+        / NULLIF(SUM(SUM(count)) OVER (), 0) AS factor_share
+FROM ibm_verify.mfa_activity
+-- select an arbitrary reporting period
+WHERE from_date BETWEEN DATE '2026-01-01' AND DATE '2026-05-28'
+GROUP BY mfa_type
+ORDER BY mfa_authentications DESC;
+```
+
+## R
+
+```r
+mfa_activity |>
+  # select an arbitrary reporting period
+  filter(
+    from_date >= as.Date("2026-01-01"),
+    from_date <= as.Date("2026-05-28")
+  ) |>
+  group_by(mfa_type) |>
+  summarise(
+    mfa_authentications = sum(count, na.rm = TRUE)
+  ) |>
+  mutate(
+    factor_share = mfa_authentications / sum(mfa_authentications)
+  ) |>
+  arrange(desc(mfa_authentications))
+```
+
+:::
+
+*Interpretation.* `factor_share` is a proportion between 0 and 1 and sums to 1
+across all factors. Combine with the MFA success rate to spot factors that are
+both heavily used and failing often.

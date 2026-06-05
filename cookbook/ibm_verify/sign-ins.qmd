@@ -1,0 +1,41 @@
+### Sign-Ins
+
+The total number of sign-in events to CanadaLogin, including both successful and
+failed attempts.
+
+*Alternative names*:
+
+- total sign-in attempts
+- sign-ins to CanadaLogin in a reporting period
+- total sign-ins to CanadaLogin
+
+**Calculation.** Sum `failed_logins` and `successful_logins` over the selected
+reporting period.
+
+::: {.panel-tabset}
+
+## SQL
+
+```sql
+SELECT
+    SUM(failed_logins + successful_logins) AS total_sign_in_attempts
+FROM ibm_verify.auth_total_logins
+-- select an arbitrary reporting period
+WHERE from_date BETWEEN DATE '2026-01-01' AND DATE '2026-05-28';
+```
+
+## R
+
+```r
+auth_total_logins |>
+  # select an arbitrary reporting period
+  filter(
+    from_date >= as.Date("2026-01-01"),
+    from_date <= as.Date("2026-05-28")
+  ) |>
+  summarise(
+    total_sign_in_attempts = sum(failed_logins + successful_logins, na.rm = TRUE)
+  )
+```
+
+:::

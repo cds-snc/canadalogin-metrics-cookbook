@@ -1,0 +1,44 @@
+### MFA Authentications
+
+The total number of MFA attempts over a selected reporting period.
+
+This metric measures second-factor authentication volume. It counts attempts,
+not people, and includes both successful and failed challenges.
+
+*Alternative names*:
+
+- MFA attempts
+- two-factor authentications
+- total MFA challenges
+- MFA volume
+
+**Calculation.** Sum `count` over the selected reporting period. Add a
+`result` breakdown to separate successes from failures.
+
+::: {.panel-tabset}
+
+## SQL
+
+```sql
+SELECT
+    SUM(count) AS mfa_authentications
+FROM ibm_verify.mfa_activity
+-- select an arbitrary reporting period
+WHERE from_date BETWEEN DATE '2026-01-01' AND DATE '2026-05-28';
+```
+
+## R
+
+```r
+mfa_activity |>
+  # select an arbitrary reporting period
+  filter(
+    from_date >= as.Date("2026-01-01"),
+    from_date <= as.Date("2026-05-28")
+  ) |>
+  summarise(
+    mfa_authentications = sum(count, na.rm = TRUE)
+  )
+```
+
+:::

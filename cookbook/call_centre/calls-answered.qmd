@@ -1,0 +1,73 @@
+### Calls Answered
+
+The number of calls answered by call centre agents during a reporting period.
+
+This metric is also used as a weighting variable when calculating weighted
+average call length and weighted average delay.
+
+*Alternative names*:
+
+- answered calls
+- calls handled
+- agent-answered calls
+- completed calls
+- calls taken by agents
+
+**Calculation.** Use `calls_answered` by reporting period, or sum across periods
+for a total.
+
+::: {.panel-tabset}
+
+## SQL
+
+By week:
+
+```sql
+SELECT
+    date_range_start,
+    date_range_end,
+    CAST(calls_answered AS BIGINT) AS calls_answered
+FROM call_centre.weekly_activity_report
+ORDER BY date_range_start;
+```
+
+Total over a period:
+
+```sql
+SELECT
+    SUM(CAST(calls_answered AS BIGINT)) AS total_calls_answered
+FROM call_centre.weekly_activity_report
+WHERE CAST(date_range_start AS DATE) BETWEEN DATE '2026-01-01' AND DATE '2026-05-31';
+```
+
+## R
+
+By week:
+
+```r
+weekly_activity_report |>
+  arrange(date_range_start) |>
+  select(
+    date_range_start,
+    date_range_end,
+    calls_answered
+  )
+```
+
+Total over a period:
+
+```r
+weekly_activity_report |>
+  filter(
+    as.Date(date_range_start) >= as.Date("2026-01-01"),
+    as.Date(date_range_start) <= as.Date("2026-05-31")
+  ) |>
+  summarise(
+    total_calls_answered = sum(calls_answered, na.rm = TRUE)
+  )
+```
+
+:::
+
+*Interpretation.* Calls answered is commonly used as the weighting field when
+combining weekly average call length or delay values.

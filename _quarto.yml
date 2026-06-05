@@ -10,10 +10,10 @@ book:
     - index.qmd
     - part: "Metrics Cookbook"
       chapters:
-        - 01-ibm-verify.qmd
-        - 02-call-centre.qmd
-#        - 03-cross-source.qmd
-#        - 90-notes.qmd
+        - cookbook/ibm_verify.qmd
+        - cookbook/call_centre.qmd
+        - cookbook/notes.qmd
+#        - cookbook/cross-source.qmd
     - part: "Data Catalog"
       chapters:
         - catalog/index.qmd

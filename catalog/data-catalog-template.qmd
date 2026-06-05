@@ -1,6 +1,6 @@
 ---
 title: "Template"
-# draft: true
+draft: true
 ---
 
 # Table Name

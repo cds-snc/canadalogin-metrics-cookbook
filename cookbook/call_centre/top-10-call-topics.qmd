@@ -1,0 +1,72 @@
+### Top 10 Call Topics
+
+The ten most common call topics in the call centre topic data.
+
+This is useful for quickly identifying the most common reasons people contact the
+call centre.
+
+*Alternative names*:
+
+- top 10 call reasons
+- most common call topics
+- top contact drivers
+- main reasons for calling
+- top caller issues
+
+**Calculation.** Count records by cleaned topic, calculate topic share, and
+return the top 10 by topic count.
+
+::: {.panel-tabset}
+
+## SQL
+
+```sql
+WITH topic_counts AS (
+    SELECT
+        REGEXP_REPLACE(TRIM(statobject), '\s+', ' ') AS call_topic,
+        COUNT(*) AS topic_count
+    FROM call_centre.weekly_topic_dump
+    GROUP BY REGEXP_REPLACE(TRIM(statobject), '\s+', ' ')
+),
+
+topic_shares AS (
+    SELECT
+        call_topic,
+        topic_count,
+        CAST(topic_count AS DOUBLE)
+            / NULLIF(SUM(topic_count) OVER (), 0) AS topic_share
+    FROM topic_counts
+)
+
+SELECT
+    call_topic,
+    topic_count,
+    topic_share
+FROM topic_shares
+ORDER BY topic_count DESC
+LIMIT 10;
+```
+
+## R
+
+```r
+weekly_topic_dump |>
+  mutate(
+    call_topic = str_squish(statobject)
+  ) |>
+  count(call_topic, name = "topic_count") |>
+  mutate(
+    topic_share = topic_count / sum(topic_count)
+  ) |>
+  slice_max(
+    topic_count,
+    n = 10
+  ) |>
+  arrange(desc(topic_count))
+```
+
+:::
+
+*Interpretation.* The top 10 view is useful for quick reporting but may hide
+important lower-volume issues. For diagnostic work, review the full topic
+distribution.
