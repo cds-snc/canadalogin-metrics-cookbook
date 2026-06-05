@@ -7,27 +7,15 @@ and R queries. A companion data catalog describes the underlying tables field by
 ## Structure
 
 ```
-_quarto.yml              # book config, chapter list, render settings
-index.qmd                # introduction, conventions, scope
-
-cookbook/                # Metrics Cookbook section
-  ibm_verify.qmd         # IBM Verify chapter wrapper
-  ibm_verify/            # one file per metric (included via {{< include >}})
-  call_centre.qmd        # Call Centre chapter wrapper
-  call_centre/           # one file per metric
-  notes.qmd              # notes on metric interpretation
-
-catalog/                 # Data Catalog section
-  ibm_verify.qmd         # IBM Verify catalog wrapper
-  ibm_verify/            # one file per table
-  call_centre.qmd        # Call Centre catalog wrapper
-  call_centre/           # one file per table
-  index.qmd              # catalog introduction
+_quarto.yml      # book config and chapter list
+index.qmd        # introduction and conventions
+cookbook/        # Metrics Cookbook: one file per metric, grouped by source
+catalog/         # Data Catalog: one file per table, grouped by source
 ```
 
-Each metric file is a self-contained `.qmd` fragment starting at heading level `###`. 
-The chapter wrapper assembles them with `{{< include >}}` and provides `##`-level 
-section groupings.
+Within `cookbook/` and `catalog/`, each data source (for example `ibm_verify/`,
+`call_centre/`) is a folder of fragment `.qmd` files plus a sibling chapter
+wrapper (`ibm_verify.qmd`) that assembles them with `{{< include >}}`.
 
 ## Local preview
 
