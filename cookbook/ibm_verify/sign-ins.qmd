@@ -27,12 +27,7 @@ WHERE from_date BETWEEN DATE '2026-01-01' AND DATE '2026-05-28';
 ## R
 
 ```r
-auth_total_logins <- tbl(
-  con,
-  in_schema("ibm_verify", "auth_total_logins")
-)
-
-auth_total_logins |>
+tbl(con, in_schema("ibm_verify", "auth_total_logins")) |>
   # select an arbitrary reporting period
   filter(
     from_date >= as.Date("2026-01-01"),

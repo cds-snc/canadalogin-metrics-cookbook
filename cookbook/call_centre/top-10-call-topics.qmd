@@ -50,12 +50,7 @@ LIMIT 10;
 ## R
 
 ```r
-weekly_topic_dump <- tbl(
-  con,
-  in_schema("call_centre", "weekly_topic_dump")
-)
-
-weekly_topic_dump |>
+tbl(con, in_schema("call_centre", "weekly_topic_dump")) |>
   mutate(
     call_topic = str_squish(statobject)
   ) |>

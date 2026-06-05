@@ -35,12 +35,7 @@ ORDER BY average_daily_sign_ins DESC;
 ## R
 
 ```r
-app_login_counts <- tbl(
-  con,
-  in_schema("ibm_verify", "app_login_counts")
-)
-
-app_login_counts |>
+tbl(con, in_schema("ibm_verify", "app_login_counts")) |>
   # choose an arbitrary reporting period
   filter(
     from_date >= as.Date("2026-04-22"),

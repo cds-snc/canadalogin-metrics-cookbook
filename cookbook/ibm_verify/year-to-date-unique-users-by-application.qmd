@@ -46,12 +46,7 @@ ORDER BY ytd_unique_users DESC;
 ## R
 
 ```r
-app_login_counts <- tbl(
-  con,
-  in_schema("ibm_verify", "app_login_counts")
-)
-
-app_login_counts |>
+tbl(con, in_schema("ibm_verify", "app_login_counts")) |>
   filter(
     from_date >= as.Date("2026-01-01"),
     from_date <= as.Date("2026-05-28")

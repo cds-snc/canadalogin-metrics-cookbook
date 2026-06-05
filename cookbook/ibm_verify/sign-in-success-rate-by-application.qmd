@@ -41,18 +41,13 @@ ORDER BY sign_in_success_rate DESC;
 ## R
 
 ```r
-app_login_counts <- tbl(
-  con,
-  in_schema("ibm_verify", "app_login_counts")
-)
-
 internal_apps <- c(
   "Flow Application",
   "GCS Migration Solution",
   "GC Sign In - Profile Management App"
 )
 
-app_login_counts |>
+tbl(con, in_schema("ibm_verify", "app_login_counts")) |>
   # select an arbitrary reporting period
   filter(
     from_date >= as.Date("2026-01-01"),

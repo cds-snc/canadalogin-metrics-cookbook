@@ -31,12 +31,7 @@ LIMIT 1;
 ## R
 
 ```r
-auth_total_logins <- tbl(
-  con,
-  in_schema("ibm_verify", "auth_total_logins")
-)
-
-auth_total_logins |>
+tbl(con, in_schema("ibm_verify", "auth_total_logins")) |>
   slice_max(
     from_date,
     n = 1,
