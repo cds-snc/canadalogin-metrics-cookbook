@@ -51,6 +51,11 @@ ORDER BY date_range_start;
 Weighted average over a period:
 
 ```r
+weekly_activity_report <- tbl(
+  con,
+  in_schema("call_centre", "weekly_activity_report")
+)
+
 weekly_activity_report |>
   filter(
     as.Date(date_range_start) >= as.Date("2026-01-01"),
@@ -66,6 +71,11 @@ weekly_activity_report |>
 By week:
 
 ```r
+weekly_activity_report <- tbl(
+  con,
+  in_schema("call_centre", "weekly_activity_report")
+)
+
 weekly_activity_report |>
   arrange(date_range_start) |>
   select(

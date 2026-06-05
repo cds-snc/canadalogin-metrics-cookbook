@@ -37,6 +37,11 @@ ORDER BY mfa_authentications DESC;
 ## R
 
 ```r
+mfa_activity <- tbl(
+  con,
+  in_schema("ibm_verify", "mfa_activity")
+)
+
 mfa_activity |>
   # select an arbitrary reporting period
   filter(

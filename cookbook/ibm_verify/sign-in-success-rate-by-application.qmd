@@ -41,6 +41,11 @@ ORDER BY sign_in_success_rate DESC;
 ## R
 
 ```r
+app_login_counts <- tbl(
+  con,
+  in_schema("ibm_verify", "app_login_counts")
+)
+
 internal_apps <- c(
   "Flow Application",
   "GCS Migration Solution",
@@ -67,5 +72,7 @@ app_login_counts |>
 :::
 
 *Interpretation.* Compare applications against each other rather than against an
-absolute target. Low-volume applications can show extreme rates from only a
-handful of attempts, so weigh the rate against each application's sign-in volume.
+absolute target. Note that this measures authentication against a relying party
+*after already signing-in to CanadaLogin*. It doesn't requiring entering a password
+or two-factor, it simply checks if a given credential is valid for signing in to
+an app.

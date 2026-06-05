@@ -45,6 +45,11 @@ WHERE CAST(date_range_start AS DATE) BETWEEN DATE '2026-01-01' AND DATE '2026-05
 By week:
 
 ```r
+weekly_activity_report <- tbl(
+  con,
+  in_schema("call_centre", "weekly_activity_report")
+)
+
 weekly_activity_report |>
   arrange(date_range_start) |>
   select(
@@ -57,6 +62,11 @@ weekly_activity_report |>
 Total over a period:
 
 ```r
+weekly_activity_report <- tbl(
+  con,
+  in_schema("call_centre", "weekly_activity_report")
+)
+
 weekly_activity_report |>
   filter(
     as.Date(date_range_start) >= as.Date("2026-01-01"),

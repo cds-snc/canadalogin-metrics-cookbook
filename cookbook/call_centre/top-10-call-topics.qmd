@@ -50,6 +50,11 @@ LIMIT 10;
 ## R
 
 ```r
+weekly_topic_dump <- tbl(
+  con,
+  in_schema("call_centre", "weekly_topic_dump")
+)
+
 weekly_topic_dump |>
   mutate(
     call_topic = str_squish(statobject)
@@ -68,5 +73,5 @@ weekly_topic_dump |>
 :::
 
 *Interpretation.* The top 10 view is useful for quick reporting but may hide
-important lower-volume issues. For diagnostic work, review the full topic
-distribution.
+important lower-volume issues. In cases where there are not many calls, it may be
+useful to limit this list to a top 5, or to truncate ties at the end of the list.
