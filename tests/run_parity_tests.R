@@ -16,7 +16,7 @@ source("tests/helper.R")
 source("tests/extract_blocks.R")
 
 # Directories whose .qmd files contain documented metric queries.
-COOKBOOK_DIRS <- c("cookbook/ibm_verify", "cookbook/call_centre")
+cookbook_dirs <- c("cookbook/ibm_verify", "cookbook/call_centre")
 
 # Evaluate a documented R block. The block self-declares its source table via
 # tbl(con, in_schema(...)). Blocks that end in pull() return a vector; blocks
@@ -26,13 +26,19 @@ eval_r_block <- function(r_code, con) {
   env <- new.env(parent = globalenv())
   env$con <- con
   result <- eval(parse(text = r_code), envir = env)
-  if (inherits(result, "tbl_lazy")) collect(result) else result
+
+  # Make sure we collect the query at the end
+  if (inherits(result, "tbl_lazy")) {
+    collect(result)
+  } else {
+    result
+  }
 }
 
 con <- connect_athena()
 on.exit(dbDisconnect(con), add = TRUE)
 
-files <- list.files(COOKBOOK_DIRS, pattern = "[.]qmd$", full.names = TRUE)
+files <- list.files(cookbook_dirs, pattern = "[.]qmd$", full.names = TRUE)
 files <- sort(files)
 
 message(sprintf("Discovered %d metric files:", length(files)))
@@ -55,7 +61,12 @@ for (path in files) {
   }
 }
 
-message(sprintf("\nRan %d query pair(s) across %d file(s).", n_pairs, length(files)))
+message(
+  sprintf("\nRan %d query pair(s) across %d file(s).",
+    n_pairs,
+    length(files)
+  )
+)
 
 if (!all_ok) {
   message("FAIL: at least one query pair did not match.")
