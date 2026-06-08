@@ -175,6 +175,7 @@ ul.task-list li input[type="checkbox"] {
   <ul>
   <li><a href="#sign-ins-are-not-users" id="toc-sign-ins-are-not-users" class="nav-link active" data-scroll-target="#sign-ins-are-not-users">Sign-ins are not users</a></li>
   <li><a href="#daily-unique-users-are-not-the-same-as-period-unique-users" id="toc-daily-unique-users-are-not-the-same-as-period-unique-users" class="nav-link" data-scroll-target="#daily-unique-users-are-not-the-same-as-period-unique-users">Daily unique users are not the same as period unique users</a></li>
+  <li><a href="#metrics-can-be-reported-over-different-timespans" id="toc-metrics-can-be-reported-over-different-timespans" class="nav-link" data-scroll-target="#metrics-can-be-reported-over-different-timespans">Metrics can be reported over different timespans</a></li>
   <li><a href="#weighted-averages-should-be-used-for-call-centre-averages" id="toc-weighted-averages-should-be-used-for-call-centre-averages" class="nav-link" data-scroll-target="#weighted-averages-should-be-used-for-call-centre-averages">Weighted averages should be used for call centre averages</a></li>
   <li><a href="#internal-applications-should-usually-be-excluded-from-external-adoption-reporting" id="toc-internal-applications-should-usually-be-excluded-from-external-adoption-reporting" class="nav-link" data-scroll-target="#internal-applications-should-usually-be-excluded-from-external-adoption-reporting">Internal applications should usually be excluded from external adoption reporting</a></li>
   </ul>
@@ -216,6 +217,24 @@ ul.task-list li input[type="checkbox"] {
 <h2 class="anchored" data-anchor-id="daily-unique-users-are-not-the-same-as-period-unique-users">Daily unique users are not the same as period unique users</h2>
 <p>Summing daily unique users gives a measure of user-days, not distinct people over the full period.</p>
 <p>For distinct people over a longer period, use a cumulative unique user field such as <code>ytd_unique_users</code> or <code>since_apr22_unique_users</code>, if available and valid.</p>
+</section>
+<section id="metrics-can-be-reported-over-different-timespans" class="level2">
+<h2 class="anchored" data-anchor-id="metrics-can-be-reported-over-different-timespans">Metrics can be reported over different timespans</h2>
+<p>Most metrics are meaningful over more than one window. The three standard reporting windows are month-to-date, year-to-date, and since the April 22, 2026 public launch. How you select a window depends on the kind of metric.</p>
+<p><strong>Additive metrics</strong> (sign-ins, MFA attempts, success rates, averages) are computed by aggregating daily rows, so the window is just the date bounds in the <code>WHERE from_date BETWEEN DATE '&lt;start&gt;' AND DATE '&lt;end&gt;'</code> clause. The same query covers any window; only the start date changes:</p>
+<ul>
+<li>Month-to-date: first of the current month (for example, <code>2026-06-01</code>)</li>
+<li>Year-to-date: <code>2026-01-01</code></li>
+<li>Since launch: <code>2026-04-22</code></li>
+</ul>
+<p>Set the end date to the reporting date.</p>
+<p><strong>Cumulative unique-user metrics</strong> cannot be derived by filtering a date range, because summing daily <code>unique_users</code> counts user-days, not distinct people. Instead, pick the pre-computed column that matches the window and take its latest value:</p>
+<ul>
+<li>Month-to-date: <code>mtd_unique_users</code></li>
+<li>Year-to-date: <code>ytd_unique_users</code></li>
+<li>Since launch: <code>since_apr22_unique_users</code></li>
+</ul>
+<p>Never sum these cumulative columns across rows.</p>
 </section>
 <section id="weighted-averages-should-be-used-for-call-centre-averages" class="level2">
 <h2 class="anchored" data-anchor-id="weighted-averages-should-be-used-for-call-centre-averages">Weighted averages should be used for call centre averages</h2>
