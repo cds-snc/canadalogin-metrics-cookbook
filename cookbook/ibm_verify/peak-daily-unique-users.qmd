@@ -32,7 +32,7 @@ WITH ranked AS (
             ORDER BY unique_users DESC, from_date ASC
         ) AS rn
     FROM ibm_verify.app_login_counts
-    -- calculate over an arbitrary reporting period
+    -- set the reporting window; see the timespans note in cookbook/notes.qmd
     WHERE from_date BETWEEN DATE '2026-01-01' AND DATE '2026-05-28'
 )
 
@@ -49,7 +49,7 @@ ORDER BY peak_daily_unique_users DESC;
 
 ```r
 tbl(con, in_schema("ibm_verify", "app_login_counts")) |>
-  # calculate over an arbitrary reporting period
+  # set the reporting window; see the timespans note in cookbook/notes.qmd
   filter(
     from_date >= as.Date("2026-01-01"),
     from_date <= as.Date("2026-05-28")

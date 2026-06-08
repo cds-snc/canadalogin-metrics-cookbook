@@ -1,0 +1,109 @@
+### Cumulative Unique Users
+
+The total number of distinct users who have signed in to CanadaLogin over a
+chosen reporting window: this month, this calendar year, or since the
+April 22, 2026 public launch.
+
+This metric is useful for understanding the overall reach and adoption of
+CanadaLogin over time. Note that it will not align with the sum of unique users
+across individual apps: a user who signs into App A and App B on the same day
+counts as two unique users at the app level but only one overall.
+
+*Alternative names*:
+
+- month-to-date unique users
+- year-to-date unique users
+- unique users since launch
+- total overall unique users this month / this year
+- overall unique users MTD / YTD
+- distinct people reached on CanadaLogin
+
+**Calculation.** Take the latest value of the cumulative unique-user column for
+the window of interest. The window is chosen by *which column* you read, not by
+a date filter (see [the note on reporting timespans](../notes.qmd#metrics-can-be-reported-over-different-timespans)):
+
+- `mtd_unique_users` for month-to-date
+- `ytd_unique_users` for year-to-date
+- `since_apr22_unique_users` for since the launch
+
+These columns are cumulative, so the most recent row holds the current total.
+
+::: {.panel-tabset}
+
+## SQL
+
+Month-to-date:
+
+```sql
+SELECT
+    mtd_unique_users
+FROM ibm_verify.auth_total_logins
+ORDER BY from_date DESC
+LIMIT 1;
+```
+
+Year-to-date:
+
+```sql
+SELECT
+    ytd_unique_users
+FROM ibm_verify.auth_total_logins
+ORDER BY from_date DESC
+LIMIT 1;
+```
+
+Since launch:
+
+```sql
+SELECT
+    since_apr22_unique_users
+FROM ibm_verify.auth_total_logins
+ORDER BY from_date DESC
+LIMIT 1;
+```
+
+## R
+
+Month-to-date:
+
+```r
+tbl(con, in_schema("ibm_verify", "auth_total_logins")) |>
+  slice_max(
+    from_date,
+    n = 1,
+    with_ties = FALSE
+  ) |>
+  pull(mtd_unique_users)
+```
+
+Year-to-date:
+
+```r
+tbl(con, in_schema("ibm_verify", "auth_total_logins")) |>
+  slice_max(
+    from_date,
+    n = 1,
+    with_ties = FALSE
+  ) |>
+  pull(ytd_unique_users)
+```
+
+Since launch:
+
+```r
+tbl(con, in_schema("ibm_verify", "auth_total_logins")) |>
+  slice_max(
+    from_date,
+    n = 1,
+    with_ties = FALSE
+  ) |>
+  pull(since_apr22_unique_users)
+```
+
+:::
+
+*Interpretation notes.* Each column resets on its own cadence: `mtd_unique_users`
+resets at the start of each month and `ytd_unique_users` at the start of each
+calendar year. `since_apr22_unique_users` does not reset, so it grows
+monotonically from launch. Do not sum these columns across rows; they are
+already cumulative.

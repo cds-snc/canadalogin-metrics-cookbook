@@ -26,7 +26,7 @@ SELECT
     CAST(SUM(successful_logins) AS DOUBLE)
         / NULLIF(SUM(successful_logins + failed_logins), 0) AS sign_in_success_rate
 FROM ibm_verify.app_login_counts
--- select an arbitrary reporting period
+-- set the reporting window; see the timespans note in cookbook/notes.qmd
 WHERE from_date BETWEEN DATE '2026-01-01' AND DATE '2026-05-28'
 -- optionally filter out internal applications
   AND application_name NOT IN (
@@ -48,7 +48,7 @@ internal_apps <- c(
 )
 
 tbl(con, in_schema("ibm_verify", "app_login_counts")) |>
-  # select an arbitrary reporting period
+  # set the reporting window; see the timespans note in cookbook/notes.qmd
   filter(
     from_date >= as.Date("2026-01-01"),
     from_date <= as.Date("2026-05-28"),

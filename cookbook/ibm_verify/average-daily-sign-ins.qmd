@@ -26,7 +26,7 @@ SELECT
     application_name,
     AVG(total_logins) AS average_daily_sign_ins
 FROM ibm_verify.app_login_counts
--- choose an arbitrary reporting period
+-- set the reporting window; see the timespans note in cookbook/notes.qmd
 WHERE from_date BETWEEN DATE '2026-04-22' AND DATE '2026-05-31'
 GROUP BY application_name
 ORDER BY average_daily_sign_ins DESC;
@@ -36,7 +36,7 @@ ORDER BY average_daily_sign_ins DESC;
 
 ```r
 tbl(con, in_schema("ibm_verify", "app_login_counts")) |>
-  # choose an arbitrary reporting period
+  # set the reporting window; see the timespans note in cookbook/notes.qmd
   filter(
     from_date >= as.Date("2026-04-22"),
     from_date <= as.Date("2026-05-31")

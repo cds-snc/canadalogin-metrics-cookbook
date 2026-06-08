@@ -23,7 +23,7 @@ not people, and includes both successful and failed challenges.
 SELECT
     SUM(count) AS mfa_authentications
 FROM ibm_verify.mfa_activity
--- select an arbitrary reporting period
+-- set the reporting window; see the timespans note in cookbook/notes.qmd
 WHERE from_date BETWEEN DATE '2026-01-01' AND DATE '2026-05-28';
 ```
 
@@ -31,7 +31,7 @@ WHERE from_date BETWEEN DATE '2026-01-01' AND DATE '2026-05-28';
 
 ```r
 tbl(con, in_schema("ibm_verify", "mfa_activity")) |>
-  # select an arbitrary reporting period
+  # set the reporting window; see the timespans note in cookbook/notes.qmd
   filter(
     from_date >= as.Date("2026-01-01"),
     from_date <= as.Date("2026-05-28")

@@ -29,7 +29,7 @@ sourced from `ibm_verify.auth_total_logins`.
 
 {{< include ibm_verify/sign-in-success-rate.qmd >}}
 
-{{< include ibm_verify/year-to-date-unique-users.qmd >}}
+{{< include ibm_verify/cumulative-unique-users.qmd >}}
 
 ## Application Metrics
 
@@ -42,7 +42,7 @@ sourced from `ibm_verify.app_login_counts`.
 
 {{< include ibm_verify/peak-daily-unique-users.qmd >}}
 
-{{< include ibm_verify/year-to-date-unique-users-by-application.qmd >}}
+{{< include ibm_verify/cumulative-unique-users-by-application.qmd >}}
 
 {{< include ibm_verify/applications-per-credential.qmd >}}
 

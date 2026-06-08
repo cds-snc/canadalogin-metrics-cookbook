@@ -1,0 +1,176 @@
+### Cumulative Unique Users by Application
+
+The number of distinct users observed for each application over a chosen
+reporting window: this month, this calendar year, or since the April 22, 2026
+public launch.
+
+The cumulative unique-user columns increase or remain stable over time. This
+metric is closer to "how many distinct people have used the application in this
+window" than the daily unique user metrics.
+
+*Alternative names*:
+
+- month-to-date unique users by application
+- year-to-date unique users by application
+- unique users since launch by application
+- distinct user reach per application
+- total unique people reached per application
+
+**Calculation.** Take the latest value of the cumulative unique-user column over
+the selected window, grouped by application. The window is chosen by *which
+column* you read (see [the note on reporting timespans](../notes.qmd#metrics-can-be-reported-over-different-timespans)):
+
+- `mtd_unique_users` for month-to-date
+- `ytd_unique_users` for year-to-date
+- `since_apr22_unique_users` for since the launch
+
+The `WHERE from_date BETWEEN ...` bounds set the "as of" reporting date; the
+most recent row in the window holds the current cumulative total.
+
+::: {.panel-tabset}
+
+## SQL
+
+Month-to-date:
+
+```sql
+WITH ranked AS (
+    SELECT
+        application_name,
+        from_date,
+        mtd_unique_users,
+        ROW_NUMBER() OVER (
+            PARTITION BY application_name
+            ORDER BY from_date DESC
+        ) AS rn
+    FROM ibm_verify.app_login_counts
+    WHERE from_date BETWEEN DATE '2026-06-01' AND DATE '2026-06-08'
+)
+
+SELECT
+    application_name,
+    mtd_unique_users
+FROM ranked
+WHERE rn = 1
+ORDER BY mtd_unique_users DESC;
+```
+
+Year-to-date:
+
+```sql
+WITH ranked AS (
+    SELECT
+        application_name,
+        from_date,
+        ytd_unique_users,
+        ROW_NUMBER() OVER (
+            PARTITION BY application_name
+            ORDER BY from_date DESC
+        ) AS rn
+    FROM ibm_verify.app_login_counts
+    WHERE from_date BETWEEN DATE '2026-01-01' AND DATE '2026-06-08'
+)
+
+SELECT
+    application_name,
+    ytd_unique_users
+FROM ranked
+WHERE rn = 1
+ORDER BY ytd_unique_users DESC;
+```
+
+Since launch:
+
+```sql
+WITH ranked AS (
+    SELECT
+        application_name,
+        from_date,
+        since_apr22_unique_users,
+        ROW_NUMBER() OVER (
+            PARTITION BY application_name
+            ORDER BY from_date DESC
+        ) AS rn
+    FROM ibm_verify.app_login_counts
+    WHERE from_date BETWEEN DATE '2026-04-22' AND DATE '2026-06-08'
+)
+
+SELECT
+    application_name,
+    since_apr22_unique_users
+FROM ranked
+WHERE rn = 1
+ORDER BY since_apr22_unique_users DESC;
+```
+
+## R
+
+Month-to-date:
+
+```r
+tbl(con, in_schema("ibm_verify", "app_login_counts")) |>
+  filter(
+    from_date >= as.Date("2026-06-01"),
+    from_date <= as.Date("2026-06-08")
+  ) |>
+  group_by(application_name) |>
+  slice_max(
+    from_date,
+    n = 1,
+    with_ties = FALSE
+  ) |>
+  select(
+    application_name,
+    mtd_unique_users
+  ) |>
+  arrange(desc(mtd_unique_users))
+```
+
+Year-to-date:
+
+```r
+tbl(con, in_schema("ibm_verify", "app_login_counts")) |>
+  filter(
+    from_date >= as.Date("2026-01-01"),
+    from_date <= as.Date("2026-06-08")
+  ) |>
+  group_by(application_name) |>
+  slice_max(
+    from_date,
+    n = 1,
+    with_ties = FALSE
+  ) |>
+  select(
+    application_name,
+    ytd_unique_users
+  ) |>
+  arrange(desc(ytd_unique_users))
+```
+
+Since launch:
+
+```r
+tbl(con, in_schema("ibm_verify", "app_login_counts")) |>
+  filter(
+    from_date >= as.Date("2026-04-22"),
+    from_date <= as.Date("2026-06-08")
+  ) |>
+  group_by(application_name) |>
+  slice_max(
+    from_date,
+    n = 1,
+    with_ties = FALSE
+  ) |>
+  select(
+    application_name,
+    since_apr22_unique_users
+  ) |>
+  arrange(desc(since_apr22_unique_users))
+```
+
+:::
+
+*Interpretation notes.* Each column resets on its own cadence: `mtd_unique_users`
+resets at the start of each month and `ytd_unique_users` at the start of each
+calendar year. `since_apr22_unique_users` does not reset. Do not sum these
+columns across rows; they are already cumulative.
