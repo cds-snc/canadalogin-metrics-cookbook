@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>About – CanadaLogin Metrics Cookbook</title>
+<title>Notes on Metric Interpretation – CanadaLogin Metrics Cookbook</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,24 +23,23 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../">
-<link href="../catalog/ibm_verify.html" rel="next">
-<link href="../cookbook/notes.html" rel="prev">
-<script src="../site_libs/quarto-html/quarto.js"></script>
-<script src="../site_libs/quarto-html/popper.min.js"></script>
-<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-2486e1f0a3ee9ee1fc393803a1361cdb.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-f90a1b115807ea56b20e50efb3bb25e2.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./03-cross-source.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-2486e1f0a3ee9ee1fc393803a1361cdb.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-f90a1b115807ea56b20e50efb3bb25e2.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -81,7 +80,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../catalog/index.html">Data Catalog</a></li><li class="breadcrumb-item"><a href="../catalog/index.html"><span class="chapter-title">About</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./90-notes.html"><span class="chapter-title">Notes on Metric Interpretation</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -96,7 +95,7 @@ ul.task-list li input[type="checkbox"] {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="../">CanadaLogin Metrics Cookbook</a> 
+      <a href="./">CanadaLogin Metrics Cookbook</a> 
     </div>
       </div>
         <div class="mt-2 flex-shrink-0 align-items-center">
@@ -108,83 +107,53 @@ ul.task-list li input[type="checkbox"] {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Introduction</span></a>
+  <a href="./index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">IBM Verify</span></a>
   </div>
 </li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
- <span class="menu-text">Metrics Cookbook</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+        <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../cookbook/ibm_verify.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">IBM Verify</span></a>
+  <a href="./01-ibm-verify.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">How to use this cookbook</span></a>
   </div>
 </li>
-          <li class="sidebar-item">
+        <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../cookbook/call_centre.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Call Centre</span></a>
+  <a href="./02-call-centre.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Call Centre</span></a>
   </div>
 </li>
-          <li class="sidebar-item">
+        <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../cookbook/notes.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Notes on Metric Interpretation</span></a>
+  <a href="./03-cross-source.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Cross-Source Metrics</span></a>
   </div>
 </li>
-      </ul>
-  </li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
- <span class="menu-text">Data Catalog</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+        <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../catalog/index.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">About</span></a>
+  <a href="./90-notes.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">Notes on Metric Interpretation</span></a>
   </div>
 </li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../catalog/ibm_verify.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">IBM Verify</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../catalog/call_centre.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Call Centre</span></a>
-  </div>
-</li>
-      </ul>
-  </li>
     </ul>
     </div>
-    <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">Table of contents</h2>
-   
-  <ul>
-  <li><a href="#ibm-verify" id="toc-ibm-verify" class="nav-link active" data-scroll-target="#ibm-verify">IBM Verify</a></li>
-  <li><a href="#call-centre" id="toc-call-centre" class="nav-link" data-scroll-target="#call-centre">Call Centre</a></li>
-  <li><a href="#conventions" id="toc-conventions" class="nav-link" data-scroll-target="#conventions">Conventions</a></li>
-  </ul>
-</nav>
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#sign-ins-are-not-users" id="toc-sign-ins-are-not-users" class="nav-link active" data-scroll-target="#sign-ins-are-not-users">Sign-ins are not users</a></li>
+  <li><a href="#daily-unique-users-are-not-the-same-as-period-unique-users" id="toc-daily-unique-users-are-not-the-same-as-period-unique-users" class="nav-link" data-scroll-target="#daily-unique-users-are-not-the-same-as-period-unique-users">Daily unique users are not the same as period unique users</a></li>
+  <li><a href="#weighted-averages-should-be-used-for-call-centre-averages" id="toc-weighted-averages-should-be-used-for-call-centre-averages" class="nav-link" data-scroll-target="#weighted-averages-should-be-used-for-call-centre-averages">Weighted averages should be used for call centre averages</a></li>
+  <li><a href="#internal-applications-should-usually-be-excluded-from-external-adoption-reporting" id="toc-internal-applications-should-usually-be-excluded-from-external-adoption-reporting" class="nav-link" data-scroll-target="#internal-applications-should-usually-be-excluded-from-external-adoption-reporting">Internal applications should usually be excluded from external adoption reporting</a></li>
+  <li><a href="#cross-source-metrics-should-be-interpreted-carefully" id="toc-cross-source-metrics-should-be-interpreted-carefully" class="nav-link" data-scroll-target="#cross-source-metrics-should-be-interpreted-carefully">Cross-source metrics should be interpreted carefully</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../catalog/index.html">Data Catalog</a></li><li class="breadcrumb-item"><a href="../catalog/index.html"><span class="chapter-title">About</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-title">About</span></h1>
+<h1 class="title"><span class="chapter-title">Notes on Metric Interpretation</span></h1>
 </div>
 
 
@@ -201,27 +170,37 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>The data catalog describes the tables available to analysts. It is distinct from the metrics cookbook; the cookbook explains how to <em>derive</em> metrics, while the catalog describes the <em>tables</em> those metrics are calculated from, field by field.</p>
-<section id="ibm-verify" class="level2">
-<h2 class="anchored" data-anchor-id="ibm-verify"><a href="../catalog/ibm_verify.html">IBM Verify</a></h2>
-<p>Derived tables in the <code>ibm_verify</code> schema, pulled from the IBM Verify reporting API.</p>
-<ul>
-<li><a href="../catalog/ibm_verify.html#app_login_counts"><code>app_login_counts</code></a> - daily sign-in counts by application</li>
-<li><a href="../catalog/ibm_verify.html#auth_total_logins"><code>auth_total_logins</code></a> - daily, CanadaLogin-wide sign-in totals</li>
-<li><a href="../catalog/ibm_verify.html#mfa_activity"><code>mfa_activity</code></a> - multi-factor authentication activity by factor and result</li>
-</ul>
+<section id="sign-ins-are-not-users" class="level2">
+<h2 class="anchored" data-anchor-id="sign-ins-are-not-users">Sign-ins are not users</h2>
+<p>A sign-in count measures events. One person can sign in multiple times.</p>
+<p>Use sign-ins when the question is about volume or system usage.</p>
+<p>Use unique users when the question is about reach.</p>
 </section>
-<section id="call-centre" class="level2">
-<h2 class="anchored" data-anchor-id="call-centre"><a href="../catalog/call_centre.html">Call Centre</a></h2>
-<p>Weekly call centre data extracted from the CanadaLogin support weekly Excel reports.</p>
-<ul>
-<li><a href="../catalog/call_centre.html#weekly_activity_report"><code>weekly_activity_report</code></a> - weekly call volume and service-level summary</li>
-<li><a href="../catalog/call_centre.html#weekly_topic_dump"><code>weekly_topic_dump</code></a> - individual call records with topic classifications</li>
-</ul>
+<section id="daily-unique-users-are-not-the-same-as-period-unique-users" class="level2">
+<h2 class="anchored" data-anchor-id="daily-unique-users-are-not-the-same-as-period-unique-users">Daily unique users are not the same as period unique users</h2>
+<p>Summing daily unique users gives a measure of user-days, not distinct people over the full period.</p>
+<p>For distinct people over a longer period, use a cumulative unique user field such as <code>ytd_unique_users</code> or <code>since_apr22_unique_users</code>, if available and valid.</p>
 </section>
-<section id="conventions" class="level2">
-<h2 class="anchored" data-anchor-id="conventions">Conventions</h2>
-<p>Field types use Parquet-style names (boolean, date, float, integer, string, time, timestamp). For string columns that behave as factors, the possible values are listed. Cumulative fields (those that only increase within a window and then reset) are called out explicitly. Proportions are stored as values between 0 and 1, not 0 and 100.</p>
+<section id="weighted-averages-should-be-used-for-call-centre-averages" class="level2">
+<h2 class="anchored" data-anchor-id="weighted-averages-should-be-used-for-call-centre-averages">Weighted averages should be used for call centre averages</h2>
+<p>When calculating average call length or average delay across multiple weeks, use a weighted average based on <code>calls_answered</code>.</p>
+<p>A simple average of weekly averages may give too much influence to low-volume weeks.</p>
+</section>
+<section id="internal-applications-should-usually-be-excluded-from-external-adoption-reporting" class="level2">
+<h2 class="anchored" data-anchor-id="internal-applications-should-usually-be-excluded-from-external-adoption-reporting">Internal applications should usually be excluded from external adoption reporting</h2>
+<p>The following applications are currently treated as internal:</p>
+<ul>
+<li>Flow Application</li>
+<li>GCS Migration Solution</li>
+<li>GC Sign In - Profile Management App</li>
+</ul>
+<p>Whether to exclude them depends on the reporting question.</p>
+</section>
+<section id="cross-source-metrics-should-be-interpreted-carefully" class="level2">
+<h2 class="anchored" data-anchor-id="cross-source-metrics-should-be-interpreted-carefully">Cross-source metrics should be interpreted carefully</h2>
+<p>Metrics that combine IBM Verify and call centre data are useful for directional analysis, but they may not prove causation.</p>
+<p>For example, a rise in calls per 1,000 sign-ins may reflect sign-in friction, but it may also reflect a new application launch, a communications campaign, a policy change, a service incident, or unrelated call drivers.</p>
+<p>Cross-source metrics should be interpreted alongside operational context.</p>
 
 
 </section>
@@ -649,14 +628,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../cookbook/notes.html" class="pagination-link" aria-label="Notes on Metric Interpretation">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-title">Notes on Metric Interpretation</span></span>
+      <a href="./03-cross-source.html" class="pagination-link" aria-label="Cross-Source Metrics">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-title">Cross-Source Metrics</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../catalog/ibm_verify.html" class="pagination-link" aria-label="IBM Verify">
-        <span class="nav-page-text"><span class="chapter-title">IBM Verify</span></span> <i class="bi bi-arrow-right-short"></i>
-      </a>
   </div>
 </nav>
 </div> <!-- /content -->
