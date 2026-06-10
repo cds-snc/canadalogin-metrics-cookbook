@@ -30,12 +30,7 @@ WHERE CAST(date_range_start AS DATE) BETWEEN DATE '2026-01-01' AND DATE '2026-05
 ## R
 
 ```r
-weekly_activity_report <- tbl(
-  con,
-  in_schema("call_centre", "weekly_activity_report")
-)
-
-weekly_activity_report |>
+tbl(con, in_schema("call_centre", "weekly_activity_report")) |>
   filter(
     as.Date(date_range_start) >= as.Date("2026-01-01"),
     as.Date(date_range_start) <= as.Date("2026-05-31")
@@ -49,6 +44,6 @@ weekly_activity_report |>
 
 :::
 
-*Interpretation.* The rate is a proportion between 0 and 1. A high answer rate
+*Interpretation notes.* The rate is a proportion between 0 and 1. A high answer rate
 with rising delay can still indicate strain: calls are answered eventually, but
 callers wait longer to reach an agent.

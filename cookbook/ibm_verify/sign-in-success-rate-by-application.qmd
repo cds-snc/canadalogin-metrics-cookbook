@@ -26,7 +26,7 @@ SELECT
     CAST(SUM(successful_logins) AS DOUBLE)
         / NULLIF(SUM(successful_logins + failed_logins), 0) AS sign_in_success_rate
 FROM ibm_verify.app_login_counts
--- select an arbitrary reporting period
+-- set the reporting window; see the timespans note in cookbook/notes.qmd
 WHERE from_date BETWEEN DATE '2026-01-01' AND DATE '2026-05-28'
 -- optionally filter out internal applications
   AND application_name NOT IN (
@@ -41,19 +41,14 @@ ORDER BY sign_in_success_rate DESC;
 ## R
 
 ```r
-app_login_counts <- tbl(
-  con,
-  in_schema("ibm_verify", "app_login_counts")
-)
-
 internal_apps <- c(
   "Flow Application",
   "GCS Migration Solution",
   "GC Sign In - Profile Management App"
 )
 
-app_login_counts |>
-  # select an arbitrary reporting period
+tbl(con, in_schema("ibm_verify", "app_login_counts")) |>
+  # set the reporting window; see the timespans note in cookbook/notes.qmd
   filter(
     from_date >= as.Date("2026-01-01"),
     from_date <= as.Date("2026-05-28"),
@@ -63,7 +58,7 @@ app_login_counts |>
   group_by(application_name) |>
   summarise(
     sign_in_success_rate =
-      sum(successful_logins, na.rm = TRUE) /
+      sum(as.double(successful_logins), na.rm = TRUE) /
         sum(successful_logins + failed_logins, na.rm = TRUE)
   ) |>
   arrange(desc(sign_in_success_rate))
@@ -71,7 +66,7 @@ app_login_counts |>
 
 :::
 
-*Interpretation.* Compare applications against each other rather than against an
+*Interpretation notes.* Compare applications against each other rather than against an
 absolute target. Note that this measures authentication against a relying party
 *after already signing-in to CanadaLogin*. It doesn't requiring entering a password
 or two-factor, it simply checks if a given credential is valid for signing in to

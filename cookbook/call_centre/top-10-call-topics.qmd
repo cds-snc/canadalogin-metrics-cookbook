@@ -50,28 +50,24 @@ LIMIT 10;
 ## R
 
 ```r
-weekly_topic_dump <- tbl(
-  con,
-  in_schema("call_centre", "weekly_topic_dump")
-)
-
-weekly_topic_dump |>
+tbl(con, in_schema("call_centre", "weekly_topic_dump")) |>
   mutate(
     call_topic = str_squish(statobject)
   ) |>
   count(call_topic, name = "topic_count") |>
   mutate(
-    topic_share = topic_count / sum(topic_count)
+    topic_share = as.double(topic_count) / sum(topic_count)
   ) |>
   slice_max(
     topic_count,
-    n = 10
+    n = 10,
+    with_ties = FALSE
   ) |>
   arrange(desc(topic_count))
 ```
 
 :::
 
-*Interpretation.* The top 10 view is useful for quick reporting but may hide
+*Interpretation notes.* The top 10 view is useful for quick reporting but may hide
 important lower-volume issues. In cases where there are not many calls, it may be
 useful to limit this list to a top 5, or to truncate ties at the end of the list.

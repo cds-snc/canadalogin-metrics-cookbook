@@ -52,12 +52,7 @@ ORDER BY date_range_start;
 Weighted average over a period:
 
 ```r
-weekly_activity_report <- tbl(
-  con,
-  in_schema("call_centre", "weekly_activity_report")
-)
-
-weekly_activity_report |>
+tbl(con, in_schema("call_centre", "weekly_activity_report")) |>
   filter(
     as.Date(date_range_start) >= as.Date("2026-01-01"),
     as.Date(date_range_start) <= as.Date("2026-05-31")
@@ -72,12 +67,7 @@ weekly_activity_report |>
 By week:
 
 ```r
-weekly_activity_report <- tbl(
-  con,
-  in_schema("call_centre", "weekly_activity_report")
-)
-
-weekly_activity_report |>
+tbl(con, in_schema("call_centre", "weekly_activity_report")) |>
   arrange(date_range_start) |>
   select(
     date_range_start,
@@ -89,5 +79,5 @@ weekly_activity_report |>
 
 :::
 
-*Interpretation.* Use a weighted average rather than a simple average of weekly
+*Interpretation notes.* Use a weighted average rather than a simple average of weekly
 averages. A simple average may give too much influence to low-volume weeks.

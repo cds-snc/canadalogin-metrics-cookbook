@@ -41,23 +41,18 @@ ORDER BY topic_count DESC;
 ## R
 
 ```r
-weekly_topic_dump <- tbl(
-  con,
-  in_schema("call_centre", "weekly_topic_dump")
-)
-
-weekly_topic_dump |>
+tbl(con, in_schema("call_centre", "weekly_topic_dump")) |>
   mutate(
     call_topic = str_squish(statobject)
   ) |>
   count(call_topic, name = "topic_count") |>
   mutate(
-    topic_share = topic_count / sum(topic_count)
+    topic_share = as.double(topic_count) / sum(topic_count)
   ) |>
   arrange(desc(topic_count))
 ```
 
 :::
 
-*Interpretation.* Topic share is useful for comparing relative demand across
+*Interpretation notes.* Topic share is useful for comparing relative demand across
 contact reasons. Interpret alongside total call volume.

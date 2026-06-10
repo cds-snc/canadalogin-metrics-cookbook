@@ -30,7 +30,7 @@ SELECT
   application_name,
   SUM(total_logins) AS total_sign_ins
 FROM   ibm_verify.app_login_counts
--- select an arbitrary reporting period
+-- set the reporting window; see the timespans note in cookbook/notes.qmd
 WHERE  from_date BETWEEN DATE '2026-01-01' AND DATE '2026-05-28'
 -- optionally filter out internal applications
   AND application_name NOT IN (
@@ -45,19 +45,14 @@ ORDER  BY total_sign_ins DESC;
 ## R
 
 ```r
-app_login_counts <- tbl(
-  con,
-  in_schema("ibm_verify", "app_login_counts")
-)
-
 internal_apps <- c(
   "Flow Application",
   "GCS Migration Solution",
   "GC Sign In - Profile Management App"
 )
 
-app_login_counts |>
-  # select an arbitrary reporting period
+tbl(con, in_schema("ibm_verify", "app_login_counts")) |>
+  # set the reporting window; see the timespans note in cookbook/notes.qmd
   filter(
     from_date >= as.Date("2026-01-01"),
     from_date <= as.Date("2026-05-28"),
@@ -73,6 +68,6 @@ app_login_counts |>
 
 :::
 
-*Interpretation.* A sign-in count measures events, not people. Use this metric
+*Interpretation notes.* A sign-in count measures events, not people. Use this metric
 when the question is about system usage or activity volume. Use unique user
 metrics when the question is about reach.

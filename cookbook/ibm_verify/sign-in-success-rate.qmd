@@ -25,33 +25,28 @@ SELECT
     CAST(SUM(successful_logins) AS DOUBLE)
         / NULLIF(SUM(successful_logins + failed_logins), 0) AS sign_in_success_rate
 FROM ibm_verify.auth_total_logins
--- select an arbitrary reporting period
+-- set the reporting window; see the timespans note in cookbook/notes.qmd
 WHERE from_date BETWEEN DATE '2026-01-01' AND DATE '2026-05-28';
 ```
 
 ## R
 
 ```r
-auth_total_logins <- tbl(
-  con,
-  in_schema("ibm_verify", "auth_total_logins")
-)
-
-auth_total_logins |>
-  # select an arbitrary reporting period
+tbl(con, in_schema("ibm_verify", "auth_total_logins")) |>
+  # set the reporting window; see the timespans note in cookbook/notes.qmd
   filter(
     from_date >= as.Date("2026-01-01"),
     from_date <= as.Date("2026-05-28")
   ) |>
   summarise(
     sign_in_success_rate =
-      sum(successful_logins, na.rm = TRUE) /
+      sum(as.double(successful_logins), na.rm = TRUE) /
         sum(successful_logins + failed_logins, na.rm = TRUE)
   )
 ```
 
 :::
 
-*Interpretation.* The rate is a proportion between 0 and 1. Read it alongside
+*Interpretation notes.* The rate is a proportion between 0 and 1. Read it alongside
 sign-in volume: a low success rate on very low volume may just be noise, while
 the same rate on high volume is a real signal.

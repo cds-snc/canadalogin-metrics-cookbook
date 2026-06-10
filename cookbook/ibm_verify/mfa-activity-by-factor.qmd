@@ -28,7 +28,7 @@ SELECT
     CAST(SUM(count) AS DOUBLE)
         / NULLIF(SUM(SUM(count)) OVER (), 0) AS factor_share
 FROM ibm_verify.mfa_activity
--- select an arbitrary reporting period
+-- set the reporting window; see the timespans note in cookbook/notes.qmd
 WHERE from_date BETWEEN DATE '2026-01-01' AND DATE '2026-05-28'
 GROUP BY mfa_type
 ORDER BY mfa_authentications DESC;
@@ -37,13 +37,8 @@ ORDER BY mfa_authentications DESC;
 ## R
 
 ```r
-mfa_activity <- tbl(
-  con,
-  in_schema("ibm_verify", "mfa_activity")
-)
-
-mfa_activity |>
-  # select an arbitrary reporting period
+tbl(con, in_schema("ibm_verify", "mfa_activity")) |>
+  # set the reporting window; see the timespans note in cookbook/notes.qmd
   filter(
     from_date >= as.Date("2026-01-01"),
     from_date <= as.Date("2026-05-28")
@@ -53,13 +48,13 @@ mfa_activity |>
     mfa_authentications = sum(count, na.rm = TRUE)
   ) |>
   mutate(
-    factor_share = mfa_authentications / sum(mfa_authentications)
+    factor_share = as.double(mfa_authentications) / sum(mfa_authentications)
   ) |>
   arrange(desc(mfa_authentications))
 ```
 
 :::
 
-*Interpretation.* `factor_share` is a proportion between 0 and 1 and sums to 1
+*Interpretation notes.* `factor_share` is a proportion between 0 and 1 and sums to 1
 across all factors. Combine with the MFA success rate to spot factors that are
 both heavily used and failing often.

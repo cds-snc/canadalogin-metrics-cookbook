@@ -36,12 +36,7 @@ WHERE CAST(date_range_start AS DATE) BETWEEN DATE '2026-01-01' AND DATE '2026-05
 ## R
 
 ```r
-weekly_activity_report <- tbl(
-  con,
-  in_schema("call_centre", "weekly_activity_report")
-)
-
-weekly_activity_report |>
+tbl(con, in_schema("call_centre", "weekly_activity_report")) |>
   filter(
     as.Date(date_range_start) >= as.Date("2026-01-01"),
     as.Date(date_range_start) <= as.Date("2026-05-31")
@@ -55,6 +50,6 @@ weekly_activity_report |>
 
 :::
 
-*Interpretation.* The result is a proportion between 0 and 1. Because only the
+*Interpretation notes.* The result is a proportion between 0 and 1. Because only the
 weekly proportion is stored, the weighted average is an approximation of the true
 within-60s rate, but it is far closer than a simple average of weekly values.

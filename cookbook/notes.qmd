@@ -16,6 +16,34 @@ Summing daily unique users gives a measure of user-days, not distinct people ove
 
 For distinct people over a longer period, use a cumulative unique user field such as `ytd_unique_users` or `since_apr22_unique_users`, if available and valid.
 
+## Metrics can be reported over different timespans
+
+Most metrics are meaningful over more than one window. The three standard
+reporting windows are month-to-date, year-to-date, and since the April 22, 2026
+public launch. How you select a window depends on the kind of metric.
+
+**Additive metrics** (sign-ins, MFA attempts, success rates, averages) are
+computed by aggregating daily rows, so the window is just the date bounds in the
+`WHERE from_date BETWEEN DATE '<start>' AND DATE '<end>'` clause. The same query
+covers any window; only the start date changes:
+
+- Month-to-date: first of the current month (for example, `2026-06-01`)
+- Year-to-date: `2026-01-01`
+- Since launch: `2026-04-22`
+
+Set the end date to the reporting date.
+
+**Cumulative unique-user metrics** cannot be derived by filtering a date range,
+because summing daily `unique_users` counts user-days, not distinct people.
+Instead, pick the pre-computed column that matches the window and take its
+latest value:
+
+- Month-to-date: `mtd_unique_users`
+- Year-to-date: `ytd_unique_users`
+- Since launch: `since_apr22_unique_users`
+
+Never sum these cumulative columns across rows.
+
 ## Weighted averages should be used for call centre averages
 
 When calculating average call length or average delay across multiple weeks, use a weighted average based on `calls_answered`.

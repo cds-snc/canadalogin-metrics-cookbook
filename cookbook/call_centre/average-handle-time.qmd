@@ -34,12 +34,7 @@ WHERE CAST(date_range_start AS DATE) BETWEEN DATE '2026-01-01' AND DATE '2026-05
 ## R
 
 ```r
-weekly_activity_report <- tbl(
-  con,
-  in_schema("call_centre", "weekly_activity_report")
-)
-
-weekly_activity_report |>
+tbl(con, in_schema("call_centre", "weekly_activity_report")) |>
   filter(
     as.Date(date_range_start) >= as.Date("2026-01-01"),
     as.Date(date_range_start) <= as.Date("2026-05-31")
@@ -53,5 +48,5 @@ weekly_activity_report |>
 
 :::
 
-*Interpretation.* Average handle time is always at least as large as average call
+*Interpretation notes.* Average handle time is always at least as large as average call
 length. A widening gap between the two points to growing after-call work.
