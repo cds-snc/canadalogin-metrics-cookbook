@@ -12,7 +12,7 @@ per-application breakdown.
 
 Queried directly from the IBM Verify production instance via API.
 
-* **Updated**: Daily, early in the morning
+* **Updated**: Daily, at 6am America/Toronto
 * **Steward**: EDCP Data and Research Team
 * **Contact**: [Yinlin Zhang](mailto:yinlin.zhang@cds-snc.ca)
 
@@ -24,9 +24,9 @@ One row per day.
 |---|---|---|
 | from_date | timestamp | Start of the reporting day (midnight) |
 | to_date | timestamp | End of the reporting day (23:59:59) |
-| unique_users | integer | Number of distinct users who signed in to CanadaLogin that day |
+| unique_users | integer | Number of distinct users who signed in to CanadaLogin that day. In IBM Verify, this is referred to as "unique logins". | 
 | failed_logins | integer | Number of failed sign-in attempts that day |
-| successful_logins | integer | Number of successful sign-ins that day |
+| successful_logins | integer | Number of successful authentication events that day. |
 | mtd_unique_users | integer | Cumulative distinct users month-to-date. Resets at the start of each month |
 | ytd_unique_users | integer | Cumulative distinct users year-to-date. Resets at the start of each calendar year |
 | since_apr22_unique_users | integer | Cumulative distinct users since the April 22, 2026 launch period |
@@ -39,3 +39,9 @@ One row per day.
 `unique_users`, `failed_logins`, and `successful_logins` are daily values. The
 `mtd_`, `ytd_`, and `since_apr22_` unique-user fields are cumulative and should
 not be summed across rows; take the latest value within the window instead.
+
+Logging in with two factor counts as many successful logins. For example, entering a
+username and password, followed by a second factor like an OTP, counts as two successful
+logins. Summing "successful_logins" can therefore be a misleading indicator of actual
+user engagement. Instead, use the `unique_users` field, which is daily active users, and
+is a measure of the number of users who engaged with the system in a given day.

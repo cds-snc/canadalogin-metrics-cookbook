@@ -12,7 +12,7 @@ MFA factor type, and result.
 
 Queried directly from the IBM Verify production instance via API.
 
-* **Updated**: Daily, early in the morning
+* **Updated**: Daily, at 6am America/Toronto
 * **Steward**: EDCP Data and Research Team
 * **Contact**: [Yinlin Zhang](mailto:yinlin.zhang@cds-snc.ca)
 
@@ -25,13 +25,21 @@ One row per day per `mfa_type` per `result`.
 | from_date | timestamp | Start of the reporting day (midnight) |
 | to_date | timestamp | End of the reporting day (23:59:59) |
 | mfa_type | string | The MFA factor used. One of "sms_otp", "fido2", "kq", "totp", "voice_otp", "qr", "ibm_verify_push", "email_otp" |
-| result | string | Outcome of the MFA attempts. One of "success" or "failure" |
+| result | string | MFA events, One of "success", "failure" or "sent". |
 | count | integer | Number of MFA attempts for this day, factor, and result |
 | fetched_at | timestamp | When the aggregation last fetched this row |
 | date | string | The reporting day as a text date (for example, "2026-05-31"). Mirrors `from_date` |
 
 ## Notes
 
-Because the grain is day x factor x result, totalling MFA activity for a day
-requires summing `count` across all `mfa_type` and `result` rows for that day.
-Filter on `result = 'success'` to count successful second-factor authentications.
+Successfully entering an MFA challenge counts as two events - first, a "sent" event (for
+events that are initiated, like email OTP and SMS OTP) and then either a "success" or 
+"failure" event, depending on how the user responds. It possible to generate multiple 
+"success/failure" events on a single "sent" event if the user inputs their OTP 
+incorrectly first and then correctly.
+
+When calculating MFA usage metrics, use the sum of the "sent" events. Sending an email
+OTP but not using it is still usage.
+
+When calculating success rate metrics, use the number of successful events divided
+by the sum of the success and failure events.
