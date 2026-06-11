@@ -872,7 +872,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>total MFA challenges</li>
 <li>MFA volume</li>
 </ul>
-<p><strong>Calculation.</strong> Sum <code>count</code> over the selected reporting period. Add a <code>result</code> breakdown to separate successes from failures.</p>
+<p><strong>Calculation.</strong> Sum <code>count</code> over the selected reporting period. OTP factor types (<code>sms_otp</code>, <code>email_otp</code>, <code>voice_otp</code>) record both a <code>sent</code> event and a subsequent <code>success</code>/<code>failure</code> event for the same challenge; to avoid double-counting, only the <code>sent</code> row is used for these types. Non-OTP factor types (<code>fido2</code>, <code>kq</code>, <code>totp</code>, <code>ibm_verify_push</code>) do not generate a <code>sent</code> event, so their <code>success</code>/<code>failure</code> rows are used instead. Add a <code>result</code> breakdown to separate successes from failures.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-10-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-10-1" role="tab" aria-controls="tabset-10-1" aria-selected="true">SQL</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-10-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-10-2" role="tab" aria-controls="tabset-10-2" aria-selected="false">R</a></li></ul>
 <div class="tab-content">
@@ -881,18 +881,36 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">SUM</span>(<span class="fu">count</span>) <span class="kw">AS</span> mfa_authentications</span>
 <span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> ibm_verify.mfa_activity</span>
 <span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="co">-- set the reporting window; see the timespans note in cookbook/notes.qmd</span></span>
-<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> from_date <span class="kw">BETWEEN</span> <span class="dt">DATE</span> <span class="st">'2026-01-01'</span> <span class="kw">AND</span> <span class="dt">DATE</span> <span class="st">'2026-05-28'</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> from_date <span class="kw">BETWEEN</span> <span class="dt">DATE</span> <span class="st">'2026-01-01'</span> <span class="kw">AND</span> <span class="dt">DATE</span> <span class="st">'2026-05-28'</span></span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- OTP types record both a "sent" event and a "success"/"failure" event for</span></span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- the same challenge. Counting all three would double-count these attempts.</span></span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Non-OTP types (fido2, kq, totp, ibm_verify_push) have no "sent" event</span></span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- and must be counted through their "success"/"failure" rows instead.</span></span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">AND</span> (</span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>    result <span class="op">=</span> <span class="st">'sent'</span></span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">OR</span> (</span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>      result <span class="kw">IN</span> (<span class="st">'success'</span>, <span class="st">'failure'</span>)</span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a>      <span class="kw">AND</span> mfa_type <span class="kw">NOT</span> <span class="kw">IN</span> (<span class="st">'sms_otp'</span>, <span class="st">'email_otp'</span>, <span class="st">'voice_otp'</span>)</span>
+<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a>  );</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div id="tabset-10-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-10-2-tab">
-<div class="sourceCode" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tbl</span>(con, <span class="fu">in_schema</span>(<span class="st">"ibm_verify"</span>, <span class="st">"mfa_activity"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># set the reporting window; see the timespans note in cookbook/notes.qmd</span></span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(</span>
-<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>    from_date <span class="sc">&gt;=</span> <span class="fu">as.Date</span>(<span class="st">"2026-01-01"</span>),</span>
-<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>    from_date <span class="sc">&lt;=</span> <span class="fu">as.Date</span>(<span class="st">"2026-05-28"</span>)</span>
-<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
-<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">mfa_authentications =</span> <span class="fu">sum</span>(count, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>otp_types <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"sms_otp"</span>, <span class="st">"email_otp"</span>, <span class="st">"voice_otp"</span>)</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tbl</span>(con, <span class="fu">in_schema</span>(<span class="st">"ibm_verify"</span>, <span class="st">"mfa_activity"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># set the reporting window; see the timespans note in cookbook/notes.qmd</span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(</span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>    from_date <span class="sc">&gt;=</span> <span class="fu">as.Date</span>(<span class="st">"2026-01-01"</span>),</span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>    from_date <span class="sc">&lt;=</span> <span class="fu">as.Date</span>(<span class="st">"2026-05-28"</span>),</span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># OTP types record both a "sent" and a "success"/"failure" event per</span></span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># challenge; use only "sent" for these to avoid double-counting.</span></span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Non-OTP types have no "sent" event, so use "success"/"failure".</span></span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>    result <span class="sc">==</span> <span class="st">"sent"</span> <span class="sc">|</span></span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a>      (result <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"success"</span>, <span class="st">"failure"</span>) <span class="sc">&amp;</span> <span class="sc">!</span>mfa_type <span class="sc">%in%</span> otp_types)</span>
+<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">mfa_authentications =</span> <span class="fu">sum</span>(count, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </div>
@@ -907,7 +925,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>second-factor success rate</li>
 <li>MFA completion rate</li>
 </ul>
-<p><strong>Calculation.</strong> Divide the sum of <code>count</code> where <code>result = 'success'</code> by the sum of <code>count</code> across all results.</p>
+<p><strong>Calculation.</strong> Divide the sum of <code>count</code> where <code>result = 'success'</code> by the sum of <code>count</code> where <code>result</code> is <code>'success'</code> or <code>'failure'</code>. OTP factor types also produce a <code>'sent'</code> event per challenge, which must be excluded from both the numerator and the denominator — <code>sent</code> rows do not represent outcomes.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-11-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-11-1" role="tab" aria-controls="tabset-11-1" aria-selected="true">SQL</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-11-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-11-2" role="tab" aria-controls="tabset-11-2" aria-selected="false">R</a></li></ul>
 <div class="tab-content">
@@ -917,20 +935,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>        <span class="op">/</span> <span class="fu">NULLIF</span>(<span class="fu">SUM</span>(<span class="fu">count</span>), <span class="dv">0</span>) <span class="kw">AS</span> mfa_success_rate</span>
 <span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> ibm_verify.mfa_activity</span>
 <span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a><span class="co">-- set the reporting window; see the timespans note in cookbook/notes.qmd</span></span>
-<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> from_date <span class="kw">BETWEEN</span> <span class="dt">DATE</span> <span class="st">'2026-01-01'</span> <span class="kw">AND</span> <span class="dt">DATE</span> <span class="st">'2026-05-28'</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> from_date <span class="kw">BETWEEN</span> <span class="dt">DATE</span> <span class="st">'2026-01-01'</span> <span class="kw">AND</span> <span class="dt">DATE</span> <span class="st">'2026-05-28'</span></span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- exclude "sent" rows; success rate is calculated from outcome events only.</span></span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- including "sent" would inflate the denominator and deflate the rate.</span></span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">AND</span> result <span class="kw">IN</span> (<span class="st">'success'</span>, <span class="st">'failure'</span>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div id="tabset-11-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-11-2-tab">
 <div class="sourceCode" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tbl</span>(con, <span class="fu">in_schema</span>(<span class="st">"ibm_verify"</span>, <span class="st">"mfa_activity"</span>)) <span class="sc">|&gt;</span></span>
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># set the reporting window; see the timespans note in cookbook/notes.qmd</span></span>
 <span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(</span>
 <span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>    from_date <span class="sc">&gt;=</span> <span class="fu">as.Date</span>(<span class="st">"2026-01-01"</span>),</span>
-<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>    from_date <span class="sc">&lt;=</span> <span class="fu">as.Date</span>(<span class="st">"2026-05-28"</span>)</span>
-<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
-<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">mfa_success_rate =</span></span>
-<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>      <span class="fu">sum</span>(<span class="fu">if_else</span>(result <span class="sc">==</span> <span class="st">"success"</span>, <span class="fu">as.double</span>(count), <span class="dv">0</span>), <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">/</span></span>
-<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sum</span>(count, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>    from_date <span class="sc">&lt;=</span> <span class="fu">as.Date</span>(<span class="st">"2026-05-28"</span>),</span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># exclude "sent" rows; success rate is calculated from outcome events only.</span></span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># including "sent" would inflate the denominator and deflate the rate.</span></span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>    result <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"success"</span>, <span class="st">"failure"</span>)</span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">mfa_success_rate =</span></span>
+<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a>      <span class="fu">sum</span>(<span class="fu">if_else</span>(result <span class="sc">==</span> <span class="st">"success"</span>, <span class="fu">as.double</span>(count), <span class="dv">0</span>), <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">/</span></span>
+<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sum</span>(count, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </div>
