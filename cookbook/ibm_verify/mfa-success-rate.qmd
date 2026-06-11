@@ -13,7 +13,9 @@ problems (for example, undelivered SMS or email OTPs), or attack traffic.
 - MFA completion rate
 
 **Calculation.** Divide the sum of `count` where `result = 'success'` by the sum
-of `count` across all results.
+of `count` where `result` is `'success'` or `'failure'`. OTP factor types also
+produce a `'sent'` event per challenge, which must be excluded from both the
+numerator and the denominator — `sent` rows do not represent outcomes.
 
 ::: {.panel-tabset}
 
@@ -25,7 +27,10 @@ SELECT
         / NULLIF(SUM(count), 0) AS mfa_success_rate
 FROM ibm_verify.mfa_activity
 -- set the reporting window; see the timespans note in cookbook/notes.qmd
-WHERE from_date BETWEEN DATE '2026-01-01' AND DATE '2026-05-28';
+WHERE from_date BETWEEN DATE '2026-01-01' AND DATE '2026-05-28'
+  -- exclude "sent" rows; success rate is calculated from outcome events only.
+  -- including "sent" would inflate the denominator and deflate the rate.
+  AND result IN ('success', 'failure');
 ```
 
 ## R
@@ -35,7 +40,10 @@ tbl(con, in_schema("ibm_verify", "mfa_activity")) |>
   # set the reporting window; see the timespans note in cookbook/notes.qmd
   filter(
     from_date >= as.Date("2026-01-01"),
-    from_date <= as.Date("2026-05-28")
+    from_date <= as.Date("2026-05-28"),
+    # exclude "sent" rows; success rate is calculated from outcome events only.
+    # including "sent" would inflate the denominator and deflate the rate.
+    result %in% c("success", "failure")
   ) |>
   summarise(
     mfa_success_rate =

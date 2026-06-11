@@ -12,8 +12,13 @@ not people, and includes both successful and failed challenges.
 - total MFA challenges
 - MFA volume
 
-**Calculation.** Sum `count` over the selected reporting period. Add a
-`result` breakdown to separate successes from failures.
+**Calculation.** Sum `count` over the selected reporting period. OTP factor
+types (`sms_otp`, `email_otp`, `voice_otp`) record both a `sent` event and a
+subsequent `success`/`failure` event for the same challenge; to avoid
+double-counting, only the `sent` row is used for these types. Non-OTP factor
+types (`fido2`, `kq`, `totp`, `ibm_verify_push`) do not generate a `sent`
+event, so their `success`/`failure` rows are used instead. Add a `result`
+breakdown to separate successes from failures.
 
 ::: {.panel-tabset}
 
@@ -24,17 +29,35 @@ SELECT
     SUM(count) AS mfa_authentications
 FROM ibm_verify.mfa_activity
 -- set the reporting window; see the timespans note in cookbook/notes.qmd
-WHERE from_date BETWEEN DATE '2026-01-01' AND DATE '2026-05-28';
+WHERE from_date BETWEEN DATE '2026-01-01' AND DATE '2026-05-28'
+  -- OTP types record both a "sent" event and a "success"/"failure" event for
+  -- the same challenge. Counting all three would double-count these attempts.
+  -- Non-OTP types (fido2, kq, totp, ibm_verify_push) have no "sent" event
+  -- and must be counted through their "success"/"failure" rows instead.
+  AND (
+    result = 'sent'
+    OR (
+      result IN ('success', 'failure')
+      AND mfa_type NOT IN ('sms_otp', 'email_otp', 'voice_otp')
+    )
+  );
 ```
 
 ## R
 
 ```r
+otp_types <- c("sms_otp", "email_otp", "voice_otp")
+
 tbl(con, in_schema("ibm_verify", "mfa_activity")) |>
   # set the reporting window; see the timespans note in cookbook/notes.qmd
   filter(
     from_date >= as.Date("2026-01-01"),
-    from_date <= as.Date("2026-05-28")
+    from_date <= as.Date("2026-05-28"),
+    # OTP types record both a "sent" and a "success"/"failure" event per
+    # challenge; use only "sent" for these to avoid double-counting.
+    # Non-OTP types have no "sent" event, so use "success"/"failure".
+    result == "sent" |
+      (result %in% c("success", "failure") & !mfa_type %in% otp_types)
   ) |>
   summarise(
     mfa_authentications = sum(count, na.rm = TRUE)
