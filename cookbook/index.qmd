@@ -1,0 +1,67 @@
+# About
+
+This cookbook documents commonly used CanadaLogin metrics, including their
+definitions, plain-language alternate names, calculation logic, and example
+SQL queries.
+
+The cookbook is organized by data source:
+
+- IBM Verify
+- Call Centre
+- Cross-source / interpretive metrics (planned)
+
+Each metric includes:
+
+- a description of what it measures and when to use it
+- plain-language alternative names
+- the calculation logic
+- an example query, shown in both SQL and R
+- interpretation notes, where relevant
+
+The companion [Data Catalog](../catalog/index.qmd) describes the underlying tables
+that these metrics are calculated from, field by field.
+
+## How to Use
+
+Use this cookbook as a reference when building dashboards, reports, briefing
+materials, or ad hoc analyses.
+
+For each metric, confirm:
+
+1. Does it measure what I think it does?
+2. What table and columns are used?
+3. Should I apply any filters?
+4. Is this metric a count, a rate, a cumulative value, or an average?
+
+## Conventions
+
+All example SQL targets Amazon Athena (Trino dialect). Constructs such as
+`DATE '...'` literals, `ROW_NUMBER() OVER (...)`, and `REGEXP_REPLACE` follow
+Trino semantics.
+
+In reporting language, prefer **sign-in** over **login**. The underlying IBM
+Verify field may be called `total_logins`, but "sign-ins" is preferred (and
+often enforced) when talking about CanadaLogin.
+
+Where applicable, internal applications are excluded from external-facing
+adoption reporting. As of June 3, 2026, the current internal application
+exclusion list is:
+
+- Flow Application
+- GCS Migration Solution
+- GC Sign In - Profile Management App
+
+## Scope
+
+This cookbook covers *calculated* metrics. Metrics already present in a table
+without any calculation do not need to be included, although they can be if
+they need clarification.
+
+The initial version focuses on:
+
+- IBM Verify application sign-in metrics
+- call centre activity metrics
+- call centre topic metrics
+
+Cross-source metrics comparing sign-in activity and call volume are planned for
+a future revision.

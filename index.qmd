@@ -1,76 +1,10 @@
 # Introduction
 
-This cookbook documents commonly used CanadaLogin metrics, including their 
-definitions, plain-language alternate names, calculation logic, and example 
-SQL queries.
+This book documents CanadaLogin metrics and the tables they are calculated from.
 
-The cookbook is organized by data source:
+It has two chapters:
 
-- IBM Verify
-- Call Centre
-- Cross-source / interpretive metrics (planned)
-
-Each metric generally includes:
-
-- leading text describing what it measures and when to use it
-- plain-language alternative names
-- the calculation logic
-- an example query, shown in both SQL and R
-- interpretation notes, where relevant
-
-The data source for each group of metrics is noted at the start of its section.
-
-The goal is to make metric definitions easier to reuse, explain, and validate
-across reporting products.
-
-The companion [Data Catalog](catalog/index.qmd) describes the underlying tables
-that these metrics are calculated from, field by field.
-
-## How to use this cookbook
-
-Use this cookbook as a reference when building dashboards, reports, briefing 
-materials, or ad hoc analyses.
-
-For each metric, confirm:
-
-1. Does it measure what I think it does?
-2. What table and columns are used?
-3. Should I apply any filters?
-4. Is this metric a count, a rate, a cumulative value, or an average?
-
-## Conventions
-
-All example SQL targets Amazon Athena (Trino dialect), since the tables live in
-the AWS Glue Data Catalog. Constructs such as `DATE '...'` literals,
-`ROW_NUMBER() OVER (...)`, and `REGEXP_REPLACE` follow Trino semantics.
-
-In reporting language, prefer the noun **sign-in** over **login** where
-possible. The underlying IBM Verify field may be called `total_logins`, but 
-“sign-ins” is preferred (and often enforced) when talking about CanadaLogin.
-
-Where applicable, internal applications are excluded from external-facing 
-adoption reporting.
-
-As of June 3, 2026, the current internal application exclusion list is:
-
-- Flow Application
-- GCS Migration Solution
-- GC Sign In - Profile Management App
-
-## Scope
-
-This is a preliminary metrics cookbook to help with *ad hoc* CanadaLogin
-analyses. It generally deals with *calculated* metrics. Metrics that are already
-present in a table and don't require any calculation do not need to be included,
-although they can be if they need clarification.
-
-The initial version focuses on:
-
-- IBM Verify application sign-in metrics
-- call centre activity metrics
-- call centre topic metrics
-
-Simple cross-source interpretive metrics comparing sign-in activity and call
-volume are planned for a future revision.
-
-Additional data sources, metric definitions, and validation notes can be added as the cookbook matures.
+- The [Metrics Cookbook](cookbook/index.qmd) defines commonly used metrics,
+  including their calculation logic and example SQL queries.
+- The [Data Catalog](catalog/index.qmd) describes the underlying tables, field
+  by field.

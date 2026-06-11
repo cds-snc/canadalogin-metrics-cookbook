@@ -1,0 +1,21 @@
+---
+title: Additional Notes
+---
+
+## Field Types
+
+Field types use Parquet-style names: boolean, date, float, integer, string,
+time, timestamp. For string columns that behave as factors, the possible values
+are listed.
+
+## Cumulative Fields
+
+Cumulative fields only increase within a window and then reset. They are called
+out explicitly in each table entry. Never sum cumulative fields across rows;
+take the latest value for the window you need. See the cookbook
+[Notes](../cookbook/notes.qmd) for guidance on selecting the right cumulative
+column for a given reporting window.
+
+## Proportions
+
+Proportions are stored as values between 0 and 1, not 0 and 100.

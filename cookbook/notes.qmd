@@ -1,5 +1,5 @@
 ---
-title: Notes on Metric Interpretation
+title: Additional Notes
 ---
 
 ## Sign-ins are not users

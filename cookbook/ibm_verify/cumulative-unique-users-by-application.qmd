@@ -18,7 +18,7 @@ window" than the daily unique user metrics.
 
 **Calculation.** Take the latest value of the cumulative unique-user column over
 the selected window, grouped by application. The window is chosen by *which
-column* you read (see [the note on reporting timespans](../notes.qmd#metrics-can-be-reported-over-different-timespans)):
+column* you read (see [the note on reporting timespans](notes.qmd#metrics-can-be-reported-over-different-timespans)):
 
 - `mtd_unique_users` for month-to-date
 - `ytd_unique_users` for year-to-date

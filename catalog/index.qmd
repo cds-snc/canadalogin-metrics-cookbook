@@ -19,10 +19,3 @@ Weekly call centre data extracted from the CanadaLogin support weekly Excel repo
 - [`weekly_activity_report`](call_centre.qmd#weekly_activity_report) - weekly call volume and service-level summary
 - [`weekly_topic_dump`](call_centre.qmd#weekly_topic_dump) - individual call records with topic classifications
 
-## Conventions
-
-Field types use Parquet-style names (boolean, date, float, integer, string, time,
-timestamp). For string columns that behave as factors, the possible values are
-listed. Cumulative fields (those that only increase within a window and then
-reset) are called out explicitly. Proportions are stored as values between 0 and
-1, not 0 and 100.

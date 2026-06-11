@@ -1,0 +1,24 @@
+/*-- scss:defaults --*/
+
+// Widen the right margin column that holds the "On this page" TOC so long
+// metric titles (e.g. "Cumulative Unique Users by Application") don't wrap.
+// Default is 250px.
+$grid-margin-width: 360px !default;
+
+/*-- scss:rules --*/
+
+// Bold the top-level sidebar nav entries (Introduction, Metrics Cookbook,
+// Data Catalog) without affecting the nested chapter links inside each section.
+// Direct child selector stops at depth-1; nested links live in an inner
+// ul.sidebar-section so they are untouched.
+.sidebar-menu-container > ul > li > .sidebar-item-container > .sidebar-item-text {
+  font-weight: 700;
+}
+
+// Bold the level-2 entries in the right-side "On this page" TOC (e.g.
+// "CanadaLogin Metrics", "Application Metrics") while leaving the nested
+// level-3 entries unchanged. The direct children of #TOC > ul are the
+// level-2 links; level-3 links live in an inner <ul>, so they are untouched.
+#TOC > ul > li > a {
+  font-weight: 700;
+}

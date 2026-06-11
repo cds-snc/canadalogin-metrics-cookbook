@@ -1,33 +1,52 @@
 ---
 project:
-  type: book
+  type: website
+  output-dir: _book
+  # Website projects render every .qmd by default; the metric subfolders hold
+  # include-only fragments, so exclude them (and the catalog template) here.
+  render:
+    - "*.qmd"
+    - "cookbook/*.qmd"
+    - "catalog/*.qmd"
+    - "!cookbook/ibm_verify/"
+    - "!cookbook/call_centre/"
+    - "!catalog/ibm_verify/"
+    - "!catalog/call_centre/"
+    - "!catalog/data-catalog-template.qmd"
 
-book:
+website:
   title: "CanadaLogin Metrics Cookbook"
-  author: "Colin Douglas"
-  date: today
-  chapters:
-    - index.qmd
-    - part: "Metrics Cookbook"
-      chapters:
-        - cookbook/ibm_verify.qmd
-        - cookbook/call_centre.qmd
-        - cookbook/notes.qmd
-#        - cookbook/cross-source.qmd
-    - part: "Data Catalog"
-      chapters:
-        - catalog/index.qmd
-        - catalog/ibm_verify.qmd
-        - catalog/call_centre.qmd
+  page-navigation: true
+  sidebar:
+    style: docked
+    collapse-level: 2
+    contents:
+      - index.qmd
+      - section: "Metrics Cookbook"
+        href: cookbook/index.qmd
+        contents:
+          - cookbook/ibm_verify.qmd
+          - cookbook/call_centre.qmd
+          - cookbook/notes.qmd
+#          - cookbook/cross-source.qmd
+      - section: "Data Catalog"
+        href: catalog/index.qmd
+        contents:
+          - catalog/ibm_verify.qmd
+          - catalog/call_centre.qmd
+          - catalog/notes.qmd
 
 format:
   html:
     toc: true
-    toc-depth: 3
-    toc-location: left
+    toc-depth: 4
+    toc-location: right
+    toc-expand: true
     code-fold: true
     number-sections: false
-    theme: cosmo
+    theme:
+      - cosmo
+      - custom.scss
 
 execute:
   echo: true

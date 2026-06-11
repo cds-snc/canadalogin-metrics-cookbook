@@ -20,7 +20,7 @@ counts as two unique users at the app level but only one overall.
 
 **Calculation.** Take the latest value of the cumulative unique-user column for
 the window of interest. The window is chosen by *which column* you read, not by
-a date filter (see [the note on reporting timespans](../notes.qmd#metrics-can-be-reported-over-different-timespans)):
+a date filter (see [the note on reporting timespans](notes.qmd#metrics-can-be-reported-over-different-timespans)):
 
 - `mtd_unique_users` for month-to-date
 - `ytd_unique_users` for year-to-date
