@@ -1,0 +1,1 @@
+Sitemap: https://cds-snc.github.io/canadalogin-metrics-cookbook/sitemap.xml

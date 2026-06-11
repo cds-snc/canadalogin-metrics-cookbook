@@ -33,8 +33,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../catalog/ibm_verify.html" rel="next">
-<link href="../cookbook/notes.html" rel="prev">
+<link href="../cookbook/ibm_verify.html" rel="next">
+<link href="../index.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -85,7 +85,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../catalog/index.html">Data Catalog</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../cookbook/index.html">Metrics Cookbook</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -118,7 +118,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../cookbook/index.html" class="sidebar-item-text sidebar-link">
+            <a href="../cookbook/index.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Metrics Cookbook</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
@@ -147,7 +147,7 @@ ul.task-list li input[type="checkbox"] {
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../catalog/index.html" class="sidebar-item-text sidebar-link active">
+            <a href="../catalog/index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Data Catalog</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
@@ -186,8 +186,9 @@ ul.task-list li input[type="checkbox"] {
   <ul>
   <li><a href="#about" id="toc-about" class="nav-link active" data-scroll-target="#about">About</a>
   <ul>
-  <li><a href="#ibm-verify" id="toc-ibm-verify" class="nav-link" data-scroll-target="#ibm-verify">IBM Verify</a></li>
-  <li><a href="#call-centre" id="toc-call-centre" class="nav-link" data-scroll-target="#call-centre">Call Centre</a></li>
+  <li><a href="#how-to-use" id="toc-how-to-use" class="nav-link" data-scroll-target="#how-to-use">How to Use</a></li>
+  <li><a href="#conventions" id="toc-conventions" class="nav-link" data-scroll-target="#conventions">Conventions</a></li>
+  <li><a href="#scope" id="toc-scope" class="nav-link" data-scroll-target="#scope">Scope</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -200,23 +201,54 @@ ul.task-list li input[type="checkbox"] {
 
 <section id="about" class="level1">
 <h1>About</h1>
-<p>The data catalog describes the tables available to analysts. It is distinct from the metrics cookbook; the cookbook explains how to <em>derive</em> metrics, while the catalog describes the <em>tables</em> those metrics are calculated from, field by field.</p>
-<section id="ibm-verify" class="level2">
-<h2 class="anchored" data-anchor-id="ibm-verify"><a href="../catalog/ibm_verify.html">IBM Verify</a></h2>
-<p>Derived tables in the <code>ibm_verify</code> schema, pulled from the IBM Verify reporting API.</p>
+<p>This cookbook documents commonly used CanadaLogin metrics, including their definitions, plain-language alternate names, calculation logic, and example SQL queries.</p>
+<p>The cookbook is organized by data source:</p>
 <ul>
-<li><a href="../catalog/ibm_verify.html#app_login_counts"><code>app_login_counts</code></a> - daily sign-in counts by application</li>
-<li><a href="../catalog/ibm_verify.html#auth_total_logins"><code>auth_total_logins</code></a> - daily, CanadaLogin-wide sign-in totals</li>
-<li><a href="../catalog/ibm_verify.html#mfa_activity"><code>mfa_activity</code></a> - multi-factor authentication activity by factor and result</li>
+<li>IBM Verify</li>
+<li>Call Centre</li>
+<li>Cross-source / interpretive metrics (planned)</li>
+</ul>
+<p>Each metric includes:</p>
+<ul>
+<li>a description of what it measures and when to use it</li>
+<li>plain-language alternative names</li>
+<li>the calculation logic</li>
+<li>an example query, shown in both SQL and R</li>
+<li>interpretation notes, where relevant</li>
+</ul>
+<p>The companion <a href="../catalog/index.html">Data Catalog</a> describes the underlying tables that these metrics are calculated from, field by field.</p>
+<section id="how-to-use" class="level2">
+<h2 class="anchored" data-anchor-id="how-to-use">How to Use</h2>
+<p>Use this cookbook as a reference when building dashboards, reports, briefing materials, or ad hoc analyses.</p>
+<p>For each metric, confirm:</p>
+<ol type="1">
+<li>Does it measure what I think it does?</li>
+<li>What table and columns are used?</li>
+<li>Should I apply any filters?</li>
+<li>Is this metric a count, a rate, a cumulative value, or an average?</li>
+</ol>
+</section>
+<section id="conventions" class="level2">
+<h2 class="anchored" data-anchor-id="conventions">Conventions</h2>
+<p>All example SQL targets Amazon Athena (Trino dialect). Constructs such as <code>DATE '...'</code> literals, <code>ROW_NUMBER() OVER (...)</code>, and <code>REGEXP_REPLACE</code> follow Trino semantics.</p>
+<p>In reporting language, prefer <strong>sign-in</strong> over <strong>login</strong>. The underlying IBM Verify field may be called <code>total_logins</code>, but “sign-ins” is preferred (and often enforced) when talking about CanadaLogin.</p>
+<p>Where applicable, internal applications are excluded from external-facing adoption reporting. As of June 3, 2026, the current internal application exclusion list is:</p>
+<ul>
+<li>Flow Application</li>
+<li>GCS Migration Solution</li>
+<li>GC Sign In - Profile Management App</li>
 </ul>
 </section>
-<section id="call-centre" class="level2">
-<h2 class="anchored" data-anchor-id="call-centre"><a href="../catalog/call_centre.html">Call Centre</a></h2>
-<p>Weekly call centre data extracted from the CanadaLogin support weekly Excel reports.</p>
+<section id="scope" class="level2">
+<h2 class="anchored" data-anchor-id="scope">Scope</h2>
+<p>This cookbook covers <em>calculated</em> metrics. Metrics already present in a table without any calculation do not need to be included, although they can be if they need clarification.</p>
+<p>The initial version focuses on:</p>
 <ul>
-<li><a href="../catalog/call_centre.html#weekly_activity_report"><code>weekly_activity_report</code></a> - weekly call volume and service-level summary</li>
-<li><a href="../catalog/call_centre.html#weekly_topic_dump"><code>weekly_topic_dump</code></a> - individual call records with topic classifications</li>
+<li>IBM Verify application sign-in metrics</li>
+<li>call centre activity metrics</li>
+<li>call centre topic metrics</li>
 </ul>
+<p>Cross-source metrics comparing sign-in activity and call volume are planned for a future revision.</p>
 
 
 </section>
@@ -625,12 +657,12 @@ ul.task-list li input[type="checkbox"] {
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../cookbook/notes.html" class="pagination-link" aria-label="Additional Notes">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Additional Notes</span>
+      <a href="../index.html" class="pagination-link" aria-label="Introduction">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Introduction</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../catalog/ibm_verify.html" class="pagination-link" aria-label="IBM Verify">
+      <a href="../cookbook/ibm_verify.html" class="pagination-link" aria-label="IBM Verify">
         <span class="nav-page-text">IBM Verify</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
