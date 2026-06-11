@@ -1,4 +1,4 @@
-# app_login_counts
+## app_login_counts
 
 Daily sign-in counts for each CanadaLogin-integrated application.
 
@@ -7,7 +7,7 @@ sign-in activity and unique-user reach for the day.
 
 `Keywords`: sign-ins, logins, applications, unique users, adoption, daily counts
 
-## Provenance
+### Provenance
 
 Queried directly from the IBM Verify production instance via API.
 
@@ -15,7 +15,7 @@ Queried directly from the IBM Verify production instance via API.
 * **Steward**: EDCP Data and Research Team
 * **Contact**: [Yinlin Zhang](mailto:yinlin.zhang@cds-snc.ca)
 
-## Fields
+### Fields
 
 One row per `application_name` per day.
 
@@ -34,9 +34,15 @@ One row per `application_name` per day.
 | fetched_at | timestamp | When the aggregation last fetched this row |
 | date | string | The reporting day as a text date (for example, "2026-04-23"). Mirrors `from_date` |
 
-## Notes
+### Notes
 
 `total_logins`, `unique_users`, `failed_logins`, and `successful_logins` are
 daily values. `mtd_unique_users`, `ytd_unique_users`, and
 `since_apr22_unique_users` are cumulative counts of distinct users and should not
 be summed across rows; take the latest value within the window instead.
+
+As in [`auth_total_logins`](#auth_total_logins), a single sign-in that uses a
+second factor records more than one successful authentication event, so
+`total_logins` and `successful_logins` count authentication events, not people.
+Use `unique_users` when the question is about how many distinct people used the
+application.

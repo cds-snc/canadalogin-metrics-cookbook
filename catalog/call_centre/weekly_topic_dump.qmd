@@ -1,4 +1,4 @@
-# weekly_topic_dump
+## weekly_topic_dump
 
 Individual call records from the CanadaLogin support queue, with topic
 classifications for each call.
@@ -8,7 +8,7 @@ call may have multiple rows if multiple topics were recorded.
 
 `Keywords`: call centre, topics, call reasons, contact drivers, caller issues
 
-## Provenance
+### Provenance
 
 Sourced from a weekly Excel report that is typically sent to the EDCP Data and Research
 team via email. That spreadsheet is extracted and loaded into the data repository via
@@ -20,7 +20,7 @@ from the source file.
 * **Steward**: EDCP Data and Research Team
 * **Contact**: [Colin Douglas](mailto:colin.douglas@cds-snc.ca)
 
-## Fields
+### Fields
 
 One row per topic record per call. A single call (`call_no`) may appear on
 multiple rows if more than one topic was recorded.
@@ -40,7 +40,7 @@ multiple rows if more than one topic was recorded.
 | programcontact | string | Program contact information provided to the caller, if any. Often missing |
 | source | float | Unused |
 
-## Notes
+### Notes
 
 Because a single call can generate multiple topic rows, do not count rows to get
 call volume. Use `COUNT(DISTINCT call_no)` or join to

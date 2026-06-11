@@ -4,7 +4,9 @@ title: IBM Verify
 
 Derived tables in the `ibm_verify` schema, populated from the IBM Verify
 reporting API. Each table is a daily aggregate derived from the raw event stream
-in `ibm_verify_raw.ibm_verify`.
+in `ibm_verify_raw.ibm_verify`. The field-level meaning of those raw events is
+documented separately in the IBM Verify event data dictionary, organized by
+event type (Authentication Event, MFA Authentication Event, SSO, and so on).
 
 {{< include ibm_verify/app_login_counts.qmd >}}
 

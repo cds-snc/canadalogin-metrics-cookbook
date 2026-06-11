@@ -4,10 +4,11 @@
 # against Athena, and asserts they return the same result. The docs are the
 # single source of truth - new metric files are picked up automatically.
 #
-# Run from the project root with Athena env vars set:
+# Run from the project root. Connection settings are read from a .env file at the
+# project root by tests/helper.R (AWS_PROFILE, AWS_REGION, ATHENA_S3_STAGING_DIR).
+# Authenticate first, then run:
 #
-#   export ATHENA_S3_STAGING_DIR=s3://your-bucket/athena-results/
-#   export AWS_REGION=ca-central-1
+#   aws sso login --profile "$AWS_PROFILE"
 #   Rscript tests/run_parity_tests.R
 #
 # Exits non-zero if any pair fails to run or the results disagree.

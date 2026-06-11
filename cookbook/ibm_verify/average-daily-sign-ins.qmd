@@ -1,18 +1,18 @@
 ### Average Daily Sign-Ins
 
-The average number of sign-ins per day for a specific application over a
-selected reporting period.
+The average number of sign-ins per day for each application over a selected
+reporting period.
 
-This metric summarizes daily sign-in activity into a single average value. It is
-useful for understanding typical daily usage during a launch period, reporting
-window, or monitoring period.
+This metric summarizes daily sign-in activity into a single per-application
+average value. It is useful for understanding typical daily usage during a launch
+period, reporting window, or monitoring period.
 
 *Alternative names*:
 
 - average sign-ins per day
 - typical daily sign-in volume
 - mean daily login volume
-- average daily CanadaLogin activity
+- average daily sign-ins per application
 
 **Calculation.** For each application, calculate the average of `total_logins`
 across all daily records in the selected reporting period.
@@ -28,6 +28,12 @@ SELECT
 FROM ibm_verify.app_login_counts
 -- set the reporting window; see the timespans note in cookbook/notes.qmd
 WHERE from_date BETWEEN DATE '2026-04-22' AND DATE '2026-05-31'
+-- to exclude internal applications from adoption reporting, uncomment:
+-- AND application_name NOT IN (
+--     'Flow Application',
+--     'GCS Migration Solution',
+--     'GC Sign In - Profile Management App'
+-- )
 GROUP BY application_name
 ORDER BY average_daily_sign_ins DESC;
 ```
@@ -40,6 +46,12 @@ tbl(con, in_schema("ibm_verify", "app_login_counts")) |>
   filter(
     from_date >= as.Date("2026-04-22"),
     from_date <= as.Date("2026-05-31")
+    # to exclude internal applications from adoption reporting, add as a filter:
+    # !application_name %in% c(
+    #   "Flow Application",
+    #   "GCS Migration Solution",
+    #   "GC Sign In - Profile Management App"
+    # )
   ) |>
   group_by(application_name) |>
   summarise(
@@ -49,3 +61,8 @@ tbl(con, in_schema("ibm_verify", "app_login_counts")) |>
 ```
 
 :::
+
+*Interpretation notes.* The average is taken over the daily rows present for each
+application in the window, not over every calendar day. If an application has no
+row on a day with zero activity, that day does not pull the average down, so the
+figure reflects typical activity on active days.

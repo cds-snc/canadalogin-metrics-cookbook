@@ -1,4 +1,4 @@
-# auth_total_logins
+## auth_total_logins
 
 Daily, CanadaLogin-wide sign-in totals across all applications.
 
@@ -8,7 +8,7 @@ per-application breakdown.
 
 `Keywords`: sign-ins, logins, totals, CanadaLogin overall, unique users, daily
 
-## Provenance
+### Provenance
 
 Queried directly from the IBM Verify production instance via API.
 
@@ -16,7 +16,7 @@ Queried directly from the IBM Verify production instance via API.
 * **Steward**: EDCP Data and Research Team
 * **Contact**: [Yinlin Zhang](mailto:yinlin.zhang@cds-snc.ca)
 
-## Fields
+### Fields
 
 One row per day.
 
@@ -34,7 +34,7 @@ One row per day.
 | fetched_at | timestamp | When the aggregation last fetched this row |
 | date | string | The reporting day as a text date (for example, "2026-05-21"). Mirrors `from_date` |
 
-## Notes
+### Notes
 
 `unique_users`, `failed_logins`, and `successful_logins` are daily values. The
 `mtd_`, `ytd_`, and `since_apr22_` unique-user fields are cumulative and should

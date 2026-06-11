@@ -1,21 +1,29 @@
 # CanadaLogin Metrics Cookbook
 
-A [Quarto book](https://quarto.org/docs/books/) documenting commonly used CanadaLogin 
-metrics: their definitions, plain-language names, calculation logic, and example SQL 
-and R queries. A companion data catalog describes the underlying tables field by field.
+A [Quarto website](https://quarto.org/docs/websites/) documenting commonly used
+CanadaLogin metrics: their definitions, plain-language names, calculation logic, and
+example SQL and R queries. A companion data catalog describes the underlying tables
+field by field.
 
 ## Structure
 
 ```
-_quarto.yml      # book config and chapter list
-index.qmd        # introduction and conventions
+_quarto.yml      # website config: sidebar, render list, and theme
+index.qmd        # book-level introduction linking the two chapters
 cookbook/        # Metrics Cookbook: one file per metric, grouped by source
 catalog/         # Data Catalog: one file per table, grouped by source
+custom.scss      # theme overrides (bold nav/TOC entries, wider TOC column)
 ```
+
+The Metrics Cookbook and Data Catalog have parallel layouts: each opens with an
+`index.qmd` "About" page, then one page per data source, then an "Additional Notes"
+page (`notes.qmd`).
 
 Within `cookbook/` and `catalog/`, each data source (for example `ibm_verify/`,
 `call_centre/`) is a folder of fragment `.qmd` files plus a sibling chapter
-wrapper (`ibm_verify.qmd`) that assembles them with `{{< include >}}`.
+wrapper (`ibm_verify.qmd`) that assembles them with `{{< include >}}`. The
+fragment folders are include-only and are excluded from rendering via the
+`render:` list in `_quarto.yml`.
 
 ## Local preview
 
@@ -43,10 +51,19 @@ This renders the book and pushes the output to the `gh-pages` branch of the repo
 metric `.qmd` file, runs both against Athena, and asserts they return the same
 result.
 
-Copy `.env.example` to `.env` and fill in the missing values. Then:
+Create a `.env` file at the project root (it is gitignored) with the Athena
+connection settings the tests read via `tests/helper.R`:
 
 ```bash
-aws sso login --profile cl-data
+AWS_PROFILE=your-aws-sso-profile
+AWS_REGION=ca-central-1
+ATHENA_S3_STAGING_DIR=s3://your-bucket/athena-results/
+```
+
+Then authenticate and run the tests:
+
+```bash
+aws sso login --profile "$AWS_PROFILE"
 Rscript tests/run_parity_tests.R
 ```
 

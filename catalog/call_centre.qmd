@@ -5,7 +5,9 @@ title: Call Centre
 Weekly call centre data extracted from the CanadaLogin support queue Excel
 reports. These two tables share the same source and update cadence but are at
 different grains: `weekly_activity_report` is one row per week, while
-`weekly_topic_dump` is one row per topic record per call.
+`weekly_topic_dump` is one row per topic record per call. They arrive as two
+separate files in the same weekly email, so each table has its own extraction
+pipeline (see the provenance note on each table below).
 
 {{< include call_centre/weekly_activity_report.qmd >}}
 

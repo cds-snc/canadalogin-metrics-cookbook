@@ -34,6 +34,12 @@ WITH ranked AS (
     FROM ibm_verify.app_login_counts
     -- set the reporting window; see the timespans note in cookbook/notes.qmd
     WHERE from_date BETWEEN DATE '2026-01-01' AND DATE '2026-05-28'
+    -- to exclude internal applications from adoption reporting, uncomment:
+    -- AND application_name NOT IN (
+    --     'Flow Application',
+    --     'GCS Migration Solution',
+    --     'GC Sign In - Profile Management App'
+    -- )
 )
 
 SELECT
@@ -53,6 +59,12 @@ tbl(con, in_schema("ibm_verify", "app_login_counts")) |>
   filter(
     from_date >= as.Date("2026-01-01"),
     from_date <= as.Date("2026-05-28")
+    # to exclude internal applications from adoption reporting, add as a filter:
+    # !application_name %in% c(
+    #   "Flow Application",
+    #   "GCS Migration Solution",
+    #   "GC Sign In - Profile Management App"
+    # )
   ) |>
   group_by(application_name) |>
   slice_max(

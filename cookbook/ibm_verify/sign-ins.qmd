@@ -39,3 +39,9 @@ tbl(con, in_schema("ibm_verify", "auth_total_logins")) |>
 ```
 
 :::
+
+*Interpretation notes.* This counts authentication events, not people. A single
+sign-in that uses a second factor records more than one successful event (see
+the [`auth_total_logins`](../catalog/ibm_verify.qmd#auth_total_logins) caveat),
+so the total is inflated relative to distinct user activity. Use a unique-user
+metric when the question is about reach.
