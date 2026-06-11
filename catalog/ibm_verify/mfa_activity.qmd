@@ -1,4 +1,4 @@
-# mfa_activity
+## mfa_activity
 
 Daily multi-factor authentication (MFA) activity, broken down by factor type and
 outcome.
@@ -8,7 +8,7 @@ MFA factor type, and result.
 
 `Keywords`: MFA, multi-factor, second factor, OTP, FIDO2, authentication, security
 
-## Provenance
+### Provenance
 
 Queried directly from the IBM Verify production instance via API.
 
@@ -16,7 +16,7 @@ Queried directly from the IBM Verify production instance via API.
 * **Steward**: EDCP Data and Research Team
 * **Contact**: [Yinlin Zhang](mailto:yinlin.zhang@cds-snc.ca)
 
-## Fields
+### Fields
 
 One row per day per `mfa_type` per `result`.
 
@@ -25,21 +25,26 @@ One row per day per `mfa_type` per `result`.
 | from_date | timestamp | Start of the reporting day (midnight) |
 | to_date | timestamp | End of the reporting day (23:59:59) |
 | mfa_type | string | The MFA factor used. One of "sms_otp", "fido2", "kq", "totp", "voice_otp", "qr", "ibm_verify_push", "email_otp" |
-| result | string | MFA events, One of "success", "failure" or "sent". |
+| result | string | Outcome of the MFA event. One of "success", "failure", or "sent" |
 | count | integer | Number of MFA attempts for this day, factor, and result |
 | fetched_at | timestamp | When the aggregation last fetched this row |
 | date | string | The reporting day as a text date (for example, "2026-05-31"). Mirrors `from_date` |
 
-## Notes
+### Notes
 
-Successfully entering an MFA challenge counts as two events - first, a "sent" event (for
-events that are initiated, like email OTP and SMS OTP) and then either a "success" or 
-"failure" event, depending on how the user responds. It possible to generate multiple 
-"success/failure" events on a single "sent" event if the user inputs their OTP 
-incorrectly first and then correctly.
+Only OTP factor types (`sms_otp`, `email_otp`, `voice_otp`) generate a "sent"
+event, because they are issued before the user responds. Successfully clearing
+one of these challenges therefore counts as two events: first a "sent" event,
+then either a "success" or "failure" event depending on how the user responds.
+It is possible to generate multiple "success"/"failure" events on a single
+"sent" event if the user inputs their OTP incorrectly first and then correctly.
+Non-OTP factor types (`fido2`, `kq`, `totp`, `ibm_verify_push`) have no "sent"
+event and produce only "success"/"failure" rows.
 
-When calculating MFA usage metrics, use the sum of the "sent" events. Sending an email
-OTP but not using it is still usage.
+When calculating MFA usage metrics, de-duplicate accordingly: count "sent"
+events for OTP factors (sending an email OTP but not using it is still usage),
+and "success"/"failure" events for non-OTP factors. Summing "sent" alone would
+silently drop every non-OTP factor.
 
-When calculating success rate metrics, use the number of successful events divided
-by the sum of the success and failure events.
+When calculating success rate metrics, use the number of successful events
+divided by the sum of the success and failure events, excluding "sent".

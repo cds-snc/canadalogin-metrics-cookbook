@@ -5,7 +5,8 @@ of total activity.
 
 This metric shows which second factors users actually rely on. In the current
 data the mix is dominated by `sms_otp` and `email_otp`, with factors such as
-`fido2`, `totp`, `kq`, `qr`, and `ibm_verify_push` seeing little or no use.
+`fido2`, `totp`, `kq`, `qr`, `voice_otp`, and `ibm_verify_push` seeing little or
+no use.
 
 *Alternative names*:
 
@@ -15,7 +16,14 @@ data the mix is dominated by `sms_otp` and `email_otp`, with factors such as
 - MFA factor share
 
 **Calculation.** Sum `count` grouped by `mfa_type`, then divide each factor's
-total by the overall total to get its share.
+total by the overall total to get its share. As with [MFA
+Authentications](#mfa-authentications), de-duplicate before counting: OTP factor
+types (`sms_otp`, `email_otp`, `voice_otp`) record both a `sent` event and a
+subsequent `success`/`failure` event for the same challenge, so only the `sent`
+row is counted for these; non-OTP factor types (`fido2`, `kq`, `totp`,
+`ibm_verify_push`) have no `sent` event and are counted through their
+`success`/`failure` rows. Without this, OTP factors are roughly double-counted
+relative to non-OTP factors.
 
 ::: {.panel-tabset}
 
@@ -30,6 +38,15 @@ SELECT
 FROM ibm_verify.mfa_activity
 -- set the reporting window; see the timespans note in cookbook/notes.qmd
 WHERE from_date BETWEEN DATE '2026-01-01' AND DATE '2026-05-28'
+  -- de-duplicate OTP challenges: count only "sent" for OTP types, and
+  -- "success"/"failure" for non-OTP types (which have no "sent" event).
+  AND (
+    result = 'sent'
+    OR (
+      result IN ('success', 'failure')
+      AND mfa_type NOT IN ('sms_otp', 'email_otp', 'voice_otp')
+    )
+  )
 GROUP BY mfa_type
 ORDER BY mfa_authentications DESC;
 ```
@@ -37,11 +54,17 @@ ORDER BY mfa_authentications DESC;
 ## R
 
 ```r
+otp_types <- c("sms_otp", "email_otp", "voice_otp")
+
 tbl(con, in_schema("ibm_verify", "mfa_activity")) |>
   # set the reporting window; see the timespans note in cookbook/notes.qmd
   filter(
     from_date >= as.Date("2026-01-01"),
-    from_date <= as.Date("2026-05-28")
+    from_date <= as.Date("2026-05-28"),
+    # de-duplicate OTP challenges: count only "sent" for OTP types, and
+    # "success"/"failure" for non-OTP types (which have no "sent" event).
+    result == "sent" |
+      (result %in% c("success", "failure") & !mfa_type %in% otp_types)
   ) |>
   group_by(mfa_type) |>
   summarise(
