@@ -227,14 +227,14 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>Derived tables in the <code>ibm_verify</code> schema, populated from the IBM Verify reporting API. Each table is a daily aggregate derived from the raw event stream in <code>ibm_verify_raw.ibm_verify</code>.</p>
-<section id="app_login_counts" class="level1">
-<h1>app_login_counts</h1>
+<p>Derived tables in the <code>ibm_verify</code> schema, populated from the IBM Verify reporting API. Each table is a daily aggregate derived from the raw event stream in <code>ibm_verify_raw.ibm_verify</code>. The field-level meaning of those raw events is documented separately in the IBM Verify event data dictionary, organized by event type (Authentication Event, MFA Authentication Event, SSO, and so on).</p>
+<section id="app_login_counts" class="level2">
+<h2 class="anchored" data-anchor-id="app_login_counts">app_login_counts</h2>
 <p>Daily sign-in counts for each CanadaLogin-integrated application.</p>
 <p>Each row represents one application on one day, summarizing that application’s sign-in activity and unique-user reach for the day.</p>
 <p><code>Keywords</code>: sign-ins, logins, applications, unique users, adoption, daily counts</p>
-<section id="provenance" class="level2">
-<h2 class="anchored" data-anchor-id="provenance">Provenance</h2>
+<section id="provenance" class="level3">
+<h3 class="anchored" data-anchor-id="provenance">Provenance</h3>
 <p>Queried directly from the IBM Verify production instance via API.</p>
 <ul>
 <li><strong>Updated</strong>: Daily, at 6am America/Toronto</li>
@@ -242,8 +242,8 @@ ul.task-list li input[type="checkbox"] {
 <li><strong>Contact</strong>: <a href="mailto:yinlin.zhang@cds-snc.ca">Yinlin Zhang</a></li>
 </ul>
 </section>
-<section id="fields" class="level2">
-<h2 class="anchored" data-anchor-id="fields">Fields</h2>
+<section id="fields" class="level3">
+<h3 class="anchored" data-anchor-id="fields">Fields</h3>
 <p>One row per <code>application_name</code> per day.</p>
 <table class="caption-top table">
 <colgroup>
@@ -322,18 +322,19 @@ ul.task-list li input[type="checkbox"] {
 </tbody>
 </table>
 </section>
-<section id="notes" class="level2">
-<h2 class="anchored" data-anchor-id="notes">Notes</h2>
+<section id="notes" class="level3">
+<h3 class="anchored" data-anchor-id="notes">Notes</h3>
 <p><code>total_logins</code>, <code>unique_users</code>, <code>failed_logins</code>, and <code>successful_logins</code> are daily values. <code>mtd_unique_users</code>, <code>ytd_unique_users</code>, and <code>since_apr22_unique_users</code> are cumulative counts of distinct users and should not be summed across rows; take the latest value within the window instead.</p>
+<p>As in <a href="#auth_total_logins"><code>auth_total_logins</code></a>, a single sign-in that uses a second factor records more than one successful authentication event, so <code>total_logins</code> and <code>successful_logins</code> count authentication events, not people. Use <code>unique_users</code> when the question is about how many distinct people used the application.</p>
 </section>
 </section>
-<section id="auth_total_logins" class="level1">
-<h1>auth_total_logins</h1>
+<section id="auth_total_logins" class="level2">
+<h2 class="anchored" data-anchor-id="auth_total_logins">auth_total_logins</h2>
 <p>Daily, CanadaLogin-wide sign-in totals across all applications.</p>
 <p>Each row represents one day and summarizes overall CanadaLogin authentication activity. Unlike <a href="#app_login_counts"><code>app_login_counts</code></a>, there is no per-application breakdown.</p>
 <p><code>Keywords</code>: sign-ins, logins, totals, CanadaLogin overall, unique users, daily</p>
-<section id="provenance-1" class="level2">
-<h2 class="anchored" data-anchor-id="provenance-1">Provenance</h2>
+<section id="provenance-1" class="level3">
+<h3 class="anchored" data-anchor-id="provenance-1">Provenance</h3>
 <p>Queried directly from the IBM Verify production instance via API.</p>
 <ul>
 <li><strong>Updated</strong>: Daily, at 6am America/Toronto</li>
@@ -341,8 +342,8 @@ ul.task-list li input[type="checkbox"] {
 <li><strong>Contact</strong>: <a href="mailto:yinlin.zhang@cds-snc.ca">Yinlin Zhang</a></li>
 </ul>
 </section>
-<section id="fields-1" class="level2">
-<h2 class="anchored" data-anchor-id="fields-1">Fields</h2>
+<section id="fields-1" class="level3">
+<h3 class="anchored" data-anchor-id="fields-1">Fields</h3>
 <p>One row per day.</p>
 <table class="caption-top table">
 <colgroup>
@@ -416,19 +417,19 @@ ul.task-list li input[type="checkbox"] {
 </tbody>
 </table>
 </section>
-<section id="notes-1" class="level2">
-<h2 class="anchored" data-anchor-id="notes-1">Notes</h2>
+<section id="notes-1" class="level3">
+<h3 class="anchored" data-anchor-id="notes-1">Notes</h3>
 <p><code>unique_users</code>, <code>failed_logins</code>, and <code>successful_logins</code> are daily values. The <code>mtd_</code>, <code>ytd_</code>, and <code>since_apr22_</code> unique-user fields are cumulative and should not be summed across rows; take the latest value within the window instead.</p>
 <p>Logging in with two factor counts as many successful logins. For example, entering a username and password, followed by a second factor like an OTP, counts as two successful logins. Summing “successful_logins” can therefore be a misleading indicator of actual user engagement. Instead, use the <code>unique_users</code> field, which is daily active users, and is a measure of the number of users who engaged with the system in a given day.</p>
 </section>
 </section>
-<section id="mfa_activity" class="level1">
-<h1>mfa_activity</h1>
+<section id="mfa_activity" class="level2">
+<h2 class="anchored" data-anchor-id="mfa_activity">mfa_activity</h2>
 <p>Daily multi-factor authentication (MFA) activity, broken down by factor type and outcome.</p>
 <p>Each row represents the count of MFA attempts for a single combination of day, MFA factor type, and result.</p>
 <p><code>Keywords</code>: MFA, multi-factor, second factor, OTP, FIDO2, authentication, security</p>
-<section id="provenance-2" class="level2">
-<h2 class="anchored" data-anchor-id="provenance-2">Provenance</h2>
+<section id="provenance-2" class="level3">
+<h3 class="anchored" data-anchor-id="provenance-2">Provenance</h3>
 <p>Queried directly from the IBM Verify production instance via API.</p>
 <ul>
 <li><strong>Updated</strong>: Daily, at 6am America/Toronto</li>
@@ -436,8 +437,8 @@ ul.task-list li input[type="checkbox"] {
 <li><strong>Contact</strong>: <a href="mailto:yinlin.zhang@cds-snc.ca">Yinlin Zhang</a></li>
 </ul>
 </section>
-<section id="fields-2" class="level2">
-<h2 class="anchored" data-anchor-id="fields-2">Fields</h2>
+<section id="fields-2" class="level3">
+<h3 class="anchored" data-anchor-id="fields-2">Fields</h3>
 <p>One row per day per <code>mfa_type</code> per <code>result</code>.</p>
 <table class="caption-top table">
 <colgroup>
@@ -471,7 +472,7 @@ ul.task-list li input[type="checkbox"] {
 <tr class="even">
 <td>result</td>
 <td>string</td>
-<td>MFA events, One of “success”, “failure” or “sent”.</td>
+<td>Outcome of the MFA event. One of “success”, “failure”, or “sent”</td>
 </tr>
 <tr class="odd">
 <td>count</td>
@@ -491,11 +492,11 @@ ul.task-list li input[type="checkbox"] {
 </tbody>
 </table>
 </section>
-<section id="notes-2" class="level2">
-<h2 class="anchored" data-anchor-id="notes-2">Notes</h2>
-<p>Successfully entering an MFA challenge counts as two events - first, a “sent” event (for events that are initiated, like email OTP and SMS OTP) and then either a “success” or “failure” event, depending on how the user responds. It possible to generate multiple “success/failure” events on a single “sent” event if the user inputs their OTP incorrectly first and then correctly.</p>
-<p>When calculating MFA usage metrics, use the sum of the “sent” events. Sending an email OTP but not using it is still usage.</p>
-<p>When calculating success rate metrics, use the number of successful events divided by the sum of the success and failure events.</p>
+<section id="notes-2" class="level3">
+<h3 class="anchored" data-anchor-id="notes-2">Notes</h3>
+<p>Only OTP factor types (<code>sms_otp</code>, <code>email_otp</code>, <code>voice_otp</code>) generate a “sent” event, because they are issued before the user responds. Successfully clearing one of these challenges therefore counts as two events: first a “sent” event, then either a “success” or “failure” event depending on how the user responds. It is possible to generate multiple “success”/“failure” events on a single “sent” event if the user inputs their OTP incorrectly first and then correctly. Non-OTP factor types (<code>fido2</code>, <code>kq</code>, <code>totp</code>, <code>ibm_verify_push</code>) have no “sent” event and produce only “success”/“failure” rows.</p>
+<p>When calculating MFA usage metrics, de-duplicate accordingly: count “sent” events for OTP factors (sending an email OTP but not using it is still usage), and “success”/“failure” events for non-OTP factors. Summing “sent” alone would silently drop every non-OTP factor.</p>
+<p>When calculating success rate metrics, use the number of successful events divided by the sum of the success and failure events, excluding “sent”.</p>
 
 
 </section>

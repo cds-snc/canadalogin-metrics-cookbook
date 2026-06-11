@@ -256,14 +256,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>Weekly call centre data extracted from the CanadaLogin support queue Excel reports. These two tables share the same source and update cadence but are at different grains: <code>weekly_activity_report</code> is one row per week, while <code>weekly_topic_dump</code> is one row per topic record per call.</p>
-<section id="weekly_activity_report" class="level1">
-<h1>weekly_activity_report</h1>
+<p>Weekly call centre data extracted from the CanadaLogin support queue Excel reports. These two tables share the same source and update cadence but are at different grains: <code>weekly_activity_report</code> is one row per week, while <code>weekly_topic_dump</code> is one row per topic record per call. They arrive as two separate files in the same weekly email, so each table has its own extraction pipeline (see the provenance note on each table below).</p>
+<section id="weekly_activity_report" class="level2">
+<h2 class="anchored" data-anchor-id="weekly_activity_report">weekly_activity_report</h2>
 <p>Weekly summary of call centre operations for the CanadaLogin support queue.</p>
 <p>Each row represents one reporting week, summarizing call volume, service levels, call outcomes, and call type breakdowns for that week.</p>
 <p><code>Keywords</code>: call centre, calls, weekly, volume, wait time, call length, service level</p>
-<section id="provenance" class="level2">
-<h2 class="anchored" data-anchor-id="provenance">Provenance</h2>
+<section id="provenance" class="level3">
+<h3 class="anchored" data-anchor-id="provenance">Provenance</h3>
 <p>Sourced from a weekly Excel report that is typically sent to the EDCP Data and Research team via email. That spreadsheet is extracted and loaded into the data repository via the <a href="https://github.com/cds-snc/canadalogin-ibm-verify-pipeline/blob/main/infra/modules/upload_source/call_centre_weekly_activity_report/lambda_src/handler.py">call centre weekly activity report</a> Lambda. The <code>extracted_at</code> field records when each row was last extracted from the source file.</p>
 <ul>
 <li><strong>Updated</strong>: Weekly, typically on Tuesdays</li>
@@ -271,8 +271,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><strong>Contact</strong>: <a href="mailto:colin.douglas@cds-snc.ca">Colin Douglas</a></li>
 </ul>
 </section>
-<section id="fields" class="level2">
-<h2 class="anchored" data-anchor-id="fields">Fields</h2>
+<section id="fields" class="level3">
+<h3 class="anchored" data-anchor-id="fields">Fields</h3>
 <p>One row per reporting week.</p>
 <p>Many count fields are stored as <code>float</code> because they originate from Excel. Proportions (fields ending in <code>_pct</code>) are stored as values between 0 and 1, not 0 and 100.</p>
 <table class="caption-top table">
@@ -467,19 +467,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tbody>
 </table>
 </section>
-<section id="notes" class="level2">
-<h2 class="anchored" data-anchor-id="notes">Notes</h2>
+<section id="notes" class="level3">
+<h3 class="anchored" data-anchor-id="notes">Notes</h3>
 <p><code>avg_delay_seconds</code> and <code>avg_call_length_seconds</code> are weekly averages sourced from the report directly. When combining across weeks, use a weighted average with <code>calls_answered</code> as the weight rather than a simple average. See the <a href="../cookbook/call_centre.html">Call Centre metrics</a> chapter for example SQL.</p>
 <p><code>date_range_start</code> and <code>date_range_end</code> are stored as strings. Cast to <code>DATE</code> in SQL when filtering by date range.</p>
 </section>
 </section>
-<section id="weekly_topic_dump" class="level1">
-<h1>weekly_topic_dump</h1>
+<section id="weekly_topic_dump" class="level2">
+<h2 class="anchored" data-anchor-id="weekly_topic_dump">weekly_topic_dump</h2>
 <p>Individual call records from the CanadaLogin support queue, with topic classifications for each call.</p>
 <p>Each row represents one topic record associated with a single call. A single call may have multiple rows if multiple topics were recorded.</p>
 <p><code>Keywords</code>: call centre, topics, call reasons, contact drivers, caller issues</p>
-<section id="provenance-1" class="level2">
-<h2 class="anchored" data-anchor-id="provenance-1">Provenance</h2>
+<section id="provenance-1" class="level3">
+<h3 class="anchored" data-anchor-id="provenance-1">Provenance</h3>
 <p>Sourced from a weekly Excel report that is typically sent to the EDCP Data and Research team via email. That spreadsheet is extracted and loaded into the data repository via the <a href="https://github.com/cds-snc/canadalogin-ibm-verify-pipeline/blob/main/infra/modules/upload_source/call_centre_etl.py">call_centre_etl.py</a> Lambda. The <code>extracted_at</code> field records when each row was last extracted from the source file.</p>
 <ul>
 <li><strong>Updated</strong>: Weekly, typically on Tuesdays</li>
@@ -487,8 +487,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><strong>Contact</strong>: <a href="mailto:colin.douglas@cds-snc.ca">Colin Douglas</a></li>
 </ul>
 </section>
-<section id="fields-1" class="level2">
-<h2 class="anchored" data-anchor-id="fields-1">Fields</h2>
+<section id="fields-1" class="level3">
+<h3 class="anchored" data-anchor-id="fields-1">Fields</h3>
 <p>One row per topic record per call. A single call (<code>call_no</code>) may appear on multiple rows if more than one topic was recorded.</p>
 <table class="caption-top table">
 <colgroup>
@@ -567,8 +567,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tbody>
 </table>
 </section>
-<section id="notes-1" class="level2">
-<h2 class="anchored" data-anchor-id="notes-1">Notes</h2>
+<section id="notes-1" class="level3">
+<h3 class="anchored" data-anchor-id="notes-1">Notes</h3>
 <p>Because a single call can generate multiple topic rows, do not count rows to get call volume. Use <code>COUNT(DISTINCT call_no)</code> or join to <a href="#weekly_activity_report"><code>weekly_activity_report</code></a> for call counts.</p>
 <p><code>statobject</code> frequently contains leading/trailing whitespace and repeated internal spaces. Always clean it before grouping:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">REGEXP_REPLACE</span>(<span class="fu">TRIM</span>(statobject), <span class="st">'\s+'</span>, <span class="st">' '</span>) <span class="kw">AS</span> call_topic</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
