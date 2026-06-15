@@ -8,6 +8,24 @@ in `ibm_verify_raw.ibm_verify`. The field-level meaning of those raw events is
 documented separately in the IBM Verify event data dictionary, organized by
 event type (Authentication Event, MFA Authentication Event, SSO, and so on).
 
+### Data retention
+
+The dataset behind the IBM Verify reporting API retains only the most recent
+366.5 days of data. This does **not** limit the tables here. The daily aggregate
+rows are stored on our side and kept beyond a year, so any metric we calculate by
+aggregating those stored daily rows (sign-ins, MFA attempts, and other additive
+measures) is unaffected, no matter how far back the window reaches.
+
+The limit bites only on summaries that the **API itself** computes, because the
+API can only see the last 366.5 days when it does so. The cumulative unique-user
+columns are the affected case: a count must be computed by the API rather than
+summed from daily rows (summing daily unique users would count user-days, not
+distinct people). The `mtd_` and `ytd_` windows fit inside the retention horizon,
+but a "since the April 22, 2026 launch" total silently truncates once launch is
+more than a year in the past (roughly late April 2027). The
+`since_apr22_unique_users` fields that previously carried it have therefore been
+removed from the pipeline.
+
 {{< include ibm_verify/app_login_counts.qmd >}}
 
 {{< include ibm_verify/auth_total_logins.qmd >}}

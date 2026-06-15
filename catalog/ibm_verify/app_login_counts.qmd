@@ -30,16 +30,22 @@ One row per `application_name` per day.
 | successful_logins | integer | Number of successful sign-ins that day |
 | mtd_unique_users | integer | Cumulative distinct users for the application month-to-date. Resets at the start of each month |
 | ytd_unique_users | integer | Cumulative distinct users for the application year-to-date. Resets at the start of each calendar year |
-| since_apr22_unique_users | integer | Cumulative distinct users since the April 22, 2026 public launch |
 | fetched_at | timestamp | When the aggregation last fetched this row |
 | date | string | The reporting day as a text date (for example, "2026-04-23"). Mirrors `from_date` |
 
 ### Notes
 
 `total_logins`, `unique_users`, `failed_logins`, and `successful_logins` are
-daily values. `mtd_unique_users`, `ytd_unique_users`, and
-`since_apr22_unique_users` are cumulative counts of distinct users and should not
-be summed across rows; take the latest value within the window instead.
+daily values. `mtd_unique_users` and `ytd_unique_users` are cumulative counts of
+distinct users and should not be summed across rows; take the latest value within
+the window instead.
+
+A `since_apr22_unique_users` field (cumulative distinct users since the
+April 22, 2026 public launch) was previously provided here. It has been removed
+from the pipeline because the source API retains only the most recent 366.5 days
+of data, so a since-launch cumulative count cannot be maintained once launch is
+more than a year in the past. See the retention note on the
+[IBM Verify catalog overview](../ibm_verify.qmd).
 
 Unlike [`auth_total_logins`](#auth_total_logins), these counts are *not* inflated
 by second factors. The per-authentication-method event inflation described there

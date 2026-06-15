@@ -14,7 +14,7 @@ Use unique users when the question is about reach.
 
 Summing daily unique users gives a measure of user-days, not distinct people over the full period.
 
-For distinct people over a longer period, use a cumulative unique user field such as `ytd_unique_users` or `since_apr22_unique_users`, if available and valid.
+For distinct people over a longer period, use a cumulative unique user field such as `mtd_unique_users` or `ytd_unique_users`.
 
 ## Metrics can be reported over different timespans
 
@@ -40,9 +40,21 @@ latest value:
 
 - Month-to-date: `mtd_unique_users`
 - Year-to-date: `ytd_unique_users`
-- Since launch: `since_apr22_unique_users`
 
 Never sum these cumulative columns across rows.
+
+There is no cumulative since-launch column. The `since_apr22_unique_users` field
+that previously provided it has been removed: the cumulative count is computed by
+the IBM Verify API, which sees only the most recent 366.5 days of source data, so
+a since-launch total silently truncates once launch is more than a year in the
+past. The `mtd_` and `ytd_` windows are unaffected because they fall inside that
+horizon.
+
+This limit does not affect the additive metrics above. Those are aggregated from
+the daily rows we store on our side, which are retained beyond a year, so a
+date-bounded since-launch window over an additive metric stays correct however
+far back it reaches. See the [data retention
+note](../catalog/ibm_verify.qmd#data-retention) in the catalog.
 
 ## Weighted averages should be used for call centre averages
 

@@ -1,8 +1,7 @@
 ### Cumulative Unique Users by Application
 
 The number of distinct users observed for each application over a chosen
-reporting window: this month, this calendar year, or since the April 22, 2026
-public launch.
+reporting window: this month or this calendar year.
 
 The cumulative unique-user columns increase or remain stable over time. This
 metric is closer to "how many distinct people have used the application in this
@@ -12,7 +11,6 @@ window" than the daily unique user metrics.
 
 - month-to-date unique users by application
 - year-to-date unique users by application
-- unique users since launch by application
 - distinct user reach per application
 - total unique people reached per application
 
@@ -22,10 +20,13 @@ column* you read (see [the note on reporting timespans](notes.qmd#metrics-can-be
 
 - `mtd_unique_users` for month-to-date
 - `ytd_unique_users` for year-to-date
-- `since_apr22_unique_users` for since the launch
 
 The `WHERE from_date BETWEEN ...` bounds set the "as of" reporting date; the
 most recent row in the window holds the current cumulative total.
+
+A `since_apr22_unique_users` column (cumulative distinct users since launch) was
+previously available but has been removed; see the [data retention
+note](../../catalog/ibm_verify.qmd#data-retention).
 
 ::: {.panel-tabset}
 
@@ -91,36 +92,6 @@ WHERE rn = 1
 ORDER BY ytd_unique_users DESC;
 ```
 
-Since launch:
-
-```sql
-WITH ranked AS (
-    SELECT
-        application_name,
-        from_date,
-        since_apr22_unique_users,
-        ROW_NUMBER() OVER (
-            PARTITION BY application_name
-            ORDER BY from_date DESC
-        ) AS rn
-    FROM ibm_verify.app_login_counts
-    WHERE from_date BETWEEN DATE '2026-04-22' AND DATE '2026-06-08'
-    -- to exclude internal applications from adoption reporting, uncomment:
-    -- AND application_name NOT IN (
-    --     'Flow Application',
-    --     'GCS Migration Solution',
-    --     'GC Sign In - Profile Management App'
-    -- )
-)
-
-SELECT
-    application_name,
-    since_apr22_unique_users
-FROM ranked
-WHERE rn = 1
-ORDER BY since_apr22_unique_users DESC;
-```
-
 ## R
 
 Month-to-date:
@@ -177,36 +148,8 @@ tbl(con, in_schema("ibm_verify", "app_login_counts")) |>
   arrange(desc(ytd_unique_users))
 ```
 
-Since launch:
-
-```r
-tbl(con, in_schema("ibm_verify", "app_login_counts")) |>
-  filter(
-    from_date >= as.Date("2026-04-22"),
-    from_date <= as.Date("2026-06-08")
-    # to exclude internal applications from adoption reporting, add as a filter:
-    # !application_name %in% c(
-    #   "Flow Application",
-    #   "GCS Migration Solution",
-    #   "GC Sign In - Profile Management App"
-    # )
-  ) |>
-  group_by(application_name) |>
-  slice_max(
-    from_date,
-    n = 1,
-    with_ties = FALSE
-  ) |>
-  select(
-    application_name,
-    since_apr22_unique_users
-  ) |>
-  arrange(desc(since_apr22_unique_users))
-```
-
 :::
 
 *Interpretation notes.* Each column resets on its own cadence: `mtd_unique_users`
 resets at the start of each month and `ytd_unique_users` at the start of each
-calendar year. `since_apr22_unique_users` does not reset. Do not sum these
-columns across rows; they are already cumulative.
+calendar year. Do not sum these columns across rows; they are already cumulative.
