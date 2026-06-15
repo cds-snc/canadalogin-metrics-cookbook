@@ -41,8 +41,12 @@ daily values. `mtd_unique_users`, `ytd_unique_users`, and
 `since_apr22_unique_users` are cumulative counts of distinct users and should not
 be summed across rows; take the latest value within the window instead.
 
-As in [`auth_total_logins`](#auth_total_logins), a single sign-in that uses a
-second factor records more than one successful authentication event, so
-`total_logins` and `successful_logins` count authentication events, not people.
-Use `unique_users` when the question is about how many distinct people used the
-application.
+Unlike [`auth_total_logins`](#auth_total_logins), these counts are *not* inflated
+by second factors. The per-authentication-method event inflation described there
+only happens when a user signs in to CanadaLogin itself. Authenticating against
+an integrated application reuses the credentials already established in the
+CanadaLogin session, so the user enters no password or second factor and a single
+application sign-in records a single event. `total_logins` and `successful_logins`
+still count events rather than people, because one person can sign in to an
+application repeatedly. Use `unique_users` when the question is about how many
+distinct people used the application.

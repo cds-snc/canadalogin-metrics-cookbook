@@ -40,8 +40,20 @@ One row per day.
 `mtd_`, `ytd_`, and `since_apr22_` unique-user fields are cumulative and should
 not be summed across rows; take the latest value within the window instead.
 
-Logging in with two factor counts as many successful logins. For example, entering a
-username and password, followed by a second factor like an OTP, counts as two successful
-logins. Summing "successful_logins" can therefore be a misleading indicator of actual
-user engagement. Instead, use the `unique_users` field, which is daily active users, and
-is a measure of the number of users who engaged with the system in a given day.
+When a user signs in to CanadaLogin itself, IBM Verify records each
+authentication method as a separate event. Entering a username and password
+followed by a second factor like an OTP counts as two successful events. A
+mistyped password that is then entered correctly, followed by a correct OTP,
+counts as three events: two successful and one failed. Both `successful_logins`
+and `failed_logins` are therefore inflated relative to the number of distinct
+sign-in sessions.
+
+This inflation applies only to signing in to CanadaLogin itself. Authenticating
+against an integrated application does not inflate these counts, because the user
+reuses the credentials already established in their CanadaLogin session and
+enters no password or second factor (see [`app_login_counts`](#app_login_counts)).
+
+Summing `successful_logins` is therefore a misleading indicator of actual user
+engagement. Instead, use the `unique_users` field, which is daily active users,
+and is a measure of the number of users who engaged with the system in a given
+day.

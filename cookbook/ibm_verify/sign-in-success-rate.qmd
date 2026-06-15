@@ -50,3 +50,12 @@ tbl(con, in_schema("ibm_verify", "auth_total_logins")) |>
 *Interpretation notes.* The rate is a proportion between 0 and 1. Read it alongside
 sign-in volume: a low success rate on very low volume may just be noise, while
 the same rate on high volume is a real signal.
+
+This rate is computed over authentication *methods*, not sessions. When signing
+in to CanadaLogin, IBM Verify records each method as its own event, so a mistyped
+password is a failed event even when the user then succeeds and completes the
+sign-in (see the [`auth_total_logins`](../catalog/ibm_verify.qmd#auth_total_logins)
+caveat). The figure measures how often individual authentication steps succeed,
+not how often a sign-in session ultimately completes. This differs from the
+[per-application rate](sign-in-success-rate-by-application.qmd), which measures
+credential validity against a relying party with no factors entered.
