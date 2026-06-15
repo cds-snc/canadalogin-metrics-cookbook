@@ -47,7 +47,7 @@ tbl(con, in_schema("call_centre", "weekly_topic_dump")) |>
   ) |>
   count(call_topic, name = "topic_count") |>
   mutate(
-    topic_share = as.double(topic_count) / sum(topic_count)
+    topic_share = as.double(topic_count) / sum(topic_count, na.rm = TRUE)
   ) |>
   arrange(desc(topic_count))
 ```
