@@ -1,0 +1,119 @@
+### Completed Sign-In Sessions (Estimated)
+
+An estimate of the number of completed sign-in sessions to CanadaLogin over a
+selected reporting period, where a session is one user getting all the way
+through the sign-in flow regardless of how many authentication methods it took.
+
+This is an **estimate, not an exact count**. The documented tables hold daily
+counts of authentication *method* events with no session identifier, so true
+sessions cannot be reconstructed from them (that would require the `correlationid`
+on the raw event stream, which is not in the data catalog). The figure below is a
+defensible approximation built from two tables, and it carries the assumptions
+listed under *Interpretation notes*. Read those before using it.
+
+*Alternative names*:
+
+- estimated sign-in sessions
+- completed logins
+- estimated login count
+- sign-in sessions
+
+**Calculation.** A completed session has exactly one successful first-factor
+event (the password) plus zero or more successful second factors. Both kinds of
+success are lumped together in `successful_logins` on
+[`auth_total_logins`](../catalog/ibm_verify.qmd#auth_total_logins), while the
+second-factor successes are counted separately on
+[`mfa_activity`](../catalog/ibm_verify.qmd#mfa_activity). Subtracting the second
+from the first leaves one event per session: the first-factor success. So sum
+`successful_logins` over the window and subtract the sum of `mfa_activity.count`
+where `result = 'success'`.
+
+::: {.panel-tabset}
+
+## SQL
+
+```sql
+WITH first_factor AS (
+    SELECT SUM(successful_logins) AS successful_events
+    FROM ibm_verify.auth_total_logins
+    -- set the reporting window; see the timespans note in cookbook/notes.qmd
+    WHERE from_date BETWEEN DATE '2026-01-01' AND DATE '2026-05-28'
+),
+
+second_factor AS (
+    SELECT SUM(count) AS mfa_successes
+    FROM ibm_verify.mfa_activity
+    -- set the reporting window; see the timespans note in cookbook/notes.qmd
+    WHERE from_date BETWEEN DATE '2026-01-01' AND DATE '2026-05-28'
+      -- outcome events only; a "sent" OTP is an issuance, not a success
+      AND result = 'success'
+)
+
+SELECT
+    first_factor.successful_events - second_factor.mfa_successes
+        AS estimated_completed_sessions
+FROM first_factor
+CROSS JOIN second_factor;
+```
+
+## R
+
+```r
+successful_events <- tbl(con, in_schema("ibm_verify", "auth_total_logins")) |>
+  # set the reporting window; see the timespans note in cookbook/notes.qmd
+  filter(
+    from_date >= as.Date("2026-01-01"),
+    from_date <= as.Date("2026-05-28")
+  ) |>
+  summarise(successful_events = sum(as.double(successful_logins), na.rm = TRUE)) |>
+  pull(successful_events)
+
+mfa_successes <- tbl(con, in_schema("ibm_verify", "mfa_activity")) |>
+  # set the reporting window; see the timespans note in cookbook/notes.qmd
+  filter(
+    from_date >= as.Date("2026-01-01"),
+    from_date <= as.Date("2026-05-28"),
+    # outcome events only; a "sent" OTP is an issuance, not a success
+    result == "success"
+  ) |>
+  summarise(mfa_successes = sum(as.double(count), na.rm = TRUE)) |>
+  pull(mfa_successes)
+
+successful_events - mfa_successes
+```
+
+:::
+
+*Interpretation notes.* The estimate works because each session contributes
+exactly one first-factor success no matter how many second factors it used:
+
+| Session type | `successful_logins` | MFA successes | Net (= sessions) |
+|---|---|---|---|
+| Password only | 1 | 0 | 1 |
+| Password + OTP | 2 | 1 | 1 |
+| Password + step-up (2 factors) | 3 | 2 | 1 |
+| Mistyped password, then OTP | 2 (the failure lands in `failed_logins`) | 1 | 1 |
+
+This holds only because the method-event inflation applies to signing in to
+CanadaLogin itself (see the
+[`auth_total_logins`](../catalog/ibm_verify.qmd#auth_total_logins) caveat). It does
+not apply to authenticating against an integrated application, so this metric
+describes CanadaLogin sign-in sessions, not application sign-ins.
+
+The estimate rests on two assumptions:
+
+1. **Passwordless and FIDO-first logins are undercounted.** A session whose only
+   factor is FIDO2 is one event in `successful_logins` and also a `fido2` success
+   in `mfa_activity`, so it nets to zero. The figure is therefore a slight
+   underestimate. This is tolerable here only because
+   [MFA Activity by Factor](mfa-activity-by-factor.qmd) shows `fido2` sees little
+   use; if passwordless adoption grows, the undercount grows with it.
+2. **The two tables are assumed to count second-factor successes the same way.**
+   Both derive from the same IBM Verify event stream, which makes this plausible,
+   but it is not guaranteed by anything in the data catalog.
+
+Because of these assumptions, label the result as *estimated* wherever it is
+reported, and never present it as an exact session count. When the question is
+about distinct people rather than sessions, prefer `unique_users` (daily active
+users), which needs no assumptions: a user cannot be a unique user without
+completing a sign-in.

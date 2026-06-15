@@ -23,11 +23,14 @@ public-facing adoption metrics:
 ## CanadaLogin Metrics
 
 Metrics in this section describe CanadaLogin overall, across all applications,
-sourced from `ibm_verify.auth_total_logins`.
+sourced mainly from `ibm_verify.auth_total_logins` (the estimated sessions metric
+also draws on `ibm_verify.mfa_activity`).
 
 {{< include ibm_verify/sign-ins.qmd >}}
 
 {{< include ibm_verify/sign-in-success-rate.qmd >}}
+
+{{< include ibm_verify/completed-sign-in-sessions.qmd >}}
 
 {{< include ibm_verify/cumulative-unique-users.qmd >}}
 
