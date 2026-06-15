@@ -223,7 +223,7 @@ ul.task-list li input[type="checkbox"] {
 <section id="daily-unique-users-are-not-the-same-as-period-unique-users" class="level2">
 <h2 class="anchored" data-anchor-id="daily-unique-users-are-not-the-same-as-period-unique-users">Daily unique users are not the same as period unique users</h2>
 <p>Summing daily unique users gives a measure of user-days, not distinct people over the full period.</p>
-<p>For distinct people over a longer period, use a cumulative unique user field such as <code>ytd_unique_users</code> or <code>since_apr22_unique_users</code>, if available and valid.</p>
+<p>For distinct people over a longer period, use a cumulative unique user field such as <code>mtd_unique_users</code> or <code>ytd_unique_users</code>.</p>
 </section>
 <section id="metrics-can-be-reported-over-different-timespans" class="level2">
 <h2 class="anchored" data-anchor-id="metrics-can-be-reported-over-different-timespans">Metrics can be reported over different timespans</h2>
@@ -239,9 +239,10 @@ ul.task-list li input[type="checkbox"] {
 <ul>
 <li>Month-to-date: <code>mtd_unique_users</code></li>
 <li>Year-to-date: <code>ytd_unique_users</code></li>
-<li>Since launch: <code>since_apr22_unique_users</code></li>
 </ul>
 <p>Never sum these cumulative columns across rows.</p>
+<p>There is no cumulative since-launch column. The <code>since_apr22_unique_users</code> field that previously provided it has been removed: the cumulative count is computed by the IBM Verify API, which sees only the most recent 366.5 days of source data, so a since-launch total silently truncates once launch is more than a year in the past. The <code>mtd_</code> and <code>ytd_</code> windows are unaffected because they fall inside that horizon.</p>
+<p>This limit does not affect the additive metrics above. Those are aggregated from the daily rows we store on our side, which are retained beyond a year, so a date-bounded since-launch window over an additive metric stays correct however far back it reaches. See the <a href="../catalog/ibm_verify.html#data-retention">data retention note</a> in the catalog.</p>
 </section>
 <section id="weighted-averages-should-be-used-for-call-centre-averages" class="level2">
 <h2 class="anchored" data-anchor-id="weighted-averages-should-be-used-for-call-centre-averages">Weighted averages should be used for call centre averages</h2>

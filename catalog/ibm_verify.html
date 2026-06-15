@@ -184,7 +184,8 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#app_login_counts" id="toc-app_login_counts" class="nav-link active" data-scroll-target="#app_login_counts">app_login_counts</a>
+  <li><a href="#data-retention" id="toc-data-retention" class="nav-link active" data-scroll-target="#data-retention">Data retention</a></li>
+  <li><a href="#app_login_counts" id="toc-app_login_counts" class="nav-link" data-scroll-target="#app_login_counts">app_login_counts</a>
   <ul>
   <li><a href="#provenance" id="toc-provenance" class="nav-link" data-scroll-target="#provenance">Provenance</a></li>
   <li><a href="#fields" id="toc-fields" class="nav-link" data-scroll-target="#fields">Fields</a></li>
@@ -228,6 +229,11 @@ ul.task-list li input[type="checkbox"] {
 
 
 <p>Derived tables in the <code>ibm_verify</code> schema, populated from the IBM Verify reporting API. Each table is a daily aggregate derived from the raw event stream in <code>ibm_verify_raw.ibm_verify</code>. The field-level meaning of those raw events is documented separately in the IBM Verify event data dictionary, organized by event type (Authentication Event, MFA Authentication Event, SSO, and so on).</p>
+<section id="data-retention" class="level3">
+<h3 class="anchored" data-anchor-id="data-retention">Data retention</h3>
+<p>The dataset behind the IBM Verify reporting API retains only the most recent 366.5 days of data. This does <strong>not</strong> limit the tables here. The daily aggregate rows are stored on our side and kept beyond a year, so any metric we calculate by aggregating those stored daily rows (sign-ins, MFA attempts, and other additive measures) is unaffected, no matter how far back the window reaches.</p>
+<p>The limit bites only on summaries that the <strong>API itself</strong> computes, because the API can only see the last 366.5 days when it does so. The cumulative unique-user columns are the affected case: a count must be computed by the API rather than summed from daily rows (summing daily unique users would count user-days, not distinct people). The <code>mtd_</code> and <code>ytd_</code> windows fit inside the retention horizon, but a “since the April 22, 2026 launch” total silently truncates once launch is more than a year in the past (roughly late April 2027). The <code>since_apr22_unique_users</code> fields that previously carried it have therefore been removed from the pipeline.</p>
+</section>
 <section id="app_login_counts" class="level2">
 <h2 class="anchored" data-anchor-id="app_login_counts">app_login_counts</h2>
 <p>Daily sign-in counts for each CanadaLogin-integrated application.</p>
@@ -305,16 +311,11 @@ ul.task-list li input[type="checkbox"] {
 <td>Cumulative distinct users for the application year-to-date. Resets at the start of each calendar year</td>
 </tr>
 <tr class="even">
-<td>since_apr22_unique_users</td>
-<td>integer</td>
-<td>Cumulative distinct users since the April 22, 2026 public launch</td>
-</tr>
-<tr class="odd">
 <td>fetched_at</td>
 <td>timestamp</td>
 <td>When the aggregation last fetched this row</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>date</td>
 <td>string</td>
 <td>The reporting day as a text date (for example, “2026-04-23”). Mirrors <code>from_date</code></td>
@@ -324,7 +325,8 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="notes" class="level3">
 <h3 class="anchored" data-anchor-id="notes">Notes</h3>
-<p><code>total_logins</code>, <code>unique_users</code>, <code>failed_logins</code>, and <code>successful_logins</code> are daily values. <code>mtd_unique_users</code>, <code>ytd_unique_users</code>, and <code>since_apr22_unique_users</code> are cumulative counts of distinct users and should not be summed across rows; take the latest value within the window instead.</p>
+<p><code>total_logins</code>, <code>unique_users</code>, <code>failed_logins</code>, and <code>successful_logins</code> are daily values. <code>mtd_unique_users</code> and <code>ytd_unique_users</code> are cumulative counts of distinct users and should not be summed across rows; take the latest value within the window instead.</p>
+<p>A <code>since_apr22_unique_users</code> field (cumulative distinct users since the April 22, 2026 public launch) was previously provided here. It has been removed from the pipeline because the source API retains only the most recent 366.5 days of data, so a since-launch cumulative count cannot be maintained once launch is more than a year in the past. See the retention note on the <a href="../ibm_verify.qmd">IBM Verify catalog overview</a>.</p>
 <p>Unlike <a href="#auth_total_logins"><code>auth_total_logins</code></a>, these counts are <em>not</em> inflated by second factors. The per-authentication-method event inflation described there only happens when a user signs in to CanadaLogin itself. Authenticating against an integrated application reuses the credentials already established in the CanadaLogin session, so the user enters no password or second factor and a single application sign-in records a single event. <code>total_logins</code> and <code>successful_logins</code> still count events rather than people, because one person can sign in to an application repeatedly. Use <code>unique_users</code> when the question is about how many distinct people used the application.</p>
 </section>
 </section>
@@ -395,21 +397,16 @@ ul.task-list li input[type="checkbox"] {
 <td>Cumulative distinct users year-to-date. Resets at the start of each calendar year</td>
 </tr>
 <tr class="even">
-<td>since_apr22_unique_users</td>
-<td>integer</td>
-<td>Cumulative distinct users since the April 22, 2026 launch period</td>
-</tr>
-<tr class="odd">
 <td>last_updated_at</td>
 <td>timestamp</td>
 <td>When the underlying data for this row was last updated</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>fetched_at</td>
 <td>timestamp</td>
 <td>When the aggregation last fetched this row</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>date</td>
 <td>string</td>
 <td>The reporting day as a text date (for example, “2026-05-21”). Mirrors <code>from_date</code></td>
@@ -419,7 +416,8 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="notes-1" class="level3">
 <h3 class="anchored" data-anchor-id="notes-1">Notes</h3>
-<p><code>unique_users</code>, <code>failed_logins</code>, and <code>successful_logins</code> are daily values. The <code>mtd_</code>, <code>ytd_</code>, and <code>since_apr22_</code> unique-user fields are cumulative and should not be summed across rows; take the latest value within the window instead.</p>
+<p><code>unique_users</code>, <code>failed_logins</code>, and <code>successful_logins</code> are daily values. The <code>mtd_</code> and <code>ytd_</code> unique-user fields are cumulative and should not be summed across rows; take the latest value within the window instead.</p>
+<p>A <code>since_apr22_unique_users</code> field (cumulative distinct users since the April 22, 2026 launch) was previously provided here. It has been removed from the pipeline because the source API retains only the most recent 366.5 days of data, so a since-launch cumulative count cannot be maintained once launch is more than a year in the past. See the retention note on the <a href="../ibm_verify.qmd">IBM Verify catalog overview</a>.</p>
 <p>When a user signs in to CanadaLogin itself, IBM Verify records each authentication method as a separate event. Entering a username and password followed by a second factor like an OTP counts as two successful events. A mistyped password that is then entered correctly, followed by a correct OTP, counts as three events: two successful and one failed. Both <code>successful_logins</code> and <code>failed_logins</code> are therefore inflated relative to the number of distinct sign-in sessions.</p>
 <p>This inflation applies only to signing in to CanadaLogin itself. Authenticating against an integrated application does not inflate these counts, because the user reuses the credentials already established in their CanadaLogin session and enters no password or second factor (see <a href="#app_login_counts"><code>app_login_counts</code></a>).</p>
 <p>Summing <code>successful_logins</code> is therefore a misleading indicator of actual user engagement. Instead, use the <code>unique_users</code> field, which is daily active users, and is a measure of the number of users who engaged with the system in a given day.</p>
