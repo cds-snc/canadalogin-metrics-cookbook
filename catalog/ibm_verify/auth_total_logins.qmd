@@ -29,6 +29,7 @@ One row per day.
 | successful_logins | integer | Number of successful authentication events that day. |
 | mtd_unique_users | integer | Cumulative distinct users month-to-date. Resets at the start of each month |
 | ytd_unique_users | integer | Cumulative distinct users year-to-date. Resets at the start of each calendar year |
+| rolling_365d_unique_users | integer | Distinct users who signed in to CanadaLogin in the trailing 365 days ending on that row's date |
 | last_updated_at | timestamp | When the underlying data for this row was last updated |
 | fetched_at | timestamp | When the aggregation last fetched this row |
 | date | string | The reporting day as a text date (for example, "2026-05-21"). Mirrors `from_date` |
@@ -36,8 +37,10 @@ One row per day.
 ### Notes
 
 `unique_users`, `failed_logins`, and `successful_logins` are daily values. The
-`mtd_` and `ytd_` unique-user fields are cumulative and should not be summed
-across rows; take the latest value within the window instead.
+`mtd_`, `ytd_`, and `rolling_365d_` unique-user fields are cumulative and should
+not be summed across rows; take the latest value within the window instead.
+
+`rolling_365d_unique_users` is null before 2026-06-13, its implementation date.
 
 A `since_apr22_unique_users` field (cumulative distinct users since the
 April 22, 2026 launch) was previously provided here. It has been removed from the
