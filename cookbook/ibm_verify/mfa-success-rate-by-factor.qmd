@@ -1,0 +1,125 @@
+### MFA Success Rate by Factor
+
+The MFA success rate broken down by factor type, so that factors can be compared
+against one another.
+
+This metric is useful for spotting whether one second factor is notably easier
+to clear than another. Because the rate is calculated per attempt, a factor that
+users frequently mistype before getting right (common with OTP factors) shows a
+lower rate, which is the friction signal you want when comparing ease of use.
+
+*Alternative names*:
+
+- MFA success rate by method
+- MFA pass rate by method
+- second-factor success rate by factor
+- MFA completion rate by factor
+
+**Calculation.** Within each `mfa_type`, divide the sum of `count` where
+`result = 'success'` by the sum of `count` where `result` is `'success'` or
+`'failure'`. As with the overall [MFA Success Rate](#mfa-success-rate), `sent`
+rows are excluded from both the numerator and the denominator because they are
+not outcomes. `mfa_attempts` is the denominator (successes plus failures) and is
+reported alongside the rate so that low-volume factors, whose rates are noisy,
+can be discounted.
+
+Note that `mfa_attempts` here counts `success` and `failure` events only. It is
+*not* the de-duplicated usage volume reported by [MFA Activity by
+Factor](#mfa-activity-by-factor), which counts `sent` events for OTP factors
+instead.
+
+::: {.panel-tabset}
+
+## SQL
+
+By factor:
+
+```sql
+SELECT
+    mfa_type,
+    SUM(count) AS mfa_attempts,
+    CAST(SUM(count) FILTER (WHERE result = 'success') AS DOUBLE)
+        / NULLIF(SUM(count), 0) AS mfa_success_rate
+FROM ibm_verify.mfa_activity
+-- set the reporting window; see the timespans note in cookbook/notes.qmd
+WHERE from_date BETWEEN DATE '2026-01-01' AND DATE '2026-05-28'
+  -- exclude "sent" rows; success rate is calculated from outcome events only.
+  -- including "sent" would inflate the denominator and deflate the rate.
+  AND result IN ('success', 'failure')
+GROUP BY mfa_type
+ORDER BY mfa_attempts DESC;
+```
+
+By factor and week:
+
+```sql
+SELECT
+    date_trunc('week', from_date) AS week_start,
+    mfa_type,
+    SUM(count) AS mfa_attempts,
+    CAST(SUM(count) FILTER (WHERE result = 'success') AS DOUBLE)
+        / NULLIF(SUM(count), 0) AS mfa_success_rate
+FROM ibm_verify.mfa_activity
+-- set the reporting window; see the timespans note in cookbook/notes.qmd
+WHERE from_date BETWEEN DATE '2026-01-01' AND DATE '2026-05-28'
+  AND result IN ('success', 'failure')
+-- date_trunc('week', ...) anchors each bin to its Monday
+GROUP BY date_trunc('week', from_date), mfa_type
+ORDER BY week_start, mfa_type;
+```
+
+## R
+
+By factor:
+
+```r
+tbl(con, in_schema("ibm_verify", "mfa_activity")) |>
+  # set the reporting window; see the timespans note in cookbook/notes.qmd
+  filter(
+    from_date >= as.Date("2026-01-01"),
+    from_date <= as.Date("2026-05-28"),
+    # exclude "sent" rows; success rate is calculated from outcome events only.
+    # including "sent" would inflate the denominator and deflate the rate.
+    result %in% c("success", "failure")
+  ) |>
+  group_by(mfa_type) |>
+  summarise(
+    mfa_attempts = sum(count, na.rm = TRUE),
+    mfa_success_rate =
+      sum(if_else(result == "success", as.double(count), 0), na.rm = TRUE) /
+        sum(count, na.rm = TRUE)
+  ) |>
+  arrange(desc(mfa_attempts))
+```
+
+By factor and week:
+
+```r
+tbl(con, in_schema("ibm_verify", "mfa_activity")) |>
+  # set the reporting window; see the timespans note in cookbook/notes.qmd
+  filter(
+    from_date >= as.Date("2026-01-01"),
+    from_date <= as.Date("2026-05-28"),
+    result %in% c("success", "failure")
+  ) |>
+  # floor_date(..., "week") translates to Athena's date_trunc('week', ...),
+  # which anchors each bin to its Monday
+  mutate(week_start = floor_date(from_date, "week")) |>
+  group_by(week_start, mfa_type) |>
+  summarise(
+    mfa_attempts = sum(count, na.rm = TRUE),
+    mfa_success_rate =
+      sum(if_else(result == "success", as.double(count), 0), na.rm = TRUE) /
+        sum(count, na.rm = TRUE)
+  ) |>
+  arrange(week_start, mfa_type)
+```
+
+:::
+
+*Interpretation notes.* `mfa_success_rate` is a proportion between 0 and 1. Always
+read it next to `mfa_attempts`: a factor with only a handful of attempts can post
+an extreme rate that reflects noise rather than ease of use. In the weekly view,
+the first and last weeks of the reporting window are usually partial (the window
+rarely starts or ends on a Monday), so treat boundary weeks with caution when
+comparing trends.
