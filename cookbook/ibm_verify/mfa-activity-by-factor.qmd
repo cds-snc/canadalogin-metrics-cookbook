@@ -71,7 +71,8 @@ tbl(con, in_schema("ibm_verify", "mfa_activity")) |>
     mfa_authentications = sum(count, na.rm = TRUE)
   ) |>
   mutate(
-    factor_share = as.double(mfa_authentications) / sum(mfa_authentications)
+    factor_share =
+      as.double(mfa_authentications) / sum(mfa_authentications, na.rm = TRUE)
   ) |>
   arrange(desc(mfa_authentications))
 ```
