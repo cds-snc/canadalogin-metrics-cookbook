@@ -1,4 +1,11 @@
+---
+date: last-modified
+date-format: "YYYY-MM-DD"
+---
+
 # Introduction
+
+*Last updated: {{< meta date >}}*
 
 This book documents CanadaLogin metrics and the tables they are calculated from.
 
