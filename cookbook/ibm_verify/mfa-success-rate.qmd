@@ -17,9 +17,15 @@ of `count` where `result` is `'success'` or `'failure'`. OTP factor types also
 produce a `'sent'` event per challenge, which must be excluded from both the
 numerator and the denominator — `sent` rows do not represent outcomes.
 
+To track the metric over time, bin the same calculation by week. Truncating
+`from_date` to the week groups each day into its Monday-anchored bin, so the
+result is one success rate per Monday-to-Sunday week.
+
 ::: {.panel-tabset}
 
 ## SQL
+
+Overall:
 
 ```sql
 SELECT
@@ -33,7 +39,27 @@ WHERE from_date BETWEEN DATE '2026-01-01' AND DATE '2026-05-28'
   AND result IN ('success', 'failure');
 ```
 
+By week:
+
+```sql
+SELECT
+    date_trunc('week', from_date) AS week_start,
+    CAST(SUM(count) FILTER (WHERE result = 'success') AS DOUBLE)
+        / NULLIF(SUM(count), 0) AS mfa_success_rate
+FROM ibm_verify.mfa_activity
+-- set the reporting window; see the timespans note in cookbook/notes.qmd
+WHERE from_date BETWEEN DATE '2026-01-01' AND DATE '2026-05-28'
+  -- exclude "sent" rows; success rate is calculated from outcome events only.
+  -- including "sent" would inflate the denominator and deflate the rate.
+  AND result IN ('success', 'failure')
+-- date_trunc('week', ...) anchors each bin to its Monday
+GROUP BY date_trunc('week', from_date)
+ORDER BY week_start;
+```
+
 ## R
+
+Overall:
 
 ```r
 tbl(con, in_schema("ibm_verify", "mfa_activity")) |>
@@ -52,8 +78,34 @@ tbl(con, in_schema("ibm_verify", "mfa_activity")) |>
   )
 ```
 
+By week:
+
+```r
+tbl(con, in_schema("ibm_verify", "mfa_activity")) |>
+  # set the reporting window; see the timespans note in cookbook/notes.qmd
+  filter(
+    from_date >= as.Date("2026-01-01"),
+    from_date <= as.Date("2026-05-28"),
+    # exclude "sent" rows; success rate is calculated from outcome events only.
+    # including "sent" would inflate the denominator and deflate the rate.
+    result %in% c("success", "failure")
+  ) |>
+  # floor_date(..., "week") translates to Athena's date_trunc('week', ...),
+  # which anchors each bin to its Monday
+  mutate(week_start = floor_date(from_date, "week")) |>
+  group_by(week_start) |>
+  summarise(
+    mfa_success_rate =
+      sum(if_else(result == "success", as.double(count), 0), na.rm = TRUE) /
+        sum(count, na.rm = TRUE)
+  ) |>
+  arrange(week_start)
+```
+
 :::
 
 *Interpretation notes.* The rate is a proportion between 0 and 1. Interpret per factor
 where possible: a low overall rate may be driven by a single struggling factor
-rather than a system-wide problem.
+rather than a system-wide problem. In the weekly view, the first and last weeks
+of the reporting window are usually partial (the window rarely starts or ends on
+a Monday), so treat boundary weeks with caution when comparing trends.

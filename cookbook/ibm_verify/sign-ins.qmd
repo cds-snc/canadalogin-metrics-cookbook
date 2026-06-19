@@ -12,9 +12,15 @@ failed attempts.
 **Calculation.** Sum `failed_logins` and `successful_logins` over the selected
 reporting period.
 
+To track volume over time, bin the same sum by week. Truncating `from_date` to
+the week groups each day into its Monday-anchored bin, so the result is one
+sign-in total per Monday-to-Sunday week.
+
 ::: {.panel-tabset}
 
 ## SQL
+
+Overall:
 
 ```sql
 SELECT
@@ -24,7 +30,23 @@ FROM ibm_verify.auth_total_logins
 WHERE from_date BETWEEN DATE '2026-01-01' AND DATE '2026-05-28';
 ```
 
+By week:
+
+```sql
+SELECT
+    date_trunc('week', from_date) AS week_start,
+    SUM(failed_logins + successful_logins) AS total_sign_in_attempts
+FROM ibm_verify.auth_total_logins
+-- set the reporting window; see the timespans note in cookbook/notes.qmd
+WHERE from_date BETWEEN DATE '2026-01-01' AND DATE '2026-05-28'
+-- date_trunc('week', ...) anchors each bin to its Monday
+GROUP BY date_trunc('week', from_date)
+ORDER BY week_start;
+```
+
 ## R
+
+Overall:
 
 ```r
 tbl(con, in_schema("ibm_verify", "auth_total_logins")) |>
@@ -38,10 +60,32 @@ tbl(con, in_schema("ibm_verify", "auth_total_logins")) |>
   )
 ```
 
+By week:
+
+```r
+tbl(con, in_schema("ibm_verify", "auth_total_logins")) |>
+  # set the reporting window; see the timespans note in cookbook/notes.qmd
+  filter(
+    from_date >= as.Date("2026-01-01"),
+    from_date <= as.Date("2026-05-28")
+  ) |>
+  # floor_date(..., "week") translates to Athena's date_trunc('week', ...),
+  # which anchors each bin to its Monday
+  mutate(week_start = floor_date(from_date, "week")) |>
+  group_by(week_start) |>
+  summarise(
+    total_sign_in_attempts = sum(failed_logins + successful_logins, na.rm = TRUE)
+  ) |>
+  arrange(week_start)
+```
+
 :::
 
 *Interpretation notes.* This counts authentication events, not people. A single
 sign-in that uses a second factor records more than one successful event (see
 the [`auth_total_logins`](../catalog/ibm_verify.qmd#auth_total_logins) caveat),
 so the total is inflated relative to distinct user activity. Use a unique-user
-metric when the question is about reach.
+metric when the question is about reach. In the weekly view, the first and last
+weeks of the reporting window are usually partial (the window rarely starts or
+ends on a Monday), so a low count in a boundary week may reflect fewer days
+rather than a real dip in volume.
