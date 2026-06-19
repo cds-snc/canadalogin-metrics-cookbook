@@ -1,11 +1,14 @@
 # CanadaLogin Metrics Cookbook
 
-A [Quarto website](https://quarto.org/docs/websites/) documenting commonly used
-CanadaLogin metrics: their definitions, plain-language names, calculation logic, and
-example SQL and R queries. A companion data catalog describes the underlying tables
-field by field.
+The ***[CanadaLogin Metrics Cookbook](https://cds-snc.github.io/canadalogin-metrics-cookbook/)***
+documents commonly used CanadaLogin metrics: their definitions, plain-language names, 
+calculation logic, and example SQL and R queries. A companion data catalog describes 
+the underlying tables field by field.
 
 ## Structure
+
+The document is built using the [Quarto](https://quarto.org/) publishing system. Under
+the hood, each Quarto document (.qmd) is just a Markdown file wearing a fancy hat.
 
 ```
 _quarto.yml      # website config: sidebar, render list, and theme
@@ -36,14 +39,9 @@ trigger a live reload.
 
 ## Deployment
 
-The `_book/` directory is a self-contained static site. To publish to GitHub Pages using
-the Quarto CLI:
-
-```bash
-quarto publish gh-pages
-```
-
-This renders the book and pushes the output to the `gh-pages` branch of the repository.
+Pushing to `main` triggers a GitHub Actions workflow (`.github/workflows/deploy.yml`)
+that renders the site and deploys it to GitHub Pages automatically. The workflow can also
+be triggered manually from the Actions tab.
 
 ## Testing
 
