@@ -43,7 +43,8 @@ SELECT
     topic_count,
     topic_share
 FROM topic_shares
-ORDER BY topic_count DESC
+-- sort on topic_count desc, then call_topic asc to break ties deterministically
+ORDER BY topic_count DESC, call_topic
 LIMIT 10;
 ```
 
@@ -58,12 +59,9 @@ tbl(con, in_schema("call_centre", "weekly_topic_dump")) |>
   mutate(
     topic_share = as.double(topic_count) / sum(topic_count, na.rm = TRUE)
   ) |>
-  slice_max(
-    topic_count,
-    n = 10,
-    with_ties = FALSE
-  ) |>
-  arrange(desc(topic_count))
+  # sort on topic_count desc, then call_topic asc to break ties deterministically
+  arrange(desc(topic_count), call_topic) |>
+  head(10)
 ```
 
 :::
