@@ -45,7 +45,11 @@ format:
     code-fold: true
     number-sections: false
     theme:
+      # Order sets precedence: custom.scss > _brand.yml > cosmo. The brand
+      # supplies CDS colours and fonts on top of cosmo; custom.scss keeps the
+      # structural overrides (TOC width, bold nav) on top of everything.
       - cosmo
+      - brand
       - custom.scss
 
 execute:

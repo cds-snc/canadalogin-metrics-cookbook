@@ -1,0 +1,85 @@
+# _brand.yml - CDS / CanadaLogin brand
+#
+# Derived from "CDS Brand Guide 1.0" (April 2019). This file is the machine-
+# readable source of brand truth for the Quarto site and supersedes any colour
+# or font values noted elsewhere in the repo.
+#
+# Lives at the repo root next to _quarto.yml so Quarto auto-discovers it and
+# applies it across every page. See _quarto.yml for the theme layering (brand
+# sits above cosmo but below custom.scss).
+
+meta:
+  name:
+    short: CDS
+    full: Canadian Digital Service
+  link:
+    home: https://digital.canada.ca
+    github: https://github.com/cds-snc
+
+color:
+  # Full palette from the guide's colour-codes page and cheat sheet, grouped by
+  # the guide's usage categories. Bootstrap-standard names used where they fit.
+  palette:
+    white: "#FFFFFF"
+    black: "#000000"
+
+    # Base colours - the "inspired by Canada" landscape tones, for backgrounds,
+    # text, and colour blocking (most designs use only one).
+    blue: "#004986"    # PMS 2186C
+    forest: "#115740"  # PMS 343C - deep green
+    green: "#89A84F"   # PMS 2276C
+    red: "#AB2328"     # PMS 7621C
+
+    # Action colours - highlight important items or add a pop.
+    orange: "#E87722"  # PMS 158C
+    yellow: "#F6BE00"  # PMS 7408C
+
+    # Grounding colours - balance a colour or greyscale design without overwhelming.
+    sky: "#CCDAE6"     # pale blue
+    grey: "#D8D8D8"    # light grey
+    gray: grey         # Bootstrap-name alias
+
+  # Semantic roles (drive Bootstrap/Quarto theming).
+  foreground: black
+  background: white
+  primary: blue
+  secondary: grey
+  success: green
+  info: sky
+  warning: yellow
+  danger: red
+  light: white
+  dark: black
+
+typography:
+  # The guide uses a single, open-source family: Source Sans Pro (Google/Adobe),
+  # most often in Light and Semibold. Now also published as "Source Sans 3".
+  fonts:
+    # Weights used by document text: 400 body, 600 headings, 700 strong, plus
+    # italics for emphasis. Light (300) is dropped (base is 400, so nothing uses it)
+    - family: Source Sans Pro
+      source: google
+      weight: [400, 600, 700]
+      style: [normal, italic]
+  base:
+    family: Source Sans Pro
+    weight: 400       # Regular - bumped from the guide's Light (300) for on-screen/WCAG legibility
+    line-height: 1.5
+  headings:
+    family: Source Sans Pro
+    weight: 600       # Semibold - the guide's heading weight
+  link:
+    color: primary
+
+logo:
+  # CDS/SNC square (the primary mark) plus the square + Canada wordmark lockup,
+  # in English- and French-led letter order. Paths are relative to this file,
+  # which lives at the repo root, so the images are under img/.
+  images:
+    cds-snc-square: img/cds-snc.png            # CDS/SNC square (English)
+    snc-cds-square: img/snc-cds.png            # SNC/CDS square (French)
+    cds-snc-canada: img/EN_Square+CANADA.jpg   # square + Canada wordmark (English)
+    snc-cds-canada: img/FR_Square+CANADA.jpg   # square + Canada wordmark (French)
+  small: cds-snc-square
+  medium: cds-snc-square
+  large: cds-snc-canada
