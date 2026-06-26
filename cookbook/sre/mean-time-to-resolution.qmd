@@ -1,0 +1,94 @@
+### Mean Time to Resolution
+
+The average time, in minutes, from when an incident is detected to when it is
+fully resolved.
+
+*Alternative names*:
+
+- MTTR
+- time to resolve
+- incident resolution time
+- mean time to recovery (see the interpretation note on this overloaded term)
+
+**Calculation.** Average `mttr_detected_resolved` (minutes from `detected_at` to
+`resolved_at`, precomputed in the table) across the incidents whose `detected_at`
+falls in the reporting window, from `sre.mttr_current`. Because the incident
+timestamps are stored as America/Toronto strings rather than native dates, the
+window casts the `YYYY-MM-DD` prefix of `detected_at` to a `DATE` instead of
+filtering a `from_date` column. Unresolved incidents have a null
+`mttr_detected_resolved` and are excluded from the average.
+
+To break the figure out for service-level reporting, group the same average by
+`severity`.
+
+::: {.panel-tabset}
+
+## SQL
+
+Overall:
+
+```sql
+SELECT
+    AVG(mttr_detected_resolved) AS mean_time_to_resolution
+FROM sre.mttr_current
+-- set the reporting window on detected_at; see the timespans note in cookbook/notes.qmd
+WHERE CAST(substr(detected_at, 1, 10) AS DATE) BETWEEN DATE '2026-01-01' AND DATE '2026-06-26';
+```
+
+By severity:
+
+```sql
+SELECT
+    severity,
+    AVG(mttr_detected_resolved) AS mean_time_to_resolution
+FROM sre.mttr_current
+-- set the reporting window on detected_at; see the timespans note in cookbook/notes.qmd
+WHERE CAST(substr(detected_at, 1, 10) AS DATE) BETWEEN DATE '2026-01-01' AND DATE '2026-06-26'
+GROUP BY severity
+ORDER BY severity;
+```
+
+## R
+
+Overall:
+
+```r
+tbl(con, in_schema("sre", "mttr_current")) |>
+  # set the reporting window on detected_at; see the timespans note in cookbook/notes.qmd
+  filter(
+    as.Date(str_sub(detected_at, 1, 10)) >= as.Date("2026-01-01"),
+    as.Date(str_sub(detected_at, 1, 10)) <= as.Date("2026-06-26")
+  ) |>
+  summarise(
+    mean_time_to_resolution = mean(mttr_detected_resolved, na.rm = TRUE)
+  )
+```
+
+By severity:
+
+```r
+tbl(con, in_schema("sre", "mttr_current")) |>
+  # set the reporting window on detected_at; see the timespans note in cookbook/notes.qmd
+  filter(
+    as.Date(str_sub(detected_at, 1, 10)) >= as.Date("2026-01-01"),
+    as.Date(str_sub(detected_at, 1, 10)) <= as.Date("2026-06-26")
+  ) |>
+  group_by(severity) |>
+  summarise(
+    mean_time_to_resolution = mean(mttr_detected_resolved, na.rm = TRUE)
+  ) |>
+  arrange(severity)
+```
+
+:::
+
+*Interpretation notes.* The figure is in minutes; divide by 60 for hours. It is a
+**mean**, so a single very long incident can pull it up sharply, especially given
+how few incidents there are in any window. Read it alongside the incident count,
+and consider a median or a Sev1-only cut when one outlier dominates.
+
+The window is anchored on `detected_at`, so an incident counts in the period it
+*began*, even if it was resolved in a later period. `severity` is unvalidated
+free text in the source sheet, so the grouped view reflects whatever values were
+typed (expect the occasional typo or spacing drift).
+

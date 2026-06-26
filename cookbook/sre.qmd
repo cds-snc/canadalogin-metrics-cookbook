@@ -1,0 +1,22 @@
+---
+title: Platform
+---
+
+Site reliability metrics for the CanadaLogin platform, in the `sre` schema.
+Currently incident-response metrics, with other reliability measures to follow.
+
+The relevant tables are:
+
+- [`sre.mttr_current`](../catalog/sre.qmd#mttr_current) - latest state of every incident, one row per incident
+- [`sre.mttr_history`](../catalog/sre.qmd#mttr_history) - dated snapshots of every incident, preserving how each evolved
+
+These tables come from a hand-maintained spreadsheet; see the catalog
+[Data quality](../catalog/sre.qmd#data-quality) note for caveats. The one that
+shapes most queries here: the incident timestamps (`detected_at`, `resolved_at`,
+and so on) are stored as America/Toronto strings, not native dates, so a
+reporting window filters on the `YYYY-MM-DD` prefix of `detected_at` rather than
+a `from_date` column.
+
+## Incident Response Metrics
+
+{{< include sre/mean-time-to-resolution.qmd >}}

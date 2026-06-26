@@ -19,3 +19,10 @@ Weekly call centre data extracted from the CanadaLogin support weekly Excel repo
 - [`weekly_activity_report`](call_centre.qmd#weekly_activity_report) - weekly call volume and service-level summary
 - [`weekly_topic_dump`](call_centre.qmd#weekly_topic_dump) - individual call records with topic classifications
 
+## [Platform](sre.qmd)
+
+Site reliability metrics for the CanadaLogin platform, in the `sre` schema. Currently incident-response tables, with other reliability measures to follow.
+
+- [`mttr_current`](sre.qmd#mttr_current) - latest state of every incident, one row per incident
+- [`mttr_history`](sre.qmd#mttr_history) - dated snapshots of every incident, preserving how each evolved
+

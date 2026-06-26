@@ -8,6 +8,7 @@ The cookbook is organized by data source:
 
 - IBM Verify
 - Call Centre
+- Platform
 - Cross-source / interpretive metrics (planned)
 
 Each metric includes:

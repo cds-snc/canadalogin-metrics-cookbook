@@ -1,0 +1,34 @@
+---
+title: Platform
+---
+
+Platform metrics for CanadaLogin, in the `sre` schema. Currently, both tables are
+derived from the CanadaLogin Platform team's `CanadaLogin_MTTR_Dashboard` Google
+Sheet (maintained by hand in the CDS Google Drive) and uploaded by hand by the
+Data and Research team. They share one source and grain (one row per incident);
+they differ only in history: `mttr_current` holds the latest state of each
+incident, while `mttr_history` accumulates a dated snapshot of every incident on
+each upload.
+
+### Data quality
+
+Because the source is a hand-maintained spreadsheet, a few caveats apply to both
+tables:
+
+- **Timestamps are strings, not native timestamps.** `detected_at`,
+  `acknowledged_at`, `mitigated_at`, and `resolved_at` are text in America/Toronto
+  local time at minute precision (`YYYY-MM-DD HH:MM`). Parse them before doing date
+  math. (`fetched_at` is a real timestamp, in UTC.)
+- **URLs may carry trailing whitespace or embedded newlines.** Trim
+  `slack_channel` and `postmortem_link` before joining on or rendering them.
+- **Categorical columns are unvalidated free text.** `severity`, `service`,
+  `component`, and `root_cause_category` are typed by hand, so expect occasional
+  typos, casing, and spacing drift. The values listed in each field table are those
+  observed so far, not a closed set.
+- **The duration columns are rounded to the nearest minute** from second-precision
+  source times, so recomputing them from the displayed (minute-precision) timestamp
+  strings can differ by up to a minute.
+
+{{< include sre/mttr_current.qmd >}}
+
+{{< include sre/mttr_history.qmd >}}

@@ -1,0 +1,19 @@
+## mttr_history
+
+The append-only companion to [`mttr_current`](#mttr_current): same source,
+columns, and provenance, but instead of holding only the latest state it
+accumulates a dated snapshot of every incident on each upload.
+
+Each row is one incident (`incident_id`) as it appeared on one snapshot `date`,
+so an incident's metrics can change from one snapshot to the next as it is
+re-triaged. A row is unique on (`incident_id`, `date`).
+
+`Keywords`: MTTR, MTTA, MTTM, incident, incident response, snapshot, history, severity, reliability, SRE, mean time to resolve
+
+### Fields
+
+Every column is identical to [`mttr_current`](#mttr_current), with one addition:
+
+| Field Name | Type | Description |
+|---|---|---|
+| date | string | Snapshot date as `YYYY-MM-DD` text; the grain that lets this table accumulate. Equals the date portion of `fetched_at` |

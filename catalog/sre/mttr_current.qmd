@@ -1,0 +1,47 @@
+## mttr_current
+
+The latest known state of every CanadaLogin incident, one row per incident.
+
+Each row is a single incident. The table is overwritten on each upload with the
+most recent values, so it never grows beyond the current incident set. For
+point-in-time history, see [`mttr_history`](#mttr_history).
+
+`Keywords`: MTTR, MTTA, MTTM, incident, incident response, postmortem, severity, reliability, SRE, mean time to resolve
+
+### Provenance
+
+Uploaded manually by the Data and Research team from the CanadaLogin Platform
+team's `CanadaLogin_MTTR_Dashboard` Google Sheet (maintained by hand in the CDS
+Google Drive). Each upload overwrites this table wholesale with the current
+incident state and appends a dated snapshot to [`mttr_history`](#mttr_history).
+
+* **Updated**: Manually, on an ad hoc basis (roughly weekly)
+* **Steward**: EDCP Data and Research Team
+* **Contact**: [Yinlin Zhang](mailto:yinlin.zhang@cds-snc.ca) (D&R Team) or [Obie Okongwu](mailto:obinna.okongwu@cds-snc.ca) (CL Platform Team)
+
+### Fields
+
+One row per incident, keyed by `incident_id`. See the schema-level
+[Data quality](#data-quality) note for caveats that apply to the
+string timestamps, URL columns, free-text categories, and rounded durations.
+
+| Field Name | Type | Description |
+|---|---|---|
+| incident_id | string | Unique identifier for the incident, format `INC-NNN`
+| slack_channel | string | URL of the incident's dedicated Slack channel |
+| severity | string | Incident severity. One of "Sev1", "Sev2", "Sev3", or "Sev4" (Sev1 most severe, Sev4 least). Free text in the source, not strictly enforced |
+| service | string | The CanadaLogin service affected |
+| component | string | The specific subsystem affected, more granular than `service`. Free text |
+| short_description | string | One-line free-text summary of the incident |
+| detected_at | string | When the incident was detected, America/Toronto local time at minute precision (`YYYY-MM-DD HH:MM`) |
+| acknowledged_at | string | When the incident was acknowledged. Same format and timezone as `detected_at` |
+| mitigated_at | string | When the incident was mitigated. Same format and timezone as `detected_at` |
+| resolved_at | string | When the incident was fully resolved. Same format and timezone as `detected_at` |
+| root_cause_category | string | Free-text root-cause classification |
+| mtta_alert_ack | integer | Minutes from `detected_at` to `acknowledged_at`, rounded to the nearest minute |
+| mttm_detected_mitigated | integer | Minutes from `detected_at` to `mitigated_at`, rounded to the nearest minute |
+| mttr_detected_resolved | integer | Minutes from `detected_at` to `resolved_at`, rounded to the nearest minute |
+| postmortem_link | string | URL of the incident's postmortem Google Doc. Optional |
+| week | integer | ISO-8601 week number (1-53) of `detected_at` |
+| month | string | Calendar month of `detected_at`, first-of-month formatted as `mmm-yy` text (for example "Feb-26") |
+| fetched_at | timestamp | When the pipeline ingested this snapshot, in UTC |
