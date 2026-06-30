@@ -1,0 +1,30 @@
+---
+title: Jira (PSOM)
+---
+
+Metrics in this section are calculated from PSOM Jira Service Management ticket
+data.
+
+The relevant Jira table is:
+
+- [`jira.psom`](../catalog/jira.qmd#psom) - weekly snapshot of all PSOM tickets
+
+**Data cadence.** The `jira.psom` table is updated once per week (every Monday
+at ~6:00 AM ET). Each run writes a full snapshot of all current tickets to a new
+`date=` partition; previous partitions are preserved as an audit trail. Always
+filter to `date = (SELECT MAX(date) FROM jira.psom)` when querying the latest
+state.
+
+## PSOM Metrics
+
+{{< include jira/tickets-by-status.qmd >}}
+
+{{< include jira/weekly-ticket-volume.qmd >}}
+
+{{< include jira/tickets-by-priority.qmd >}}
+
+{{< include jira/tickets-by-request-type.qmd >}}
+
+{{< include jira/sla-first-response-breach-rate.qmd >}}
+
+{{< include jira/sla-time-to-done-breach-rate.qmd >}}

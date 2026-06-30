@@ -1,0 +1,44 @@
+### Tickets by Request Type
+
+The number of PSOM Jira Service Management tickets in the latest snapshot
+grouped by JSM request type, showing which categories of service requests are
+most common.
+
+*Alternative names*:
+
+- service request type breakdown
+- PSOM tickets by request type
+- request category distribution
+
+**Calculation.** Filter to the most recent `date` partition and count tickets by
+`request_type`. Tickets that are not JSM service requests will have an empty
+`request_type`; these are counted separately as `(non-service-request)`.
+
+::: {.panel-tabset}
+
+## SQL
+
+```sql
+SELECT
+    CASE WHEN request_type = '' THEN '(non-service-request)' ELSE request_type END AS request_type,
+    COUNT(*) AS ticket_count
+FROM jira.psom
+WHERE date = (SELECT MAX(date) FROM jira.psom)
+GROUP BY request_type
+ORDER BY ticket_count DESC;
+```
+
+## R
+
+```r
+psom <- tbl(con, in_schema("jira", "psom"))
+latest_date <- psom |> summarise(d = max(date, na.rm = TRUE)) |> pull(d)
+
+psom |>
+  filter(date == local(latest_date)) |>
+  mutate(request_type = if_else(request_type == "", "(non-service-request)", request_type)) |>
+  count(request_type, name = "ticket_count") |>
+  arrange(desc(ticket_count))
+```
+
+:::

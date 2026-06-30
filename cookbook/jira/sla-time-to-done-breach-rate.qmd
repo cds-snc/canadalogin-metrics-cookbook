@@ -1,0 +1,57 @@
+### SLA Time-to-Done Breach Rate
+
+The proportion of PSOM tickets where the "Time to done" SLA was breached,
+based on the latest weekly snapshot.
+
+This metric reflects how well the team is resolving tickets within the agreed
+timeframe. Only tickets where the SLA clock was active are included; tickets
+with no SLA configuration are excluded.
+
+*Alternative names*:
+
+- time to done SLA breach rate
+- resolution SLA compliance
+- time-to-done SLA failure rate
+
+**Calculation.** Filter to the most recent `date` partition and to tickets where
+`sla_time_to_done_breached` is not empty (i.e., the SLA was active). Divide
+the count of tickets where `sla_time_to_done_breached = 'True'` by the total
+count of SLA-active tickets.
+
+::: {.panel-tabset}
+
+## SQL
+
+```sql
+SELECT
+    COUNT(*) AS total_sla_tickets,
+    SUM(CASE WHEN sla_time_to_done_breached = 'True' THEN 1 ELSE 0 END) AS breached_count,
+    CAST(SUM(CASE WHEN sla_time_to_done_breached = 'True' THEN 1 ELSE 0 END) AS DOUBLE)
+        / NULLIF(COUNT(*), 0) AS breach_rate
+FROM jira.psom
+WHERE date = (SELECT MAX(date) FROM jira.psom)
+  AND sla_time_to_done_breached != '';
+```
+
+## R
+
+```r
+psom <- tbl(con, in_schema("jira", "psom"))
+latest_date <- psom |> summarise(d = max(date, na.rm = TRUE)) |> pull(d)
+
+psom |>
+  filter(date == local(latest_date), sla_time_to_done_breached != "") |>
+  summarise(
+    total_sla_tickets = n(),
+    breached_count    = sum(as.integer(sla_time_to_done_breached == "True"), na.rm = TRUE),
+    breach_rate       = sum(as.integer(sla_time_to_done_breached == "True"), na.rm = TRUE) /
+                          as.double(n())
+  )
+```
+
+:::
+
+*Interpretation notes.* The rate is a proportion between 0 and 1. Tickets with
+no active SLA (empty `sla_time_to_done_breached`) are excluded from both
+numerator and denominator. Check `total_sla_tickets` to understand the sample
+size underlying the rate.

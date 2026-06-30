@@ -11,9 +11,11 @@ project:
     - "!cookbook/ibm_verify/"
     - "!cookbook/call_centre/"
     - "!cookbook/sre/"
+    - "!cookbook/jira/"
     - "!catalog/ibm_verify/"
     - "!catalog/call_centre/"
     - "!catalog/sre/"
+    - "!catalog/jira/"
     - "!catalog/data-catalog-template.qmd"
 
 website:
@@ -30,6 +32,7 @@ website:
           - cookbook/ibm_verify.qmd
           - cookbook/call_centre.qmd
           - cookbook/sre.qmd
+          - cookbook/jira.qmd
           - cookbook/notes.qmd
 #          - cookbook/cross-source.qmd
       - section: "Data Catalog"
@@ -38,6 +41,7 @@ website:
           - catalog/ibm_verify.qmd
           - catalog/call_centre.qmd
           - catalog/sre.qmd
+          - catalog/jira.qmd
           - catalog/notes.qmd
 
 format:

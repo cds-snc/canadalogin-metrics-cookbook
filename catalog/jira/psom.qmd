@@ -1,0 +1,68 @@
+## psom {#psom}
+
+Weekly snapshot of all PSOM Jira Service Management tickets.
+
+One row per Jira issue per weekly snapshot. Each Monday run writes a full
+snapshot of all current PSOM tickets to a new `date=` partition. Previous
+partitions are preserved as an audit trail, enabling point-in-time analysis.
+
+**Jira source:** `jtickets.atlassian.net`, project `PSOM`, fetched via
+`POST /rest/api/3/search/jql` with full comment history via
+`/rest/api/3/issue/{key}/comment`.
+
+`Keywords`: jira, psom, tickets, service requests, SLA, support
+
+### Provenance
+
+Queried from PSOM Jira Cloud via API by the `psom-weekly-sync` Lambda function.
+
+* **Updated**: Weekly, every Monday at ~6:00 AM ET
+* **Steward**: EDCP Data and Research Team
+* **Contact**: [Yinlin Zhang](mailto:yinlin.zhang@cds-snc.ca)
+
+### Fields
+
+One row per Jira issue per weekly snapshot (`date` partition).
+
+| Field Name | Type | Description |
+|---|---|---|
+| date | varchar | Partition key — the date the Lambda ran (`YYYY-MM-DD`). Use in `WHERE date = '...'` filters. |
+| key | varchar | Jira ticket key, e.g. `PSOM-42`. |
+| summary | varchar | One-line ticket title. |
+| description | varchar | Full ticket description, extracted from Atlassian Document Format (ADF) to plain text. |
+| issue_type | varchar | Jira issue type name, e.g. `Service Request`, `Bug`. |
+| status | varchar | Current workflow status, e.g. `Open`, `In Progress`, `Resolved`. |
+| status_changed | varchar | ISO 8601 timestamp when the ticket's status category last changed. |
+| priority | varchar | Priority level, e.g. `High`, `Medium`, `Low`. |
+| assignee | varchar | Display name of the current assignee; empty string if unassigned. |
+| reporter | varchar | Display name of the person who reported the ticket. |
+| creator | varchar | Display name of the person who created the ticket (may differ from reporter). |
+| created | varchar | ISO 8601 timestamp when the ticket was created. |
+| updated | varchar | ISO 8601 timestamp of the most recent field or comment update. |
+| due_date | varchar | Due date in `YYYY-MM-DD` format; empty string if not set. |
+| labels | varchar | Semicolon-separated list of labels applied to the ticket; empty string if none. |
+| request_type | varchar | JSM service request type name, e.g. `New Access Request`. Empty for non-JSM tickets. |
+| request_participants | varchar | Semicolon-separated display names of request participants (CC'd users). |
+| organizations | varchar | Semicolon-separated names of JSM organizations the request is associated with. |
+| sla_first_response_due | varchar | ISO 8601 due timestamp for the "Time to first response" SLA; empty if SLA not active. |
+| sla_first_response_breached | varchar | `"True"` if the first-response SLA was breached, `"False"` if met, `""` if not applicable. |
+| sla_time_to_done_due | varchar | ISO 8601 due timestamp for the "Time to done" SLA; empty if SLA not active. |
+| sla_time_to_done_breached | varchar | `"True"` if the time-to-done SLA was breached, `"False"` if met, `""` if not applicable. |
+| comment_count | bigint | Total number of comments on the ticket. |
+| comments | varchar | JSON array string of all comments. Each element: `{"author": "...", "created": "...", "updated": "...", "body": "...", "internal": false}`. The `body` is ADF-extracted plain text. The `internal` flag is `true` for JSM internal notes. |
+| fetched_at | varchar | UTC timestamp when the Lambda wrote this row (`YYYY-MM-DD HH:MM:SS`). |
+
+### Notes
+
+All timestamp columns (`created`, `updated`, `status_changed`, `sla_*_due`,
+`fetched_at`) are stored as `varchar`. Use `CAST(created AS TIMESTAMP)` in
+Athena for date arithmetic.
+
+SLA fields (`sla_first_response_*`, `sla_time_to_done_*`) are populated only
+for tickets where a JSM SLA clock was active. Tickets created before the SLA
+scheme was configured, or non-service-request issue types, will have empty SLA
+columns. Exclude empty-string rows when calculating SLA breach rates.
+
+Each weekly run adds a new `date=` partition. All previous partitions are
+retained, so you can compare snapshots across weeks to track status changes over
+time.
