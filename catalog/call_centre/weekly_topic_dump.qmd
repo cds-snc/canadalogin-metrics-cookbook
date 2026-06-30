@@ -28,7 +28,7 @@ multiple rows if more than one topic was recorded.
 | Field Name | Type | Description |
 |---|---|---|
 | call_no | integer | Identifier for the call. Not unique - multiple rows share the same `call_no` when multiple topics were recorded |
-| call_datetime | integer | Call timestamp stored as a Unix nanosecond integer. Cast to timestamp before use |
+| call_datetime | timestamp | Date and time the call took place |
 | call_date | date | Date the call took place |
 | date | string | Call date as a text date. Mirrors `call_date` |
 | clienttype | string | Type of caller, for example "Business", "Public", "Government of Canada" |
@@ -56,9 +56,5 @@ REGEXP_REPLACE(TRIM(statobject), '\s+', ' ') AS call_topic
 See the [Call Centre metrics](../cookbook/call_centre.qmd) chapter for topic count
 and topic share example SQL.
 
-`call_datetime` is a Unix timestamp in nanoseconds. Divide by 1,000,000,000
-before converting to a timestamp:
-
-```sql
-from_unixtime(call_datetime / 1000000000) AS call_timestamp
-```
+`call_datetime` is a native `timestamp` and can be used directly. `call_date` is
+the same value truncated to a `DATE`.
