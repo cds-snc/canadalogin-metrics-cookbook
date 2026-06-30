@@ -47,7 +47,9 @@ Thumbs.db
 **/*.quarto_ipynb
 
 
-table-info.txt
+# Local table glimpses / schema snapshots (not committed; the script itself is)
+/inspect/glimpse/
+/inspect/schema/
 IBM Verify Data Dictionary.csv
 
 # Environment variables / credentials
