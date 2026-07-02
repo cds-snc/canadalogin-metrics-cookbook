@@ -1,0 +1,103 @@
+### Sign-in MFA Activity by Factor
+
+The volume of MFA attempts across the factors the public can use to sign in,
+with each factor's share of the total.
+
+Where [All MFA Activity by Factor](#all-mfa-activity-by-factor) covers every
+factor type the platform records, this metric keeps only the ones a member of
+the public can present as a second factor when signing in: `sms_otp`,
+`voice_otp`, and, since passkeys became generally available on 2026-07-06,
+`fido2`. The internal and administrative factors that dominate the platform-wide
+view are left out.
+
+Two factors that reach the public are deliberately excluded:
+
+- `email_otp` is offered only to validate an email address at sign-up; it cannot
+  be used to sign in, so counting it here would overstate sign-in factor usage.
+- `kq`, `totp`, `qr`, and `ibm_verify_push` are used internally or for testing, not part of the public sign-in flow.
+
+*Alternative names*:
+
+- sign-in factor mix
+- public sign-in factor share
+- sign-in-capable factor distribution
+
+**Calculation.** Restrict to the sign-in factors (`sms_otp`, `voice_otp`,
+`fido2`), then, as in [All MFA Activity by
+Factor](#all-mfa-activity-by-factor), de-duplicate before counting: the OTP
+factors (`sms_otp`, `voice_otp`) record both a `sent` event and a subsequent
+`success`/`failure` event for the same challenge, so only the `sent` row is
+counted for these; `fido2` (passkeys) has no `sent` event and is counted through
+its `success`/`failure` rows. Sum `count` grouped by `mfa_type`, then divide each
+factor's total by the combined total to get its share.
+
+::: {.panel-tabset}
+
+## SQL
+
+```sql
+SELECT
+    mfa_type,
+    SUM(count) AS mfa_authentications,
+    CAST(SUM(count) AS DOUBLE)
+        / NULLIF(SUM(SUM(count)) OVER (), 0) AS factor_share
+FROM ibm_verify.mfa_activity
+-- set the reporting window; see the timespans note in cookbook/notes.qmd
+WHERE from_date BETWEEN DATE '2026-01-01' AND DATE '2026-05-28'
+  -- restrict to the factors the public can use to sign in. email_otp is
+  -- excluded because it only validates emails at sign-up, and kq, totp, qr,
+  -- and ibm_verify_push are internal factors, not public sign-in options.
+  AND mfa_type IN ('sms_otp', 'voice_otp', 'fido2')
+  -- de-duplicate OTP challenges: count only "sent" for the OTP factors
+  -- (sms_otp, voice_otp), and "success"/"failure" for fido2 (passkeys),
+  -- which has no "sent" event.
+  AND (
+    result = 'sent'
+    OR (
+      result IN ('success', 'failure')
+      AND mfa_type NOT IN ('sms_otp', 'email_otp', 'voice_otp')
+    )
+  )
+GROUP BY mfa_type
+ORDER BY mfa_authentications DESC;
+```
+
+## R
+
+```r
+otp_types <- c("sms_otp", "email_otp", "voice_otp")
+sign_in_types <- c("sms_otp", "voice_otp", "fido2")
+
+tbl(con, in_schema("ibm_verify", "mfa_activity")) |>
+  # set the reporting window; see the timespans note in cookbook/notes.qmd
+  filter(
+    from_date >= as.Date("2026-01-01"),
+    from_date <= as.Date("2026-05-28"),
+    # restrict to the factors the public can use to sign in. email_otp is
+    # excluded because it only validates emails at sign-up, and kq, totp, qr,
+    # and ibm_verify_push are internal factors, not public sign-in options.
+    mfa_type %in% sign_in_types,
+    # de-duplicate OTP challenges: count only "sent" for the OTP factors
+    # (sms_otp, voice_otp), and "success"/"failure" for fido2 (passkeys),
+    # which has no "sent" event.
+    result == "sent" |
+      (result %in% c("success", "failure") & !mfa_type %in% otp_types)
+  ) |>
+  group_by(mfa_type) |>
+  summarise(
+    mfa_authentications = sum(count, na.rm = TRUE)
+  ) |>
+  mutate(
+    factor_share =
+      as.double(mfa_authentications) / sum(mfa_authentications, na.rm = TRUE)
+  ) |>
+  arrange(desc(mfa_authentications))
+```
+
+:::
+
+*Interpretation notes.* `factor_share` is a proportion between 0 and 1 and sums to 1
+across these factors only, so it is not comparable to the shares in [All MFA
+Activity by Factor](#all-mfa-activity-by-factor), which are taken over every
+factor. Passkey (`fido2`) activity appears only from the 2026-07-06 rollout
+onward, so a reporting window that predates that date will show little or none.

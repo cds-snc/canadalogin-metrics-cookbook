@@ -24,8 +24,8 @@ reported alongside the rate so that low-volume factors, whose rates are noisy,
 can be discounted.
 
 Note that `mfa_attempts` here counts `success` and `failure` events only. It is
-*not* the de-duplicated usage volume reported by [MFA Activity by
-Factor](#mfa-activity-by-factor), which counts `sent` events for OTP factors
+*not* the de-duplicated usage volume reported by [All MFA Activity by
+Factor](#all-mfa-activity-by-factor), which counts `sent` events for OTP factors
 instead.
 
 ::: {.panel-tabset}

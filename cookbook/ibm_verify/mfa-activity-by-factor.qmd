@@ -1,12 +1,17 @@
-### MFA Activity by Factor
+### All MFA Activity by Factor
 
 The volume of MFA attempts broken down by factor type, with each factor's share
-of total activity.
+of total activity. This is the platform-wide view: it covers every factor type
+the system records, including the internal and administrative factors (`kq`,
+`totp`, `qr`, `ibm_verify_push`) and the `email_otp` factor used only to validate
+emails at sign-up. For usage restricted to the factors the public can sign in
+with, see [Sign-in MFA Activity by Factor](#sign-in-mfa-activity-by-factor).
 
-This metric shows which second factors users actually rely on. In the current
-data the mix is dominated by `sms_otp` and `email_otp`, with factors such as
-`fido2`, `totp`, `kq`, `qr`, `voice_otp`, and `ibm_verify_push` seeing little or
-no use.
+This metric shows which second factors are exercised across the whole platform.
+Historically the mix has been dominated by `sms_otp` and `email_otp`. Passkeys
+(`fido2`) became generally available to the public on 2026-07-06, so `fido2`
+volume is expected to grow from that point, while factors such as `totp`, `kq`,
+`qr`, `voice_otp`, and `ibm_verify_push` continue to see little use.
 
 *Alternative names*:
 

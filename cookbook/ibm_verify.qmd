@@ -65,3 +65,5 @@ factor (`mfa_type`) per outcome (`result`), with the number of attempts in
 {{< include ibm_verify/mfa-success-rate-by-factor.qmd >}}
 
 {{< include ibm_verify/mfa-activity-by-factor.qmd >}}
+
+{{< include ibm_verify/sign-in-mfa-activity-by-factor.qmd >}}
