@@ -20,3 +20,28 @@ a `from_date` column.
 ## Incident Response Metrics
 
 {{< include sre/mean-time-to-resolution.qmd >}}
+
+## Site Uptime Metrics
+
+Uptime and response-time metrics for the six monitored CanadaLogin sites, in
+the `sre` schema. Data comes from the
+[`cds-snc/status-statut`](https://github.com/cds-snc/status-statut) GitHub
+repository and is fetched automatically by the `uptime-daily-download` Lambda
+at 4 AM ET each day. No manual steps are required.
+
+The relevant tables are:
+
+- [`sre.uptime_summary`](../catalog/sre.qmd#uptime_summary) — one row per site
+  per day; rolling-window uptime percentages and average response times
+- [`sre.uptime_timeseries`](../catalog/sre.qmd#uptime_timeseries) — one row per
+  upptime bot commit per site; individual ping events including outage detections
+
+Both tables are partitioned by `date=YYYY-MM-DD`. Because `date` is a `varchar`
+(derived from the Hive partition path), cast it before doing date arithmetic:
+`CAST(date AS DATE)` in SQL; `as.Date(date)` in R.
+
+{{< include sre/site-uptime.qmd >}}
+
+{{< include sre/site-response-time.qmd >}}
+
+{{< include sre/outage-events.qmd >}}

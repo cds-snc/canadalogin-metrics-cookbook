@@ -1,0 +1,93 @@
+### Outage Events
+
+Individual site outage events detected by the uptime monitor — when a site
+went down, when it recovered, and the HTTP status code at time of detection.
+
+*Alternative names*:
+
+- downtime events
+- site outages
+- availability incidents
+- uptime incidents
+
+**Calculation.** Filter `sre.uptime_timeseries` to rows where `status = 'down'`.
+Each such row represents a moment when the upptime bot detected the site was
+unreachable and committed that state to the history file.
+
+To count outage events per site over a reporting period, group the filtered rows
+by `slug` and count.
+
+::: {.panel-tabset}
+
+## SQL
+
+All outage events in a reporting period:
+
+```sql
+SELECT
+    date,
+    ping_timestamp,
+    slug,
+    lang,
+    http_code,
+    response_ms
+FROM sre.uptime_timeseries
+-- set the reporting window; see the timespans note in cookbook/notes.qmd
+WHERE status = 'down'
+  AND CAST(date AS DATE) BETWEEN DATE '2026-01-01' AND DATE '2026-06-30'
+ORDER BY date DESC, slug;
+```
+
+Outage event count per site in a reporting period:
+
+```sql
+SELECT
+    slug,
+    lang,
+    COUNT(*) AS outage_event_count
+FROM sre.uptime_timeseries
+-- set the reporting window; see the timespans note in cookbook/notes.qmd
+WHERE status = 'down'
+  AND CAST(date AS DATE) BETWEEN DATE '2026-01-01' AND DATE '2026-06-30'
+GROUP BY slug, lang
+ORDER BY outage_event_count DESC;
+```
+
+## R
+
+All outage events in a reporting period:
+
+```r
+tbl(con, in_schema("sre", "uptime_timeseries")) |>
+  # set the reporting window; see the timespans note in cookbook/notes.qmd
+  filter(
+    status == "down",
+    as.Date(date) >= as.Date("2026-01-01"),
+    as.Date(date) <= as.Date("2026-06-30")
+  ) |>
+  select(date, ping_timestamp, slug, lang, http_code, response_ms) |>
+  arrange(desc(date), slug)
+```
+
+Outage event count per site:
+
+```r
+tbl(con, in_schema("sre", "uptime_timeseries")) |>
+  # set the reporting window; see the timespans note in cookbook/notes.qmd
+  filter(
+    status == "down",
+    as.Date(date) >= as.Date("2026-01-01"),
+    as.Date(date) <= as.Date("2026-06-30")
+  ) |>
+  count(slug, lang, name = "outage_event_count") |>
+  arrange(desc(outage_event_count))
+```
+
+:::
+
+*Interpretation notes.* Each row in `sre.uptime_timeseries` is a single commit
+by the upptime bot. On a normal all-up day there is one row per site (the daily
+~23:2x UTC snapshot). On an outage day there are additional rows — one when the
+site went down and one when it recovered — so `status = 'down'` rows count
+detection events, not total minutes of downtime. For total outage duration, use
+the `daily_minutes_down` JSON field in `sre.uptime_summary`.

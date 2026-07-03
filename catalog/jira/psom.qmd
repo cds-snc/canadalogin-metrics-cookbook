@@ -18,7 +18,7 @@ Queried from PSOM Jira Cloud via API by the `psom-weekly-sync` Lambda function.
 
 * **Updated**: Weekly, every Monday at ~6:00 AM ET
 * **Steward**: EDCP Data and Research Team
-* **Contact**: [Yinlin Zhang](mailto:yinlin.zhang@cds-snc.ca)
+* **Contact**: [Yinlin Zhang](mailto:yinlin.zhang@cds-snc.ca) (Data and Research team) 
 
 ### Fields
 
@@ -30,10 +30,10 @@ One row per Jira issue per weekly snapshot (`date` partition).
 | key | varchar | Jira ticket key, e.g. `PSOM-42`. |
 | summary | varchar | One-line ticket title. |
 | description | varchar | Full ticket description, extracted from Atlassian Document Format (ADF) to plain text. |
-| issue_type | varchar | Jira issue type name, e.g. `Service Request`, `Bug`. |
-| status | varchar | Current workflow status, e.g. `Open`, `In Progress`, `Resolved`. |
+| issue_type | varchar | Jira issue type name, e.g. `Email Request`, `Partner Support Request form`. |
+| status | varchar | Current workflow status, e.g. `Done`, `Canceled`,  `Escalated to PTT`, `Escalated to Auth PT`, `Ready to archive` . |
 | status_changed | varchar | ISO 8601 timestamp when the ticket's status category last changed. |
-| priority | varchar | Priority level, e.g. `High`, `Medium`, `Low`. |
+| priority | varchar | Priority level, e.g. `High`, `Normal`, `Low`, `Critical`. |
 | assignee | varchar | Display name of the current assignee; empty string if unassigned. |
 | reporter | varchar | Display name of the person who reported the ticket. |
 | creator | varchar | Display name of the person who created the ticket (may differ from reporter). |
@@ -43,7 +43,7 @@ One row per Jira issue per weekly snapshot (`date` partition).
 | labels | varchar | Semicolon-separated list of labels applied to the ticket; empty string if none. |
 | request_type | varchar | JSM service request type name, e.g. `New Access Request`. Empty for non-JSM tickets. |
 | request_participants | varchar | Semicolon-separated display names of request participants (CC'd users). |
-| organizations | varchar | Semicolon-separated names of JSM organizations the request is associated with. |
+| organizations | varchar | Semicolon-separated names of JSM organizations the request is associated with, e.g. `Treasury Board Secretariat (TBS)`, `	Public Services and Procurement Canada (PSPC)`, `PrairiesCan`, `Veterans Affairs Canada`. |
 | sla_first_response_due | varchar | ISO 8601 due timestamp for the "Time to first response" SLA; empty if SLA not active. |
 | sla_first_response_breached | varchar | `"True"` if the first-response SLA was breached, `"False"` if met, `""` if not applicable. |
 | sla_time_to_done_due | varchar | ISO 8601 due timestamp for the "Time to done" SLA; empty if SLA not active. |

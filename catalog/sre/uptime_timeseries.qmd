@@ -1,0 +1,41 @@
+### `uptime_timeseries` {#uptime_timeseries}
+
+One row per upptime bot commit per site. The upptime bot commits to the
+`cds-snc/status-statut` history YAML files once per day (~23:2x UTC) as a
+daily snapshot, plus additional commits immediately when a status change is
+detected mid-day.
+
+**Provenance** 
+Fully automated — no manual upload required. Sourced from the
+GitHub Commits API for each site's history file (`history/<slug>.yml`).
+
+* **Updated**: Daily, every Monday at ~4:00 AM ET
+* **Steward**: EDCP Data and Research Team
+* **Contact**: [Yinlin Zhang](mailto:yinlin.zhang@cds-snc.ca) (D&R Team)
+
+**Expected row count per site per day:**
+
+| Scenario | Expected rows |
+|---|---|
+| Normal all-up day | 1 (daily ~23:2x UTC snapshot, `status = 'up'`) |
+| Outage day | 2+ (down event + recovery event + daily snapshot) |
+
+| Column | Type | Description |
+|---|---|---|
+| `date` | `varchar` | Hive partition key — the UTC date of the commit (`YYYY-MM-DD`). Use in `WHERE date = '...'` or `WHERE CAST(date AS DATE) BETWEEN ...` filters. |
+| `ping_timestamp` | `varchar` | UTC timestamp of the upptime bot's commit (`YYYY-MM-DD HH:MM:SS`). On a normal day this is the daily snapshot at ~23:2x UTC. On an outage day earlier commits record when the site went down or recovered. |
+| `slug` | `varchar` | Upptime site identifier — same six values as in `sre.uptime_summary`. |
+| `lang` | `varchar` | Short label — same six values as in `sre.uptime_summary`. |
+| `status` | `varchar` | Ping result at the moment of this commit — `up`, `down`, or `unknown`. |
+| `http_code` | `bigint` | HTTP status code at the moment of this commit. `200` on a normal day; `0` or `503` when down. `null` if unparseable. |
+| `response_ms` | `bigint` | Response time in milliseconds at the moment of this commit. Single-ping measurement at commit time, not a daily average. `null` if unparseable. |
+
+**`response_ms` is a single-ping measurement.** It records the response time at
+the exact moment of the upptime bot's commit, not a daily average. For averaged
+response times use `sre.uptime_summary` (`response_day_ms`, `response_week_ms`,
+etc.), which are computed from all 288 five-minute pings.
+
+**`status = 'down'` rows count detection events, not outage duration.** Each
+down row is one commit — one moment when upptime detected a failure. For total
+minutes of downtime on a given date, use the `daily_minutes_down` JSON column
+in `sre.uptime_summary`.
