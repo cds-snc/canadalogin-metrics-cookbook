@@ -65,7 +65,7 @@ uptime_s <- tbl(con, in_schema("sre", "uptime_summary"))
 latest_date <- uptime_s |> summarise(d = max(date, na.rm = TRUE)) |> pull(d)
 
 uptime_s |>
-  filter(date == local(latest_date)) |>
+  filter(as.Date(date) == as.Date(latest_date)) |>
   select(slug, lang, status, uptime_day, uptime_week, uptime_month,
          uptime_year, uptime_alltime) |>
   arrange(slug)

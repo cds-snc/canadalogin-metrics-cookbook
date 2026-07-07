@@ -40,7 +40,7 @@ psom <- tbl(con, in_schema("jira", "psom"))
 latest_date <- psom |> summarise(d = max(date, na.rm = TRUE)) |> pull(d)
 
 psom |>
-  filter(date == local(latest_date), sla_time_to_done_breached != "") |>
+  filter(as.Date(date) == as.Date(latest_date), sla_time_to_done_breached != "") |>
   summarise(
     total_sla_tickets = n(),
     breached_count    = sum(as.integer(sla_time_to_done_breached == "True"), na.rm = TRUE),

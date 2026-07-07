@@ -32,7 +32,7 @@ psom <- tbl(con, in_schema("jira", "psom"))
 latest_date <- psom |> summarise(d = max(date, na.rm = TRUE)) |> pull(d)
 
 psom |>
-  filter(date == local(latest_date)) |>
+  filter(as.Date(date) == as.Date(latest_date)) |>
   count(priority, name = "ticket_count") |>
   arrange(desc(ticket_count))
 ```

@@ -10,7 +10,7 @@ detected mid-day.
 Fully automated. No manual upload required. Sourced from the
 GitHub Commits API for each site's history file (`history/<slug>.yml`).
 
-* **Updated**: Daily, every Monday at ~04:00 ET
+* **Updated**: Daily, at ~04:00 ET
 * **Steward**: EDCP Data and Research Team
 * **Contact**: [Yinlin Zhang](mailto:yinlin.zhang@cds-snc.ca) (Data and Research team)
 
