@@ -1,7 +1,7 @@
 ### SLA Time-to-Done Breach Rate
 
-The proportion of PSOM tickets where the "Time to done" SLA was breached,
-based on the latest weekly snapshot.
+The proportion of PSOM tickets that missed the "Time to done" SLA (a 16-hour
+resolution target), based on the latest weekly snapshot.
 
 This metric reflects how well the team is resolving tickets within the agreed
 timeframe. Only tickets where the SLA clock was active are included; tickets
@@ -55,3 +55,9 @@ psom |>
 no active SLA (empty `sla_time_to_done_breached`) are excluded from both
 numerator and denominator. Check `total_sla_tickets` to understand the sample
 size underlying the rate.
+
+A ticket that is still open and within its 16-hour window is recorded as not
+breached (`"False"`), the same as a ticket that met the SLA. The rate on a live
+snapshot is therefore a lower bound: some of those open tickets may still breach
+before they are resolved. It is most meaningful once the snapshot's tickets are
+largely resolved.
