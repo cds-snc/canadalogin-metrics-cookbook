@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Call Centre – CanadaLogin Metrics Cookbook</title>
+<title>Platform – CanadaLogin Metrics Cookbook</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -68,8 +68,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../catalog/sre.html" rel="next">
-<link href="../catalog/ibm_verify.html" rel="prev">
+<link href="../cookbook/notes.html" rel="next">
+<link href="../cookbook/call_centre.html" rel="prev">
 <link href="../img/cds-snc.png" rel="icon" type="image/png">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
@@ -125,7 +125,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../catalog/index.html">Data Catalog</a></li><li class="breadcrumb-item"><a href="../catalog/call_centre.html">Call Centre</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../cookbook/index.html">Metrics Cookbook</a></li><li class="breadcrumb-item"><a href="../cookbook/sre.html">Platform</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -180,7 +180,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../cookbook/sre.html" class="sidebar-item-text sidebar-link">
+  <a href="../cookbook/sre.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Platform</span></a>
   </div>
 </li>
@@ -209,7 +209,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../catalog/call_centre.html" class="sidebar-item-text sidebar-link active">
+  <a href="../catalog/call_centre.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Call Centre</span></a>
   </div>
 </li>
@@ -237,17 +237,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#weekly_activity_report" id="toc-weekly_activity_report" class="nav-link active" data-scroll-target="#weekly_activity_report">weekly_activity_report</a>
+  <li><a href="#incident-response-metrics" id="toc-incident-response-metrics" class="nav-link active" data-scroll-target="#incident-response-metrics">Incident Response Metrics</a>
   <ul>
-  <li><a href="#provenance" id="toc-provenance" class="nav-link" data-scroll-target="#provenance">Provenance</a></li>
-  <li><a href="#fields" id="toc-fields" class="nav-link" data-scroll-target="#fields">Fields</a></li>
-  <li><a href="#notes" id="toc-notes" class="nav-link" data-scroll-target="#notes">Notes</a></li>
-  </ul></li>
-  <li><a href="#weekly_topic_dump" id="toc-weekly_topic_dump" class="nav-link" data-scroll-target="#weekly_topic_dump">weekly_topic_dump</a>
-  <ul>
-  <li><a href="#provenance-1" id="toc-provenance-1" class="nav-link" data-scroll-target="#provenance-1">Provenance</a></li>
-  <li><a href="#fields-1" id="toc-fields-1" class="nav-link" data-scroll-target="#fields-1">Fields</a></li>
-  <li><a href="#notes-1" id="toc-notes-1" class="nav-link" data-scroll-target="#notes-1">Notes</a></li>
+  <li><a href="#mean-time-to-resolution" id="toc-mean-time-to-resolution" class="nav-link" data-scroll-target="#mean-time-to-resolution">Mean Time to Resolution</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -255,9 +247,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../catalog/index.html">Data Catalog</a></li><li class="breadcrumb-item"><a href="../catalog/call_centre.html">Call Centre</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../cookbook/index.html">Metrics Cookbook</a></li><li class="breadcrumb-item"><a href="../cookbook/sre.html">Platform</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">Call Centre</h1>
+<h1 class="title">Platform</h1>
 </div>
 
 
@@ -274,324 +266,75 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>Weekly call centre data extracted from the CanadaLogin support queue Excel reports. These two tables share the same source and update cadence but are at different grains: <code>weekly_activity_report</code> is one row per week, while <code>weekly_topic_dump</code> is one row per topic record per call. They arrive as two separate files in the same weekly email, so each table has its own extraction pipeline (see the provenance note on each table below).</p>
-<section id="weekly_activity_report" class="level2">
-<h2 class="anchored" data-anchor-id="weekly_activity_report">weekly_activity_report</h2>
-<p>Weekly summary of call centre operations for the CanadaLogin support queue.</p>
-<p>Each row represents one reporting week, summarizing call volume, service levels, call outcomes, and call type breakdowns for that week.</p>
-<p><code>Keywords</code>: call centre, calls, weekly, volume, wait time, call length, service level</p>
-<section id="provenance" class="level3">
-<h3 class="anchored" data-anchor-id="provenance">Provenance</h3>
-<p>Sourced from a weekly Excel report that is typically sent to the EDCP Data and Research team via email. That spreadsheet is extracted and loaded into the data repository via the <a href="https://github.com/cds-snc/canadalogin-ibm-verify-pipeline/blob/main/infra/modules/upload_source/call_centre_weekly_activity_report/lambda_src/handler.py">call centre weekly activity report</a> Lambda. The <code>extracted_at</code> field records when each row was last extracted from the source file.</p>
+<p>Site reliability metrics for the CanadaLogin platform, in the <code>sre</code> schema. Currently incident-response metrics, with other reliability measures to follow.</p>
+<p>The relevant tables are:</p>
 <ul>
-<li><strong>Updated</strong>: Weekly, typically on Tuesdays</li>
-<li><strong>Steward</strong>: EDCP Data and Research Team</li>
-<li><strong>Contact</strong>: <a href="mailto:colin.douglas@cds-snc.ca">Colin Douglas</a></li>
+<li><a href="../catalog/sre.html#mttr_current"><code>sre.mttr_current</code></a> - latest state of every incident, one row per incident</li>
+<li><a href="../catalog/sre.html#mttr_history"><code>sre.mttr_history</code></a> - dated snapshots of every incident, preserving how each evolved</li>
 </ul>
-</section>
-<section id="fields" class="level3">
-<h3 class="anchored" data-anchor-id="fields">Fields</h3>
-<p>One row per reporting week.</p>
-<p>Many count fields are stored as <code>float</code> because they originate from Excel. Proportions (fields ending in <code>_pct</code>) are stored as values between 0 and 1, not 0 and 100.</p>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 33%">
-<col style="width: 33%">
-<col style="width: 33%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Field Name</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>week_text</td>
-<td>string</td>
-<td>Report title, extracted from the Excel file</td>
-</tr>
-<tr class="even">
-<td>date_range_start</td>
-<td>string</td>
-<td>Start date of the reporting week as a text date (for example, “2026-04-26”)</td>
-</tr>
-<tr class="odd">
-<td>date_range_end</td>
-<td>string</td>
-<td>End date of the reporting week as a text date (for example, “2026-05-02”)</td>
-</tr>
-<tr class="even">
-<td>date</td>
-<td>string</td>
-<td>Equivalent to <code>date_range_start</code>; used as the primary date key</td>
-</tr>
-<tr class="odd">
-<td>file</td>
-<td>string</td>
-<td>Source filename the row was extracted from</td>
-</tr>
-<tr class="even">
-<td>extracted_at</td>
-<td>string</td>
-<td>ISO 8601 timestamp of when the row was extracted from the source file</td>
-</tr>
-<tr class="odd">
-<td>calls_accepted</td>
-<td>float</td>
-<td>Total calls accepted by the queue during the week</td>
-</tr>
-<tr class="even">
-<td>calls_accepted_pct</td>
-<td>float</td>
-<td>Proportion of calls accepted (typically 1.0)</td>
-</tr>
-<tr class="odd">
-<td>calls_abandoned</td>
-<td>float</td>
-<td>Number of calls abandoned before being answered</td>
-</tr>
-<tr class="even">
-<td>calls_abandoned_pct</td>
-<td>float</td>
-<td>Proportion of accepted calls that were abandoned</td>
-</tr>
-<tr class="odd">
-<td>calls_answered</td>
-<td>float</td>
-<td>Number of calls answered by an agent</td>
-</tr>
-<tr class="even">
-<td>pct_answered_within_60s</td>
-<td>float</td>
-<td>Proportion of calls answered within 60 seconds</td>
-</tr>
-<tr class="odd">
-<td>avg_delay_seconds</td>
-<td>float</td>
-<td>Average wait time before a call was answered, in seconds</td>
-</tr>
-<tr class="even">
-<td>avg_call_length_seconds</td>
-<td>float</td>
-<td>Average duration of answered calls, in seconds</td>
-</tr>
-<tr class="odd">
-<td>avg_handle_time_seconds</td>
-<td>float</td>
-<td>Average total handle time per call (call length plus any wrap-up time), in seconds</td>
-</tr>
-<tr class="even">
-<td>calls_completed_by_io</td>
-<td>float</td>
-<td>Number of calls completed by the information officer</td>
-</tr>
-<tr class="odd">
-<td>calls_completed_by_io_pct</td>
-<td>float</td>
-<td>Proportion of answered calls completed by the information officer</td>
-</tr>
-<tr class="even">
-<td>hangups</td>
-<td>float</td>
-<td>Number of calls where the caller hung up</td>
-</tr>
-<tr class="odd">
-<td>hangups_pct</td>
-<td>float</td>
-<td>Proportion of answered calls that ended in a hangup</td>
-</tr>
-<tr class="even">
-<td>test_calls</td>
-<td>float</td>
-<td>Number of test calls made during the week</td>
-</tr>
-<tr class="odd">
-<td>test_calls_pct</td>
-<td>float</td>
-<td>Proportion of accepted calls that were test calls</td>
-</tr>
-<tr class="even">
-<td>total_calls_answered</td>
-<td>float</td>
-<td>Total calls answered (may differ from <code>calls_answered</code> depending on reporting logic)</td>
-</tr>
-<tr class="odd">
-<td>total_calls_answered_pct</td>
-<td>float</td>
-<td>Proportion of accepted calls that were answered</td>
-</tr>
-<tr class="even">
-<td>comments</td>
-<td>float</td>
-<td>Number of calls where a comment was recorded</td>
-</tr>
-<tr class="odd">
-<td>comments_pct</td>
-<td>float</td>
-<td>Proportion of answered calls with a comment</td>
-</tr>
-<tr class="even">
-<td>callback</td>
-<td>float</td>
-<td>Number of calls where a callback was requested or offered</td>
-</tr>
-<tr class="odd">
-<td>callback_pct</td>
-<td>float</td>
-<td>Proportion of answered calls that involved a callback</td>
-</tr>
-<tr class="even">
-<td>no_information_provided</td>
-<td>float</td>
-<td>Number of calls where no information was provided to the caller</td>
-</tr>
-<tr class="odd">
-<td>no_information_provided_pct</td>
-<td>float</td>
-<td>Proportion of answered calls where no information was provided</td>
-</tr>
-<tr class="even">
-<td>transfer_to_crisis_centres</td>
-<td>float</td>
-<td>Number of calls transferred to a crisis centre</td>
-</tr>
-<tr class="odd">
-<td>transfer_to_crisis_centres_pct</td>
-<td>float</td>
-<td>Proportion of answered calls transferred to a crisis centre</td>
-</tr>
-<tr class="even">
-<td>program_content_provided</td>
-<td>float</td>
-<td>Number of calls where program content was provided to the caller</td>
-</tr>
-<tr class="odd">
-<td>program_content_provided_pct</td>
-<td>float</td>
-<td>Proportion of answered calls where program content was provided</td>
-</tr>
-<tr class="even">
-<td>total_of_call_types</td>
-<td>float</td>
-<td>Total number of call-type records for the week (used as denominator for call-type proportions)</td>
-</tr>
-<tr class="odd">
-<td>total_of_call_types_pct</td>
-<td>float</td>
-<td>Proportion of total call types (typically 1.0)</td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="notes" class="level3">
-<h3 class="anchored" data-anchor-id="notes">Notes</h3>
-<p><code>avg_delay_seconds</code> and <code>avg_call_length_seconds</code> are weekly averages sourced from the report directly. When combining across weeks, use a weighted average with <code>calls_answered</code> as the weight rather than a simple average. See the <a href="../cookbook/call_centre.html">Call Centre metrics</a> chapter for example SQL.</p>
-<p><code>date_range_start</code> and <code>date_range_end</code> are stored as strings. Cast to <code>DATE</code> in SQL when filtering by date range.</p>
-</section>
-</section>
-<section id="weekly_topic_dump" class="level2">
-<h2 class="anchored" data-anchor-id="weekly_topic_dump">weekly_topic_dump</h2>
-<p>Individual call records from the CanadaLogin support queue, with topic classifications for each call.</p>
-<p>Each row represents one topic record associated with a single call. A single call may have multiple rows if multiple topics were recorded.</p>
-<p><code>Keywords</code>: call centre, topics, call reasons, contact drivers, caller issues</p>
-<section id="provenance-1" class="level3">
-<h3 class="anchored" data-anchor-id="provenance-1">Provenance</h3>
-<p>Sourced from a weekly Excel report that is typically sent to the EDCP Data and Research team via email. That spreadsheet is extracted and loaded into the data repository via the <a href="https://github.com/cds-snc/canadalogin-ibm-verify-pipeline/blob/main/infra/modules/upload_source/call_centre_etl.py">call_centre_etl.py</a> Lambda. The <code>extracted_at</code> field records when each row was last extracted from the source file.</p>
+<p>These tables come from a hand-maintained spreadsheet; see the catalog <a href="../catalog/sre.html#data-quality">Data quality</a> note for caveats. The one that shapes most queries here: the incident timestamps (<code>detected_at</code>, <code>resolved_at</code>, and so on) are stored as America/Toronto strings, not native dates, so a reporting window filters on the <code>YYYY-MM-DD</code> prefix of <code>detected_at</code> rather than a <code>from_date</code> column.</p>
+<section id="incident-response-metrics" class="level2">
+<h2 class="anchored" data-anchor-id="incident-response-metrics">Incident Response Metrics</h2>
+<section id="mean-time-to-resolution" class="level3">
+<h3 class="anchored" data-anchor-id="mean-time-to-resolution">Mean Time to Resolution</h3>
+<p>The average time, in minutes, from when an incident is detected to when it is fully resolved.</p>
+<p><em>Alternative names</em>:</p>
 <ul>
-<li><strong>Updated</strong>: Weekly, typically on Tuesdays</li>
-<li><strong>Steward</strong>: EDCP Data and Research Team</li>
-<li><strong>Contact</strong>: <a href="mailto:colin.douglas@cds-snc.ca">Colin Douglas</a></li>
+<li>MTTR</li>
+<li>time to resolve</li>
+<li>incident resolution time</li>
+<li>mean time to recovery (see the interpretation note on this overloaded term)</li>
 </ul>
-</section>
-<section id="fields-1" class="level3">
-<h3 class="anchored" data-anchor-id="fields-1">Fields</h3>
-<p>One row per topic record per call. A single call (<code>call_no</code>) may appear on multiple rows if more than one topic was recorded.</p>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 33%">
-<col style="width: 33%">
-<col style="width: 33%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Field Name</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>call_no</td>
-<td>integer</td>
-<td>Identifier for the call. Not unique - multiple rows share the same <code>call_no</code> when multiple topics were recorded</td>
-</tr>
-<tr class="even">
-<td>call_datetime</td>
-<td>timestamp</td>
-<td>Date and time the call took place</td>
-</tr>
-<tr class="odd">
-<td>call_date</td>
-<td>date</td>
-<td>Date the call took place</td>
-</tr>
-<tr class="even">
-<td>date</td>
-<td>string</td>
-<td>Call date as a text date. Mirrors <code>call_date</code></td>
-</tr>
-<tr class="odd">
-<td>clienttype</td>
-<td>string</td>
-<td>Type of caller, for example “Business”, “Public”, “Government of Canada”</td>
-</tr>
-<tr class="even">
-<td>language</td>
-<td>string</td>
-<td>Language of the call, for example “English”, “French”</td>
-</tr>
-<tr class="odd">
-<td>origin</td>
-<td>string</td>
-<td>Province or region the caller is calling from</td>
-</tr>
-<tr class="even">
-<td>statobject</td>
-<td>string</td>
-<td>The call topic as recorded in the source system. May contain leading/trailing whitespace or inconsistent spacing</td>
-</tr>
-<tr class="odd">
-<td>cstat</td>
-<td>string</td>
-<td>Full topic classification path, including category and topic (for example, “Main Document description::What is CanadaLogin?”)</td>
-</tr>
-<tr class="even">
-<td>transactiontype</td>
-<td>string</td>
-<td>Type of transaction recorded for the topic, for example “Search”, “Callback”</td>
-</tr>
-<tr class="odd">
-<td>programcontact</td>
-<td>string</td>
-<td>Program contact information provided to the caller, if any. Often missing</td>
-</tr>
-<tr class="even">
-<td>source</td>
-<td>float</td>
-<td>Unused</td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="notes-1" class="level3">
-<h3 class="anchored" data-anchor-id="notes-1">Notes</h3>
-<p>Because a single call can generate multiple topic rows, do not count rows to get call volume. Use <code>COUNT(DISTINCT call_no)</code> or join to <a href="#weekly_activity_report"><code>weekly_activity_report</code></a> for call counts.</p>
-<p><code>statobject</code> frequently contains leading/trailing whitespace and repeated internal spaces. Always clean it before grouping:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">REGEXP_REPLACE</span>(<span class="fu">TRIM</span>(statobject), <span class="st">'\s+'</span>, <span class="st">' '</span>) <span class="kw">AS</span> call_topic</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>See the <a href="../cookbook/call_centre.html">Call Centre metrics</a> chapter for topic count and topic share example SQL.</p>
-<p><code>call_datetime</code> is a native <code>timestamp</code> and can be used directly. <code>call_date</code> is the same value truncated to a <code>DATE</code>.</p>
+<p><strong>Calculation.</strong> Average <code>mttr_detected_resolved</code> (minutes from <code>detected_at</code> to <code>resolved_at</code>, precomputed in the table) across the incidents whose <code>detected_at</code> falls in the reporting window, from <code>sre.mttr_current</code>. Because the incident timestamps are stored as America/Toronto strings rather than native dates, the window casts the <code>YYYY-MM-DD</code> prefix of <code>detected_at</code> to a <code>DATE</code> instead of filtering a <code>from_date</code> column. Unresolved incidents have a null <code>mttr_detected_resolved</code> and are excluded from the average.</p>
+<p>To break the figure out for service-level reporting, group the same average by <code>severity</code>.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href="">SQL</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href="">R</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<p>Overall:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">AVG</span>(mttr_detected_resolved) <span class="kw">AS</span> mean_time_to_resolution</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> sre.mttr_current</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">-- set the reporting window on detected_at; see the timespans note in cookbook/notes.qmd</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> <span class="fu">CAST</span>(<span class="fu">substr</span>(detected_at, <span class="dv">1</span>, <span class="dv">10</span>) <span class="kw">AS</span> <span class="dt">DATE</span>) <span class="kw">BETWEEN</span> <span class="dt">DATE</span> <span class="st">'2026-01-01'</span> <span class="kw">AND</span> <span class="dt">DATE</span> <span class="st">'2026-06-26'</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>By severity:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    severity,</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">AVG</span>(mttr_detected_resolved) <span class="kw">AS</span> mean_time_to_resolution</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> sre.mttr_current</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co">-- set the reporting window on detected_at; see the timespans note in cookbook/notes.qmd</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> <span class="fu">CAST</span>(<span class="fu">substr</span>(detected_at, <span class="dv">1</span>, <span class="dv">10</span>) <span class="kw">AS</span> <span class="dt">DATE</span>) <span class="kw">BETWEEN</span> <span class="dt">DATE</span> <span class="st">'2026-01-01'</span> <span class="kw">AND</span> <span class="dt">DATE</span> <span class="st">'2026-06-26'</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> severity</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> severity;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<p>Overall:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tbl</span>(con, <span class="fu">in_schema</span>(<span class="st">"sre"</span>, <span class="st">"mttr_current"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># set the reporting window on detected_at; see the timespans note in cookbook/notes.qmd</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as.Date</span>(<span class="fu">str_sub</span>(detected_at, <span class="dv">1</span>, <span class="dv">10</span>)) <span class="sc">&gt;=</span> <span class="fu">as.Date</span>(<span class="st">"2026-01-01"</span>),</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as.Date</span>(<span class="fu">str_sub</span>(detected_at, <span class="dv">1</span>, <span class="dv">10</span>)) <span class="sc">&lt;=</span> <span class="fu">as.Date</span>(<span class="st">"2026-06-26"</span>)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_time_to_resolution =</span> <span class="fu">mean</span>(mttr_detected_resolved, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>By severity:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tbl</span>(con, <span class="fu">in_schema</span>(<span class="st">"sre"</span>, <span class="st">"mttr_current"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># set the reporting window on detected_at; see the timespans note in cookbook/notes.qmd</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as.Date</span>(<span class="fu">str_sub</span>(detected_at, <span class="dv">1</span>, <span class="dv">10</span>)) <span class="sc">&gt;=</span> <span class="fu">as.Date</span>(<span class="st">"2026-01-01"</span>),</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as.Date</span>(<span class="fu">str_sub</span>(detected_at, <span class="dv">1</span>, <span class="dv">10</span>)) <span class="sc">&lt;=</span> <span class="fu">as.Date</span>(<span class="st">"2026-06-26"</span>)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(severity) <span class="sc">|&gt;</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_time_to_resolution =</span> <span class="fu">mean</span>(mttr_detected_resolved, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(severity)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+<p><em>Interpretation notes.</em> The figure is in minutes; divide by 60 for hours. It is a <strong>mean</strong>, so a single very long incident can pull it up sharply, especially given how few incidents there are in any window. Read it alongside the incident count, and consider a median or a Sev1-only cut when one outlier dominates.</p>
+<p>The window is anchored on <code>detected_at</code>, so an incident counts in the period it <em>began</em>, even if it was resolved in a later period. <code>severity</code> is unvalidated free text in the source sheet, so the grouped view reflects whatever values were typed (expect the occasional typo or spacing drift).</p>
 
 
 </section>
@@ -1000,13 +743,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../catalog/ibm_verify.html" class="pagination-link" aria-label="IBM Verify">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">IBM Verify</span>
+      <a href="../cookbook/call_centre.html" class="pagination-link" aria-label="Call Centre">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Call Centre</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../catalog/sre.html" class="pagination-link" aria-label="Platform">
-        <span class="nav-page-text">Platform</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../cookbook/notes.html" class="pagination-link" aria-label="Additional Notes">
+        <span class="nav-page-text">Additional Notes</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

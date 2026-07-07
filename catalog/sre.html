@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Call Centre – CanadaLogin Metrics Cookbook</title>
+<title>Platform – CanadaLogin Metrics Cookbook</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -23,41 +23,6 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for syntax highlighting */
-html { -webkit-text-size-adjust: 100%; }
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
 </style>
 
 
@@ -68,8 +33,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../catalog/sre.html" rel="next">
-<link href="../catalog/ibm_verify.html" rel="prev">
+<link href="../catalog/notes.html" rel="next">
+<link href="../catalog/call_centre.html" rel="prev">
 <link href="../img/cds-snc.png" rel="icon" type="image/png">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
@@ -125,7 +90,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../catalog/index.html">Data Catalog</a></li><li class="breadcrumb-item"><a href="../catalog/call_centre.html">Call Centre</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../catalog/index.html">Data Catalog</a></li><li class="breadcrumb-item"><a href="../catalog/sre.html">Platform</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -209,13 +174,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../catalog/call_centre.html" class="sidebar-item-text sidebar-link active">
+  <a href="../catalog/call_centre.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Call Centre</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../catalog/sre.html" class="sidebar-item-text sidebar-link">
+  <a href="../catalog/sre.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Platform</span></a>
   </div>
 </li>
@@ -237,17 +202,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#weekly_activity_report" id="toc-weekly_activity_report" class="nav-link active" data-scroll-target="#weekly_activity_report">weekly_activity_report</a>
+  <li><a href="#data-quality" id="toc-data-quality" class="nav-link active" data-scroll-target="#data-quality">Data quality</a></li>
+  <li><a href="#mttr_current" id="toc-mttr_current" class="nav-link" data-scroll-target="#mttr_current">mttr_current</a>
   <ul>
   <li><a href="#provenance" id="toc-provenance" class="nav-link" data-scroll-target="#provenance">Provenance</a></li>
   <li><a href="#fields" id="toc-fields" class="nav-link" data-scroll-target="#fields">Fields</a></li>
-  <li><a href="#notes" id="toc-notes" class="nav-link" data-scroll-target="#notes">Notes</a></li>
   </ul></li>
-  <li><a href="#weekly_topic_dump" id="toc-weekly_topic_dump" class="nav-link" data-scroll-target="#weekly_topic_dump">weekly_topic_dump</a>
+  <li><a href="#mttr_history" id="toc-mttr_history" class="nav-link" data-scroll-target="#mttr_history">mttr_history</a>
   <ul>
-  <li><a href="#provenance-1" id="toc-provenance-1" class="nav-link" data-scroll-target="#provenance-1">Provenance</a></li>
   <li><a href="#fields-1" id="toc-fields-1" class="nav-link" data-scroll-target="#fields-1">Fields</a></li>
-  <li><a href="#notes-1" id="toc-notes-1" class="nav-link" data-scroll-target="#notes-1">Notes</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -255,9 +218,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../catalog/index.html">Data Catalog</a></li><li class="breadcrumb-item"><a href="../catalog/call_centre.html">Call Centre</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../catalog/index.html">Data Catalog</a></li><li class="breadcrumb-item"><a href="../catalog/sre.html">Platform</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">Call Centre</h1>
+<h1 class="title">Platform</h1>
 </div>
 
 
@@ -274,25 +237,34 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>Weekly call centre data extracted from the CanadaLogin support queue Excel reports. These two tables share the same source and update cadence but are at different grains: <code>weekly_activity_report</code> is one row per week, while <code>weekly_topic_dump</code> is one row per topic record per call. They arrive as two separate files in the same weekly email, so each table has its own extraction pipeline (see the provenance note on each table below).</p>
-<section id="weekly_activity_report" class="level2">
-<h2 class="anchored" data-anchor-id="weekly_activity_report">weekly_activity_report</h2>
-<p>Weekly summary of call centre operations for the CanadaLogin support queue.</p>
-<p>Each row represents one reporting week, summarizing call volume, service levels, call outcomes, and call type breakdowns for that week.</p>
-<p><code>Keywords</code>: call centre, calls, weekly, volume, wait time, call length, service level</p>
+<p>Platform metrics for CanadaLogin, in the <code>sre</code> schema. Currently, both tables are derived from the CanadaLogin Platform team’s <code>CanadaLogin_MTTR_Dashboard</code> Google Sheet (maintained by hand in the CDS Google Drive) and uploaded by hand by the Data and Research team. They share one source and grain (one row per incident); they differ only in history: <code>mttr_current</code> holds the latest state of each incident, while <code>mttr_history</code> accumulates a dated snapshot of every incident on each upload.</p>
+<section id="data-quality" class="level3">
+<h3 class="anchored" data-anchor-id="data-quality">Data quality</h3>
+<p>Because the source is a hand-maintained spreadsheet, a few caveats apply to both tables:</p>
+<ul>
+<li><strong>Timestamps are strings, not native timestamps.</strong> <code>detected_at</code>, <code>acknowledged_at</code>, <code>mitigated_at</code>, and <code>resolved_at</code> are text in America/Toronto local time at minute precision (<code>YYYY-MM-DD HH:MM</code>). Parse them before doing date math. (<code>fetched_at</code> is a real timestamp, in UTC.)</li>
+<li><strong>URLs may carry trailing whitespace or embedded newlines.</strong> Trim <code>slack_channel</code> and <code>postmortem_link</code> before joining on or rendering them.</li>
+<li><strong>Categorical columns are unvalidated free text.</strong> <code>severity</code>, <code>service</code>, <code>component</code>, and <code>root_cause_category</code> are typed by hand, so expect occasional typos, casing, and spacing drift. The values listed in each field table are those observed so far, not a closed set.</li>
+<li><strong>The duration columns are rounded to the nearest minute</strong> from second-precision source times, so recomputing them from the displayed (minute-precision) timestamp strings can differ by up to a minute.</li>
+</ul>
+</section>
+<section id="mttr_current" class="level2">
+<h2 class="anchored" data-anchor-id="mttr_current">mttr_current</h2>
+<p>The latest known state of every CanadaLogin incident, one row per incident.</p>
+<p>Each row is a single incident. The table is overwritten on each upload with the most recent values, so it never grows beyond the current incident set. For point-in-time history, see <a href="#mttr_history"><code>mttr_history</code></a>.</p>
+<p><code>Keywords</code>: MTTR, MTTA, MTTM, incident, incident response, postmortem, severity, reliability, SRE, mean time to resolve</p>
 <section id="provenance" class="level3">
 <h3 class="anchored" data-anchor-id="provenance">Provenance</h3>
-<p>Sourced from a weekly Excel report that is typically sent to the EDCP Data and Research team via email. That spreadsheet is extracted and loaded into the data repository via the <a href="https://github.com/cds-snc/canadalogin-ibm-verify-pipeline/blob/main/infra/modules/upload_source/call_centre_weekly_activity_report/lambda_src/handler.py">call centre weekly activity report</a> Lambda. The <code>extracted_at</code> field records when each row was last extracted from the source file.</p>
+<p>Uploaded manually by the Data and Research team from the CanadaLogin Platform team’s <code>CanadaLogin_MTTR_Dashboard</code> Google Sheet (maintained by hand in the CDS Google Drive). Each upload overwrites this table wholesale with the current incident state and appends a dated snapshot to <a href="#mttr_history"><code>mttr_history</code></a>.</p>
 <ul>
-<li><strong>Updated</strong>: Weekly, typically on Tuesdays</li>
+<li><strong>Updated</strong>: Manually, on an ad hoc basis (roughly weekly)</li>
 <li><strong>Steward</strong>: EDCP Data and Research Team</li>
-<li><strong>Contact</strong>: <a href="mailto:colin.douglas@cds-snc.ca">Colin Douglas</a></li>
+<li><strong>Contact</strong>: <a href="mailto:yinlin.zhang@cds-snc.ca">Yinlin Zhang</a> (D&amp;R Team) or <a href="mailto:obinna.okongwu@cds-snc.ca">Obie Okongwu</a> (CL Platform Team)</li>
 </ul>
 </section>
 <section id="fields" class="level3">
 <h3 class="anchored" data-anchor-id="fields">Fields</h3>
-<p>One row per reporting week.</p>
-<p>Many count fields are stored as <code>float</code> because they originate from Excel. Proportions (fields ending in <code>_pct</code>) are stored as values between 0 and 1, not 0 and 100.</p>
+<p>One row per incident, keyed by <code>incident_id</code>. See the schema-level <a href="#data-quality">Data quality</a> note for caveats that apply to the string timestamps, URL columns, free-text categories, and rounded durations.</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 33%">
@@ -308,206 +280,107 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </thead>
 <tbody>
 <tr class="odd">
-<td>week_text</td>
+<td>incident_id</td>
 <td>string</td>
-<td>Report title, extracted from the Excel file</td>
+<td>Unique identifier for the incident, format <code>INC-NNN</code></td>
 </tr>
 <tr class="even">
-<td>date_range_start</td>
+<td>slack_channel</td>
 <td>string</td>
-<td>Start date of the reporting week as a text date (for example, “2026-04-26”)</td>
+<td>URL of the incident’s dedicated Slack channel</td>
 </tr>
 <tr class="odd">
-<td>date_range_end</td>
+<td>severity</td>
 <td>string</td>
-<td>End date of the reporting week as a text date (for example, “2026-05-02”)</td>
+<td>Incident severity. One of “Sev1”, “Sev2”, “Sev3”, or “Sev4” (Sev1 most severe, Sev4 least). Free text in the source, not strictly enforced</td>
 </tr>
 <tr class="even">
-<td>date</td>
+<td>service</td>
 <td>string</td>
-<td>Equivalent to <code>date_range_start</code>; used as the primary date key</td>
+<td>The CanadaLogin service affected</td>
 </tr>
 <tr class="odd">
-<td>file</td>
+<td>component</td>
 <td>string</td>
-<td>Source filename the row was extracted from</td>
+<td>The specific subsystem affected, more granular than <code>service</code>. Free text</td>
 </tr>
 <tr class="even">
-<td>extracted_at</td>
+<td>short_description</td>
 <td>string</td>
-<td>ISO 8601 timestamp of when the row was extracted from the source file</td>
+<td>One-line free-text summary of the incident</td>
 </tr>
 <tr class="odd">
-<td>calls_accepted</td>
-<td>float</td>
-<td>Total calls accepted by the queue during the week</td>
+<td>detected_at</td>
+<td>string</td>
+<td>When the incident was detected, America/Toronto local time at minute precision (<code>YYYY-MM-DD HH:MM</code>)</td>
 </tr>
 <tr class="even">
-<td>calls_accepted_pct</td>
-<td>float</td>
-<td>Proportion of calls accepted (typically 1.0)</td>
+<td>acknowledged_at</td>
+<td>string</td>
+<td>When the incident was acknowledged. Same format and timezone as <code>detected_at</code></td>
 </tr>
 <tr class="odd">
-<td>calls_abandoned</td>
-<td>float</td>
-<td>Number of calls abandoned before being answered</td>
+<td>mitigated_at</td>
+<td>string</td>
+<td>When the incident was mitigated. Same format and timezone as <code>detected_at</code></td>
 </tr>
 <tr class="even">
-<td>calls_abandoned_pct</td>
-<td>float</td>
-<td>Proportion of accepted calls that were abandoned</td>
+<td>resolved_at</td>
+<td>string</td>
+<td>When the incident was fully resolved. Same format and timezone as <code>detected_at</code></td>
 </tr>
 <tr class="odd">
-<td>calls_answered</td>
-<td>float</td>
-<td>Number of calls answered by an agent</td>
+<td>root_cause_category</td>
+<td>string</td>
+<td>Free-text root-cause classification</td>
 </tr>
 <tr class="even">
-<td>pct_answered_within_60s</td>
-<td>float</td>
-<td>Proportion of calls answered within 60 seconds</td>
+<td>mtta_alert_ack</td>
+<td>integer</td>
+<td>Minutes from <code>detected_at</code> to <code>acknowledged_at</code>, rounded to the nearest minute</td>
 </tr>
 <tr class="odd">
-<td>avg_delay_seconds</td>
-<td>float</td>
-<td>Average wait time before a call was answered, in seconds</td>
+<td>mttm_detected_mitigated</td>
+<td>integer</td>
+<td>Minutes from <code>detected_at</code> to <code>mitigated_at</code>, rounded to the nearest minute</td>
 </tr>
 <tr class="even">
-<td>avg_call_length_seconds</td>
-<td>float</td>
-<td>Average duration of answered calls, in seconds</td>
+<td>mttr_detected_resolved</td>
+<td>integer</td>
+<td>Minutes from <code>detected_at</code> to <code>resolved_at</code>, rounded to the nearest minute</td>
 </tr>
 <tr class="odd">
-<td>avg_handle_time_seconds</td>
-<td>float</td>
-<td>Average total handle time per call (call length plus any wrap-up time), in seconds</td>
+<td>postmortem_link</td>
+<td>string</td>
+<td>URL of the incident’s postmortem Google Doc. Optional</td>
 </tr>
 <tr class="even">
-<td>calls_completed_by_io</td>
-<td>float</td>
-<td>Number of calls completed by the information officer</td>
+<td>week</td>
+<td>integer</td>
+<td>ISO-8601 week number (1-53) of <code>detected_at</code></td>
 </tr>
 <tr class="odd">
-<td>calls_completed_by_io_pct</td>
-<td>float</td>
-<td>Proportion of answered calls completed by the information officer</td>
+<td>month</td>
+<td>string</td>
+<td>Calendar month of <code>detected_at</code>, first-of-month formatted as <code>mmm-yy</code> text (for example “Feb-26”)</td>
 </tr>
 <tr class="even">
-<td>hangups</td>
-<td>float</td>
-<td>Number of calls where the caller hung up</td>
-</tr>
-<tr class="odd">
-<td>hangups_pct</td>
-<td>float</td>
-<td>Proportion of answered calls that ended in a hangup</td>
-</tr>
-<tr class="even">
-<td>test_calls</td>
-<td>float</td>
-<td>Number of test calls made during the week</td>
-</tr>
-<tr class="odd">
-<td>test_calls_pct</td>
-<td>float</td>
-<td>Proportion of accepted calls that were test calls</td>
-</tr>
-<tr class="even">
-<td>total_calls_answered</td>
-<td>float</td>
-<td>Total calls answered (may differ from <code>calls_answered</code> depending on reporting logic)</td>
-</tr>
-<tr class="odd">
-<td>total_calls_answered_pct</td>
-<td>float</td>
-<td>Proportion of accepted calls that were answered</td>
-</tr>
-<tr class="even">
-<td>comments</td>
-<td>float</td>
-<td>Number of calls where a comment was recorded</td>
-</tr>
-<tr class="odd">
-<td>comments_pct</td>
-<td>float</td>
-<td>Proportion of answered calls with a comment</td>
-</tr>
-<tr class="even">
-<td>callback</td>
-<td>float</td>
-<td>Number of calls where a callback was requested or offered</td>
-</tr>
-<tr class="odd">
-<td>callback_pct</td>
-<td>float</td>
-<td>Proportion of answered calls that involved a callback</td>
-</tr>
-<tr class="even">
-<td>no_information_provided</td>
-<td>float</td>
-<td>Number of calls where no information was provided to the caller</td>
-</tr>
-<tr class="odd">
-<td>no_information_provided_pct</td>
-<td>float</td>
-<td>Proportion of answered calls where no information was provided</td>
-</tr>
-<tr class="even">
-<td>transfer_to_crisis_centres</td>
-<td>float</td>
-<td>Number of calls transferred to a crisis centre</td>
-</tr>
-<tr class="odd">
-<td>transfer_to_crisis_centres_pct</td>
-<td>float</td>
-<td>Proportion of answered calls transferred to a crisis centre</td>
-</tr>
-<tr class="even">
-<td>program_content_provided</td>
-<td>float</td>
-<td>Number of calls where program content was provided to the caller</td>
-</tr>
-<tr class="odd">
-<td>program_content_provided_pct</td>
-<td>float</td>
-<td>Proportion of answered calls where program content was provided</td>
-</tr>
-<tr class="even">
-<td>total_of_call_types</td>
-<td>float</td>
-<td>Total number of call-type records for the week (used as denominator for call-type proportions)</td>
-</tr>
-<tr class="odd">
-<td>total_of_call_types_pct</td>
-<td>float</td>
-<td>Proportion of total call types (typically 1.0)</td>
+<td>fetched_at</td>
+<td>timestamp</td>
+<td>When the pipeline ingested this snapshot, in UTC</td>
 </tr>
 </tbody>
 </table>
 </section>
-<section id="notes" class="level3">
-<h3 class="anchored" data-anchor-id="notes">Notes</h3>
-<p><code>avg_delay_seconds</code> and <code>avg_call_length_seconds</code> are weekly averages sourced from the report directly. When combining across weeks, use a weighted average with <code>calls_answered</code> as the weight rather than a simple average. See the <a href="../cookbook/call_centre.html">Call Centre metrics</a> chapter for example SQL.</p>
-<p><code>date_range_start</code> and <code>date_range_end</code> are stored as strings. Cast to <code>DATE</code> in SQL when filtering by date range.</p>
 </section>
-</section>
-<section id="weekly_topic_dump" class="level2">
-<h2 class="anchored" data-anchor-id="weekly_topic_dump">weekly_topic_dump</h2>
-<p>Individual call records from the CanadaLogin support queue, with topic classifications for each call.</p>
-<p>Each row represents one topic record associated with a single call. A single call may have multiple rows if multiple topics were recorded.</p>
-<p><code>Keywords</code>: call centre, topics, call reasons, contact drivers, caller issues</p>
-<section id="provenance-1" class="level3">
-<h3 class="anchored" data-anchor-id="provenance-1">Provenance</h3>
-<p>Sourced from a weekly Excel report that is typically sent to the EDCP Data and Research team via email. That spreadsheet is extracted and loaded into the data repository via the <a href="https://github.com/cds-snc/canadalogin-ibm-verify-pipeline/blob/main/infra/modules/upload_source/call_centre_etl.py">call_centre_etl.py</a> Lambda. The <code>extracted_at</code> field records when each row was last extracted from the source file.</p>
-<ul>
-<li><strong>Updated</strong>: Weekly, typically on Tuesdays</li>
-<li><strong>Steward</strong>: EDCP Data and Research Team</li>
-<li><strong>Contact</strong>: <a href="mailto:colin.douglas@cds-snc.ca">Colin Douglas</a></li>
-</ul>
-</section>
+<section id="mttr_history" class="level2">
+<h2 class="anchored" data-anchor-id="mttr_history">mttr_history</h2>
+<p>The append-only companion to <a href="#mttr_current"><code>mttr_current</code></a>: same source, columns, and provenance, but instead of holding only the latest state it accumulates a dated snapshot of every incident on each upload.</p>
+<p>Each row is one incident (<code>incident_id</code>) as it appeared on one snapshot <code>date</code>, so an incident’s metrics can change from one snapshot to the next as it is re-triaged. A row is unique on (<code>incident_id</code>, <code>date</code>).</p>
+<p><code>Keywords</code>: MTTR, MTTA, MTTM, incident, incident response, snapshot, history, severity, reliability, SRE, mean time to resolve</p>
 <section id="fields-1" class="level3">
 <h3 class="anchored" data-anchor-id="fields-1">Fields</h3>
-<p>One row per topic record per call. A single call (<code>call_no</code>) may appear on multiple rows if more than one topic was recorded.</p>
+<p>Every column is identical to <a href="#mttr_current"><code>mttr_current</code></a>, with one addition:</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 33%">
@@ -523,75 +396,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </thead>
 <tbody>
 <tr class="odd">
-<td>call_no</td>
-<td>integer</td>
-<td>Identifier for the call. Not unique - multiple rows share the same <code>call_no</code> when multiple topics were recorded</td>
-</tr>
-<tr class="even">
-<td>call_datetime</td>
-<td>timestamp</td>
-<td>Date and time the call took place</td>
-</tr>
-<tr class="odd">
-<td>call_date</td>
-<td>date</td>
-<td>Date the call took place</td>
-</tr>
-<tr class="even">
 <td>date</td>
 <td>string</td>
-<td>Call date as a text date. Mirrors <code>call_date</code></td>
-</tr>
-<tr class="odd">
-<td>clienttype</td>
-<td>string</td>
-<td>Type of caller, for example “Business”, “Public”, “Government of Canada”</td>
-</tr>
-<tr class="even">
-<td>language</td>
-<td>string</td>
-<td>Language of the call, for example “English”, “French”</td>
-</tr>
-<tr class="odd">
-<td>origin</td>
-<td>string</td>
-<td>Province or region the caller is calling from</td>
-</tr>
-<tr class="even">
-<td>statobject</td>
-<td>string</td>
-<td>The call topic as recorded in the source system. May contain leading/trailing whitespace or inconsistent spacing</td>
-</tr>
-<tr class="odd">
-<td>cstat</td>
-<td>string</td>
-<td>Full topic classification path, including category and topic (for example, “Main Document description::What is CanadaLogin?”)</td>
-</tr>
-<tr class="even">
-<td>transactiontype</td>
-<td>string</td>
-<td>Type of transaction recorded for the topic, for example “Search”, “Callback”</td>
-</tr>
-<tr class="odd">
-<td>programcontact</td>
-<td>string</td>
-<td>Program contact information provided to the caller, if any. Often missing</td>
-</tr>
-<tr class="even">
-<td>source</td>
-<td>float</td>
-<td>Unused</td>
+<td>Snapshot date as <code>YYYY-MM-DD</code> text; the grain that lets this table accumulate. Equals the date portion of <code>fetched_at</code></td>
 </tr>
 </tbody>
 </table>
-</section>
-<section id="notes-1" class="level3">
-<h3 class="anchored" data-anchor-id="notes-1">Notes</h3>
-<p>Because a single call can generate multiple topic rows, do not count rows to get call volume. Use <code>COUNT(DISTINCT call_no)</code> or join to <a href="#weekly_activity_report"><code>weekly_activity_report</code></a> for call counts.</p>
-<p><code>statobject</code> frequently contains leading/trailing whitespace and repeated internal spaces. Always clean it before grouping:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">REGEXP_REPLACE</span>(<span class="fu">TRIM</span>(statobject), <span class="st">'\s+'</span>, <span class="st">' '</span>) <span class="kw">AS</span> call_topic</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>See the <a href="../cookbook/call_centre.html">Call Centre metrics</a> chapter for topic count and topic share example SQL.</p>
-<p><code>call_datetime</code> is a native <code>timestamp</code> and can be used directly. <code>call_date</code> is the same value truncated to a <code>DATE</code>.</p>
 
 
 </section>
@@ -1000,13 +810,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../catalog/ibm_verify.html" class="pagination-link" aria-label="IBM Verify">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">IBM Verify</span>
+      <a href="../catalog/call_centre.html" class="pagination-link" aria-label="Call Centre">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Call Centre</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../catalog/sre.html" class="pagination-link" aria-label="Platform">
-        <span class="nav-page-text">Platform</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../catalog/notes.html" class="pagination-link" aria-label="Additional Notes">
+        <span class="nav-page-text">Additional Notes</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
