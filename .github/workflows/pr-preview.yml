@@ -1,0 +1,44 @@
+# Deploys a live preview of the rendered site for each pull request, so
+# reviewers can click through the actual pages instead of reading a diff.
+# Cribbed from https://github.com/rossjrw/pr-preview-action, which publishes
+# a rendered site to a pr-preview/pr-<number>/ subfolder of the gh-pages
+# branch (alongside the production deploy from deploy.yml) and removes that
+# subfolder again when the PR closes.
+#
+# The `preview` job's success/failure is set as a required status check on
+# main - see repo branch protection settings.
+
+name: PR Preview
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, closed]
+
+concurrency:
+  group: pr-preview-${{ github.event.number }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Skipped on the closing event - a stale render isn't needed to delete
+      # the preview subfolder, only to publish or update it.
+      - uses: quarto-dev/quarto-actions/setup@v2
+        if: github.event.action != 'closed'
+
+      - name: Render site
+        if: github.event.action != 'closed'
+        run: quarto render
+
+      # https://github.com/rossjrw/pr-preview-action
+      - name: Deploy PR preview
+        uses: rossjrw/pr-preview-action@v2
+        with:
+          source-dir: ./_book
