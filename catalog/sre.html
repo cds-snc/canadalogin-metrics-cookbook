@@ -33,7 +33,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../catalog/notes.html" rel="next">
+<link href="../catalog/jira.html" rel="next">
 <link href="../catalog/call_centre.html" rel="prev">
 <link href="../img/cds-snc.png" rel="icon" type="image/png">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
@@ -151,6 +151,12 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../cookbook/jira.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Jira (PSOM)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../cookbook/notes.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Additional Notes</span></a>
   </div>
@@ -186,6 +192,12 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../catalog/jira.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Jira (PSOM)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../catalog/notes.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Additional Notes</span></a>
   </div>
@@ -211,6 +223,19 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#mttr_history" id="toc-mttr_history" class="nav-link" data-scroll-target="#mttr_history">mttr_history</a>
   <ul>
   <li><a href="#fields-1" id="toc-fields-1" class="nav-link" data-scroll-target="#fields-1">Fields</a></li>
+  </ul></li>
+  <li><a href="#uptime-tables" id="toc-uptime-tables" class="nav-link" data-scroll-target="#uptime-tables">Uptime Tables</a></li>
+  <li><a href="#uptime_summary" id="toc-uptime_summary" class="nav-link" data-scroll-target="#uptime_summary">uptime_summary</a>
+  <ul>
+  <li><a href="#provenance-1" id="toc-provenance-1" class="nav-link" data-scroll-target="#provenance-1">Provenance</a></li>
+  <li><a href="#fields-2" id="toc-fields-2" class="nav-link" data-scroll-target="#fields-2">Fields</a></li>
+  <li><a href="#notes" id="toc-notes" class="nav-link" data-scroll-target="#notes">Notes</a></li>
+  </ul></li>
+  <li><a href="#uptime_timeseries" id="toc-uptime_timeseries" class="nav-link" data-scroll-target="#uptime_timeseries">uptime_timeseries</a>
+  <ul>
+  <li><a href="#provenance-2" id="toc-provenance-2" class="nav-link" data-scroll-target="#provenance-2">Provenance</a></li>
+  <li><a href="#fields-3" id="toc-fields-3" class="nav-link" data-scroll-target="#fields-3">Fields</a></li>
+  <li><a href="#notes-1" id="toc-notes-1" class="nav-link" data-scroll-target="#notes-1">Notes</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -259,7 +284,7 @@ ul.task-list li input[type="checkbox"] {
 <ul>
 <li><strong>Updated</strong>: Manually, on an ad hoc basis (roughly weekly)</li>
 <li><strong>Steward</strong>: EDCP Data and Research Team</li>
-<li><strong>Contact</strong>: <a href="mailto:yinlin.zhang@cds-snc.ca">Yinlin Zhang</a> (D&amp;R Team) or <a href="mailto:obinna.okongwu@cds-snc.ca">Obie Okongwu</a> (CL Platform Team)</li>
+<li><strong>Contact</strong>: <a href="mailto:yinlin.zhang@cds-snc.ca">Yinlin Zhang</a> (Data and Research team) or <a href="mailto:obinna.okongwu@cds-snc.ca">Obie Okongwu</a> (CL Platform Team)</li>
 </ul>
 </section>
 <section id="fields" class="level3">
@@ -402,6 +427,269 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 </tbody>
 </table>
+</section>
+</section>
+<section id="uptime-tables" class="level2">
+<h2 class="anchored" data-anchor-id="uptime-tables">Uptime Tables</h2>
+<p>The uptime tables are sourced from the <a href="https://github.com/cds-snc/status-statut"><code>cds-snc/status-statut</code></a> public GitHub repository and updated automatically each day. No manual steps required.</p>
+</section>
+<section id="uptime_summary" class="level2">
+<h2 class="anchored" data-anchor-id="uptime_summary">uptime_summary</h2>
+<p>One row per monitored site per day. Each row is a snapshot of rolling-window statistics fetched from <code>history/summary.json</code> in the <a href="https://github.com/cds-snc/status-statut"><code>cds-snc/status-statut</code></a> GitHub repository at 04:00 ET.</p>
+<section id="provenance-1" class="level3">
+<h3 class="anchored" data-anchor-id="provenance-1">Provenance</h3>
+<p>Fully automated. No manual upload required. The <a href="https://github.com/upptime/upptime">upptime</a> <code>summary.yml</code> GitHub Action recalculates all rolling-window metrics from the full five-minute ping history once per day (~00:00 UTC), rewriting <code>summary.json</code>. The Lambda runs at 04:00 ET and fetches that file, writing one Parquet row per site into the <code>date=YYYY-MM-DD</code> partition corresponding to the preceding day.</p>
+<ul>
+<li><strong>Updated</strong>: Daily, at ~04:00 ET</li>
+<li><strong>Steward</strong>: EDCP Data and Research Team</li>
+<li><strong>Contact</strong>: <a href="mailto:yinlin.zhang@cds-snc.ca">Yinlin Zhang</a> (Data and Research team)</li>
+</ul>
+<p><strong>Six monitored sites:</strong></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th><code>slug</code></th>
+<th><code>lang</code></th>
+<th><code>url</code></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>canada-login-website-en</code></td>
+<td><code>WEB-EN</code></td>
+<td><code>https://login.canada.ca</code></td>
+</tr>
+<tr class="even">
+<td><code>canada-login-website-fr</code></td>
+<td><code>WEB-FR</code></td>
+<td><code>https://connexion.canada.ca</code></td>
+</tr>
+<tr class="odd">
+<td><code>canada-login-manage-profile-staging</code></td>
+<td><code>MP-STAGING</code></td>
+<td><code>https://app.login-connexion.alpha.canada.ca</code></td>
+</tr>
+<tr class="even">
+<td><code>canada-login-manage-profile-prod</code></td>
+<td><code>MP-PROD</code></td>
+<td><code>https://app.login-connexion.canada.ca</code></td>
+</tr>
+<tr class="odd">
+<td><code>canada-login-idp-staging</code></td>
+<td><code>IDP-STAGING</code></td>
+<td><code>https://auth.login-connexion.alpha.canada.ca</code></td>
+</tr>
+<tr class="even">
+<td><code>canada-login-idp-prod</code></td>
+<td><code>IDP-PROD</code></td>
+<td><code>https://auth.login-connexion.canada.ca</code></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="fields-2" class="level3">
+<h3 class="anchored" data-anchor-id="fields-2">Fields</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Field Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>date</code></td>
+<td><code>varchar</code></td>
+<td>Hive partition key: the date the Lambda ran for (yesterday’s date, <code>YYYY-MM-DD</code>).</td>
+</tr>
+<tr class="even">
+<td><code>fetch_date</code></td>
+<td><code>varchar</code></td>
+<td>UTC timestamp when the Lambda fetched the data (<code>YYYY-MM-DD HH:MM:SS</code>). Useful for diagnosing staleness.</td>
+</tr>
+<tr class="odd">
+<td><code>slug</code></td>
+<td><code>varchar</code></td>
+<td>Upptime site identifier. One of the six values in the table above.</td>
+</tr>
+<tr class="even">
+<td><code>lang</code></td>
+<td><code>varchar</code></td>
+<td>Short label identifying the site variant, one of the six values in the table above.</td>
+</tr>
+<tr class="odd">
+<td><code>url</code></td>
+<td><code>varchar</code></td>
+<td>The monitored URL.</td>
+</tr>
+<tr class="even">
+<td><code>status</code></td>
+<td><code>varchar</code></td>
+<td>Site status at fetch time: <code>up</code> or <code>down</code>.</td>
+</tr>
+<tr class="odd">
+<td><code>uptime_day</code></td>
+<td><code>double</code></td>
+<td>Uptime percentage over the past 24 hours (~288 five-minute pings).</td>
+</tr>
+<tr class="even">
+<td><code>uptime_week</code></td>
+<td><code>double</code></td>
+<td>Uptime percentage over the past 7 days (~2,016 pings).</td>
+</tr>
+<tr class="odd">
+<td><code>uptime_month</code></td>
+<td><code>double</code></td>
+<td>Uptime percentage over the past 30 days (~8,640 pings).</td>
+</tr>
+<tr class="even">
+<td><code>uptime_year</code></td>
+<td><code>double</code></td>
+<td>Uptime percentage over the past 365 days (~105,120 pings).</td>
+</tr>
+<tr class="odd">
+<td><code>uptime_alltime</code></td>
+<td><code>double</code></td>
+<td>Uptime percentage across all pings since monitoring began (April 2, 2026).</td>
+</tr>
+<tr class="even">
+<td><code>response_day_ms</code></td>
+<td><code>bigint</code></td>
+<td>Average response time over the past 24 hours, in milliseconds.</td>
+</tr>
+<tr class="odd">
+<td><code>response_week_ms</code></td>
+<td><code>bigint</code></td>
+<td>Average response time over the past 7 days, in milliseconds.</td>
+</tr>
+<tr class="even">
+<td><code>response_month_ms</code></td>
+<td><code>bigint</code></td>
+<td>Average response time over the past 30 days, in milliseconds.</td>
+</tr>
+<tr class="odd">
+<td><code>response_year_ms</code></td>
+<td><code>bigint</code></td>
+<td>Average response time over the past 365 days, in milliseconds.</td>
+</tr>
+<tr class="even">
+<td><code>response_alltime_ms</code></td>
+<td><code>bigint</code></td>
+<td>Average response time across all pings since monitoring began, in milliseconds.</td>
+</tr>
+<tr class="odd">
+<td><code>daily_minutes_down</code></td>
+<td><code>varchar</code></td>
+<td>JSON string mapping each outage date to total minutes down on that date.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="notes" class="level3">
+<h3 class="anchored" data-anchor-id="notes">Notes</h3>
+<p><strong>Timing note.</strong> When the Lambda runs on <strong>June 30</strong>, it fetches rolling-window statistics last recalculated at ~23:2x UTC on <strong>June 29</strong>. The resulting row lands in partition <code>date=2026-06-29</code>. All rolling windows trail backward from that reference point.</p>
+</section>
+</section>
+<section id="uptime_timeseries" class="level2">
+<h2 class="anchored" data-anchor-id="uptime_timeseries">uptime_timeseries</h2>
+<p>One row per upptime bot commit per site. The upptime bot commits to the <code>cds-snc/status-statut</code> history YAML files once per day (~23:2x UTC) as a daily snapshot, plus additional commits immediately when a status change is detected mid-day.</p>
+<section id="provenance-2" class="level3">
+<h3 class="anchored" data-anchor-id="provenance-2">Provenance</h3>
+<p>Fully automated. No manual upload required. Sourced from the GitHub Commits API for each site’s history file (<code>history/&lt;slug&gt;.yml</code>).</p>
+<ul>
+<li><strong>Updated</strong>: Daily, at ~04:00 ET</li>
+<li><strong>Steward</strong>: EDCP Data and Research Team</li>
+<li><strong>Contact</strong>: <a href="mailto:yinlin.zhang@cds-snc.ca">Yinlin Zhang</a> (Data and Research team)</li>
+</ul>
+<p><strong>Expected row count per site per day:</strong></p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Scenario</th>
+<th>Expected rows</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Normal all-up day</td>
+<td>1 (daily ~23:2x UTC snapshot, <code>status = 'up'</code>)</td>
+</tr>
+<tr class="even">
+<td>Outage day</td>
+<td>2+ (down event + recovery event + daily snapshot)</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="fields-3" class="level3">
+<h3 class="anchored" data-anchor-id="fields-3">Fields</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Field Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>date</code></td>
+<td><code>varchar</code></td>
+<td>Hive partition key: the UTC date of the commit (<code>YYYY-MM-DD</code>). Use in <code>WHERE date = '...'</code> or <code>WHERE CAST(date AS DATE) BETWEEN ...</code> filters.</td>
+</tr>
+<tr class="even">
+<td><code>ping_timestamp</code></td>
+<td><code>varchar</code></td>
+<td>UTC timestamp of the upptime bot’s commit (<code>YYYY-MM-DD HH:MM:SS</code>). On a normal day this is the daily snapshot at ~23:2x UTC. On an outage day earlier commits record when the site went down or recovered.</td>
+</tr>
+<tr class="odd">
+<td><code>slug</code></td>
+<td><code>varchar</code></td>
+<td>Upptime site identifier, same six values as in <code>sre.uptime_summary</code>.</td>
+</tr>
+<tr class="even">
+<td><code>lang</code></td>
+<td><code>varchar</code></td>
+<td>Short label, same six values as in <code>sre.uptime_summary</code>.</td>
+</tr>
+<tr class="odd">
+<td><code>status</code></td>
+<td><code>varchar</code></td>
+<td>Ping result at the moment of this commit: <code>up</code>, <code>down</code>, or <code>unknown</code>.</td>
+</tr>
+<tr class="even">
+<td><code>http_code</code></td>
+<td><code>bigint</code></td>
+<td>HTTP status code at the moment of this commit. <code>200</code> on a normal day; <code>0</code> or <code>503</code> when down. <code>null</code> if unparseable.</td>
+</tr>
+<tr class="odd">
+<td><code>response_ms</code></td>
+<td><code>bigint</code></td>
+<td>Response time in milliseconds at the moment of this commit. Single-ping measurement at commit time, not a daily average. <code>null</code> if unparseable.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="notes-1" class="level3">
+<h3 class="anchored" data-anchor-id="notes-1">Notes</h3>
+<p><strong><code>response_ms</code> is a single-ping measurement.</strong> It records the response time at the exact moment of the upptime bot’s commit, not a daily average. For averaged response times use <code>sre.uptime_summary</code> (<code>response_day_ms</code>, <code>response_week_ms</code>, etc.), which are computed from all 288 five-minute pings.</p>
+<p><strong><code>status = 'down'</code> rows count detection events, not outage duration.</strong> Each down row is one commit, one moment when upptime detected a failure. For total minutes of downtime on a given date, use the <code>daily_minutes_down</code> JSON column in <code>sre.uptime_summary</code>.</p>
 
 
 </section>
@@ -815,8 +1103,8 @@ ul.task-list li input[type="checkbox"] {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../catalog/notes.html" class="pagination-link" aria-label="Additional Notes">
-        <span class="nav-page-text">Additional Notes</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../catalog/jira.html" class="pagination-link" aria-label="Jira (PSOM)">
+        <span class="nav-page-text">Jira (PSOM)</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

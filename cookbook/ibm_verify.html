@@ -186,6 +186,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../cookbook/jira.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Jira (PSOM)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../cookbook/notes.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Additional Notes</span></a>
   </div>
@@ -217,6 +223,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <div class="sidebar-item-container"> 
   <a href="../catalog/sre.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Platform</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../catalog/jira.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Jira (PSOM)</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -1130,7 +1142,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>second-factor success rate</li>
 <li>MFA completion rate</li>
 </ul>
-<p><strong>Calculation.</strong> Divide the sum of <code>count</code> where <code>result = 'success'</code> by the sum of <code>count</code> where <code>result</code> is <code>'success'</code> or <code>'failure'</code>. OTP factor types also produce a <code>'sent'</code> event per challenge, which must be excluded from both the numerator and the denominator — <code>sent</code> rows do not represent outcomes.</p>
+<p><strong>Calculation.</strong> Divide the sum of <code>count</code> where <code>result = 'success'</code> by the sum of <code>count</code> where <code>result</code> is <code>'success'</code> or <code>'failure'</code>. OTP factor types also produce a <code>'sent'</code> event per challenge, which must be excluded from both the numerator and the denominator, because <code>sent</code> rows do not represent outcomes.</p>
 <p>To track the metric over time, bin the same calculation by week. Truncating <code>from_date</code> to the week groups each day into its Monday-anchored bin, so the result is one success rate per Monday-to-Sunday week.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-12-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-12-1" role="tab" aria-controls="tabset-12-1" aria-selected="true" href="">SQL</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-12-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-12-2" role="tab" aria-controls="tabset-12-2" aria-selected="false" href="">R</a></li></ul>

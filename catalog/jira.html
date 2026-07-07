@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Additional Notes – CanadaLogin Metrics Cookbook</title>
+<title>Jira (PSOM) – CanadaLogin Metrics Cookbook</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -33,8 +33,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../catalog/index.html" rel="next">
-<link href="../cookbook/jira.html" rel="prev">
+<link href="../catalog/notes.html" rel="next">
+<link href="../catalog/sre.html" rel="prev">
 <link href="../img/cds-snc.png" rel="icon" type="image/png">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
@@ -90,7 +90,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../cookbook/index.html">Metrics Cookbook</a></li><li class="breadcrumb-item"><a href="../cookbook/notes.html">Additional Notes</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../catalog/index.html">Data Catalog</a></li><li class="breadcrumb-item"><a href="../catalog/jira.html">Jira (PSOM)</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -157,7 +157,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../cookbook/notes.html" class="sidebar-item-text sidebar-link active">
+  <a href="../cookbook/notes.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Additional Notes</span></a>
   </div>
 </li>
@@ -192,7 +192,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../catalog/jira.html" class="sidebar-item-text sidebar-link">
+  <a href="../catalog/jira.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Jira (PSOM)</span></a>
   </div>
 </li>
@@ -214,20 +214,21 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#sign-ins-are-not-users" id="toc-sign-ins-are-not-users" class="nav-link active" data-scroll-target="#sign-ins-are-not-users">Sign-ins are not users</a></li>
-  <li><a href="#daily-unique-users-are-not-the-same-as-period-unique-users" id="toc-daily-unique-users-are-not-the-same-as-period-unique-users" class="nav-link" data-scroll-target="#daily-unique-users-are-not-the-same-as-period-unique-users">Daily unique users are not the same as period unique users</a></li>
-  <li><a href="#metrics-can-be-reported-over-different-timespans" id="toc-metrics-can-be-reported-over-different-timespans" class="nav-link" data-scroll-target="#metrics-can-be-reported-over-different-timespans">Metrics can be reported over different timespans</a></li>
-  <li><a href="#weighted-averages-should-be-used-for-call-centre-averages" id="toc-weighted-averages-should-be-used-for-call-centre-averages" class="nav-link" data-scroll-target="#weighted-averages-should-be-used-for-call-centre-averages">Weighted averages should be used for call centre averages</a></li>
-  <li><a href="#internal-applications-should-usually-be-excluded-from-external-adoption-reporting" id="toc-internal-applications-should-usually-be-excluded-from-external-adoption-reporting" class="nav-link" data-scroll-target="#internal-applications-should-usually-be-excluded-from-external-adoption-reporting">Internal applications should usually be excluded from external adoption reporting</a></li>
+  <li><a href="#psom" id="toc-psom" class="nav-link active" data-scroll-target="#psom">PSOM</a>
+  <ul>
+  <li><a href="#provenance" id="toc-provenance" class="nav-link" data-scroll-target="#provenance">Provenance</a></li>
+  <li><a href="#fields" id="toc-fields" class="nav-link" data-scroll-target="#fields">Fields</a></li>
+  <li><a href="#notes" id="toc-notes" class="nav-link" data-scroll-target="#notes">Notes</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../cookbook/index.html">Metrics Cookbook</a></li><li class="breadcrumb-item"><a href="../cookbook/notes.html">Additional Notes</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../catalog/index.html">Data Catalog</a></li><li class="breadcrumb-item"><a href="../catalog/jira.html">Jira (PSOM)</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">Additional Notes</h1>
+<h1 class="title">Jira (PSOM)</h1>
 </div>
 
 
@@ -244,52 +245,176 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="sign-ins-are-not-users" class="level2">
-<h2 class="anchored" data-anchor-id="sign-ins-are-not-users">Sign-ins are not users</h2>
-<p>A sign-in count measures events. One person can sign in multiple times.</p>
-<p>Use sign-ins when the question is about volume or system usage.</p>
-<p>Use unique users when the question is about reach.</p>
-</section>
-<section id="daily-unique-users-are-not-the-same-as-period-unique-users" class="level2">
-<h2 class="anchored" data-anchor-id="daily-unique-users-are-not-the-same-as-period-unique-users">Daily unique users are not the same as period unique users</h2>
-<p>Summing daily unique users gives a measure of user-days, not distinct people over the full period.</p>
-<p>For distinct people over a longer period, use a cumulative unique user field such as <code>mtd_unique_users</code> or <code>ytd_unique_users</code>.</p>
-</section>
-<section id="metrics-can-be-reported-over-different-timespans" class="level2">
-<h2 class="anchored" data-anchor-id="metrics-can-be-reported-over-different-timespans">Metrics can be reported over different timespans</h2>
-<p>Most metrics are meaningful over more than one window. The three standard reporting windows are month-to-date, year-to-date, and since the April 22, 2026 public launch. How you select a window depends on the kind of metric.</p>
-<p><strong>Additive metrics</strong> (sign-ins, MFA attempts, success rates, averages) are computed by aggregating daily rows, so the window is just the date bounds in the <code>WHERE from_date BETWEEN DATE '&lt;start&gt;' AND DATE '&lt;end&gt;'</code> clause. The same query covers any window; only the start date changes:</p>
+<p>Tables in the <code>jira</code> schema, populated by the weekly PSOM Jira Service Management sync pipeline.</p>
+<p>Each Monday at ~6:00 AM ET, the <code>psom-weekly-sync</code> Lambda fetches a full snapshot of all tickets from the PSOM project (<code>jtickets.atlassian.net</code>) and writes it as a Parquet partition in S3. The Glue crawler then updates the Athena table schema.</p>
+<section id="psom" class="level2">
+<h2 class="anchored" data-anchor-id="psom">PSOM</h2>
+<p>Weekly snapshot of all PSOM Jira Service Management tickets.</p>
+<p>One row per Jira issue per weekly snapshot. Each Monday run writes a full snapshot of all current PSOM tickets to a new <code>date=</code> partition. Previous partitions are preserved as an audit trail, enabling point-in-time analysis.</p>
+<p><strong>Jira source:</strong> <code>jtickets.atlassian.net</code>, project <code>PSOM</code>, fetched via <code>POST /rest/api/3/search/jql</code> with full comment history via <code>/rest/api/3/issue/{key}/comment</code>.</p>
+<p><code>Keywords</code>: jira, psom, tickets, service requests, SLA, support</p>
+<section id="provenance" class="level3">
+<h3 class="anchored" data-anchor-id="provenance">Provenance</h3>
+<p>Queried from PSOM Jira Cloud via API by the <code>psom-weekly-sync</code> Lambda function.</p>
 <ul>
-<li>Month-to-date: first of the current month (for example, <code>2026-06-01</code>)</li>
-<li>Year-to-date: <code>2026-01-01</code></li>
-<li>Since launch: <code>2026-04-22</code></li>
+<li><strong>Updated</strong>: Weekly, every Monday at ~06:00 ET</li>
+<li><strong>Steward</strong>: EDCP Data and Research Team</li>
+<li><strong>Contact</strong>: <a href="mailto:yinlin.zhang@cds-snc.ca">Yinlin Zhang</a> (Data and Research team)</li>
 </ul>
-<p>Set the end date to the reporting date.</p>
-<p><strong>Cumulative unique-user metrics</strong> cannot be derived by filtering a date range, because summing daily <code>unique_users</code> counts user-days, not distinct people. Instead, pick the pre-computed column that matches the window and take its latest value:</p>
-<ul>
-<li>Month-to-date: <code>mtd_unique_users</code></li>
-<li>Year-to-date: <code>ytd_unique_users</code></li>
-</ul>
-<p>Never sum these cumulative columns across rows.</p>
-<p>There is no cumulative since-launch column. The <code>since_apr22_unique_users</code> field that previously provided it has been removed: the cumulative count is computed by the IBM Verify API, which sees only the most recent 366.5 days of source data, so a since-launch total silently truncates once launch is more than a year in the past. The <code>mtd_</code> and <code>ytd_</code> windows are unaffected because they fall inside that horizon.</p>
-<p>This limit does not affect the additive metrics above. Those are aggregated from the daily rows we store on our side, which are retained beyond a year, so a date-bounded since-launch window over an additive metric stays correct however far back it reaches. See the <a href="../catalog/ibm_verify.html#data-retention">data retention note</a> in the catalog.</p>
 </section>
-<section id="weighted-averages-should-be-used-for-call-centre-averages" class="level2">
-<h2 class="anchored" data-anchor-id="weighted-averages-should-be-used-for-call-centre-averages">Weighted averages should be used for call centre averages</h2>
-<p>When calculating average call length or average delay across multiple weeks, use a weighted average based on <code>calls_answered</code>.</p>
-<p>A simple average of weekly averages may give too much influence to low-volume weeks.</p>
+<section id="fields" class="level3">
+<h3 class="anchored" data-anchor-id="fields">Fields</h3>
+<p>One row per Jira issue per weekly snapshot (<code>date</code> partition).</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Field Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>date</td>
+<td>varchar</td>
+<td>Partition key: the date the Lambda ran (<code>YYYY-MM-DD</code>).</td>
+</tr>
+<tr class="even">
+<td>key</td>
+<td>varchar</td>
+<td>Jira ticket key, e.g.&nbsp;<code>PSOM-42</code>.</td>
+</tr>
+<tr class="odd">
+<td>summary</td>
+<td>varchar</td>
+<td>One-line ticket title.</td>
+</tr>
+<tr class="even">
+<td>description</td>
+<td>varchar</td>
+<td>Full ticket description, extracted from Atlassian Document Format (ADF) to plain text.</td>
+</tr>
+<tr class="odd">
+<td>issue_type</td>
+<td>varchar</td>
+<td>Jira issue type name, e.g.&nbsp;<code>Email Request</code>, <code>Partner Support Request form</code>.</td>
+</tr>
+<tr class="even">
+<td>status</td>
+<td>varchar</td>
+<td>Current workflow status, e.g.&nbsp;<code>Done</code>, <code>Canceled</code>, <code>Escalated to PTT</code>, <code>Escalated to Auth PT</code>, <code>Ready to archive</code>.</td>
+</tr>
+<tr class="odd">
+<td>status_changed</td>
+<td>varchar</td>
+<td>ISO 8601 timestamp when the ticket’s status category last changed.</td>
+</tr>
+<tr class="even">
+<td>priority</td>
+<td>varchar</td>
+<td>Priority level, e.g.&nbsp;<code>High</code>, <code>Normal</code>, <code>Low</code>, <code>Critical</code>.</td>
+</tr>
+<tr class="odd">
+<td>assignee</td>
+<td>varchar</td>
+<td>Display name of the current assignee; empty string if unassigned.</td>
+</tr>
+<tr class="even">
+<td>reporter</td>
+<td>varchar</td>
+<td>Display name of the person who reported the ticket.</td>
+</tr>
+<tr class="odd">
+<td>creator</td>
+<td>varchar</td>
+<td>Display name of the person who created the ticket (may differ from reporter).</td>
+</tr>
+<tr class="even">
+<td>created</td>
+<td>varchar</td>
+<td>ISO 8601 timestamp when the ticket was created.</td>
+</tr>
+<tr class="odd">
+<td>updated</td>
+<td>varchar</td>
+<td>ISO 8601 timestamp of the most recent field or comment update.</td>
+</tr>
+<tr class="even">
+<td>due_date</td>
+<td>varchar</td>
+<td>Due date in <code>YYYY-MM-DD</code> format; empty string if not set.</td>
+</tr>
+<tr class="odd">
+<td>labels</td>
+<td>varchar</td>
+<td>Semicolon-separated list of labels applied to the ticket; empty string if none.</td>
+</tr>
+<tr class="even">
+<td>request_type</td>
+<td>varchar</td>
+<td>JSM service request type name, e.g.&nbsp;<code>New Access Request</code>. Empty for tickets created internally through Jira rather than the customer-facing portal (all PSOM tickets so far), which never set a request type.</td>
+</tr>
+<tr class="odd">
+<td>request_participants</td>
+<td>varchar</td>
+<td>Semicolon-separated display names of request participants (CC’d users).</td>
+</tr>
+<tr class="even">
+<td>organizations</td>
+<td>varchar</td>
+<td>Semicolon-separated names of JSM organizations the request is associated with.</td>
+</tr>
+<tr class="odd">
+<td>sla_first_response_due</td>
+<td>varchar</td>
+<td>ISO 8601 datetime the “Time to first response” SLA must be (or was) met by, per the SLA goal. For an open ticket this is the upcoming breach deadline; for a closed cycle, when the cycle stopped. Empty if no SLA clock.</td>
+</tr>
+<tr class="even">
+<td>sla_first_response_breached</td>
+<td>varchar</td>
+<td><code>"True"</code> if the first-response SLA was missed (no agent response within the agreed 4-hour window), <code>"False"</code> if it was met or is still within the window, <code>""</code> if no SLA clock. Stored as a string, not a native boolean.</td>
+</tr>
+<tr class="odd">
+<td>sla_time_to_done_due</td>
+<td>varchar</td>
+<td>ISO 8601 datetime the “Time to done” SLA must be (or was) met by, per the SLA goal. For an open ticket this is the upcoming breach deadline; for a closed cycle, when the cycle stopped. Empty if no SLA clock.</td>
+</tr>
+<tr class="even">
+<td>sla_time_to_done_breached</td>
+<td>varchar</td>
+<td><code>"True"</code> if the resolution SLA was missed (ticket not resolved within the agreed 16-hour window), <code>"False"</code> if it was met or is still within the window, <code>""</code> if no SLA clock. Stored as a string, not a native boolean.</td>
+</tr>
+<tr class="odd">
+<td>comment_count</td>
+<td>bigint</td>
+<td>Total number of comments on the ticket.</td>
+</tr>
+<tr class="even">
+<td>comments</td>
+<td>varchar</td>
+<td>JSON array string of all comments. Each element: <code>{"author": "...", "created": "...", "updated": "...", "body": "...", "internal": false}</code>. The <code>body</code> is ADF-extracted plain text. The <code>internal</code> flag is <code>true</code> for JSM internal notes.</td>
+</tr>
+<tr class="odd">
+<td>fetched_at</td>
+<td>varchar</td>
+<td>UTC timestamp when the Lambda wrote this row (<code>YYYY-MM-DD HH:MM:SS</code>).</td>
+</tr>
+</tbody>
+</table>
 </section>
-<section id="internal-applications-should-usually-be-excluded-from-external-adoption-reporting" class="level2">
-<h2 class="anchored" data-anchor-id="internal-applications-should-usually-be-excluded-from-external-adoption-reporting">Internal applications should usually be excluded from external adoption reporting</h2>
-<p>The following applications are currently treated as internal:</p>
-<ul>
-<li>Flow Application</li>
-<li>GCS Migration Solution</li>
-<li>GC Sign In - Profile Management App</li>
-</ul>
-<p>Whether to exclude them depends on the reporting question.</p>
+<section id="notes" class="level3">
+<h3 class="anchored" data-anchor-id="notes">Notes</h3>
+<p>All timestamp columns (<code>created</code>, <code>updated</code>, <code>status_changed</code>, <code>sla_*_due</code>, <code>fetched_at</code>) are stored as <code>varchar</code>.</p>
+<p>SLA fields (<code>sla_first_response_*</code>, <code>sla_time_to_done_*</code>) are populated for tickets with an active JSM SLA clock. The <code>*_breached</code> columns hold the strings <code>"True"</code>/<code>"False"</code>, not a native boolean, so compare against <code>'True'</code>/<code>'False'</code> (not a bare boolean) and cast if you need one. <code>"False"</code> covers both SLAs that were met and open tickets still inside their window, so a breach rate computed on a single snapshot is a lower bound: an open ticket counted as <code>"False"</code> today can still breach later. Snapshots up to and including <code>date=2026-07-06</code> predate the SLA pipeline fix and have these columns empty; from <code>date=2026-07-07</code> on they are populated. Exclude empty-string rows when calculating breach rates.</p>
+<p>Each weekly run adds a new <code>date=</code> partition. All previous partitions are retained, so you can compare snapshots across weeks to track status changes over time.</p>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
@@ -695,13 +820,13 @@ ul.task-list li input[type="checkbox"] {
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../cookbook/jira.html" class="pagination-link" aria-label="Jira (PSOM)">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Jira (PSOM)</span>
+      <a href="../catalog/sre.html" class="pagination-link" aria-label="Platform">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Platform</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../catalog/index.html" class="pagination-link" aria-label="Data Catalog">
-        <span class="nav-page-text">Data Catalog</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../catalog/notes.html" class="pagination-link" aria-label="Additional Notes">
+        <span class="nav-page-text">Additional Notes</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
