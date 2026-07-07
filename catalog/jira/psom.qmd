@@ -26,7 +26,7 @@ One row per Jira issue per weekly snapshot (`date` partition).
 
 | Field Name | Type | Description |
 |---|---|---|
-| date | varchar | Partition key: the date the Lambda ran (`YYYY-MM-DD`). Use in `WHERE date = '...'` filters. |
+| date | varchar | Partition key: the date the Lambda ran (`YYYY-MM-DD`).|
 | key | varchar | Jira ticket key, e.g. `PSOM-42`. |
 | summary | varchar | One-line ticket title. |
 | description | varchar | Full ticket description, extracted from Atlassian Document Format (ADF) to plain text. |
@@ -43,7 +43,7 @@ One row per Jira issue per weekly snapshot (`date` partition).
 | labels | varchar | Semicolon-separated list of labels applied to the ticket; empty string if none. |
 | request_type | varchar | JSM service request type name, e.g. `New Access Request`. Empty for non-JSM tickets. |
 | request_participants | varchar | Semicolon-separated display names of request participants (CC'd users). |
-| organizations | varchar | Semicolon-separated names of JSM organizations the request is associated with, e.g. `Treasury Board Secretariat (TBS)`, `Public Services and Procurement Canada (PSPC)`, `PrairiesCan`, `Veterans Affairs Canada`. |
+| organizations | varchar | Semicolon-separated names of JSM organizations the request is associated with. |
 | sla_first_response_due | varchar | ISO 8601 due timestamp for the "Time to first response" SLA; empty if SLA not active. |
 | sla_first_response_breached | varchar | `"True"` if the first-response SLA was breached, `"False"` if met, `""` if not applicable. |
 | sla_time_to_done_due | varchar | ISO 8601 due timestamp for the "Time to done" SLA; empty if SLA not active. |
@@ -55,8 +55,7 @@ One row per Jira issue per weekly snapshot (`date` partition).
 ### Notes
 
 All timestamp columns (`created`, `updated`, `status_changed`, `sla_*_due`,
-`fetched_at`) are stored as `varchar`. Use `CAST(created AS TIMESTAMP)` in
-Athena for date arithmetic.
+`fetched_at`) are stored as `varchar`. 
 
 SLA fields (`sla_first_response_*`, `sla_time_to_done_*`) are populated only
 for tickets where a JSM SLA clock was active. Tickets created before the SLA

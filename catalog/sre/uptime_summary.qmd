@@ -31,11 +31,11 @@ site into the `date=YYYY-MM-DD` partition corresponding to the preceding day.
 
 | Field Name | Type | Description |
 |---|---|---|
-| `date` | `varchar` | Hive partition key: the date the Lambda ran for (yesterday's date, `YYYY-MM-DD`). Use in `WHERE date = '...'` or `WHERE CAST(date AS DATE) BETWEEN ...` filters. |
+| `date` | `varchar` | Hive partition key: the date the Lambda ran for (yesterday's date, `YYYY-MM-DD`). |
 | `fetch_date` | `varchar` | UTC timestamp when the Lambda fetched the data (`YYYY-MM-DD HH:MM:SS`). Useful for diagnosing staleness. |
 | `slug` | `varchar` | Upptime site identifier. One of the six values in the table above. |
 | `lang` | `varchar` | Short label identifying the site variant, one of the six values in the table above. |
-| `url` | `varchar` | The monitored URL for this site. |
+| `url` | `varchar` | The monitored URL. |
 | `status` | `varchar` | Site status at fetch time: `up` or `down`. |
 | `uptime_day` | `double` | Uptime percentage over the past 24 hours (~288 five-minute pings). |
 | `uptime_week` | `double` | Uptime percentage over the past 7 days (~2,016 pings). |
@@ -47,7 +47,7 @@ site into the `date=YYYY-MM-DD` partition corresponding to the preceding day.
 | `response_month_ms` | `bigint` | Average response time over the past 30 days, in milliseconds. |
 | `response_year_ms` | `bigint` | Average response time over the past 365 days, in milliseconds. |
 | `response_alltime_ms` | `bigint` | Average response time across all pings since monitoring began, in milliseconds. |
-| `daily_minutes_down` | `varchar` | JSON string mapping each outage date to total minutes down on that date. Example: `{"2026-04-12": 380, "2026-04-13": 1440}`. Cumulative historical map present in every row; empty `{}` for sites with no outages. Use `json_extract_scalar(daily_minutes_down, '$["2026-04-12"]')` to query (bracket notation required because date keys start with a digit, so dot notation fails). |
+| `daily_minutes_down` | `varchar` | JSON string mapping each outage date to total minutes down on that date. |
 
 ### Notes
 
