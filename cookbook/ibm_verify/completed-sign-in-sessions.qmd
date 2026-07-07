@@ -106,7 +106,7 @@ The estimate rests on two assumptions:
    factor is FIDO2 is one event in `successful_logins` and also a `fido2` success
    in `mfa_activity`, so it nets to zero. The figure is therefore a slight
    underestimate. This has been tolerable only because
-   [All MFA Activity by Factor](mfa-activity-by-factor.qmd) shows `fido2`
+   [All MFA Activity by Factor](#all-mfa-activity-by-factor) shows `fido2`
    historically sees little use; with passkeys rolled out to the public on
    2026-07-06, passwordless adoption is expected to grow, and this undercount
    grows with it.

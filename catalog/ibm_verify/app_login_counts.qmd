@@ -48,7 +48,7 @@ April 22, 2026 public launch) was previously provided here. It has been removed
 from the pipeline because the source API retains only the most recent 366.5 days
 of data, so a since-launch cumulative count cannot be maintained once launch is
 more than a year in the past. See the retention note on the
-[IBM Verify catalog overview](../ibm_verify.qmd).
+[IBM Verify catalog overview](#data-retention).
 
 Unlike [`auth_total_logins`](#auth_total_logins), these counts are *not* inflated
 by second factors. The per-authentication-method event inflation described there

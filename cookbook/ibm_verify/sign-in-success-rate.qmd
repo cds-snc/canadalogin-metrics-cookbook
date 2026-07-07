@@ -103,5 +103,5 @@ password is a failed event even when the user then succeeds and completes the
 sign-in (see the [`auth_total_logins`](../catalog/ibm_verify.qmd#auth_total_logins)
 caveat). The figure measures how often individual authentication steps succeed,
 not how often a sign-in session ultimately completes. This differs from the
-[per-application rate](sign-in-success-rate-by-application.qmd), which measures
+[per-application rate](#sign-in-success-rate-by-application), which measures
 credential validity against a relying party with no factors entered.

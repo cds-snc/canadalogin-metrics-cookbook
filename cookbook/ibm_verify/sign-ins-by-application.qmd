@@ -72,7 +72,7 @@ tbl(con, in_schema("ibm_verify", "app_login_counts")) |>
 when the question is about system usage or activity volume. Use unique user
 metrics when the question is about reach.
 
-Unlike the CanadaLogin-wide [sign-in count](sign-ins.qmd), these per-application
+Unlike the CanadaLogin-wide [sign-in count](#sign-ins), these per-application
 counts are not inflated by second factors. Authenticating against an application
 reuses the credentials from the CanadaLogin session, so each application sign-in
 is a single event rather than one event per authentication method.
