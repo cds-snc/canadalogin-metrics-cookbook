@@ -254,6 +254,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#tickets-by-status" id="toc-tickets-by-status" class="nav-link" data-scroll-target="#tickets-by-status">Tickets by Status</a></li>
   <li><a href="#weekly-ticket-volume" id="toc-weekly-ticket-volume" class="nav-link" data-scroll-target="#weekly-ticket-volume">Weekly Ticket Volume</a></li>
   <li><a href="#tickets-by-priority" id="toc-tickets-by-priority" class="nav-link" data-scroll-target="#tickets-by-priority">Tickets by Priority</a></li>
+  <li><a href="#sla-first-response-breach-rate" id="toc-sla-first-response-breach-rate" class="nav-link" data-scroll-target="#sla-first-response-breach-rate">SLA First-Response Breach Rate</a></li>
+  <li><a href="#sla-time-to-done-breach-rate" id="toc-sla-time-to-done-breach-rate" class="nav-link" data-scroll-target="#sla-time-to-done-breach-rate">SLA Time-to-Done Breach Rate</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -384,20 +386,97 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
+</section>
+<section id="sla-first-response-breach-rate" class="level3">
+<h3 class="anchored" data-anchor-id="sla-first-response-breach-rate">SLA First-Response Breach Rate</h3>
+<p>The proportion of PSOM tickets that missed the “Time to first response” SLA (a 4-hour response target), based on the latest weekly snapshot.</p>
+<p>This metric is useful for monitoring whether the team is meeting initial response commitments. Only tickets where the SLA clock was active are included; tickets with no SLA (e.g., non-service-request issue types or tickets created before the SLA scheme was configured) are excluded.</p>
+<p><em>Alternative names</em>:</p>
+<ul>
+<li>first response SLA breach rate</li>
+<li>time to first response SLA compliance</li>
+<li>first-response SLA failure rate</li>
+</ul>
+<p><strong>Calculation.</strong> Filter to the most recent <code>date</code> partition and to tickets where <code>sla_first_response_breached</code> is not empty (i.e., the SLA was active). Divide the count of tickets where <code>sla_first_response_breached = 'True'</code> by the total count of SLA-active tickets.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-4-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-1" role="tab" aria-controls="tabset-4-1" aria-selected="true" href="">SQL</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-4-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-2" role="tab" aria-controls="tabset-4-2" aria-selected="false" href="">R</a></li></ul>
+<div class="tab-content">
+<div id="tabset-4-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-4-1-tab">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> total_sla_tickets,</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">SUM</span>(<span class="cf">CASE</span> <span class="cf">WHEN</span> sla_first_response_breached <span class="op">=</span> <span class="st">'True'</span> <span class="cf">THEN</span> <span class="dv">1</span> <span class="cf">ELSE</span> <span class="dv">0</span> <span class="cf">END</span>) <span class="kw">AS</span> breached_count,</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">CAST</span>(<span class="fu">SUM</span>(<span class="cf">CASE</span> <span class="cf">WHEN</span> sla_first_response_breached <span class="op">=</span> <span class="st">'True'</span> <span class="cf">THEN</span> <span class="dv">1</span> <span class="cf">ELSE</span> <span class="dv">0</span> <span class="cf">END</span>) <span class="kw">AS</span> <span class="dt">DOUBLE</span>)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>        <span class="op">/</span> <span class="fu">NULLIF</span>(<span class="fu">COUNT</span>(<span class="op">*</span>), <span class="dv">0</span>) <span class="kw">AS</span> breach_rate</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> jira.psom</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> <span class="dt">date</span> <span class="op">=</span> (<span class="kw">SELECT</span> <span class="fu">MAX</span>(<span class="dt">date</span>) <span class="kw">FROM</span> jira.psom)</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">AND</span> sla_first_response_breached <span class="op">!=</span> <span class="st">''</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="tabset-4-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-4-2-tab">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>psom <span class="ot">&lt;-</span> <span class="fu">tbl</span>(con, <span class="fu">in_schema</span>(<span class="st">"jira"</span>, <span class="st">"psom"</span>))</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>latest_date <span class="ot">&lt;-</span> psom <span class="sc">|&gt;</span> <span class="fu">summarise</span>(<span class="at">d =</span> <span class="fu">max</span>(date, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">|&gt;</span> <span class="fu">pull</span>(d)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>psom <span class="sc">|&gt;</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">as.Date</span>(date) <span class="sc">==</span> <span class="fu">as.Date</span>(latest_date), sla_first_response_breached <span class="sc">!=</span> <span class="st">""</span>) <span class="sc">|&gt;</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">total_sla_tickets =</span> <span class="fu">n</span>(),</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">breached_count    =</span> <span class="fu">sum</span>(<span class="fu">as.integer</span>(sla_first_response_breached <span class="sc">==</span> <span class="st">"True"</span>), <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">breach_rate       =</span> <span class="fu">sum</span>(<span class="fu">as.integer</span>(sla_first_response_breached <span class="sc">==</span> <span class="st">"True"</span>), <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">/</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>                          <span class="fu">as.double</span>(<span class="fu">n</span>())</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+<p><em>Interpretation notes.</em> The rate is a proportion between 0 and 1. Tickets with no active SLA (empty <code>sla_first_response_breached</code>) are excluded from both numerator and denominator. Check <code>total_sla_tickets</code> to understand the sample size underlying the rate.</p>
+<p>A ticket that is still open and within its 4-hour window is recorded as not breached (<code>"False"</code>), the same as a ticket that met the SLA. The rate on a live snapshot is therefore a lower bound: some of those open tickets may still breach before they are answered. It is most meaningful once the snapshot’s tickets are largely resolved.</p>
+</section>
+<section id="sla-time-to-done-breach-rate" class="level3">
+<h3 class="anchored" data-anchor-id="sla-time-to-done-breach-rate">SLA Time-to-Done Breach Rate</h3>
+<p>The proportion of PSOM tickets that missed the “Time to done” SLA (a 16-hour resolution target), based on the latest weekly snapshot.</p>
+<p>This metric reflects how well the team is resolving tickets within the agreed timeframe. Only tickets where the SLA clock was active are included; tickets with no SLA configuration are excluded.</p>
+<p><em>Alternative names</em>:</p>
+<ul>
+<li>time to done SLA breach rate</li>
+<li>resolution SLA compliance</li>
+<li>time-to-done SLA failure rate</li>
+</ul>
+<p><strong>Calculation.</strong> Filter to the most recent <code>date</code> partition and to tickets where <code>sla_time_to_done_breached</code> is not empty (i.e., the SLA was active). Divide the count of tickets where <code>sla_time_to_done_breached = 'True'</code> by the total count of SLA-active tickets.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-5-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-1" role="tab" aria-controls="tabset-5-1" aria-selected="true" href="">SQL</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-5-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-2" role="tab" aria-controls="tabset-5-2" aria-selected="false" href="">R</a></li></ul>
+<div class="tab-content">
+<div id="tabset-5-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-5-1-tab">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> total_sla_tickets,</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">SUM</span>(<span class="cf">CASE</span> <span class="cf">WHEN</span> sla_time_to_done_breached <span class="op">=</span> <span class="st">'True'</span> <span class="cf">THEN</span> <span class="dv">1</span> <span class="cf">ELSE</span> <span class="dv">0</span> <span class="cf">END</span>) <span class="kw">AS</span> breached_count,</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">CAST</span>(<span class="fu">SUM</span>(<span class="cf">CASE</span> <span class="cf">WHEN</span> sla_time_to_done_breached <span class="op">=</span> <span class="st">'True'</span> <span class="cf">THEN</span> <span class="dv">1</span> <span class="cf">ELSE</span> <span class="dv">0</span> <span class="cf">END</span>) <span class="kw">AS</span> <span class="dt">DOUBLE</span>)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>        <span class="op">/</span> <span class="fu">NULLIF</span>(<span class="fu">COUNT</span>(<span class="op">*</span>), <span class="dv">0</span>) <span class="kw">AS</span> breach_rate</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> jira.psom</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> <span class="dt">date</span> <span class="op">=</span> (<span class="kw">SELECT</span> <span class="fu">MAX</span>(<span class="dt">date</span>) <span class="kw">FROM</span> jira.psom)</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">AND</span> sla_time_to_done_breached <span class="op">!=</span> <span class="st">''</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="tabset-5-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-5-2-tab">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>psom <span class="ot">&lt;-</span> <span class="fu">tbl</span>(con, <span class="fu">in_schema</span>(<span class="st">"jira"</span>, <span class="st">"psom"</span>))</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>latest_date <span class="ot">&lt;-</span> psom <span class="sc">|&gt;</span> <span class="fu">summarise</span>(<span class="at">d =</span> <span class="fu">max</span>(date, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">|&gt;</span> <span class="fu">pull</span>(d)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>psom <span class="sc">|&gt;</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">as.Date</span>(date) <span class="sc">==</span> <span class="fu">as.Date</span>(latest_date), sla_time_to_done_breached <span class="sc">!=</span> <span class="st">""</span>) <span class="sc">|&gt;</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">total_sla_tickets =</span> <span class="fu">n</span>(),</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">breached_count    =</span> <span class="fu">sum</span>(<span class="fu">as.integer</span>(sla_time_to_done_breached <span class="sc">==</span> <span class="st">"True"</span>), <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">breach_rate       =</span> <span class="fu">sum</span>(<span class="fu">as.integer</span>(sla_time_to_done_breached <span class="sc">==</span> <span class="st">"True"</span>), <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">/</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>                          <span class="fu">as.double</span>(<span class="fu">n</span>())</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+<p><em>Interpretation notes.</em> The rate is a proportion between 0 and 1. Tickets with no active SLA (empty <code>sla_time_to_done_breached</code>) are excluded from both numerator and denominator. Check <code>total_sla_tickets</code> to understand the sample size underlying the rate.</p>
+<p>A ticket that is still open and within its 16-hour window is recorded as not breached (<code>"False"</code>), the same as a ticket that met the SLA. The rate on a live snapshot is therefore a lower bound: some of those open tickets may still breach before they are resolved. It is most meaningful once the snapshot’s tickets are largely resolved.</p>
 <!-- Tickets by Request Type is held back: request_type is empty for every -->
-<!-- ticket in the latest snapshot, so all rows collapse into a single -->
-<!-- (non-service-request) bucket. Likely a psom-weekly-sync extraction gap -->
-<!-- rather than a genuine absence. Re-enable this include once request_type -->
-<!-- is populated upstream. -->
+<!-- ticket in the current snapshots, so the breakdown collapses into a single -->
+<!-- (non-service-request) bucket. This is by design, not a pipeline gap: the -->
+<!-- PSOM tickets so far were created internally through Jira rather than the -->
+<!-- customer-facing portal, so no JSM request type was set. Re-enable this -->
+<!-- include once portal-created tickets (which carry a request_type) appear. -->
 <!-- {{< include jira/tickets-by-request-type.qmd >}} -->
-<!-- The two SLA breach-rate metrics are held back until the psom-weekly-sync -->
-<!-- pipeline populates the sla_first_response_breached / sla_time_to_done_breached -->
-<!-- columns. As of the latest snapshot those columns are empty for every ticket -->
-<!-- (only the sla_*_due timestamps are captured), so both metrics return an empty -->
-<!-- result. The fragments are kept in the repo; re-enable these two includes once -->
-<!-- the breached flags are populated upstream. -->
-<!-- {{< include jira/sla-first-response-breach-rate.qmd >}} -->
-<!-- {{< include jira/sla-time-to-done-breach-rate.qmd >}} -->
 
 
 </section>

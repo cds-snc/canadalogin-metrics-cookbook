@@ -357,7 +357,7 @@ ul.task-list li input[type="checkbox"] {
 <tr class="even">
 <td>request_type</td>
 <td>varchar</td>
-<td>JSM service request type name, e.g.&nbsp;<code>New Access Request</code>. Empty for non-JSM tickets.</td>
+<td>JSM service request type name, e.g.&nbsp;<code>New Access Request</code>. Empty for tickets created internally through Jira rather than the customer-facing portal (all PSOM tickets so far), which never set a request type.</td>
 </tr>
 <tr class="odd">
 <td>request_participants</td>
@@ -372,22 +372,22 @@ ul.task-list li input[type="checkbox"] {
 <tr class="odd">
 <td>sla_first_response_due</td>
 <td>varchar</td>
-<td>ISO 8601 due timestamp for the “Time to first response” SLA; empty if SLA not active.</td>
+<td>ISO 8601 datetime the “Time to first response” SLA must be (or was) met by, per the SLA goal. For an open ticket this is the upcoming breach deadline; for a closed cycle, when the cycle stopped. Empty if no SLA clock.</td>
 </tr>
 <tr class="even">
 <td>sla_first_response_breached</td>
 <td>varchar</td>
-<td><code>"True"</code> if the first-response SLA was breached, <code>"False"</code> if met, <code>""</code> if not applicable.</td>
+<td><code>"True"</code> if the first-response SLA was missed (no agent response within the agreed 4-hour window), <code>"False"</code> if it was met or is still within the window, <code>""</code> if no SLA clock. Stored as a string, not a native boolean.</td>
 </tr>
 <tr class="odd">
 <td>sla_time_to_done_due</td>
 <td>varchar</td>
-<td>ISO 8601 due timestamp for the “Time to done” SLA; empty if SLA not active.</td>
+<td>ISO 8601 datetime the “Time to done” SLA must be (or was) met by, per the SLA goal. For an open ticket this is the upcoming breach deadline; for a closed cycle, when the cycle stopped. Empty if no SLA clock.</td>
 </tr>
 <tr class="even">
 <td>sla_time_to_done_breached</td>
 <td>varchar</td>
-<td><code>"True"</code> if the time-to-done SLA was breached, <code>"False"</code> if met, <code>""</code> if not applicable.</td>
+<td><code>"True"</code> if the resolution SLA was missed (ticket not resolved within the agreed 16-hour window), <code>"False"</code> if it was met or is still within the window, <code>""</code> if no SLA clock. Stored as a string, not a native boolean.</td>
 </tr>
 <tr class="odd">
 <td>comment_count</td>
@@ -410,7 +410,7 @@ ul.task-list li input[type="checkbox"] {
 <section id="notes" class="level3">
 <h3 class="anchored" data-anchor-id="notes">Notes</h3>
 <p>All timestamp columns (<code>created</code>, <code>updated</code>, <code>status_changed</code>, <code>sla_*_due</code>, <code>fetched_at</code>) are stored as <code>varchar</code>.</p>
-<p>SLA fields (<code>sla_first_response_*</code>, <code>sla_time_to_done_*</code>) are populated only for tickets where a JSM SLA clock was active. Tickets created before the SLA scheme was configured, or non-service-request issue types, will have empty SLA columns. Exclude empty-string rows when calculating SLA breach rates.</p>
+<p>SLA fields (<code>sla_first_response_*</code>, <code>sla_time_to_done_*</code>) are populated for tickets with an active JSM SLA clock. The <code>*_breached</code> columns hold the strings <code>"True"</code>/<code>"False"</code>, not a native boolean, so compare against <code>'True'</code>/<code>'False'</code> (not a bare boolean) and cast if you need one. <code>"False"</code> covers both SLAs that were met and open tickets still inside their window, so a breach rate computed on a single snapshot is a lower bound: an open ticket counted as <code>"False"</code> today can still breach later. Snapshots up to and including <code>date=2026-07-06</code> predate the SLA pipeline fix and have these columns empty; from <code>date=2026-07-07</code> on they are populated. Exclude empty-string rows when calculating breach rates.</p>
 <p>Each weekly run adds a new <code>date=</code> partition. All previous partitions are retained, so you can compare snapshots across weeks to track status changes over time.</p>
 
 
