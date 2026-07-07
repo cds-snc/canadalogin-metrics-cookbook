@@ -1,19 +1,20 @@
-### `uptime_summary` {#uptime_summary}
+## uptime_summary
 
 One row per monitored site per day. Each row is a snapshot of rolling-window
 statistics fetched from `history/summary.json` in the
-[`cds-snc/status-statut`](https://github.com/cds-snc/status-statut) GitHub repository at 4 AM ET.
+[`cds-snc/status-statut`](https://github.com/cds-snc/status-statut) GitHub repository at 04:00 ET.
 
-**Provenance** 
-Fully automated — no manual upload required. The upptime
+### Provenance
+
+Fully automated. No manual upload required. The [upptime](https://github.com/upptime/upptime)
 `summary.yml` GitHub Action recalculates all rolling-window metrics from the full
 five-minute ping history once per day (~00:00 UTC), rewriting `summary.json`.
-The Lambda runs at 4 AM ET and fetches that file, writing one Parquet row per
+The Lambda runs at 04:00 ET and fetches that file, writing one Parquet row per
 site into the `date=YYYY-MM-DD` partition corresponding to the preceding day.
 
-* **Updated**: Daily, every Monday at ~4:00 AM ET
+* **Updated**: Daily, every Monday at ~04:00 ET
 * **Steward**: EDCP Data and Research Team
-* **Contact**: [Yinlin Zhang](mailto:yinlin.zhang@cds-snc.ca) (D&R Team)
+* **Contact**: [Yinlin Zhang](mailto:yinlin.zhang@cds-snc.ca) (Data and Research team)
 
 **Six monitored sites:**
 
@@ -26,19 +27,16 @@ site into the `date=YYYY-MM-DD` partition corresponding to the preceding day.
 | `canada-login-idp-staging` | `IDP-STAGING` | `https://auth.login-connexion.alpha.canada.ca` |
 | `canada-login-idp-prod` | `IDP-PROD` | `https://auth.login-connexion.canada.ca` |
 
-**Timing note.** When the Lambda runs on **June 30**, it fetches rolling-window
-statistics last recalculated at ~23:2x UTC on **June 29**. The resulting row
-lands in partition `date=2026-06-29`. All rolling windows trail backward from
-that reference point.
+### Fields
 
-| Column | Type | Description |
+| Field Name | Type | Description |
 |---|---|---|
-| `date` | `varchar` | Hive partition key — the date the Lambda ran for (yesterday's date, `YYYY-MM-DD`). Use in `WHERE date = '...'` or `WHERE CAST(date AS DATE) BETWEEN ...` filters. |
+| `date` | `varchar` | Hive partition key: the date the Lambda ran for (yesterday's date, `YYYY-MM-DD`). Use in `WHERE date = '...'` or `WHERE CAST(date AS DATE) BETWEEN ...` filters. |
 | `fetch_date` | `varchar` | UTC timestamp when the Lambda fetched the data (`YYYY-MM-DD HH:MM:SS`). Useful for diagnosing staleness. |
 | `slug` | `varchar` | Upptime site identifier. One of the six values in the table above. |
-| `lang` | `varchar` | Short label identifying the site variant — one of the six values in the table above. |
+| `lang` | `varchar` | Short label identifying the site variant, one of the six values in the table above. |
 | `url` | `varchar` | The monitored URL for this site. |
-| `status` | `varchar` | Site status at fetch time — `up` or `down`. |
+| `status` | `varchar` | Site status at fetch time: `up` or `down`. |
 | `uptime_day` | `double` | Uptime percentage over the past 24 hours (~288 five-minute pings). |
 | `uptime_week` | `double` | Uptime percentage over the past 7 days (~2,016 pings). |
 | `uptime_month` | `double` | Uptime percentage over the past 30 days (~8,640 pings). |
@@ -49,6 +47,11 @@ that reference point.
 | `response_month_ms` | `bigint` | Average response time over the past 30 days, in milliseconds. |
 | `response_year_ms` | `bigint` | Average response time over the past 365 days, in milliseconds. |
 | `response_alltime_ms` | `bigint` | Average response time across all pings since monitoring began, in milliseconds. |
-| `daily_minutes_down` | `varchar` | JSON string mapping each outage date to total minutes down on that date. Example: `{"2026-04-12": 380, "2026-04-13": 1440}`. Cumulative historical map present in every row; empty `{}` for sites with no outages. Use `json_extract_scalar(daily_minutes_down, '$["2026-04-12"]')` to query (bracket notation required — date keys start with a digit so dot notation fails). |
+| `daily_minutes_down` | `varchar` | JSON string mapping each outage date to total minutes down on that date. Example: `{"2026-04-12": 380, "2026-04-13": 1440}`. Cumulative historical map present in every row; empty `{}` for sites with no outages. Use `json_extract_scalar(daily_minutes_down, '$["2026-04-12"]')` to query (bracket notation required because date keys start with a digit, so dot notation fails). |
 
+### Notes
 
+**Timing note.** When the Lambda runs on **June 30**, it fetches rolling-window
+statistics last recalculated at ~23:2x UTC on **June 29**. The resulting row
+lands in partition `date=2026-06-29`. All rolling windows trail backward from
+that reference point.

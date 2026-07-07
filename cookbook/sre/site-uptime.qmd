@@ -15,7 +15,7 @@ Profile app (staging and production), and the IdP (staging and production).
 
 **Calculation.** Filter to the most recent `date` partition and read the
 precomputed rolling-window uptime columns from `sre.uptime_summary`. Each
-`uptime_*` column is already a percentage (0–100), calculated from all
+`uptime_*` column is already a percentage (0-100), calculated from all
 five-minute pings over the named window.
 
 To track uptime over time for a specific site, remove the `MAX(date)` filter
@@ -25,7 +25,7 @@ and group by `date`.
 
 ## SQL
 
-Latest snapshot — all sites, all rolling windows:
+Latest snapshot, all sites, all rolling windows:
 
 ```sql
 SELECT
@@ -42,7 +42,7 @@ WHERE date = (SELECT MAX(date) FROM sre.uptime_summary)
 ORDER BY slug;
 ```
 
-Trend over time — year uptime for a specific site:
+Trend over time, year uptime for a specific site:
 
 ```sql
 SELECT
@@ -58,7 +58,7 @@ ORDER BY date;
 
 ## R
 
-Latest snapshot — all sites, all rolling windows:
+Latest snapshot, all sites, all rolling windows:
 
 ```r
 uptime_s <- tbl(con, in_schema("sre", "uptime_summary"))
@@ -71,7 +71,7 @@ uptime_s |>
   arrange(slug)
 ```
 
-Trend over time — year uptime for a specific site:
+Trend over time, year uptime for a specific site:
 
 ```r
 tbl(con, in_schema("sre", "uptime_summary")) |>

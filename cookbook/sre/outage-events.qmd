@@ -1,6 +1,6 @@
 ### Outage Events
 
-Individual site outage events detected by the uptime monitor — when a site
+Individual site outage events detected by the uptime monitor: when a site
 went down, when it recovered, and the HTTP status code at time of detection.
 
 *Alternative names*:
@@ -69,7 +69,7 @@ tbl(con, in_schema("sre", "uptime_timeseries")) |>
   arrange(desc(date), slug)
 ```
 
-Outage event count per site:
+Outage event count per site in a reporting period:
 
 ```r
 tbl(con, in_schema("sre", "uptime_timeseries")) |>
@@ -87,7 +87,7 @@ tbl(con, in_schema("sre", "uptime_timeseries")) |>
 
 *Interpretation notes.* Each row in `sre.uptime_timeseries` is a single commit
 by the upptime bot. On a normal all-up day there is one row per site (the daily
-~23:2x UTC snapshot). On an outage day there are additional rows — one when the
-site went down and one when it recovered — so `status = 'down'` rows count
+~23:2x UTC snapshot). On an outage day there are additional rows (one when the
+site went down and one when it recovered), so `status = 'down'` rows count
 detection events, not total minutes of downtime. For total outage duration, use
 the `daily_minutes_down` JSON field in `sre.uptime_summary`.

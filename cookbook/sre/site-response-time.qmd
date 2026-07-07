@@ -22,7 +22,7 @@ For a single-ping point-in-time reading (not an average), use
 
 ## SQL
 
-Latest snapshot — all sites, all rolling windows:
+Latest snapshot, all sites, all rolling windows:
 
 ```sql
 SELECT
@@ -39,7 +39,7 @@ WHERE date = (SELECT MAX(date) FROM sre.uptime_summary)
 ORDER BY slug;
 ```
 
-Trend over time — weekly average response time for a specific site:
+Trend over time, weekly average response time for a specific site:
 
 ```sql
 SELECT
@@ -55,7 +55,7 @@ ORDER BY date;
 
 ## R
 
-Latest snapshot — all sites, all rolling windows:
+Latest snapshot, all sites, all rolling windows:
 
 ```r
 uptime_s <- tbl(con, in_schema("sre", "uptime_summary"))
@@ -68,7 +68,7 @@ uptime_s |>
   arrange(slug)
 ```
 
-Trend over time — weekly average response time for a specific site:
+Trend over time, weekly average response time for a specific site:
 
 ```r
 tbl(con, in_schema("sre", "uptime_summary")) |>
@@ -87,5 +87,5 @@ tbl(con, in_schema("sre", "uptime_summary")) |>
 *Interpretation notes.* Response times are averages computed from all 288
 five-minute pings in the window. Single-measurement spikes are smoothed out.
 During outage periods, pings that time out contribute high response times or are
-excluded depending on the upptime implementation — treat response time trends
+excluded depending on the upptime implementation, so treat response time trends
 during known outage windows with caution.
