@@ -23,8 +23,19 @@ state.
 
 {{< include jira/tickets-by-priority.qmd >}}
 
-{{< include jira/tickets-by-request-type.qmd >}}
+<!-- Tickets by Request Type is held back: request_type is empty for every -->
+<!-- ticket in the latest snapshot, so all rows collapse into a single -->
+<!-- (non-service-request) bucket. Likely a psom-weekly-sync extraction gap -->
+<!-- rather than a genuine absence. Re-enable this include once request_type -->
+<!-- is populated upstream. -->
+<!-- {{< include jira/tickets-by-request-type.qmd >}} -->
 
-{{< include jira/sla-first-response-breach-rate.qmd >}}
+<!-- The two SLA breach-rate metrics are held back until the psom-weekly-sync -->
+<!-- pipeline populates the sla_first_response_breached / sla_time_to_done_breached -->
+<!-- columns. As of the latest snapshot those columns are empty for every ticket -->
+<!-- (only the sla_*_due timestamps are captured), so both metrics return an empty -->
+<!-- result. The fragments are kept in the repo; re-enable these two includes once -->
+<!-- the breached flags are populated upstream. -->
+<!-- {{< include jira/sla-first-response-breach-rate.qmd >}} -->
+<!-- {{< include jira/sla-time-to-done-breach-rate.qmd >}} -->
 
-{{< include jira/sla-time-to-done-breach-rate.qmd >}}

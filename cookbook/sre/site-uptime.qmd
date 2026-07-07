@@ -91,8 +91,3 @@ tbl(con, in_schema("sre", "uptime_summary")) |>
 `uptime_month` on a given `date` covers the 30 days trailing that date's stats
 update (~23:2x UTC), not a fixed calendar month. To aggregate by calendar month,
 group by `substr(date, 1, 7)`.
-
-The EN public site (`canada-login-website-en`) experienced a major outage
-April 12–29, 2026. This permanently suppresses `uptime_year` and
-`uptime_alltime` for that site until those dates roll off the 365-day window
-(~April 2027).
