@@ -39,6 +39,6 @@ jobs:
 
       # https://github.com/rossjrw/pr-preview-action
       - name: Deploy PR preview
-        uses: rossjrw/pr-preview-action@v2
+        uses: rossjrw/pr-preview-action@v1
         with:
           source-dir: ./_book
