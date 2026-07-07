@@ -1,6 +1,12 @@
 # TODO: Add a parity test step before rendering. Requires AWS credentials
 # (AWS_PROFILE, AWS_REGION, ATHENA_S3_STAGING_DIR) configured as GitHub secrets
 # and an SSO or IAM auth mechanism for Athena access.
+#
+# Publishes to the gh-pages branch (rather than the native GitHub Actions
+# Pages deployment) so that pr-preview.yml can publish per-PR previews to
+# subfolders of the same branch alongside this production deploy. See
+# https://github.com/rossjrw/pr-preview-action for why the two need to share
+# a branch-based Pages source.
 
 name: Deploy to GitHub Pages
 
@@ -9,17 +15,12 @@ on:
     branches: [main]
   workflow_dispatch:
 
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
 concurrency:
   group: pages
   cancel-in-progress: false
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -29,16 +30,13 @@ jobs:
       - name: Render site
         run: quarto render
 
-      - uses: actions/upload-pages-artifact@v3
+      # https://github.com/peaceiris/actions-gh-pages
+      - name: Publish to gh-pages
+        uses: peaceiris/actions-gh-pages@v4
         with:
-          path: _book
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - id: deployment
-        uses: actions/deploy-pages@v4
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: _book
+          # Preserve pr-preview/* subfolders written by pr-preview.yml; do not
+          # use force_orphan here, since that would wipe every open PR preview
+          # on each production deploy.
+          keep_files: true
