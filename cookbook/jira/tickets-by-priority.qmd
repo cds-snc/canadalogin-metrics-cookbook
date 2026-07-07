@@ -1,0 +1,40 @@
+### Tickets by Priority
+
+The number of PSOM tickets in the latest snapshot grouped by priority level.
+
+*Alternative names*:
+
+- ticket priority breakdown
+- PSOM tickets by priority
+- priority distribution
+
+**Calculation.** Filter to the most recent `date` partition and count tickets by
+`priority`.
+
+::: {.panel-tabset}
+
+## SQL
+
+```sql
+SELECT
+    priority,
+    COUNT(*) AS ticket_count
+FROM jira.psom
+WHERE date = (SELECT MAX(date) FROM jira.psom)
+GROUP BY priority
+ORDER BY ticket_count DESC;
+```
+
+## R
+
+```r
+psom <- tbl(con, in_schema("jira", "psom"))
+latest_date <- psom |> summarise(d = max(date, na.rm = TRUE)) |> pull(d)
+
+psom |>
+  filter(as.Date(date) == as.Date(latest_date)) |>
+  count(priority, name = "ticket_count") |>
+  arrange(desc(ticket_count))
+```
+
+:::

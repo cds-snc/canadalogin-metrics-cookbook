@@ -1,0 +1,64 @@
+### SLA First-Response Breach Rate
+
+The proportion of PSOM tickets that missed the "Time to first response" SLA
+(a 4-hour response target), based on the latest weekly snapshot.
+
+This metric is useful for monitoring whether the team is meeting initial
+response commitments. Only tickets where the SLA clock was active are included;
+tickets with no SLA (e.g., non-service-request issue types or tickets created
+before the SLA scheme was configured) are excluded.
+
+*Alternative names*:
+
+- first response SLA breach rate
+- time to first response SLA compliance
+- first-response SLA failure rate
+
+**Calculation.** Filter to the most recent `date` partition and to tickets where
+`sla_first_response_breached` is not empty (i.e., the SLA was active). Divide
+the count of tickets where `sla_first_response_breached = 'True'` by the total
+count of SLA-active tickets.
+
+::: {.panel-tabset}
+
+## SQL
+
+```sql
+SELECT
+    COUNT(*) AS total_sla_tickets,
+    SUM(CASE WHEN sla_first_response_breached = 'True' THEN 1 ELSE 0 END) AS breached_count,
+    CAST(SUM(CASE WHEN sla_first_response_breached = 'True' THEN 1 ELSE 0 END) AS DOUBLE)
+        / NULLIF(COUNT(*), 0) AS breach_rate
+FROM jira.psom
+WHERE date = (SELECT MAX(date) FROM jira.psom)
+  AND sla_first_response_breached != '';
+```
+
+## R
+
+```r
+psom <- tbl(con, in_schema("jira", "psom"))
+latest_date <- psom |> summarise(d = max(date, na.rm = TRUE)) |> pull(d)
+
+psom |>
+  filter(as.Date(date) == as.Date(latest_date), sla_first_response_breached != "") |>
+  summarise(
+    total_sla_tickets = n(),
+    breached_count    = sum(as.integer(sla_first_response_breached == "True"), na.rm = TRUE),
+    breach_rate       = sum(as.integer(sla_first_response_breached == "True"), na.rm = TRUE) /
+                          as.double(n())
+  )
+```
+
+:::
+
+*Interpretation notes.* The rate is a proportion between 0 and 1. Tickets with
+no active SLA (empty `sla_first_response_breached`) are excluded from both
+numerator and denominator. Check `total_sla_tickets` to understand the sample
+size underlying the rate.
+
+A ticket that is still open and within its 4-hour window is recorded as not
+breached (`"False"`), the same as a ticket that met the SLA. The rate on a live
+snapshot is therefore a lower bound: some of those open tickets may still breach
+before they are answered. It is most meaningful once the snapshot's tickets are
+largely resolved.

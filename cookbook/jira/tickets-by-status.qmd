@@ -1,0 +1,41 @@
+### Tickets by Status
+
+The number of open PSOM Jira tickets grouped by their current workflow status,
+based on the latest weekly snapshot.
+
+*Alternative names*:
+
+- ticket status breakdown
+- open tickets by status
+- PSOM ticket status distribution
+
+**Calculation.** Filter to the most recent `date` partition and count tickets by
+`status`.
+
+::: {.panel-tabset}
+
+## SQL
+
+```sql
+SELECT
+    status,
+    COUNT(*) AS ticket_count
+FROM jira.psom
+WHERE date = (SELECT MAX(date) FROM jira.psom)
+GROUP BY status
+ORDER BY ticket_count DESC;
+```
+
+## R
+
+```r
+psom <- tbl(con, in_schema("jira", "psom"))
+latest_date <- psom |> summarise(d = max(date, na.rm = TRUE)) |> pull(d)
+
+psom |>
+  filter(as.Date(date) == as.Date(latest_date)) |>
+  count(status, name = "ticket_count") |>
+  arrange(desc(ticket_count))
+```
+
+:::

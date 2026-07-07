@@ -1,0 +1,91 @@
+### Site Response Time
+
+The average HTTP response time for each monitored CanadaLogin site, aggregated
+over rolling windows from five-minute ping data.
+
+*Alternative names*:
+
+- average response time
+- site latency
+- response latency by site
+- HTTP response time
+
+**Calculation.** Filter to the most recent `date` partition and read the
+precomputed rolling-window response time columns from `sre.uptime_summary`.
+Each `response_*_ms` column is the mean response time in milliseconds over all
+five-minute pings in the named window.
+
+For a single-ping point-in-time reading (not an average), use
+`sre.uptime_timeseries.response_ms` instead.
+
+::: {.panel-tabset}
+
+## SQL
+
+Latest snapshot, all sites, all rolling windows:
+
+```sql
+SELECT
+    slug,
+    lang,
+    status,
+    response_day_ms,
+    response_week_ms,
+    response_month_ms,
+    response_year_ms,
+    response_alltime_ms
+FROM sre.uptime_summary
+WHERE date = (SELECT MAX(date) FROM sre.uptime_summary)
+ORDER BY slug;
+```
+
+Trend over time, weekly average response time for a specific site:
+
+```sql
+SELECT
+    date,
+    response_week_ms,
+    response_alltime_ms
+FROM sre.uptime_summary
+-- set the reporting window; see the timespans note in cookbook/notes.qmd
+WHERE slug = 'canada-login-website-en'
+  AND CAST(date AS DATE) BETWEEN DATE '2026-01-01' AND DATE '2026-06-30'
+ORDER BY date;
+```
+
+## R
+
+Latest snapshot, all sites, all rolling windows:
+
+```r
+uptime_s <- tbl(con, in_schema("sre", "uptime_summary"))
+latest_date <- uptime_s |> summarise(d = max(date, na.rm = TRUE)) |> pull(d)
+
+uptime_s |>
+  filter(as.Date(date) == as.Date(latest_date)) |>
+  select(slug, lang, status, response_day_ms, response_week_ms,
+         response_month_ms, response_year_ms, response_alltime_ms) |>
+  arrange(slug)
+```
+
+Trend over time, weekly average response time for a specific site:
+
+```r
+tbl(con, in_schema("sre", "uptime_summary")) |>
+  # set the reporting window; see the timespans note in cookbook/notes.qmd
+  filter(
+    slug == "canada-login-website-en",
+    as.Date(date) >= as.Date("2026-01-01"),
+    as.Date(date) <= as.Date("2026-06-30")
+  ) |>
+  select(date, response_week_ms, response_alltime_ms) |>
+  arrange(date)
+```
+
+:::
+
+*Interpretation notes.* Response times are averages computed from all 288
+five-minute pings in the window. Single-measurement spikes are smoothed out.
+During outage periods, pings that time out contribute high response times or are
+excluded depending on the upptime implementation, so treat response time trends
+during known outage windows with caution.

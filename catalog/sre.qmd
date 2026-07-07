@@ -32,3 +32,13 @@ tables:
 {{< include sre/mttr_current.qmd >}}
 
 {{< include sre/mttr_history.qmd >}}
+
+## Uptime Tables
+
+The uptime tables are sourced from the
+[`cds-snc/status-statut`](https://github.com/cds-snc/status-statut) public
+GitHub repository and updated automatically each day. No manual steps required.
+
+{{< include sre/uptime_summary.qmd >}}
+
+{{< include sre/uptime_timeseries.qmd >}}

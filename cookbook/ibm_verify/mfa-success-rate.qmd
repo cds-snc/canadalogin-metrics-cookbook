@@ -15,7 +15,7 @@ problems (for example, undelivered SMS or email OTPs), or attack traffic.
 **Calculation.** Divide the sum of `count` where `result = 'success'` by the sum
 of `count` where `result` is `'success'` or `'failure'`. OTP factor types also
 produce a `'sent'` event per challenge, which must be excluded from both the
-numerator and the denominator — `sent` rows do not represent outcomes.
+numerator and the denominator, because `sent` rows do not represent outcomes.
 
 To track the metric over time, bin the same calculation by week. Truncating
 `from_date` to the week groups each day into its Monday-anchored bin, so the

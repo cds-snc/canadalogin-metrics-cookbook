@@ -17,7 +17,7 @@ source("tests/helper.R")
 source("tests/extract_blocks.R")
 
 # Directories whose .qmd files contain documented metric queries.
-cookbook_dirs <- c("cookbook/ibm_verify", "cookbook/call_centre")
+cookbook_dirs <- c("cookbook/ibm_verify", "cookbook/call_centre", "cookbook/sre", "cookbook/jira")
 
 # Evaluate a documented R block. The block self-declares its source table via
 # tbl(con, in_schema(...)). Blocks that end in pull() return a vector; blocks

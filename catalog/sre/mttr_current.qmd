@@ -17,7 +17,7 @@ incident state and appends a dated snapshot to [`mttr_history`](#mttr_history).
 
 * **Updated**: Manually, on an ad hoc basis (roughly weekly)
 * **Steward**: EDCP Data and Research Team
-* **Contact**: [Yinlin Zhang](mailto:yinlin.zhang@cds-snc.ca) (D&R Team) or [Obie Okongwu](mailto:obinna.okongwu@cds-snc.ca) (CL Platform Team)
+* **Contact**: [Yinlin Zhang](mailto:yinlin.zhang@cds-snc.ca) (Data and Research team) or [Obie Okongwu](mailto:obinna.okongwu@cds-snc.ca) (CL Platform Team)
 
 ### Fields
 

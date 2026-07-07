@@ -1,0 +1,93 @@
+### Site Uptime
+
+The rolling-window uptime percentage for each monitored CanadaLogin site,
+showing what proportion of five-minute pings succeeded over each time horizon.
+
+Six sites are monitored: the two public-facing login pages (EN/FR), the Manage
+Profile app (staging and production), and the IdP (staging and production).
+
+*Alternative names*:
+
+- uptime percentage
+- availability percentage
+- site availability
+- service uptime by site
+
+**Calculation.** Filter to the most recent `date` partition and read the
+precomputed rolling-window uptime columns from `sre.uptime_summary`. Each
+`uptime_*` column is already a percentage (0-100), calculated from all
+five-minute pings over the named window.
+
+To track uptime over time for a specific site, remove the `MAX(date)` filter
+and group by `date`.
+
+::: {.panel-tabset}
+
+## SQL
+
+Latest snapshot, all sites, all rolling windows:
+
+```sql
+SELECT
+    slug,
+    lang,
+    status,
+    uptime_day,
+    uptime_week,
+    uptime_month,
+    uptime_year,
+    uptime_alltime
+FROM sre.uptime_summary
+WHERE date = (SELECT MAX(date) FROM sre.uptime_summary)
+ORDER BY slug;
+```
+
+Trend over time, year uptime for a specific site:
+
+```sql
+SELECT
+    date,
+    uptime_year,
+    uptime_alltime
+FROM sre.uptime_summary
+-- set the reporting window; see the timespans note in cookbook/notes.qmd
+WHERE slug = 'canada-login-website-en'
+  AND CAST(date AS DATE) BETWEEN DATE '2026-01-01' AND DATE '2026-06-30'
+ORDER BY date;
+```
+
+## R
+
+Latest snapshot, all sites, all rolling windows:
+
+```r
+uptime_s <- tbl(con, in_schema("sre", "uptime_summary"))
+latest_date <- uptime_s |> summarise(d = max(date, na.rm = TRUE)) |> pull(d)
+
+uptime_s |>
+  filter(as.Date(date) == as.Date(latest_date)) |>
+  select(slug, lang, status, uptime_day, uptime_week, uptime_month,
+         uptime_year, uptime_alltime) |>
+  arrange(slug)
+```
+
+Trend over time, year uptime for a specific site:
+
+```r
+tbl(con, in_schema("sre", "uptime_summary")) |>
+  # set the reporting window; see the timespans note in cookbook/notes.qmd
+  filter(
+    slug == "canada-login-website-en",
+    as.Date(date) >= as.Date("2026-01-01"),
+    as.Date(date) <= as.Date("2026-06-30")
+  ) |>
+  select(date, uptime_year, uptime_alltime) |>
+  arrange(date)
+```
+
+:::
+
+*Interpretation notes.* The uptime windows are rolling, not calendar-aligned.
+`uptime_month` on a given `date` covers the 30 days trailing that date's stats
+update (~23:2x UTC), not a fixed calendar month. To aggregate by calendar month,
+group by `substr(date, 1, 7)`.

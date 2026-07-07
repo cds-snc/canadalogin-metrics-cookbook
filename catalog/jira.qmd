@@ -1,0 +1,13 @@
+---
+title: Jira (PSOM)
+---
+
+Tables in the `jira` schema, populated by the weekly PSOM Jira Service
+Management sync pipeline.
+
+Each Monday at ~6:00 AM ET, the `psom-weekly-sync` Lambda fetches a full
+snapshot of all tickets from the PSOM project (`jtickets.atlassian.net`) and
+writes it as a Parquet partition in S3. The Glue crawler then updates the
+Athena table schema.
+
+{{< include jira/psom.qmd >}}

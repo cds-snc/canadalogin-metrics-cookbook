@@ -1,0 +1,72 @@
+## PSOM
+
+Weekly snapshot of all PSOM Jira Service Management tickets.
+
+One row per Jira issue per weekly snapshot. Each Monday run writes a full
+snapshot of all current PSOM tickets to a new `date=` partition. Previous
+partitions are preserved as an audit trail, enabling point-in-time analysis.
+
+**Jira source:** `jtickets.atlassian.net`, project `PSOM`, fetched via
+`POST /rest/api/3/search/jql` with full comment history via
+`/rest/api/3/issue/{key}/comment`.
+
+`Keywords`: jira, psom, tickets, service requests, SLA, support
+
+### Provenance
+
+Queried from PSOM Jira Cloud via API by the `psom-weekly-sync` Lambda function.
+
+* **Updated**: Weekly, every Monday at ~06:00 ET
+* **Steward**: EDCP Data and Research Team
+* **Contact**: [Yinlin Zhang](mailto:yinlin.zhang@cds-snc.ca) (Data and Research team)
+
+### Fields
+
+One row per Jira issue per weekly snapshot (`date` partition).
+
+| Field Name | Type | Description |
+|---|---|---|
+| date | varchar | Partition key: the date the Lambda ran (`YYYY-MM-DD`).|
+| key | varchar | Jira ticket key, e.g. `PSOM-42`. |
+| summary | varchar | One-line ticket title. |
+| description | varchar | Full ticket description, extracted from Atlassian Document Format (ADF) to plain text. |
+| issue_type | varchar | Jira issue type name, e.g. `Email Request`, `Partner Support Request form`. |
+| status | varchar | Current workflow status, e.g. `Done`, `Canceled`, `Escalated to PTT`, `Escalated to Auth PT`, `Ready to archive`. |
+| status_changed | varchar | ISO 8601 timestamp when the ticket's status category last changed. |
+| priority | varchar | Priority level, e.g. `High`, `Normal`, `Low`, `Critical`. |
+| assignee | varchar | Display name of the current assignee; empty string if unassigned. |
+| reporter | varchar | Display name of the person who reported the ticket. |
+| creator | varchar | Display name of the person who created the ticket (may differ from reporter). |
+| created | varchar | ISO 8601 timestamp when the ticket was created. |
+| updated | varchar | ISO 8601 timestamp of the most recent field or comment update. |
+| due_date | varchar | Due date in `YYYY-MM-DD` format; empty string if not set. |
+| labels | varchar | Semicolon-separated list of labels applied to the ticket; empty string if none. |
+| request_type | varchar | JSM service request type name, e.g. `New Access Request`. Empty for tickets created internally through Jira rather than the customer-facing portal (all PSOM tickets so far), which never set a request type. |
+| request_participants | varchar | Semicolon-separated display names of request participants (CC'd users). |
+| organizations | varchar | Semicolon-separated names of JSM organizations the request is associated with. |
+| sla_first_response_due | varchar | ISO 8601 datetime the "Time to first response" SLA must be (or was) met by, per the SLA goal. For an open ticket this is the upcoming breach deadline; for a closed cycle, when the cycle stopped. Empty if no SLA clock. |
+| sla_first_response_breached | varchar | `"True"` if the first-response SLA was missed (no agent response within the agreed 4-hour window), `"False"` if it was met or is still within the window, `""` if no SLA clock. Stored as a string, not a native boolean. |
+| sla_time_to_done_due | varchar | ISO 8601 datetime the "Time to done" SLA must be (or was) met by, per the SLA goal. For an open ticket this is the upcoming breach deadline; for a closed cycle, when the cycle stopped. Empty if no SLA clock. |
+| sla_time_to_done_breached | varchar | `"True"` if the resolution SLA was missed (ticket not resolved within the agreed 16-hour window), `"False"` if it was met or is still within the window, `""` if no SLA clock. Stored as a string, not a native boolean. |
+| comment_count | bigint | Total number of comments on the ticket. |
+| comments | varchar | JSON array string of all comments. Each element: `{"author": "...", "created": "...", "updated": "...", "body": "...", "internal": false}`. The `body` is ADF-extracted plain text. The `internal` flag is `true` for JSM internal notes. |
+| fetched_at | varchar | UTC timestamp when the Lambda wrote this row (`YYYY-MM-DD HH:MM:SS`). |
+
+### Notes
+
+All timestamp columns (`created`, `updated`, `status_changed`, `sla_*_due`,
+`fetched_at`) are stored as `varchar`. 
+
+SLA fields (`sla_first_response_*`, `sla_time_to_done_*`) are populated for
+tickets with an active JSM SLA clock. The `*_breached` columns hold the strings
+`"True"`/`"False"`, not a native boolean, so compare against `'True'`/`'False'`
+(not a bare boolean) and cast if you need one. `"False"` covers both SLAs that
+were met and open tickets still inside their window, so a breach rate computed
+on a single snapshot is a lower bound: an open ticket counted as `"False"` today
+can still breach later. Snapshots up to and including `date=2026-07-06` predate
+the SLA pipeline fix and have these columns empty; from `date=2026-07-07` on they
+are populated. Exclude empty-string rows when calculating breach rates.
+
+Each weekly run adds a new `date=` partition. All previous partitions are
+retained, so you can compare snapshots across weeks to track status changes over
+time.

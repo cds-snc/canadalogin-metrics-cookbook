@@ -1,0 +1,36 @@
+### Weekly Ticket Volume
+
+The total number of PSOM tickets captured in each weekly snapshot, showing
+how the backlog size changes over time.
+
+*Alternative names*:
+
+- total tickets per week
+- weekly PSOM ticket count
+- ticket volume trend
+
+**Calculation.** Count the number of rows per `date` partition. Each partition
+is one Monday snapshot, so the result is one total per week.
+
+::: {.panel-tabset}
+
+## SQL
+
+```sql
+SELECT
+    date,
+    COUNT(*) AS ticket_count
+FROM jira.psom
+GROUP BY date
+ORDER BY date DESC;
+```
+
+## R
+
+```r
+tbl(con, in_schema("jira", "psom")) |>
+  count(date, name = "ticket_count") |>
+  arrange(desc(date))
+```
+
+:::
