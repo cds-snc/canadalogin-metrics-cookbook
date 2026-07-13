@@ -10,7 +10,7 @@ point-in-time history, see [`mttr_history`](#mttr_history).
 
 ### Provenance
 
-Fetched automatically every Monday at 06:00 ET from the CanadaLogin MTTR Dashboard Google Sheet (native Google Sheets format) using the sre-mttr-sheets-fetcher Lambda. 
+Fetched automatically every Monday at 06:00 ET from the CanadaLogin MTTR Dashboard Google Sheet using the sre-mttr-sheets-fetcher Lambda. 
 Each upload overwrites this table wholesale with the current incident state and appends a dated snapshot to [`mttr_history`](#mttr_history).
 
 * **Updated**: Weekly, Every Monday 06:00 ET
