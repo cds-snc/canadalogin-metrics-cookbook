@@ -10,12 +10,10 @@ point-in-time history, see [`mttr_history`](#mttr_history).
 
 ### Provenance
 
-Uploaded manually by the Data and Research team from the CanadaLogin Platform
-team's `CanadaLogin_MTTR_Dashboard` Google Sheet (maintained by hand in the CDS
-Google Drive). Each upload overwrites this table wholesale with the current
-incident state and appends a dated snapshot to [`mttr_history`](#mttr_history).
+Fetched automatically every Monday at 06:00 ET from the CanadaLogin MTTR Dashboard Google Sheet (native Google Sheets format) using the sre-mttr-sheets-fetcher Lambda. 
+Each upload overwrites this table wholesale with the current incident state and appends a dated snapshot to [`mttr_history`](#mttr_history).
 
-* **Updated**: Manually, on an ad hoc basis (roughly weekly)
+* **Updated**: Weekly, Every Monday 06:00 ET
 * **Steward**: EDCP Data and Research Team
 * **Contact**: [Yinlin Zhang](mailto:yinlin.zhang@cds-snc.ca) (Data and Research team) or [Obie Okongwu](mailto:obinna.okongwu@cds-snc.ca) (CL Platform Team)
 
