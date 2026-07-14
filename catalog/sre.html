@@ -262,7 +262,7 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>Platform metrics for CanadaLogin, in the <code>sre</code> schema. Currently, both tables are derived from the CanadaLogin Platform team’s <code>CanadaLogin_MTTR_Dashboard</code> Google Sheet (maintained by hand in the CDS Google Drive) and uploaded by hand by the Data and Research team. They share one source and grain (one row per incident); they differ only in history: <code>mttr_current</code> holds the latest state of each incident, while <code>mttr_history</code> accumulates a dated snapshot of every incident on each upload.</p>
+<p>Platform metrics for CanadaLogin, in the <code>sre</code> schema. Currently, both tables are derived from the CanadaLogin Platform team’s <code>CanadaLogin_MTTR_Dashboard</code> Google Sheet (maintained by hand in the CDS Google Drive) and fetched by the <code>sre-mttr-sheets-fetcher</code> Lambda using Google Sheets API 6am ET every Monday. They share one source and grain (one row per incident); they differ only in history: <code>mttr_current</code> holds the latest state of each incident, while <code>mttr_history</code> accumulates a dated snapshot of every incident on each upload.</p>
 <section id="data-quality" class="level3">
 <h3 class="anchored" data-anchor-id="data-quality">Data quality</h3>
 <p>Because the source is a hand-maintained spreadsheet, a few caveats apply to both tables:</p>
@@ -280,9 +280,9 @@ ul.task-list li input[type="checkbox"] {
 <p><code>Keywords</code>: MTTR, MTTA, MTTM, incident, incident response, postmortem, severity, reliability, SRE, mean time to resolve</p>
 <section id="provenance" class="level3">
 <h3 class="anchored" data-anchor-id="provenance">Provenance</h3>
-<p>Uploaded manually by the Data and Research team from the CanadaLogin Platform team’s <code>CanadaLogin_MTTR_Dashboard</code> Google Sheet (maintained by hand in the CDS Google Drive). Each upload overwrites this table wholesale with the current incident state and appends a dated snapshot to <a href="#mttr_history"><code>mttr_history</code></a>.</p>
+<p>Fetched automatically every Monday at 06:00 ET from the CanadaLogin MTTR Dashboard Google Sheet using the sre-mttr-sheets-fetcher Lambda. Each upload overwrites this table wholesale with the current incident state and appends a dated snapshot to <a href="#mttr_history"><code>mttr_history</code></a>.</p>
 <ul>
-<li><strong>Updated</strong>: Manually, on an ad hoc basis (roughly weekly)</li>
+<li><strong>Updated</strong>: Weekly, Every Monday 06:00 ET</li>
 <li><strong>Steward</strong>: EDCP Data and Research Team</li>
 <li><strong>Contact</strong>: <a href="mailto:yinlin.zhang@cds-snc.ca">Yinlin Zhang</a> (Data and Research team) or <a href="mailto:obinna.okongwu@cds-snc.ca">Obie Okongwu</a> (CL Platform Team)</li>
 </ul>
