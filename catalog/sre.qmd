@@ -4,8 +4,9 @@ title: Platform
 
 Platform metrics for CanadaLogin, in the `sre` schema. Currently, both tables are
 derived from the CanadaLogin Platform team's `CanadaLogin_MTTR_Dashboard` Google
-Sheet (maintained by hand in the CDS Google Drive) and uploaded by hand by the
-Data and Research team. They share one source and grain (one row per incident);
+Sheet (maintained by hand in the CDS Google Drive) and fetched by the
+`sre-mttr-sheets-fetcher` Lambda using Google Sheets API 6am ET every Monday. 
+They share one source and grain (one row per incident);
 they differ only in history: `mttr_current` holds the latest state of each
 incident, while `mttr_history` accumulates a dated snapshot of every incident on
 each upload.
