@@ -54,7 +54,7 @@ dau <- tbl(con, in_schema("ibm_verify", "auth_total_logins")) |>
   select(dau_date = date, unique_users)
 
 weekly |>
-  inner_join(dau, by = character()) |>
+  cross_join(dau) |>
   filter(
     as.Date(dau_date) >= as.Date(date_range_start),
     as.Date(dau_date) <= as.Date(date_range_end)
