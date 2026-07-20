@@ -4,8 +4,8 @@ Weekly call centre volume divided by the size of the active user base, so you ca
 compare support demand across weeks even as the user base grows.
 
 Raw call volume moves partly because the number of people using CanadaLogin
-changes. Dividing calls by daily active users takes that out and leaves how often
-a typical user needed to phone in. The figure is scaled to calls per 1,000 daily
+changes. Normalizing by active users takes that out and leaves how often a typical
+user needed to phone in on a given day. The figure is scaled to calls per 1,000
 active users to keep it in a readable range.
 
 *Alternative names*:
@@ -16,12 +16,13 @@ active users to keep it in a readable range.
 - calls per 1,000 users
 
 **Calculation.** For each call centre reporting week, take `calls_accepted` from
-`call_centre.weekly_activity_report` and divide it by the average daily active
-users over that week, then multiply by 1,000. Daily active users come from
-`ibm_verify.auth_total_logins.unique_users`; the weekly average is the mean of
-that field over the days whose `date` falls inside the week's
-`date_range_start` to `date_range_end`. The two tables store their dates as text,
-so both sides of the join are cast to `DATE`.
+`call_centre.weekly_activity_report` and divide it by the total user-days in that
+week, then multiply by 1,000. User-days is the sum of
+`ibm_verify.auth_total_logins.unique_users` over the days whose `date` falls
+inside the week's `date_range_start` to `date_range_end`, so the numerator and
+denominator cover the same span of days. This is the same as dividing average
+daily calls by average daily active users. The two tables store their dates as
+text, so both sides of the join are cast to `DATE`.
 
 ::: {.panel-tabset}
 
@@ -33,7 +34,7 @@ SELECT
     w.date_range_end,
     CAST(w.calls_accepted AS BIGINT) AS calls_accepted,
     AVG(a.unique_users) AS avg_daily_active_users,
-    CAST(w.calls_accepted AS DOUBLE) / AVG(a.unique_users) * 1000
+    CAST(w.calls_accepted AS DOUBLE) / SUM(a.unique_users) * 1000
         AS calls_per_1000_dau
 FROM call_centre.weekly_activity_report AS w
 JOIN ibm_verify.auth_total_logins AS a
@@ -61,10 +62,11 @@ weekly |>
   group_by(date_range_start, date_range_end, calls_accepted) |>
   summarise(
     avg_daily_active_users = mean(unique_users, na.rm = TRUE),
+    user_days = sum(unique_users, na.rm = TRUE),
     .groups = "drop"
   ) |>
   mutate(
-    calls_per_1000_dau = calls_accepted / avg_daily_active_users * 1000
+    calls_per_1000_dau = calls_accepted / user_days * 1000
   ) |>
   arrange(date_range_start) |>
   select(
@@ -78,10 +80,14 @@ weekly |>
 
 :::
 
-*Interpretation notes.* The denominator is the average daily active users over the
-week, not distinct users across the whole week, so it measures typical daily reach
-rather than total weekly reach. A week only appears once daily active user data
-exists for it: `auth_total_logins` begins near the April 22, 2026 public launch,
-and the join drops any earlier call centre week that has no matching days. The
-numerator is `calls_accepted`, which includes test calls, so weeks with unusual
-test activity read slightly high.
+*Interpretation notes.* Read this as a daily rate: on a typical day that week,
+roughly this many calls came in per 1,000 active users. Normalizing by user-days
+keeps the numerator and denominator on the same daily footing, since weekly calls
+divided by a single day's active users would mix a weekly count with a daily one.
+The `avg_daily_active_users` column is shown for context; it is the week's average
+daily reach, and dividing calls by it and then by the seven days in the week gives
+the same rate. A week only appears once daily active user data exists for it:
+`auth_total_logins` begins near the April 22, 2026 public launch, and the join
+drops any earlier call centre week that has no matching days. The numerator is
+`calls_accepted`, which includes test calls, so weeks with unusual test activity
+read slightly high.
