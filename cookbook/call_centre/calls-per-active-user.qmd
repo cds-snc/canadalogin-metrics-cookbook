@@ -1,0 +1,87 @@
+### Calls per Active User
+
+Weekly call centre volume divided by the size of the active user base, so you can
+compare support demand across weeks even as the user base grows.
+
+Raw call volume moves partly because the number of people using CanadaLogin
+changes. Dividing calls by daily active users takes that out and leaves how often
+a typical user needed to phone in. The figure is scaled to calls per 1,000 daily
+active users to keep it in a readable range.
+
+*Alternative names*:
+
+- call centre contact rate
+- normalized call volume
+- support contacts per active user
+- calls per 1,000 users
+
+**Calculation.** For each call centre reporting week, take `calls_accepted` from
+`call_centre.weekly_activity_report` and divide it by the average daily active
+users over that week, then multiply by 1,000. Daily active users come from
+`ibm_verify.auth_total_logins.unique_users`; the weekly average is the mean of
+that field over the days whose `date` falls inside the week's
+`date_range_start` to `date_range_end`. The two tables store their dates as text,
+so both sides of the join are cast to `DATE`.
+
+::: {.panel-tabset}
+
+## SQL
+
+```sql
+SELECT
+    w.date_range_start,
+    w.date_range_end,
+    CAST(w.calls_accepted AS BIGINT) AS calls_accepted,
+    AVG(a.unique_users) AS avg_daily_active_users,
+    CAST(w.calls_accepted AS DOUBLE) / AVG(a.unique_users) * 1000
+        AS calls_per_1000_dau
+FROM call_centre.weekly_activity_report AS w
+JOIN ibm_verify.auth_total_logins AS a
+    ON CAST(a.date AS DATE)
+       BETWEEN CAST(w.date_range_start AS DATE) AND CAST(w.date_range_end AS DATE)
+GROUP BY w.date_range_start, w.date_range_end, w.calls_accepted
+ORDER BY w.date_range_start;
+```
+
+## R
+
+```r
+weekly <- tbl(con, in_schema("call_centre", "weekly_activity_report")) |>
+  select(date_range_start, date_range_end, calls_accepted)
+
+dau <- tbl(con, in_schema("ibm_verify", "auth_total_logins")) |>
+  select(dau_date = date, unique_users)
+
+weekly |>
+  inner_join(dau, by = character()) |>
+  filter(
+    as.Date(dau_date) >= as.Date(date_range_start),
+    as.Date(dau_date) <= as.Date(date_range_end)
+  ) |>
+  group_by(date_range_start, date_range_end, calls_accepted) |>
+  summarise(
+    avg_daily_active_users = mean(unique_users, na.rm = TRUE),
+    .groups = "drop"
+  ) |>
+  mutate(
+    calls_per_1000_dau = calls_accepted / avg_daily_active_users * 1000
+  ) |>
+  arrange(date_range_start) |>
+  select(
+    date_range_start,
+    date_range_end,
+    calls_accepted,
+    avg_daily_active_users,
+    calls_per_1000_dau
+  )
+```
+
+:::
+
+*Interpretation notes.* The denominator is the average daily active users over the
+week, not distinct users across the whole week, so it measures typical daily reach
+rather than total weekly reach. A week only appears once daily active user data
+exists for it: `auth_total_logins` begins near the April 22, 2026 public launch,
+and the join drops any earlier call centre week that has no matching days. The
+numerator is `calls_accepted`, which includes test calls, so weeks with unusual
+test activity read slightly high.

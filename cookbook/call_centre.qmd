@@ -38,6 +38,8 @@ Metrics in this section describe call centre operations, sourced from
 
 {{< include call_centre/average-handle-time.qmd >}}
 
+{{< include call_centre/calls-per-active-user.qmd >}}
+
 ## Topic Metrics
 
 Metrics in this section describe why people contact the call centre, sourced from
