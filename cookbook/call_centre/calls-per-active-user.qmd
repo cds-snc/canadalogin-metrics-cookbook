@@ -81,13 +81,15 @@ weekly |>
 :::
 
 *Interpretation notes.* Read this as a daily rate: on a typical day that week,
-roughly this many calls came in per 100 active users. Normalizing by user-days
-keeps the numerator and denominator on the same daily footing, since weekly calls
-divided by a single day's active users would mix a weekly count with a daily one.
-The `avg_daily_active_users` column is shown for context; it is the week's average
-daily reach, and dividing calls by it and then by the seven days in the week gives
-the same rate. A week only appears once daily active user data exists for it:
-`auth_total_logins` begins near the April 22, 2026 public launch, and the join
-drops any earlier call centre week that has no matching days. The numerator is
-`calls_accepted`, which includes test calls, so weeks with unusual test activity
-read slightly high.
+roughly this many calls came in per 100 active users. Dividing by user-days keeps
+calls and users on the same daily footing. The `avg_daily_active_users` column is
+the week's average daily reach, shown for context.
+
+A call centre week runs Sunday to Saturday, from the report's own
+`date_range_start` and `date_range_end`. The IBM Verify metrics anchor weeks on
+Monday, so the two do not line up; the join and the denominator follow the call
+centre boundaries.
+
+A week appears only once daily active user data exists for it, so the series
+starts near the April 22, 2026 launch. The numerator, `calls_accepted`, includes
+test calls, so weeks with heavy test activity read slightly high.
