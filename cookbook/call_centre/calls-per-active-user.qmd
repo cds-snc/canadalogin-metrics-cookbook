@@ -5,7 +5,7 @@ compare support demand across weeks even as the user base grows.
 
 Raw call volume moves partly because the number of people using CanadaLogin
 changes. Normalizing by active users takes that out and leaves how often a typical
-user needed to phone in on a given day. The figure is scaled to calls per 1,000
+user needed to phone in on a given day. The figure is scaled to calls per 100
 active users to keep it in a readable range.
 
 *Alternative names*:
@@ -13,11 +13,11 @@ active users to keep it in a readable range.
 - call centre contact rate
 - normalized call volume
 - support contacts per active user
-- calls per 1,000 users
+- calls per 100 users
 
 **Calculation.** For each call centre reporting week, take `calls_accepted` from
 `call_centre.weekly_activity_report` and divide it by the total user-days in that
-week, then multiply by 1,000. User-days is the sum of
+week, then multiply by 100. User-days is the sum of
 `ibm_verify.auth_total_logins.unique_users` over the days whose `date` falls
 inside the week's `date_range_start` to `date_range_end`, so the numerator and
 denominator cover the same span of days. This is the same as dividing average
@@ -34,8 +34,8 @@ SELECT
     w.date_range_end,
     CAST(w.calls_accepted AS BIGINT) AS calls_accepted,
     AVG(a.unique_users) AS avg_daily_active_users,
-    CAST(w.calls_accepted AS DOUBLE) / SUM(a.unique_users) * 1000
-        AS calls_per_1000_dau
+    CAST(w.calls_accepted AS DOUBLE) / SUM(a.unique_users) * 100
+        AS calls_per_100_dau
 FROM call_centre.weekly_activity_report AS w
 JOIN ibm_verify.auth_total_logins AS a
     ON CAST(a.date AS DATE)
@@ -66,7 +66,7 @@ weekly |>
     .groups = "drop"
   ) |>
   mutate(
-    calls_per_1000_dau = calls_accepted / user_days * 1000
+    calls_per_100_dau = calls_accepted / user_days * 100
   ) |>
   arrange(date_range_start) |>
   select(
@@ -74,14 +74,14 @@ weekly |>
     date_range_end,
     calls_accepted,
     avg_daily_active_users,
-    calls_per_1000_dau
+    calls_per_100_dau
   )
 ```
 
 :::
 
 *Interpretation notes.* Read this as a daily rate: on a typical day that week,
-roughly this many calls came in per 1,000 active users. Normalizing by user-days
+roughly this many calls came in per 100 active users. Normalizing by user-days
 keeps the numerator and denominator on the same daily footing, since weekly calls
 divided by a single day's active users would mix a weekly count with a daily one.
 The `avg_daily_active_users` column is shown for context; it is the week's average
