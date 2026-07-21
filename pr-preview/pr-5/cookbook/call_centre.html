@@ -691,7 +691,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="calls-per-active-user" class="level3">
 <h3 class="anchored" data-anchor-id="calls-per-active-user">Calls per Active User</h3>
-<p>Weekly call centre volume divided by the size of the active user base, so you can compare support demand across weeks even as the user base grows.</p>
+<p>Call centre volume divided by the size of the active user base, so you can compare support demand across weeks even as the user base grows.</p>
 <p>Raw call volume moves partly because the number of people using CanadaLogin changes. Normalizing by active users takes that out and leaves how often a typical user needed to phone in on a given day. The figure is scaled to calls per 100 active users to keep it in a readable range.</p>
 <p><em>Alternative names</em>:</p>
 <ul>
@@ -752,7 +752,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p><em>Interpretation notes.</em> Read this as a daily rate: on a typical day that week, roughly this many calls came in per 100 active users. Dividing by user-days keeps calls and users on the same daily footing. The <code>avg_daily_active_users</code> column is the week’s average daily reach, shown for context.</p>
+<p><em>Interpretation notes.</em> Read this as a daily rate: on a typical day, roughly this many calls came in per 100 active users. This converts cleanly to a percentage, e.g., 2 calls per 100 users means 2% of users called on a given day.</p>
 <p>A call centre week runs Sunday to Saturday, from the report’s own <code>date_range_start</code> and <code>date_range_end</code>. The IBM Verify metrics anchor weeks on Monday, so the two do not line up; the join and the denominator follow the call centre boundaries.</p>
 <p>A week appears only once daily active user data exists for it, so the series starts near the April 22, 2026 launch. The numerator, <code>calls_accepted</code>, includes test calls, so weeks with heavy test activity read slightly high.</p>
 </section>
