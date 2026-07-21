@@ -1,0 +1,94 @@
+### Calls per Active User
+
+Call centre volume divided by the size of the active user base, so you can
+compare support demand across weeks even as the user base grows.
+
+Raw call volume moves partly because the number of people using CanadaLogin
+changes. Normalizing by active users takes that out and leaves how often a typical
+user needed to phone in on a given day. The figure is scaled to calls per 100
+active users to keep it in a readable range.
+
+*Alternative names*:
+
+- call centre contact rate
+- normalized call volume
+- support contacts per active user
+- calls per 100 users
+
+**Calculation.** For each call centre reporting week, take `calls_accepted` from
+`call_centre.weekly_activity_report` and divide it by the total user-days in that
+week, then multiply by 100. User-days is the sum of
+`ibm_verify.auth_total_logins.unique_users` over the days whose `date` falls
+inside the week's `date_range_start` to `date_range_end`, so the numerator and
+denominator cover the same span of days. This is the same as dividing average
+daily calls by average daily active users. The two tables store their dates as
+text, so both sides of the join are cast to `DATE`.
+
+::: {.panel-tabset}
+
+## SQL
+
+```sql
+SELECT
+    w.date_range_start,
+    w.date_range_end,
+    CAST(w.calls_accepted AS BIGINT) AS calls_accepted,
+    AVG(a.unique_users) AS avg_daily_active_users,
+    CAST(w.calls_accepted AS DOUBLE) / SUM(a.unique_users) * 100
+        AS calls_per_100_dau
+FROM call_centre.weekly_activity_report AS w
+JOIN ibm_verify.auth_total_logins AS a
+    ON CAST(a.date AS DATE)
+       BETWEEN CAST(w.date_range_start AS DATE) AND CAST(w.date_range_end AS DATE)
+GROUP BY w.date_range_start, w.date_range_end, w.calls_accepted
+ORDER BY w.date_range_start;
+```
+
+## R
+
+```r
+weekly <- tbl(con, in_schema("call_centre", "weekly_activity_report")) |>
+  select(date_range_start, date_range_end, calls_accepted)
+
+dau <- tbl(con, in_schema("ibm_verify", "auth_total_logins")) |>
+  select(dau_date = date, unique_users)
+
+weekly |>
+  cross_join(dau) |>
+  filter(
+    as.Date(dau_date) >= as.Date(date_range_start),
+    as.Date(dau_date) <= as.Date(date_range_end)
+  ) |>
+  group_by(date_range_start, date_range_end, calls_accepted) |>
+  summarise(
+    avg_daily_active_users = mean(unique_users, na.rm = TRUE),
+    user_days = sum(unique_users, na.rm = TRUE),
+    .groups = "drop"
+  ) |>
+  mutate(
+    calls_per_100_dau = calls_accepted / user_days * 100
+  ) |>
+  arrange(date_range_start) |>
+  select(
+    date_range_start,
+    date_range_end,
+    calls_accepted,
+    avg_daily_active_users,
+    calls_per_100_dau
+  )
+```
+
+:::
+
+*Interpretation notes.* Read this as a daily rate: on a typical day, roughly this 
+many calls came in per 100 active users. This converts cleanly to a percentage, e.g., 
+2 calls per 100 users means 2% of users called on a given day.
+
+A call centre week runs Sunday to Saturday, from the report's own
+`date_range_start` and `date_range_end`. The IBM Verify metrics anchor weeks on
+Monday, so the two do not line up; the join and the denominator follow the call
+centre boundaries.
+
+A week appears only once daily active user data exists for it, so the series
+starts near the April 22, 2026 launch. The numerator, `calls_accepted`, includes
+test calls, so weeks with heavy test activity read slightly high.
