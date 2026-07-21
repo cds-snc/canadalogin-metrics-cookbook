@@ -1,6 +1,6 @@
 ### Calls per Active User
 
-Weekly call centre volume divided by the size of the active user base, so you can
+Call centre volume divided by the size of the active user base, so you can
 compare support demand across weeks even as the user base grows.
 
 Raw call volume moves partly because the number of people using CanadaLogin
@@ -80,10 +80,9 @@ weekly |>
 
 :::
 
-*Interpretation notes.* Read this as a daily rate: on a typical day that week,
-roughly this many calls came in per 100 active users. Dividing by user-days keeps
-calls and users on the same daily footing. The `avg_daily_active_users` column is
-the week's average daily reach, shown for context.
+*Interpretation notes.* Read this as a daily rate: on a typical day, roughly this 
+many calls came in per 100 active users. This converts cleanly to a percentage, e.g., 
+2 calls per 100 users means 2% of users called on a given day.
 
 A call centre week runs Sunday to Saturday, from the report's own
 `date_range_start` and `date_range_end`. The IBM Verify metrics anchor weeks on
