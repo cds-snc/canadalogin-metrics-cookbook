@@ -59,6 +59,8 @@ format:
       - cosmo
       - brand
       - custom.scss
+    # Google Analytics tag. The rationale for every setting is in the file.
+    include-in-header: _analytics.html
 
 execute:
   echo: true
