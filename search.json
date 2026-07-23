@@ -4,7 +4,7 @@
     "href": "index.html",
     "title": "Introduction",
     "section": "",
-    "text": "Introduction\nLast updated: 2026-07-21\nThis book documents CanadaLogin metrics and the tables they are calculated from.\nIt has two chapters:\n\nThe Metrics Cookbook defines commonly used metrics, including their calculation logic and example SQL queries.\nThe Data Catalog describes the underlying tables, field by field.",
+    "text": "Introduction\nLast updated: 2026-07-23\nThis book documents CanadaLogin metrics and the tables they are calculated from.\nIt has two chapters:\n\nThe Metrics Cookbook defines commonly used metrics, including their calculation logic and example SQL queries.\nThe Data Catalog describes the underlying tables, field by field.",
     "crumbs": [
       "Introduction"
     ]

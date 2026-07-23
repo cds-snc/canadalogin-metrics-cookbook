@@ -76,6 +76,48 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
+<!--
+  Google Analytics (GA4) - CanadaLogin Metrics Cookbook stream (G-E72QKPP7TX),
+  a second web stream in the same property as the Signal Check reports.
+
+  Do NOT replace this with the stock snippet the GA4 admin UI hands you. That
+  one omits the consent defaults, the Google signals flags, and the shortened
+  cookie lifetime, all of which are deliberate.
+
+  This is only half the privacy configuration. The rest lives in property-level
+  settings in the GA4 admin UI (Google signals off, granular location and device
+  data off, 2-month retention), which win where the two disagree. Enhanced
+  measurement is a per-stream setting and is not inherited: this stream is set
+  to scrolls and outbound clicks only.
+
+  No anonymize_ip. It is a Universal Analytics parameter and is inert in GA4,
+  which never logs or stores IP addresses in the first place, so including it
+  would look like a control while doing nothing.
+-->
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+
+  // Consent defaults must come before config so they apply to the first hit.
+  gtag("consent", "default", {
+    "ad_storage": "denied",
+    "ad_user_data": "denied",
+    "ad_personalization": "denied",
+    "analytics_storage": "granted"
+  });
+
+  gtag("js", new Date());
+
+  // cookie_expires is 30 days, down from the 2-year default. Kept as a cookie
+  // rather than client_storage: "none" so returning readers still count as
+  // people instead of every pageview counting as a new user.
+  gtag("config", "G-E72QKPP7TX", {
+    "allow_google_signals": false,
+    "allow_ad_personalization_signals": false,
+    "cookie_expires": 2592000
+  });
+</script>
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-E72QKPP7TX"></script>
 
 
 </head>
