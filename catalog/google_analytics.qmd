@@ -44,3 +44,7 @@ in the pipeline repo.
 {{< include google_analytics/property_traffic.qmd >}}
 
 {{< include google_analytics/page_traffic.qmd >}}
+
+{{< include google_analytics/funnels.qmd >}}
+
+{{< include google_analytics/funnels_current.qmd >}}
