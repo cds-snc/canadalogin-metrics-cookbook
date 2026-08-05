@@ -26,3 +26,14 @@ Site reliability metrics for the CanadaLogin platform, in the `sre` schema. Curr
 - [`mttr_current`](sre.qmd#mttr_current) - latest state of every incident, one row per incident
 - [`mttr_history`](sre.qmd#mttr_history) - dated snapshots of every incident, preserving how each evolved
 
+## [Google Analytics](google_analytics.qmd)
+
+Tables in the `google_analytics` schema, populated from the CanadaLogin GA4 property.
+
+- [`property_traffic`](google_analytics.qmd#property_traffic) - property-wide daily traffic, one row per day
+- [`page_traffic`](google_analytics.qmd#page_traffic) - daily traffic by page title and path
+- [`funnels`](google_analytics.qmd#funnels) - step-by-step counts for each defined GA4 funnel
+- [`funnels_current`](google_analytics.qmd#funnels_current) - `funnels`, resolved to each date's current funnel version
+- [`funnel_metrics`](google_analytics.qmd#funnel_metrics) - derived metrics computed from funnel rows, such as task success rate
+- [`funnel_metrics_current`](google_analytics.qmd#funnel_metrics_current) - `funnel_metrics`, resolved to each date's current funnel version
+

@@ -1,0 +1,145 @@
+### Task Success Rate
+
+The proportion of users who started a given task in CanadaLogin and reached that task's 
+defined finishing point, measured from Google Analytics 4 funnel data.
+
+This is a family of metrics, not a single number: each funnel declares its own task 
+success rate as a `step_ratio` in its YAML definition on GitHub - one funnel step 
+counted as the entry, another counted as the exit, both measured as GA4 `activeUsers` 
+over the same reporting window. **The entry and exit steps for each funnel are 
+described below as of this writing, but the YAML is the canonical, versioned source** - see
+[`funnel_src/funnels/`](https://github.com/cds-snc/canadalogin-reporting-data-pipeline/tree/main/infra/modules/google_analytics/funnel_src/funnels) in the `canadalogin-reporting-data-pipeline` repo. 
+Check the YAML before trusting a step name quoted here.
+
+*Alternative names*:
+
+- funnel completion rate
+- task completion rate
+- funnel success rate
+
+#### Sign in
+
+Funnel definition: [`sign_in.yaml`](https://github.com/cds-snc/canadalogin-reporting-data-pipeline/blob/main/infra/modules/google_analytics/funnel_src/funnels/sign_in.yaml).
+
+Entry is the first taggable step of the sign-in flow (the "enter your email"
+screen); exit is reaching MFA selection, the last step Google Analytics can
+see. **This is not a full sign-in completion rate.** A successful sign-in
+redirects off-site to IBM Verify and back to the relying party with no page in
+between, so GA4 has no event to mark true completion - reaching MFA is the
+closest proxy available. See the
+[`funnels`](../catalog/google_analytics.qmd#funnels) catalog entry for the
+`RESERVED_TOTAL` and `window_incomplete` conventions this table shares with
+`funnel_metrics`.
+
+#### Sign up
+
+Funnel definition: [`sign_up.yaml`](https://github.com/cds-snc/canadalogin-reporting-data-pipeline/blob/main/infra/modules/google_analytics/funnel_src/funnels/sign_up.yaml).
+
+Entry is the first step of the sign-up flow, after accepting Terms and
+Conditions; exit is the account-creation confirmation screen. Unlike sign-in,
+this **is** a true completion signal - the confirmation page is a real,
+first-party GA4 event.
+
+**Calculation.** Each funnel's task success rate is already computed and
+stored as one row per window in
+[`funnel_metrics`](../catalog/google_analytics.qmd#funnel_metrics): the
+exit step's `activeUsers` divided by the entry step's, for that funnel run.
+There is no ratio to compute by hand - filter to the funnel and metric, and
+read `value`. Query
+[`funnel_metrics_current`](../catalog/google_analytics.qmd#funnel_metrics_current)
+rather than `funnel_metrics` directly, so a future funnel version bump can't
+silently blend two definitions together. Filter `breakdown_value =
+'RESERVED_TOTAL'` for the overall rate across all relying parties; substitute
+a specific relying party name for a per-RP figure.
+
+::: {.panel-tabset}
+
+## SQL
+
+Sign in:
+
+```sql
+SELECT
+    window_end,
+    value AS task_success_rate
+FROM google_analytics.funnel_metrics_current
+WHERE funnel_id = 'sign_in'
+  AND metric_id = 'task_success'
+  AND window_days = '7'
+  AND breakdown_value = 'RESERVED_TOTAL'
+  AND NOT window_incomplete
+  -- set the reporting window; see the timespans note in cookbook/notes.qmd
+  AND CAST(window_end AS DATE) BETWEEN DATE '2026-07-14' AND DATE '2026-08-03'
+ORDER BY window_end;
+```
+
+Sign up:
+
+```sql
+SELECT
+    window_end,
+    value AS task_success_rate
+FROM google_analytics.funnel_metrics_current
+WHERE funnel_id = 'sign_up'
+  AND metric_id = 'task_success'
+  AND window_days = '7'
+  AND breakdown_value = 'RESERVED_TOTAL'
+  AND NOT window_incomplete
+  -- set the reporting window; see the timespans note in cookbook/notes.qmd
+  AND CAST(window_end AS DATE) BETWEEN DATE '2026-07-14' AND DATE '2026-08-03'
+ORDER BY window_end;
+```
+
+## R
+
+Sign in:
+
+```r
+tbl(con, in_schema("google_analytics", "funnel_metrics_current")) |>
+  filter(
+    funnel_id == "sign_in",
+    metric_id == "task_success",
+    window_days == "7",
+    breakdown_value == "RESERVED_TOTAL",
+    !window_incomplete,
+    # set the reporting window; see the timespans note in cookbook/notes.qmd
+    as.Date(window_end) >= as.Date("2026-07-14"),
+    as.Date(window_end) <= as.Date("2026-08-03")
+  ) |>
+  select(window_end, task_success_rate = value) |>
+  arrange(window_end)
+```
+
+Sign up:
+
+```r
+tbl(con, in_schema("google_analytics", "funnel_metrics_current")) |>
+  filter(
+    funnel_id == "sign_up",
+    metric_id == "task_success",
+    window_days == "7",
+    breakdown_value == "RESERVED_TOTAL",
+    !window_incomplete,
+    # set the reporting window; see the timespans note in cookbook/notes.qmd
+    as.Date(window_end) >= as.Date("2026-07-14"),
+    as.Date(window_end) <= as.Date("2026-08-03")
+  ) |>
+  select(window_end, task_success_rate = value) |>
+  arrange(window_end)
+```
+
+:::
+
+*Interpretation notes.* `window_days = '7'` gives a rolling weekly rate,
+recomputed nightly on a 7-day window ending each date; `window_days = '1'` is
+the same metric on a single day, noisier but useful for same-day monitoring.
+Both are partition-key strings, not numbers, in this schema. A `value` of
+`NULL` means nobody reached the entry step that window (an undefined rate, not
+a true zero) - such rows are rare but real, and an average that treats them as
+`0.0` will read too pessimistic.
+
+These two funnels are not directly comparable to each other: sign-in's rate
+stops at MFA for the structural reason described above, so it reads lower than
+a true completion rate would, while sign-up's rate is a real completion
+figure. Comparing the two numbers as if they measured the same kind of finish
+line will overstate the sign-in/sign-up gap.

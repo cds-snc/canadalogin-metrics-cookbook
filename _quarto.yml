@@ -12,10 +12,12 @@ project:
     - "!cookbook/call_centre/"
     - "!cookbook/sre/"
     - "!cookbook/jira/"
+    - "!cookbook/google_analytics/"
     - "!catalog/ibm_verify/"
     - "!catalog/call_centre/"
     - "!catalog/sre/"
     - "!catalog/jira/"
+    - "!catalog/google_analytics/"
     - "!catalog/data-catalog-template.qmd"
 
 website:
@@ -33,6 +35,7 @@ website:
           - cookbook/call_centre.qmd
           - cookbook/sre.qmd
           - cookbook/jira.qmd
+          - cookbook/google_analytics.qmd
           - cookbook/notes.qmd
 #          - cookbook/cross-source.qmd
       - section: "Data Catalog"
@@ -42,6 +45,7 @@ website:
           - catalog/call_centre.qmd
           - catalog/sre.qmd
           - catalog/jira.qmd
+          - catalog/google_analytics.qmd
           - catalog/notes.qmd
 
 format:

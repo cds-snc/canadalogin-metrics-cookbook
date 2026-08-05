@@ -1,0 +1,17 @@
+---
+title: Google Analytics
+---
+
+Metrics derived from the CanadaLogin GA4 property, in the `google_analytics`
+schema. See the [Data Catalog](../catalog/google_analytics.qmd) for the
+underlying tables.
+
+Task success rates are computed from GA4 **funnels**: named, ordered sequences
+of page or event steps, defined as version-controlled YAML rather than a
+private GA4 UI exploration. A funnel's exact steps can change as CanadaLogin's
+own pages change, so metrics on this page describe the general calculation and
+point to that YAML on GitHub as the definitive, current source, rather than
+hard-coding step names that may already be out of date by the time they're
+read.
+
+{{< include google_analytics/task-success-rate.qmd >}}

@@ -1,0 +1,60 @@
+## funnels_current
+
+A view over [`funnels`](google_analytics.qmd#funnels) that resolves the
+current `funnel_version` automatically. Query this instead of `funnels`
+directly unless a specific past version is genuinely what's wanted.
+
+Each row is the same as a `funnels` row, restricted to the newest
+`funnel_version` available for that row's `(funnel_id, window_days,
+window_end)`.
+
+`Keywords`: Google Analytics, GA4, funnel, funnel version, current version
+
+### Definition
+
+```sql
+CREATE OR REPLACE VIEW funnels_current AS
+WITH latest_per_date AS (
+  SELECT funnel_id, window_days, window_end,
+         MAX(CAST(funnel_version AS integer)) AS current_version
+  FROM funnels
+  GROUP BY funnel_id, window_days, window_end
+)
+SELECT f.*
+FROM funnels f
+JOIN latest_per_date d
+  ON  f.funnel_id   = d.funnel_id
+  AND f.window_days = d.window_days
+  AND f.window_end  = d.window_end
+  AND CAST(f.funnel_version AS integer) = d.current_version;
+```
+
+### Provenance
+
+* **Updated**: Live view, not scheduled
+* **Steward**: EDCP Data and Research Team
+* **Contact**: [Colin Douglas](mailto:colin.douglas@cds-snc.ca)
+
+### Fields
+
+Same as [`funnels`](google_analytics.qmd#funnels). `SELECT f.*` passes every
+base column through unchanged; the view's own `current_version` column (used
+only to resolve the join) is not exposed.
+
+### Notes
+
+**The partition keys are still typed `string` in the view's output**, the same
+as the base table - `MAX(funnel_version)` **on the view** still sorts
+lexically wrong if you ignore that the view has already picked one version per
+row. Query it the same way you'd query `funnels`: filter with quoted string
+literals (`WHERE window_days = '7'`, not `= 7`), and don't re-aggregate across
+`funnel_version` since the view has already resolved it.
+
+**Resolution is per `(funnel_id, window_days, window_end)`, not a global max
+per funnel.** If a funnel bumps from version 1 to version 2 partway through
+its history, dates before the bump still resolve to version 1 (version 2 was
+never run for them) and dates from the bump onward resolve to version 2 - one
+continuous time series, not a series that vanishes before the bump. This only
+holds because versions of the same funnel are assumed to measure the same
+underlying thing; it would not be a safe pattern for two versions that
+represent genuinely different metrics.

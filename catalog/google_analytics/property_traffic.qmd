@@ -1,0 +1,48 @@
+## property_traffic
+
+Property-wide daily traffic for the CanadaLogin GA4 property, with no dimension
+beyond the day.
+
+Each row represents one day of aggregate site-wide traffic.
+
+`Keywords`: Google Analytics, GA4, traffic, sessions, active users, page views
+
+### Provenance
+
+Pulled daily from the GA4 Data API (`runReport`) for the CanadaLogin property,
+via a Lambda authenticating through Google Cloud Workload Identity Federation
+(no stored service account key). Written as JSONL, then cast to typed Parquet
+by a Glue ETL job.
+
+* **Updated**: Daily, at 07:00 ET
+* **Steward**: EDCP Data and Research Team
+* **Contact**: [Colin Douglas](mailto:colin.douglas@cds-snc.ca)
+* **Location**: `s3://<transformed-bucket>/google_analytics/property_traffic/`
+
+### Fields
+
+One row per `date`.
+
+| Field Name | Type | Description |
+|---|---|---|
+| date | string | The reporting day, as a partition key (for example, "2026-07-23") |
+| sessions | bigint | Number of sessions started on this day, site-wide |
+| activeusers | bigint | Number of distinct active users on this day, site-wide |
+| newusers | bigint | Number of users on this day who had not been seen before |
+| screenpageviews | bigint | Number of page views on this day, site-wide |
+
+### Notes
+
+`activeusers` is de-duplicated by GA4 within the day; it is not the sum of
+per-page unique users. This table is the collection canary for the GA4
+pipeline: because it carries no dimension beyond `date`, a property-wide
+active-user collapse here distinguishes "GA stopped collecting" from "one page
+or one funnel's tag broke," which
+[`page_traffic`](google_analytics.qmd#page_traffic) rows alone cannot do.
+
+`screenpageviews` here should equal `SUM(screenpageviews)` from
+[`page_traffic`](google_analytics.qmd#page_traffic) for the same `date` - the
+two tables' only currently-summable metric, and a useful integrity check
+between them. `sessions` and `activeusers` do **not** reconcile the same way
+across the two tables (GA4 de-duplicates each within its own dimension
+combination), so do not expect them to match.
