@@ -16,6 +16,7 @@ project:
     - "!catalog/call_centre/"
     - "!catalog/sre/"
     - "!catalog/jira/"
+    - "!catalog/google_analytics/"
     - "!catalog/data-catalog-template.qmd"
 
 website:
@@ -42,6 +43,7 @@ website:
           - catalog/call_centre.qmd
           - catalog/sre.qmd
           - catalog/jira.qmd
+          - catalog/google_analytics.qmd
           - catalog/notes.qmd
 
 format:

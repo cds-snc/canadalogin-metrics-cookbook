@@ -1,0 +1,46 @@
+---
+title: Google Analytics
+---
+
+Tables in the `google_analytics` schema, populated from the CanadaLogin GA4
+property. Three scheduled Lambdas write into this schema each night, all in
+the `canadalogin-reporting-data-pipeline` repo's `google_analytics` Terraform
+module:
+
+- **06:30 ET** - the funnel export, writing [`funnels`](#funnels)
+- **06:45 ET** - the funnel metrics Lambda, deriving [`funnel_metrics`](#funnel_metrics)
+  from the funnels the export just landed
+- **07:00 ET** - the daily export, writing [`property_traffic`](#property_traffic)
+  and [`page_traffic`](#page_traffic), then starting the crawler
+
+[`funnels_current`](#funnels_current) and
+[`funnel_metrics_current`](#funnel_metrics_current) are views over `funnels`
+and `funnel_metrics` respectively, resolving each date to its current funnel
+version.
+
+### Export lag
+
+[`funnels`](#funnels) and [`funnel_metrics`](#funnel_metrics) are pulled with
+a deliberate two-day lag - the nightly sweep that runs the morning of August 5,
+2026 lands a window ending August 3, 2026, not August 4 - because GA4 takes 24 to
+48 hours to finish processing a day's events (backdated hits accepted up to
+72 hours), and since each `(funnel_version, window_end)` key is written once
+and never re-pulled, a window read too early would stay artificially low
+forever. [`property_traffic`](#property_traffic) and
+[`page_traffic`](#page_traffic) carry no equivalent lag - their export asks
+GA4 for "yesterday" every morning with no wait and no later re-pull - so
+their most recent day can undercount for the same reason, with nothing to
+ever correct it.
+
+Two of these tables - `funnels` and `funnel_metrics` - are defined by
+version-controlled YAML rather than a fixed schema. **For what a funnel step
+or a derived metric actually measures, the YAML on GitHub is the single
+canonical source**, not this catalog: steps get renamed, re-scoped, or added
+as CanadaLogin's own pages change, and the catalog entries below describe the
+table shape rather than the current step names. See
+[`funnel_src/funnels/`](https://github.com/cds-snc/canadalogin-reporting-data-pipeline/tree/main/infra/modules/google_analytics/funnel_src/funnels)
+in the pipeline repo.
+
+{{< include google_analytics/property_traffic.qmd >}}
+
+{{< include google_analytics/page_traffic.qmd >}}
