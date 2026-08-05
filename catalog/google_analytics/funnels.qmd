@@ -52,7 +52,7 @@ One row per `funnel_id` per `funnel_version` per `window_days` per
 
 ### Notes
 
-**A funnel's step names, order, and population can change between versions -
+**A funnel's step names, order and population can change between versions -
 always check GitHub, not a memory of a prior version.** Every CanadaLogin
 funnel has already had at least one step renamed or re-scoped since it was
 first defined (see the
