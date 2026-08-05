@@ -55,3 +55,5 @@ IBM Verify Data Dictionary.csv
 # Environment variables / credentials
 .env
 .Renviron
+# Scratch exploration, not part of the site
+/explore/
