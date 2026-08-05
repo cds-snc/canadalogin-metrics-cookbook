@@ -202,6 +202,12 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../cookbook/google_analytics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Google Analytics</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../cookbook/notes.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Additional Notes</span></a>
   </div>
@@ -243,6 +249,12 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../catalog/google_analytics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Google Analytics</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../catalog/notes.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Additional Notes</span></a>
   </div>
@@ -264,6 +276,7 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#ibm-verify" id="toc-ibm-verify" class="nav-link" data-scroll-target="#ibm-verify">IBM Verify</a></li>
   <li><a href="#call-centre" id="toc-call-centre" class="nav-link" data-scroll-target="#call-centre">Call Centre</a></li>
   <li><a href="#platform" id="toc-platform" class="nav-link" data-scroll-target="#platform">Platform</a></li>
+  <li><a href="#google-analytics" id="toc-google-analytics" class="nav-link" data-scroll-target="#google-analytics">Google Analytics</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -300,6 +313,18 @@ ul.task-list li input[type="checkbox"] {
 <ul>
 <li><a href="../catalog/sre.html#mttr_current"><code>mttr_current</code></a> - latest state of every incident, one row per incident</li>
 <li><a href="../catalog/sre.html#mttr_history"><code>mttr_history</code></a> - dated snapshots of every incident, preserving how each evolved</li>
+</ul>
+</section>
+<section id="google-analytics" class="level2">
+<h2 class="anchored" data-anchor-id="google-analytics"><a href="../catalog/google_analytics.html">Google Analytics</a></h2>
+<p>Tables in the <code>google_analytics</code> schema, populated from the CanadaLogin GA4 property.</p>
+<ul>
+<li><a href="../catalog/google_analytics.html#property_traffic"><code>property_traffic</code></a> - property-wide daily traffic, one row per day</li>
+<li><a href="../catalog/google_analytics.html#page_traffic"><code>page_traffic</code></a> - daily traffic by page title and path</li>
+<li><a href="../catalog/google_analytics.html#funnels"><code>funnels</code></a> - step-by-step counts for each defined GA4 funnel</li>
+<li><a href="../catalog/google_analytics.html#funnels_current"><code>funnels_current</code></a> - <code>funnels</code>, resolved to each date’s current funnel version</li>
+<li><a href="../catalog/google_analytics.html#funnel_metrics"><code>funnel_metrics</code></a> - derived metrics computed from funnel rows, such as task success rate</li>
+<li><a href="../catalog/google_analytics.html#funnel_metrics_current"><code>funnel_metrics_current</code></a> - <code>funnel_metrics</code>, resolved to each date’s current funnel version</li>
 </ul>
 
 

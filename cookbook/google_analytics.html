@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Jira (PSOM) – CanadaLogin Metrics Cookbook</title>
+<title>Google Analytics – CanadaLogin Metrics Cookbook</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -26,6 +26,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -36,8 +71,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../catalog/google_analytics.html" rel="next">
-<link href="../catalog/sre.html" rel="prev">
+<link href="../cookbook/notes.html" rel="next">
+<link href="../cookbook/jira.html" rel="prev">
 <link href="../img/cds-snc.png" rel="icon" type="image/png">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
@@ -135,7 +170,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../catalog/index.html">Data Catalog</a></li><li class="breadcrumb-item"><a href="../catalog/jira.html">Jira (PSOM)</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../cookbook/index.html">Metrics Cookbook</a></li><li class="breadcrumb-item"><a href="../cookbook/google_analytics.html">Google Analytics</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -202,7 +237,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../cookbook/google_analytics.html" class="sidebar-item-text sidebar-link">
+  <a href="../cookbook/google_analytics.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Google Analytics</span></a>
   </div>
 </li>
@@ -243,7 +278,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../catalog/jira.html" class="sidebar-item-text sidebar-link active">
+  <a href="../catalog/jira.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Jira (PSOM)</span></a>
   </div>
 </li>
@@ -271,11 +306,10 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#psom" id="toc-psom" class="nav-link active" data-scroll-target="#psom">PSOM</a>
+  <li><a href="#task-success-rate" id="toc-task-success-rate" class="nav-link active" data-scroll-target="#task-success-rate">Task Success Rate</a>
   <ul>
-  <li><a href="#provenance" id="toc-provenance" class="nav-link" data-scroll-target="#provenance">Provenance</a></li>
-  <li><a href="#fields" id="toc-fields" class="nav-link" data-scroll-target="#fields">Fields</a></li>
-  <li><a href="#notes" id="toc-notes" class="nav-link" data-scroll-target="#notes">Notes</a></li>
+  <li><a href="#sign-in" id="toc-sign-in" class="nav-link" data-scroll-target="#sign-in">Sign in</a></li>
+  <li><a href="#sign-up" id="toc-sign-up" class="nav-link" data-scroll-target="#sign-up">Sign up</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -283,9 +317,9 @@ ul.task-list li input[type="checkbox"] {
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../catalog/index.html">Data Catalog</a></li><li class="breadcrumb-item"><a href="../catalog/jira.html">Jira (PSOM)</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../cookbook/index.html">Metrics Cookbook</a></li><li class="breadcrumb-item"><a href="../cookbook/google_analytics.html">Google Analytics</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">Jira (PSOM)</h1>
+<h1 class="title">Google Analytics</h1>
 </div>
 
 
@@ -302,173 +336,93 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>Tables in the <code>jira</code> schema, populated by the weekly PSOM Jira Service Management sync pipeline.</p>
-<p>Each Monday at ~6:00 AM ET, the <code>psom-weekly-sync</code> Lambda fetches a full snapshot of all tickets from the PSOM project (<code>jtickets.atlassian.net</code>) and writes it as a Parquet partition in S3. The Glue crawler then updates the Athena table schema.</p>
-<section id="psom" class="level2">
-<h2 class="anchored" data-anchor-id="psom">PSOM</h2>
-<p>Weekly snapshot of all PSOM Jira Service Management tickets.</p>
-<p>One row per Jira issue per weekly snapshot. Each Monday run writes a full snapshot of all current PSOM tickets to a new <code>date=</code> partition. Previous partitions are preserved as an audit trail, enabling point-in-time analysis.</p>
-<p><strong>Jira source:</strong> <code>jtickets.atlassian.net</code>, project <code>PSOM</code>, fetched via <code>POST /rest/api/3/search/jql</code> with full comment history via <code>/rest/api/3/issue/{key}/comment</code>.</p>
-<p><code>Keywords</code>: jira, psom, tickets, service requests, SLA, support</p>
-<section id="provenance" class="level3">
-<h3 class="anchored" data-anchor-id="provenance">Provenance</h3>
-<p>Queried from PSOM Jira Cloud via API by the <code>psom-weekly-sync</code> Lambda function.</p>
+<p>Metrics derived from the CanadaLogin GA4 property, in the <code>google_analytics</code> schema. See the <a href="../catalog/google_analytics.html">Data Catalog</a> for the underlying tables.</p>
+<p>Task success rates are computed from GA4 <strong>funnels</strong>: named, ordered sequences of page or event steps, defined as version-controlled YAML rather than a private GA4 UI exploration. A funnel’s exact steps can change as CanadaLogin’s own pages change, so metrics on this page describe the general calculation and point to that YAML on GitHub as the definitive, current source, rather than hard-coding step names that may already be out of date by the time they’re read.</p>
+<section id="task-success-rate" class="level3">
+<h3 class="anchored" data-anchor-id="task-success-rate">Task Success Rate</h3>
+<p>The proportion of users who started a given task in CanadaLogin and reached that task’s defined finishing point, measured from Google Analytics 4 funnel data.</p>
+<p>This is a family of metrics, not a single number: each funnel declares its own task success rate as a <code>step_ratio</code> in its YAML definition on GitHub - one funnel step counted as the entry, another counted as the exit, both measured as GA4 <code>activeUsers</code> over the same reporting window. <strong>The entry and exit steps for each funnel are described below as of this writing, but the YAML is the canonical, versioned source</strong> - see <a href="https://github.com/cds-snc/canadalogin-reporting-data-pipeline/tree/main/infra/modules/google_analytics/funnel_src/funnels"><code>funnel_src/funnels/</code></a> in the <code>canadalogin-reporting-data-pipeline</code> repo. Check the YAML before trusting a step name quoted here.</p>
+<p><em>Alternative names</em>:</p>
 <ul>
-<li><strong>Updated</strong>: Weekly, every Monday at ~06:00 ET</li>
-<li><strong>Steward</strong>: EDCP Data and Research Team</li>
-<li><strong>Contact</strong>: <a href="mailto:yinlin.zhang@cds-snc.ca">Yinlin Zhang</a> (Data and Research team)</li>
+<li>funnel completion rate</li>
+<li>task completion rate</li>
+<li>funnel success rate</li>
 </ul>
+<section id="sign-in" class="level4">
+<h4 class="anchored" data-anchor-id="sign-in">Sign in</h4>
+<p>Funnel definition: <a href="https://github.com/cds-snc/canadalogin-reporting-data-pipeline/blob/main/infra/modules/google_analytics/funnel_src/funnels/sign_in.yaml"><code>sign_in.yaml</code></a>.</p>
+<p>Entry is the first taggable step of the sign-in flow (the “enter your email” screen); exit is reaching MFA selection, the last step Google Analytics can see. <strong>This is not a full sign-in completion rate.</strong> A successful sign-in redirects off-site to IBM Verify and back to the relying party with no page in between, so GA4 has no event to mark true completion - reaching MFA is the closest proxy available. See the <a href="../catalog/google_analytics.html#funnels"><code>funnels</code></a> catalog entry for the <code>RESERVED_TOTAL</code> and <code>window_incomplete</code> conventions this table shares with <code>funnel_metrics</code>.</p>
 </section>
-<section id="fields" class="level3">
-<h3 class="anchored" data-anchor-id="fields">Fields</h3>
-<p>One row per Jira issue per weekly snapshot (<code>date</code> partition).</p>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 33%">
-<col style="width: 33%">
-<col style="width: 33%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Field Name</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>date</td>
-<td>varchar</td>
-<td>Partition key: the date the Lambda ran (<code>YYYY-MM-DD</code>).</td>
-</tr>
-<tr class="even">
-<td>key</td>
-<td>varchar</td>
-<td>Jira ticket key, e.g.&nbsp;<code>PSOM-42</code>.</td>
-</tr>
-<tr class="odd">
-<td>summary</td>
-<td>varchar</td>
-<td>One-line ticket title.</td>
-</tr>
-<tr class="even">
-<td>description</td>
-<td>varchar</td>
-<td>Full ticket description, extracted from Atlassian Document Format (ADF) to plain text.</td>
-</tr>
-<tr class="odd">
-<td>issue_type</td>
-<td>varchar</td>
-<td>Jira issue type name, e.g.&nbsp;<code>Email Request</code>, <code>Partner Support Request form</code>.</td>
-</tr>
-<tr class="even">
-<td>status</td>
-<td>varchar</td>
-<td>Current workflow status, e.g.&nbsp;<code>Done</code>, <code>Canceled</code>, <code>Escalated to PTT</code>, <code>Escalated to Auth PT</code>, <code>Ready to archive</code>.</td>
-</tr>
-<tr class="odd">
-<td>status_changed</td>
-<td>varchar</td>
-<td>ISO 8601 timestamp when the ticket’s status category last changed.</td>
-</tr>
-<tr class="even">
-<td>priority</td>
-<td>varchar</td>
-<td>Priority level, e.g.&nbsp;<code>High</code>, <code>Normal</code>, <code>Low</code>, <code>Critical</code>.</td>
-</tr>
-<tr class="odd">
-<td>assignee</td>
-<td>varchar</td>
-<td>Display name of the current assignee; empty string if unassigned.</td>
-</tr>
-<tr class="even">
-<td>reporter</td>
-<td>varchar</td>
-<td>Display name of the person who reported the ticket.</td>
-</tr>
-<tr class="odd">
-<td>creator</td>
-<td>varchar</td>
-<td>Display name of the person who created the ticket (may differ from reporter).</td>
-</tr>
-<tr class="even">
-<td>created</td>
-<td>varchar</td>
-<td>ISO 8601 timestamp when the ticket was created.</td>
-</tr>
-<tr class="odd">
-<td>updated</td>
-<td>varchar</td>
-<td>ISO 8601 timestamp of the most recent field or comment update.</td>
-</tr>
-<tr class="even">
-<td>due_date</td>
-<td>varchar</td>
-<td>Due date in <code>YYYY-MM-DD</code> format; empty string if not set.</td>
-</tr>
-<tr class="odd">
-<td>labels</td>
-<td>varchar</td>
-<td>Semicolon-separated list of labels applied to the ticket; empty string if none.</td>
-</tr>
-<tr class="even">
-<td>request_type</td>
-<td>varchar</td>
-<td>JSM service request type name, e.g.&nbsp;<code>New Access Request</code>. Empty for tickets created internally through Jira rather than the customer-facing portal (all PSOM tickets so far), which never set a request type.</td>
-</tr>
-<tr class="odd">
-<td>request_participants</td>
-<td>varchar</td>
-<td>Semicolon-separated display names of request participants (CC’d users).</td>
-</tr>
-<tr class="even">
-<td>organizations</td>
-<td>varchar</td>
-<td>Semicolon-separated names of JSM organizations the request is associated with.</td>
-</tr>
-<tr class="odd">
-<td>sla_first_response_due</td>
-<td>varchar</td>
-<td>ISO 8601 datetime the “Time to first response” SLA must be (or was) met by, per the SLA goal. For an open ticket this is the upcoming breach deadline; for a closed cycle, when the cycle stopped. Empty if no SLA clock.</td>
-</tr>
-<tr class="even">
-<td>sla_first_response_breached</td>
-<td>varchar</td>
-<td><code>"True"</code> if the first-response SLA was missed (no agent response within the agreed 4-hour window), <code>"False"</code> if it was met or is still within the window, <code>""</code> if no SLA clock. Stored as a string, not a native boolean.</td>
-</tr>
-<tr class="odd">
-<td>sla_time_to_done_due</td>
-<td>varchar</td>
-<td>ISO 8601 datetime the “Time to done” SLA must be (or was) met by, per the SLA goal. For an open ticket this is the upcoming breach deadline; for a closed cycle, when the cycle stopped. Empty if no SLA clock.</td>
-</tr>
-<tr class="even">
-<td>sla_time_to_done_breached</td>
-<td>varchar</td>
-<td><code>"True"</code> if the resolution SLA was missed (ticket not resolved within the agreed 16-hour window), <code>"False"</code> if it was met or is still within the window, <code>""</code> if no SLA clock. Stored as a string, not a native boolean.</td>
-</tr>
-<tr class="odd">
-<td>comment_count</td>
-<td>bigint</td>
-<td>Total number of comments on the ticket.</td>
-</tr>
-<tr class="even">
-<td>comments</td>
-<td>varchar</td>
-<td>JSON array string of all comments. Each element: <code>{"author": "...", "created": "...", "updated": "...", "body": "...", "internal": false}</code>. The <code>body</code> is ADF-extracted plain text. The <code>internal</code> flag is <code>true</code> for JSM internal notes.</td>
-</tr>
-<tr class="odd">
-<td>fetched_at</td>
-<td>varchar</td>
-<td>UTC timestamp when the Lambda wrote this row (<code>YYYY-MM-DD HH:MM:SS</code>).</td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="notes" class="level3">
-<h3 class="anchored" data-anchor-id="notes">Notes</h3>
-<p>All timestamp columns (<code>created</code>, <code>updated</code>, <code>status_changed</code>, <code>sla_*_due</code>, <code>fetched_at</code>) are stored as <code>varchar</code>.</p>
-<p>SLA fields (<code>sla_first_response_*</code>, <code>sla_time_to_done_*</code>) are populated for tickets with an active JSM SLA clock. The <code>*_breached</code> columns hold the strings <code>"True"</code>/<code>"False"</code>, not a native boolean, so compare against <code>'True'</code>/<code>'False'</code> (not a bare boolean) and cast if you need one. <code>"False"</code> covers both SLAs that were met and open tickets still inside their window, so a breach rate computed on a single snapshot is a lower bound: an open ticket counted as <code>"False"</code> today can still breach later. Snapshots up to and including <code>date=2026-07-06</code> predate the SLA pipeline fix and have these columns empty; from <code>date=2026-07-07</code> on they are populated. Exclude empty-string rows when calculating breach rates.</p>
-<p>Each weekly run adds a new <code>date=</code> partition. All previous partitions are retained, so you can compare snapshots across weeks to track status changes over time.</p>
+<section id="sign-up" class="level4">
+<h4 class="anchored" data-anchor-id="sign-up">Sign up</h4>
+<p>Funnel definition: <a href="https://github.com/cds-snc/canadalogin-reporting-data-pipeline/blob/main/infra/modules/google_analytics/funnel_src/funnels/sign_up.yaml"><code>sign_up.yaml</code></a>.</p>
+<p>Entry is the first step of the sign-up flow, after accepting Terms and Conditions; exit is the account-creation confirmation screen. Unlike sign-in, this <strong>is</strong> a true completion signal - the confirmation page is a real, first-party GA4 event.</p>
+<p><strong>Calculation.</strong> Each funnel’s task success rate is already computed and stored as one row per window in <a href="../catalog/google_analytics.html#funnel_metrics"><code>funnel_metrics</code></a>: the exit step’s <code>activeUsers</code> divided by the entry step’s, for that funnel run. There is no ratio to compute by hand - filter to the funnel and metric, and read <code>value</code>. Query <a href="../catalog/google_analytics.html#funnel_metrics_current"><code>funnel_metrics_current</code></a> rather than <code>funnel_metrics</code> directly, so a future funnel version bump can’t silently blend two definitions together. Filter <code>breakdown_value = 'RESERVED_TOTAL'</code> for the overall rate across all relying parties; substitute a specific relying party name for a per-RP figure.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href="">SQL</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href="">R</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<p>Sign in:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    window_end,</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">value</span> <span class="kw">AS</span> task_success_rate</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> google_analytics.funnel_metrics_current</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> funnel_id <span class="op">=</span> <span class="st">'sign_in'</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">AND</span> metric_id <span class="op">=</span> <span class="st">'task_success'</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">AND</span> window_days <span class="op">=</span> <span class="st">'7'</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">AND</span> breakdown_value <span class="op">=</span> <span class="st">'RESERVED_TOTAL'</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">AND</span> <span class="kw">NOT</span> window_incomplete</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- set the reporting window; see the timespans note in cookbook/notes.qmd</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">AND</span> <span class="fu">CAST</span>(window_end <span class="kw">AS</span> <span class="dt">DATE</span>) <span class="kw">BETWEEN</span> <span class="dt">DATE</span> <span class="st">'2026-07-14'</span> <span class="kw">AND</span> <span class="dt">DATE</span> <span class="st">'2026-08-03'</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> window_end;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Sign up:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    window_end,</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">value</span> <span class="kw">AS</span> task_success_rate</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> google_analytics.funnel_metrics_current</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> funnel_id <span class="op">=</span> <span class="st">'sign_up'</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">AND</span> metric_id <span class="op">=</span> <span class="st">'task_success'</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">AND</span> window_days <span class="op">=</span> <span class="st">'7'</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">AND</span> breakdown_value <span class="op">=</span> <span class="st">'RESERVED_TOTAL'</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">AND</span> <span class="kw">NOT</span> window_incomplete</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- set the reporting window; see the timespans note in cookbook/notes.qmd</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">AND</span> <span class="fu">CAST</span>(window_end <span class="kw">AS</span> <span class="dt">DATE</span>) <span class="kw">BETWEEN</span> <span class="dt">DATE</span> <span class="st">'2026-07-14'</span> <span class="kw">AND</span> <span class="dt">DATE</span> <span class="st">'2026-08-03'</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> window_end;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<p>Sign in:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tbl</span>(con, <span class="fu">in_schema</span>(<span class="st">"google_analytics"</span>, <span class="st">"funnel_metrics_current"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    funnel_id <span class="sc">==</span> <span class="st">"sign_in"</span>,</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    metric_id <span class="sc">==</span> <span class="st">"task_success"</span>,</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    window_days <span class="sc">==</span> <span class="st">"7"</span>,</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    breakdown_value <span class="sc">==</span> <span class="st">"RESERVED_TOTAL"</span>,</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="sc">!</span>window_incomplete,</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># set the reporting window; see the timespans note in cookbook/notes.qmd</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as.Date</span>(window_end) <span class="sc">&gt;=</span> <span class="fu">as.Date</span>(<span class="st">"2026-07-14"</span>),</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as.Date</span>(window_end) <span class="sc">&lt;=</span> <span class="fu">as.Date</span>(<span class="st">"2026-08-03"</span>)</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(window_end, <span class="at">task_success_rate =</span> value) <span class="sc">|&gt;</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(window_end)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Sign up:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tbl</span>(con, <span class="fu">in_schema</span>(<span class="st">"google_analytics"</span>, <span class="st">"funnel_metrics_current"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    funnel_id <span class="sc">==</span> <span class="st">"sign_up"</span>,</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    metric_id <span class="sc">==</span> <span class="st">"task_success"</span>,</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    window_days <span class="sc">==</span> <span class="st">"7"</span>,</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    breakdown_value <span class="sc">==</span> <span class="st">"RESERVED_TOTAL"</span>,</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="sc">!</span>window_incomplete,</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># set the reporting window; see the timespans note in cookbook/notes.qmd</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as.Date</span>(window_end) <span class="sc">&gt;=</span> <span class="fu">as.Date</span>(<span class="st">"2026-07-14"</span>),</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as.Date</span>(window_end) <span class="sc">&lt;=</span> <span class="fu">as.Date</span>(<span class="st">"2026-08-03"</span>)</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(window_end, <span class="at">task_success_rate =</span> value) <span class="sc">|&gt;</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(window_end)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+<p><em>Interpretation notes.</em> <code>window_days = '7'</code> gives a rolling weekly rate, recomputed nightly on a 7-day window ending each date; <code>window_days = '1'</code> is the same metric on a single day, noisier but useful for same-day monitoring. Both are partition-key strings, not numbers, in this schema. A <code>value</code> of <code>NULL</code> means nobody reached the entry step that window (an undefined rate, not a true zero) - such rows are rare but real, and an average that treats them as <code>0.0</code> will read too pessimistic.</p>
+<p>These two funnels are not directly comparable to each other: sign-in’s rate stops at MFA for the structural reason described above, so it reads lower than a true completion rate would, while sign-up’s rate is a real completion figure. Comparing the two numbers as if they measured the same kind of finish line will overstate the sign-in/sign-up gap.</p>
 
 
 </section>
@@ -877,13 +831,13 @@ ul.task-list li input[type="checkbox"] {
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../catalog/sre.html" class="pagination-link" aria-label="Platform">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Platform</span>
+      <a href="../cookbook/jira.html" class="pagination-link" aria-label="Jira (PSOM)">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Jira (PSOM)</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../catalog/google_analytics.html" class="pagination-link" aria-label="Google Analytics">
-        <span class="nav-page-text">Google Analytics</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../cookbook/notes.html" class="pagination-link" aria-label="Additional Notes">
+        <span class="nav-page-text">Additional Notes</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
