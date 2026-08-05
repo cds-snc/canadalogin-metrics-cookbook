@@ -1,0 +1,52 @@
+## funnel_metrics_current
+
+A view over [`funnel_metrics`](google_analytics.qmd#funnel_metrics) that
+resolves the current `funnel_version` automatically, the same way
+[`funnels_current`](google_analytics.qmd#funnels_current) does for `funnels`.
+Query this instead of `funnel_metrics` directly unless a specific past version
+is genuinely what's wanted.
+
+Each row is the same as a `funnel_metrics` row, restricted to the newest
+`funnel_version` available for that row's `(funnel_id, window_days,
+window_end)`.
+
+`Keywords`: Google Analytics, GA4, funnel, task success, funnel version,
+current version
+
+### Definition
+
+```sql
+CREATE OR REPLACE VIEW funnel_metrics_current AS
+WITH latest_per_date AS (
+  SELECT funnel_id, window_days, window_end,
+         MAX(CAST(funnel_version AS integer)) AS current_version
+  FROM funnel_metrics
+  GROUP BY funnel_id, window_days, window_end
+)
+SELECT f.*
+FROM funnel_metrics f
+JOIN latest_per_date d
+  ON  f.funnel_id   = d.funnel_id
+  AND f.window_days = d.window_days
+  AND f.window_end  = d.window_end
+  AND CAST(f.funnel_version AS integer) = d.current_version;
+```
+
+### Provenance
+
+* **Updated**: Live view, not scheduled
+* **Steward**: EDCP Data and Research Team
+* **Contact**: [Colin Douglas](mailto:colin.douglas@cds-snc.ca)
+
+### Fields
+
+Same as [`funnel_metrics`](google_analytics.qmd#funnel_metrics). `SELECT f.*`
+passes every base column through unchanged; the view's own `current_version`
+column (used only to resolve the join) is not exposed.
+
+### Notes
+
+Same query rules as [`funnels_current`](google_analytics.qmd#funnels_current):
+partition key literals still need quotes (`window_days = '7'`, not `= 7`), and
+don't re-aggregate across `funnel_version` since the view has already resolved
+it.

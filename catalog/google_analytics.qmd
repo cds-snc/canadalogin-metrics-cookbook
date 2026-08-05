@@ -48,3 +48,7 @@ in the pipeline repo.
 {{< include google_analytics/funnels.qmd >}}
 
 {{< include google_analytics/funnels_current.qmd >}}
+
+{{< include google_analytics/funnel_metrics.qmd >}}
+
+{{< include google_analytics/funnel_metrics_current.qmd >}}
