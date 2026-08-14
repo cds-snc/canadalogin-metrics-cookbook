@@ -27,14 +27,14 @@ holds current state only and keeps no history.
 | `service_name_en` | `varchar` | English name of the service. Free text. |
 | `service_name_fr` | `varchar` | French name of the service. Free text.  |
 | `operator` | `varchar` | The organization that runs the service, typed by hand. Display only, see the note below. |
-| `gcorg_id` | `bigint` | The `gc_orgID` of the operating organization, or `0` for entities that are not in the originating dataset. |
+| `gc_orgid` | `bigint` | The `gc_orgID` of the operating organization, or `0` for entities that are not in the originating dataset. |
 | `is_internal` | `boolean` | Is the service internal facing, rather than something the public signs in to? |
 | `launch_date` | `varchar` | Approximate date the service launched to the public, as `YYYY-MM-DD`. Stored as text. |
 | `fetched_at` | `timestamp(3)` | When the ETL last read the source sheet. |
 
 ### Notes
 
-**Group by `gcorg_id`, not `operator`.** `gcorg_id` comes from the
+**Group by `gc_orgid`, not `operator`.** `gc_orgid` comes from the
 [GC Organization Names and Codes dataset](https://open.canada.ca/data/en/dataset/57180b36-3428-4a7f-afe3-2161a6b44ec5)
 on open.canada.ca, and IDs can be resolved to bilingual names through
 [`cds-snc/gcorg-resolver`](https://github.com/cds-snc/gcorg-resolver). `operator`
@@ -43,7 +43,7 @@ full names (`Veterans Affairs Canada`), some are abbreviations (`PrairiesCan`),
 and CanadaLogin's own services use `CanadaLogin`, which is not a GC organization
 at all.
 
-**`gcorg_id = 0` means not applicable, not missing.** It marks the services
+**`gc_orgid = 0` means not applicable, not missing.** It marks the services
 CanadaLogin operates itself, which have no entry in the GC organization registry.
 Excluding it removes CanadaLogin's own services, not bad data.
 

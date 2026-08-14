@@ -48,7 +48,7 @@ tables:
   care about coverage.
 - **Free-text columns are unvalidated.** `service_name_en`, `service_name_fr`,
   and `operator` are typed by hand, so expect occasional drift in spelling and
-  spacing. Group by `gcorg_id` rather than `operator`.
+  spacing. Group by `gc_orgid` rather than `operator`.
 - **Neither table keeps history.** Each refresh overwrites the previous one, so
   a service renamed in the sheet is renamed retroactively for every report.
 
