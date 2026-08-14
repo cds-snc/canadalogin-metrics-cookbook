@@ -279,11 +279,11 @@ ul.task-list li input[type="checkbox"] {
   <ul>
   <li><a href="#about" id="toc-about" class="nav-link active" data-scroll-target="#about">About</a>
   <ul>
+  <li><a href="#relying-parties" id="toc-relying-parties" class="nav-link" data-scroll-target="#relying-parties">Relying Parties</a></li>
   <li><a href="#ibm-verify" id="toc-ibm-verify" class="nav-link" data-scroll-target="#ibm-verify">IBM Verify</a></li>
   <li><a href="#call-centre" id="toc-call-centre" class="nav-link" data-scroll-target="#call-centre">Call Centre</a></li>
   <li><a href="#platform" id="toc-platform" class="nav-link" data-scroll-target="#platform">Platform</a></li>
   <li><a href="#google-analytics" id="toc-google-analytics" class="nav-link" data-scroll-target="#google-analytics">Google Analytics</a></li>
-  <li><a href="#relying-parties" id="toc-relying-parties" class="nav-link" data-scroll-target="#relying-parties">Relying Parties</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -297,6 +297,14 @@ ul.task-list li input[type="checkbox"] {
 <section id="about" class="level1">
 <h1>About</h1>
 <p>The data catalog describes the tables available to analysts. It is distinct from the metrics cookbook; the cookbook explains how to <em>derive</em> metrics, while the catalog describes the <em>tables</em> those metrics are calculated from, field by field.</p>
+<section id="relying-parties" class="level2">
+<h2 class="anchored" data-anchor-id="relying-parties"><a href="../catalog/rp.html">Relying Parties</a></h2>
+<p>Reference tables in the <code>rp</code> schema that identify the services using CanadaLogin and their various aliases.</p>
+<ul>
+<li><a href="../catalog/rp.html#service"><code>service</code></a> - one row per relying party, with its names, operator, and launch date</li>
+<li><a href="../catalog/rp.html#alias"><code>alias</code></a> - the names each source system uses for a service, mapped back to one <code>rp_id</code></li>
+</ul>
+</section>
 <section id="ibm-verify" class="level2">
 <h2 class="anchored" data-anchor-id="ibm-verify"><a href="../catalog/ibm_verify.html">IBM Verify</a></h2>
 <p>Derived tables in the <code>ibm_verify</code> schema, pulled from the IBM Verify reporting API.</p>
@@ -332,14 +340,6 @@ ul.task-list li input[type="checkbox"] {
 <li><a href="../catalog/google_analytics.html#funnels_current"><code>funnels_current</code></a> - <code>funnels</code>, resolved to each date’s current funnel version</li>
 <li><a href="../catalog/google_analytics.html#funnel_metrics"><code>funnel_metrics</code></a> - derived metrics computed from funnel rows, such as task success rate</li>
 <li><a href="../catalog/google_analytics.html#funnel_metrics_current"><code>funnel_metrics_current</code></a> - <code>funnel_metrics</code>, resolved to each date’s current funnel version</li>
-</ul>
-</section>
-<section id="relying-parties" class="level2">
-<h2 class="anchored" data-anchor-id="relying-parties"><a href="../catalog/rp.html">Relying Parties</a></h2>
-<p>Reference tables in the <code>rp</code> schema that identify the services using CanadaLogin and their various aliases.</p>
-<ul>
-<li><a href="../catalog/rp.html#service"><code>service</code></a> - one row per relying party, with its names, operator, and launch date</li>
-<li><a href="../catalog/rp.html#alias"><code>alias</code></a> - the names each source system uses for a service, mapped back to one <code>rp_id</code></li>
 </ul>
 
 
