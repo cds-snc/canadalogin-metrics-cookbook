@@ -1,0 +1,57 @@
+---
+title: Relying Parties
+---
+
+Reference tables for identifying and grouping the services that use CanadaLogin,
+in the `rp` schema. They hold no measurements. They exist to give the analytics
+tables a shared service identifier, so that IBM Verify sign-in counts and Google
+Analytics funnel steps can be reported against the same list of services.
+
+`service` holds one row per relying party, with its names, operator, and launch
+date. `alias` maps each of the many strings the source systems use for a service
+back to that service's `rp_id`.
+
+Both tables come from one hand-maintained
+[Google Sheet](https://docs.google.com/spreadsheets/d/11czXAX6mTxZbbcH_XbFmI-TSoSTc2M5FXUp9teGw1D0/edit?gid=0#gid=0),
+read daily by an AWS ETL. That ETL runs in AWS, outside this repository. Do not
+change the structure of either table.
+
+### Joining through the lookup
+
+Resolve a source-system name to a relying party by joining on `alias`, then join
+`rp_id` to `service` for the attributes:
+
+```sql
+SELECT s.service_name_en,
+       sum(a.successful_logins) AS successful_logins
+FROM ibm_verify.app_login_counts a
+JOIN rp.alias al ON a.application_name = al.alias
+JOIN rp.service s ON al.rp_id = s.rp_id
+WHERE a.from_date BETWEEN DATE '2026-07-01' AND DATE '2026-07-31'
+GROUP BY s.service_name_en
+```
+
+Aggregate after the join, never before. Several IBM Verify application names can
+map to one service, so a pre-aggregated count keyed on `application_name` will
+split a service across its environments.
+
+### Data quality
+
+Because the source is a hand-maintained spreadsheet, a few caveats apply to both
+tables:
+
+- **The list is not a complete inventory.** Services are added when they appear
+  in IBM Verify or analytics data, so a live service with no traffic yet will be missing.
+- **New names need a manual edit.** An application name that appears in IBM
+  Verify before someone adds it to the sheet will not resolve, and an inner join
+  will drop its rows without complaint. Left join and check for nulls when you
+  care about coverage.
+- **Free-text columns are unvalidated.** `service_name_en`, `service_name_fr`,
+  and `operator` are typed by hand, so expect occasional drift in spelling and
+  spacing. Group by `gcorg_id` rather than `operator`.
+- **Neither table keeps history.** Each refresh overwrites the previous one, so
+  a service renamed in the sheet is renamed retroactively for every report.
+
+{{< include rp/service.qmd >}}
+
+{{< include rp/alias.qmd >}}

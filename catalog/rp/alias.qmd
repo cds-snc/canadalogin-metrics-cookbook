@@ -1,0 +1,53 @@
+## alias
+
+One row per name that refers to a relying party. The same service is called
+different things in different systems, and this table maps each of those strings
+back to a single `rp_id`.
+
+Use it to join tables that have no shared service identifier, such as
+`ibm_verify.app_login_counts.application_name` and the `rp_name` breakdown in the
+Google Analytics funnel tables.
+
+`Keywords`: Relying party, RP, alias, application name, crosswalk, lookup, join
+
+### Provenance
+
+Maintained by hand in the same
+[CanadaLogin Relying Parties Google Sheet](https://docs.google.com/spreadsheets/d/11czXAX6mTxZbbcH_XbFmI-TSoSTc2M5FXUp9teGw1D0/edit?gid=0#gid=0)
+as [`rp.service`](#service), read once a day by the same AWS ETL and written as a
+single Parquet file. Not partitioned, overwritten in place, current state only.
+
+* **Updated**: Daily
+* **Steward**: EDCP Data and Research Team
+* **Contact**: [Colin Douglas](mailto:colin.douglas@cds-snc.ca)
+* **Location**: `s3://canadalogin-reporting-transformed/rp/alias/`
+
+### Fields
+
+| Field Name | Type | Description |
+|---|---|---|
+| `alias` | `varchar` | The string that refers to the service, exactly as the source system writes it. |
+| `rp_id` | `bigint` | The relying party this alias refers to. Joins to `rp.service.rp_id`. |
+| `source` | `varchar` | Where the alias was first encountered, one of `IBM Verify` or `Google Analytics`. Record keeping only, see the note below. |
+| `fetched_at` | `timestamp(3)` | When the ETL last read the source sheet. |
+
+### Notes
+
+**Join on `alias` alone. Do not filter on `source`.** `source` records where the
+name was first seen, not which system the name belongs to. Filtering by it before
+joining will silently drop matches for any alias that turns up in both systems.
+
+**One service, several aliases.** A service has as many rows here as it has names. For 
+example, `MyCGC` is `MyCGC` in Google Analytics but both `MyCGC - CGC - .NET - Prod` and
+`MyCGC - CGC - Power Pages - Prod` in IBM Verify. Joining a fact table through
+this lookup is a many-to-one join, so aggregate after the join, not before.
+
+**Not every string in the analytics tables is an alias.** The `rp_name` breakdown
+in the Google Analytics funnel tables also contains `RESERVED_TOTAL` (the
+all-services rollup), `(not set)`, and the empty string. None of these are
+services, and an inner join drops them. If you are reconciling totals, exclude
+`RESERVED_TOTAL` explicitly rather than relying on the join to remove it.
+
+**Aliases are exact strings, not patterns.** They are matched literally, with no
+trimming or case folding. A new application name in IBM Verify will not resolve
+until it is added to the source sheet by hand.

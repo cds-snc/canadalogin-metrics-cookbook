@@ -18,6 +18,7 @@ project:
     - "!catalog/sre/"
     - "!catalog/jira/"
     - "!catalog/google_analytics/"
+    - "!catalog/rp/"
     - "!catalog/data-catalog-template.qmd"
 
 website:
@@ -46,6 +47,7 @@ website:
           - catalog/sre.qmd
           - catalog/jira.qmd
           - catalog/google_analytics.qmd
+          - catalog/rp.qmd
           - catalog/notes.qmd
 
 format:
