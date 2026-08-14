@@ -4,6 +4,13 @@ The data catalog describes the tables available to analysts. It is distinct from
 the metrics cookbook; the cookbook explains how to *derive* metrics, while the
 catalog describes the *tables* those metrics are calculated from, field by field.
 
+## [Relying Parties](rp.qmd)
+
+Reference tables in the `rp` schema that identify the services using CanadaLogin and their various aliases.
+
+- [`service`](rp.qmd#service) - one row per relying party, with its names, operator, and launch date
+- [`alias`](rp.qmd#alias) - the names each source system uses for a service, mapped back to one `rp_id`
+
 ## [IBM Verify](ibm_verify.qmd)
 
 Derived tables in the `ibm_verify` schema, pulled from the IBM Verify reporting API.
@@ -36,11 +43,4 @@ Tables in the `google_analytics` schema, populated from the CanadaLogin GA4 prop
 - [`funnels_current`](google_analytics.qmd#funnels_current) - `funnels`, resolved to each date's current funnel version
 - [`funnel_metrics`](google_analytics.qmd#funnel_metrics) - derived metrics computed from funnel rows, such as task success rate
 - [`funnel_metrics_current`](google_analytics.qmd#funnel_metrics_current) - `funnel_metrics`, resolved to each date's current funnel version
-
-## [Relying Parties](rp.qmd)
-
-Reference tables in the `rp` schema that identify the services using CanadaLogin and their various aliases.
-
-- [`service`](rp.qmd#service) - one row per relying party, with its names, operator, and launch date
-- [`alias`](rp.qmd#alias) - the names each source system uses for a service, mapped back to one `rp_id`
 

@@ -35,24 +35,17 @@ holds current state only and keeps no history.
 ### Notes
 
 **Group by `gc_orgid`, not `operator`.** `gc_orgid` comes from the
-[GC Organization Names and Codes dataset](https://open.canada.ca/data/en/dataset/57180b36-3428-4a7f-afe3-2161a6b44ec5)
-on open.canada.ca, and IDs can be resolved to bilingual names through
-[`cds-snc/gcorg-resolver`](https://github.com/cds-snc/gcorg-resolver). `operator`
-is typed into the sheet by hand and does not follow the registry: some values are
-full names (`Veterans Affairs Canada`), some are abbreviations (`PrairiesCan`),
-and CanadaLogin's own services use `CanadaLogin`, which is not a GC organization
-at all.
+[GC Organization Names and Codes dataset](https://open.canada.ca/data/en/dataset/57180b36-3428-4a7f-afe3-2161a6b44ec5). IDs can be resolved to bilingual names through that dataset or the companion tool,
+[`cds-snc/gcorg-resolver`](https://github.com/cds-snc/gcorg-resolver). 
 
-**`gc_orgid = 0` means not applicable, not missing.** It marks the services
-CanadaLogin operates itself, which have no entry in the GC organization registry.
-Excluding it removes CanadaLogin's own services, not bad data.
+**`gc_orgid = 0` means not applicable.** The organization running the
+service has no entry in the GC organization dataset, so there is no ID to record.
+For these rows, group on the `operator` value instead.
 
 **`launch_date` is a string, so cast both sides when comparing.** Comparing it
 against an R value that looks like an ISO date fails with
 `TYPE_MISMATCH: Cannot apply operator: varchar = date`, because RAthena casts
-ISO-format strings to a SQL `DATE` literal. Wrap both sides in `as.Date()`. The
-same gotcha applies to `jira.psom.date` and `sre.uptime_summary.date`; see
-[the notes page](notes.qmd).
+ISO-format strings to a SQL `DATE` literal. 
 
 **This is not a complete inventory of relying parties.** A service is added to the
 sheet when it shows up in IBM Verify or the analytics data, so a service that is
