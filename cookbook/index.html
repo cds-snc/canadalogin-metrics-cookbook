@@ -50,9 +50,9 @@ ul.task-list li input[type="checkbox"] {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-95c50bb2d73aa577fb4ba4203637214a.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-9dff9b3bff88593a13e90a6fc83e791c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-95c50bb2d73aa577fb4ba4203637214a.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-5d240fd3a05d1af554a8ef88e5a2b7ef.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-f5ea3f02d456196a58b9ed42fd5667ba.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-5d240fd3a05d1af554a8ef88e5a2b7ef.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -255,6 +255,12 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../catalog/rp.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Relying Parties</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../catalog/notes.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Additional Notes</span></a>
   </div>
@@ -321,12 +327,7 @@ ul.task-list li input[type="checkbox"] {
 <h2 class="anchored" data-anchor-id="conventions">Conventions</h2>
 <p>All example SQL targets Amazon Athena (Trino dialect). Constructs such as <code>DATE '...'</code> literals, <code>ROW_NUMBER() OVER (...)</code>, and <code>REGEXP_REPLACE</code> follow Trino semantics.</p>
 <p>In reporting language, prefer <strong>sign-in</strong> over <strong>login</strong>. The underlying IBM Verify field may be called <code>total_logins</code>, but “sign-ins” is preferred (and often enforced) when talking about CanadaLogin.</p>
-<p>Where applicable, internal applications are excluded from external-facing adoption reporting. As of June 3, 2026, the current internal application exclusion list is:</p>
-<ul>
-<li>Flow Application</li>
-<li>GCS Migration Solution</li>
-<li>GC Sign In - Profile Management App</li>
-</ul>
+<p>Where applicable, internal applications are excluded from external-facing adoption reporting. The exclusion list is not maintained here: it is derived from <a href="../catalog/rp.html#service"><code>rp.service.is_internal</code></a> at query time. See the internal applications note in <a href="../cookbook/notes.html">notes.qmd</a> for the pattern.</p>
 </section>
 <section id="scope" class="level2">
 <h2 class="anchored" data-anchor-id="scope">Scope</h2>
