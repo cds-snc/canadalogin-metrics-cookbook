@@ -48,9 +48,10 @@ WITH ranked AS (
     WHERE from_date BETWEEN DATE '2026-06-01' AND DATE '2026-06-08'
     -- to exclude internal applications from adoption reporting, uncomment:
     -- AND application_name NOT IN (
-    --     'Flow Application',
-    --     'GCS Migration Solution',
-    --     'GC Sign In - Profile Management App'
+    --     SELECT al.alias
+    --     FROM   rp.alias al
+    --     JOIN   rp.service s ON al.rp_id = s.rp_id
+    --     WHERE  s.is_internal
     -- )
 )
 
@@ -78,9 +79,10 @@ WITH ranked AS (
     WHERE from_date BETWEEN DATE '2026-01-01' AND DATE '2026-06-08'
     -- to exclude internal applications from adoption reporting, uncomment:
     -- AND application_name NOT IN (
-    --     'Flow Application',
-    --     'GCS Migration Solution',
-    --     'GC Sign In - Profile Management App'
+    --     SELECT al.alias
+    --     FROM   rp.alias al
+    --     JOIN   rp.service s ON al.rp_id = s.rp_id
+    --     WHERE  s.is_internal
     -- )
 )
 
@@ -101,13 +103,15 @@ tbl(con, in_schema("ibm_verify", "app_login_counts")) |>
   filter(
     from_date >= as.Date("2026-06-01"),
     from_date <= as.Date("2026-06-08")
-    # to exclude internal applications from adoption reporting, add as a filter:
-    # !application_name %in% c(
-    #   "Flow Application",
-    #   "GCS Migration Solution",
-    #   "GC Sign In - Profile Management App"
-    # )
   ) |>
+  # to exclude internal applications from adoption reporting, uncomment:
+  # anti_join(
+  #   tbl(con, in_schema("rp", "alias")) |>
+  #     inner_join(tbl(con, in_schema("rp", "service")), by = "rp_id") |>
+  #     filter(is_internal) |>
+  #     select(application_name = alias),
+  #   by = "application_name"
+  # ) |>
   group_by(application_name) |>
   slice_max(
     from_date,
@@ -128,13 +132,15 @@ tbl(con, in_schema("ibm_verify", "app_login_counts")) |>
   filter(
     from_date >= as.Date("2026-01-01"),
     from_date <= as.Date("2026-06-08")
-    # to exclude internal applications from adoption reporting, add as a filter:
-    # !application_name %in% c(
-    #   "Flow Application",
-    #   "GCS Migration Solution",
-    #   "GC Sign In - Profile Management App"
-    # )
   ) |>
+  # to exclude internal applications from adoption reporting, uncomment:
+  # anti_join(
+  #   tbl(con, in_schema("rp", "alias")) |>
+  #     inner_join(tbl(con, in_schema("rp", "service")), by = "rp_id") |>
+  #     filter(is_internal) |>
+  #     select(application_name = alias),
+  #   by = "application_name"
+  # ) |>
   group_by(application_name) |>
   slice_max(
     from_date,

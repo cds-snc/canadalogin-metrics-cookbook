@@ -46,12 +46,9 @@ Verify field may be called `total_logins`, but "sign-ins" is preferred (and
 often enforced) when talking about CanadaLogin.
 
 Where applicable, internal applications are excluded from external-facing
-adoption reporting. As of June 3, 2026, the current internal application
-exclusion list is:
-
-- Flow Application
-- GCS Migration Solution
-- GC Sign In - Profile Management App
+adoption reporting. The exclusion list is not maintained here: it is derived
+from [`rp.service.is_internal`](../catalog/rp.qmd#service) at query time. See the
+internal applications note in [notes.qmd](notes.qmd) for the pattern.
 
 ## Scope
 

@@ -1,0 +1,55 @@
+## service
+
+One row per relying party: a service that uses CanadaLogin to sign its users in.
+Services that run more than one application in CanadaLogin appear once here, not
+once per application.
+
+`Keywords`: Relying party, RP, service, application, department, operator, GC org
+
+### Provenance
+
+The list is maintained by hand in the
+[CanadaLogin Relying Parties Google Sheet](https://docs.google.com/spreadsheets/d/11czXAX6mTxZbbcH_XbFmI-TSoSTc2M5FXUp9teGw1D0/edit?gid=0#gid=0).
+The `rp-sync` Lambda reads the sheet every weekday and writes a single Parquet
+file to S3, then triggers a Glue crawler to refresh the table in Athena. The
+table is not partitioned and the file is overwritten in place, so this table
+holds current state only and keeps no history.
+
+* **Updated**: Weekdays, at 06:00 ET
+* **Steward**: EDCP Data and Research Team
+* **Contact**: [Colin Douglas](mailto:colin.douglas@cds-snc.ca)
+* **Location**: `s3://canadalogin-reporting-transformed/rp/service/`
+
+### Fields
+
+| Field Name | Type | Description |
+|---|---|---|
+| `rp_id` | `bigint` | Identifier for the relying party. Assigned by hand in the source sheet and stable across refreshes. Joins to `rp.alias.rp_id`. |
+| `service_name_en` | `varchar` | English name of the service. Free text. |
+| `service_name_fr` | `varchar` | French name of the service. Free text.  |
+| `operator` | `varchar` | The organization that runs the service, typed by hand. Display only, see the note below. |
+| `gc_orgid` | `bigint` | The `gc_orgID` of the operating organization, or `0` for entities that are not in the originating dataset. |
+| `is_internal` | `boolean` | Is the service internal facing, rather than something the public signs in to? |
+| `launch_date` | `varchar` | Approximate date the service launched to the public, as `YYYY-MM-DD`. Stored as text. |
+| `fetched_at` | `timestamp(3)` | When the Lambda last read the source sheet, in UTC. |
+
+### Notes
+
+**Group by `gc_orgid`, not `operator`.** `gc_orgid` comes from the
+[GC Organization Names and Codes dataset](https://open.canada.ca/data/en/dataset/57180b36-3428-4a7f-afe3-2161a6b44ec5). IDs can be resolved to bilingual names through that dataset or the companion tool,
+[`cds-snc/gcorg-resolver`](https://github.com/cds-snc/gcorg-resolver). 
+
+**`gc_orgid = 0` means not applicable.** The organization running the
+service has no entry in the GC organization dataset, so there is no ID to record.
+For these rows, group on the `operator` value instead.
+
+**`launch_date` is a string, so cast both sides when comparing.** Comparing it
+against an R value that looks like an ISO date fails with
+`TYPE_MISMATCH: Cannot apply operator: varchar = date`, because RAthena casts
+ISO-format strings to a SQL `DATE` literal. 
+
+**This is not a complete inventory of relying parties.** A service is added to the
+sheet when it shows up in IBM Verify or the analytics data, so a service that is
+live but has no traffic yet will be missing. Do not use `count(*)` here as the denominator for
+"how many services use CanadaLogin".
+

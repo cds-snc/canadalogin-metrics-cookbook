@@ -11,14 +11,20 @@ The relevant IBM Verify tables are:
 - [`ibm_verify.app_login_counts`](../catalog/ibm_verify.qmd#app_login_counts) - daily sign-in counts broken down by application
 - [`ibm_verify.mfa_activity`](../catalog/ibm_verify.qmd#mfa_activity) - multi-factor authentication activity by factor and result
 
-**Internal applications.** The following applications are typically excluded from
-public-facing adoption metrics:
+**Internal applications.** Internal applications are typically excluded from
+public-facing adoption metrics. Which ones are internal comes from
+[`rp.service.is_internal`](../catalog/rp.qmd#service), resolved to IBM Verify's
+application names through [`rp.alias`](../catalog/rp.qmd#alias):
 
 ```sql
-'Flow Application',
-'GCS Migration Solution',
-'GC Sign In - Profile Management App'
+SELECT al.alias
+FROM   rp.alias al
+JOIN   rp.service s ON al.rp_id = s.rp_id
+WHERE  s.is_internal
 ```
+
+Use the subquery rather than a pasted list, so the classification stays in one
+place. See the internal applications note in [notes.qmd](notes.qmd).
 
 ## CanadaLogin Metrics
 

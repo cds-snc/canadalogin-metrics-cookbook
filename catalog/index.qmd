@@ -4,6 +4,13 @@ The data catalog describes the tables available to analysts. It is distinct from
 the metrics cookbook; the cookbook explains how to *derive* metrics, while the
 catalog describes the *tables* those metrics are calculated from, field by field.
 
+## [Relying Parties](rp.qmd)
+
+Reference tables in the `rp` schema that identify the services using CanadaLogin and their various aliases.
+
+- [`service`](rp.qmd#service) - one row per relying party, with its names, operator, and launch date
+- [`alias`](rp.qmd#alias) - the names each source system uses for a service, mapped back to one `rp_id`
+
 ## [IBM Verify](ibm_verify.qmd)
 
 Derived tables in the `ibm_verify` schema, pulled from the IBM Verify reporting API.
