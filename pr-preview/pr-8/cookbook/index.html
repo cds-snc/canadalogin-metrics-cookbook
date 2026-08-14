@@ -327,12 +327,7 @@ ul.task-list li input[type="checkbox"] {
 <h2 class="anchored" data-anchor-id="conventions">Conventions</h2>
 <p>All example SQL targets Amazon Athena (Trino dialect). Constructs such as <code>DATE '...'</code> literals, <code>ROW_NUMBER() OVER (...)</code>, and <code>REGEXP_REPLACE</code> follow Trino semantics.</p>
 <p>In reporting language, prefer <strong>sign-in</strong> over <strong>login</strong>. The underlying IBM Verify field may be called <code>total_logins</code>, but “sign-ins” is preferred (and often enforced) when talking about CanadaLogin.</p>
-<p>Where applicable, internal applications are excluded from external-facing adoption reporting. As of June 3, 2026, the current internal application exclusion list is:</p>
-<ul>
-<li>Flow Application</li>
-<li>GCS Migration Solution</li>
-<li>GC Sign In - Profile Management App</li>
-</ul>
+<p>Where applicable, internal applications are excluded from external-facing adoption reporting. The exclusion list is not maintained here: it is derived from <a href="../catalog/rp.html#service"><code>rp.service.is_internal</code></a> at query time. See the internal applications note in <a href="../cookbook/notes.html">notes.qmd</a> for the pattern.</p>
 </section>
 <section id="scope" class="level2">
 <h2 class="anchored" data-anchor-id="scope">Scope</h2>
