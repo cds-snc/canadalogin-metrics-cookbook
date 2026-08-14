@@ -13,8 +13,9 @@ back to that service's `rp_id`.
 
 Both tables come from one hand-maintained
 [Google Sheet](https://docs.google.com/spreadsheets/d/11czXAX6mTxZbbcH_XbFmI-TSoSTc2M5FXUp9teGw1D0/edit?gid=0#gid=0),
-read daily by an AWS ETL. That ETL runs in AWS, outside this repository. Do not
-change the structure of either table.
+read every weekday by the `rp-sync` Lambda in
+[`cds-snc/canadalogin-reporting-data-pipeline`](https://github.com/cds-snc/canadalogin-reporting-data-pipeline).
+That pipeline owns the table structure. Do not change it from this side.
 
 ### Joining through the lookup
 
