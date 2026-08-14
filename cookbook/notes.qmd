@@ -64,10 +64,23 @@ A simple average of weekly averages may give too much influence to low-volume we
 
 ## Internal applications should usually be excluded from external adoption reporting
 
-The following applications are currently treated as internal:
-  
-- Flow Application
-- GCS Migration Solution
-- GC Sign In - Profile Management App
+Which applications count as internal is recorded in
+[`rp.service.is_internal`](../catalog/rp.qmd#service), not in this document.
+Resolve it through [`rp.alias`](../catalog/rp.qmd#alias), which maps the
+application names IBM Verify and Google Analytics use back to a single service:
 
-Whether to exclude them depends on the reporting question.
+```sql
+SELECT al.alias
+FROM   rp.alias al
+JOIN   rp.service s ON al.rp_id = s.rp_id
+WHERE  s.is_internal
+```
+
+Query the list rather than pasting it into a filter. A service is reclassified
+by editing the source spreadsheet, and a query holding its own copy of the list
+will not notice. The same subquery works as a `NOT IN` in SQL and as an
+`anti_join()` in dbplyr; both forms appear in
+[Sign-Ins by Application](ibm_verify.qmd#sign-ins-by-application).
+
+Whether to exclude internal applications at all depends on the reporting
+question.

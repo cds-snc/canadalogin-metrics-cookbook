@@ -32,11 +32,13 @@ SELECT
 FROM   ibm_verify.app_login_counts
 -- set the reporting window; see the timespans note in cookbook/notes.qmd
 WHERE  from_date BETWEEN DATE '2026-01-01' AND DATE '2026-05-28'
--- optionally filter out internal applications
+-- optionally filter out internal applications; see the internal applications
+-- note in cookbook/notes.qmd
   AND application_name NOT IN (
-      'Flow Application',
-      'GCS Migration Solution',
-      'GC Sign In - Profile Management App'
+      SELECT al.alias
+      FROM   rp.alias al
+      JOIN   rp.service s ON al.rp_id = s.rp_id
+      WHERE  s.is_internal
   )
 GROUP  BY application_name
 ORDER  BY total_sign_ins DESC;
@@ -45,20 +47,20 @@ ORDER  BY total_sign_ins DESC;
 ## R
 
 ```r
-internal_apps <- c(
-  "Flow Application",
-  "GCS Migration Solution",
-  "GC Sign In - Profile Management App"
-)
+internal_apps <- tbl(con, in_schema("rp", "alias")) |>
+  inner_join(tbl(con, in_schema("rp", "service")), by = "rp_id") |>
+  filter(is_internal) |>
+  select(application_name = alias)
 
 tbl(con, in_schema("ibm_verify", "app_login_counts")) |>
   # set the reporting window; see the timespans note in cookbook/notes.qmd
   filter(
     from_date >= as.Date("2026-01-01"),
-    from_date <= as.Date("2026-05-28"),
-    # optionally filter out internal applications
-    !application_name %in% internal_apps
+    from_date <= as.Date("2026-05-28")
   ) |>
+  # optionally filter out internal applications; see the internal applications
+  # note in cookbook/notes.qmd
+  anti_join(internal_apps, by = "application_name") |>
   group_by(application_name) |>
   summarise(
     total_sign_ins = sum(total_logins, na.rm = TRUE)
