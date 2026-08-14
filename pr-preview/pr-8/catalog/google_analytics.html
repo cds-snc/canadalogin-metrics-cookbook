@@ -1,0 +1,1235 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Google Analytics – CanadaLogin Metrics Cookbook</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../catalog/rp.html" rel="next">
+<link href="../catalog/jira.html" rel="prev">
+<link href="../img/cds-snc.png" rel="icon" type="image/png">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-b85bc7c33db8c58e0ec93c3465666fed.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-5d240fd3a05d1af554a8ef88e5a2b7ef.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-f5ea3f02d456196a58b9ed42fd5667ba.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-5d240fd3a05d1af554a8ef88e5a2b7ef.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<!--
+  Google Analytics (GA4) - CanadaLogin Metrics Cookbook stream (G-E72QKPP7TX),
+  a second web stream in the same property as the Signal Check reports.
+
+  Do NOT replace this with the stock snippet the GA4 admin UI hands you. That
+  one omits the consent defaults, the Google signals flags, and the shortened
+  cookie lifetime, all of which are deliberate.
+
+  This is only half the privacy configuration. The rest lives in property-level
+  settings in the GA4 admin UI (Google signals off, granular location and device
+  data off, 2-month retention), which win where the two disagree. Enhanced
+  measurement is a per-stream setting and is not inherited: this stream is set
+  to scrolls and outbound clicks only.
+
+  No anonymize_ip. It is a Universal Analytics parameter and is inert in GA4,
+  which never logs or stores IP addresses in the first place, so including it
+  would look like a control while doing nothing.
+-->
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+
+  // Consent defaults must come before config so they apply to the first hit.
+  gtag("consent", "default", {
+    "ad_storage": "denied",
+    "ad_user_data": "denied",
+    "ad_personalization": "denied",
+    "analytics_storage": "granted"
+  });
+
+  gtag("js", new Date());
+
+  // cookie_expires is 30 days, down from the 2-year default. Kept as a cookie
+  // rather than client_storage: "none" so returning readers still count as
+  // people instead of every pageview counting as a new user.
+  gtag("config", "G-E72QKPP7TX", {
+    "allow_google_signals": false,
+    "allow_ad_personalization_signals": false,
+    "cookie_expires": 2592000
+  });
+</script>
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-E72QKPP7TX"></script>
+
+
+</head>
+
+<body class="nav-sidebar docked quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../catalog/index.html">Data Catalog</a></li><li class="breadcrumb-item"><a href="../catalog/google_analytics.html">Google Analytics</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+      <a href="../index.html" class="sidebar-logo-link">
+      <img src="../img/cds-snc.png" alt="" class="sidebar-logo light-content py-0 d-lg-inline d-none">
+      <img src="../img/cds-snc.png" alt="" class="sidebar-logo dark-content py-0 d-lg-inline d-none">
+      </a>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../cookbook/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Metrics Cookbook</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/ibm_verify.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">IBM Verify</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/call_centre.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Call Centre</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/sre.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Platform</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/jira.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Jira (PSOM)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/google_analytics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Google Analytics</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/notes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Additional Notes</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../catalog/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Data Catalog</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../catalog/ibm_verify.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">IBM Verify</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../catalog/call_centre.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Call Centre</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../catalog/sre.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Platform</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../catalog/jira.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Jira (PSOM)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../catalog/google_analytics.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Google Analytics</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../catalog/rp.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Relying Parties</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../catalog/notes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Additional Notes</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="99">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#export-lag" id="toc-export-lag" class="nav-link active" data-scroll-target="#export-lag">Export lag</a></li>
+  <li><a href="#property_traffic" id="toc-property_traffic" class="nav-link" data-scroll-target="#property_traffic">property_traffic</a>
+  <ul>
+  <li><a href="#provenance" id="toc-provenance" class="nav-link" data-scroll-target="#provenance">Provenance</a></li>
+  <li><a href="#fields" id="toc-fields" class="nav-link" data-scroll-target="#fields">Fields</a></li>
+  <li><a href="#notes" id="toc-notes" class="nav-link" data-scroll-target="#notes">Notes</a></li>
+  </ul></li>
+  <li><a href="#page_traffic" id="toc-page_traffic" class="nav-link" data-scroll-target="#page_traffic">page_traffic</a>
+  <ul>
+  <li><a href="#provenance-1" id="toc-provenance-1" class="nav-link" data-scroll-target="#provenance-1">Provenance</a></li>
+  <li><a href="#fields-1" id="toc-fields-1" class="nav-link" data-scroll-target="#fields-1">Fields</a></li>
+  <li><a href="#notes-1" id="toc-notes-1" class="nav-link" data-scroll-target="#notes-1">Notes</a></li>
+  </ul></li>
+  <li><a href="#funnels" id="toc-funnels" class="nav-link" data-scroll-target="#funnels">funnels</a>
+  <ul>
+  <li><a href="#provenance-2" id="toc-provenance-2" class="nav-link" data-scroll-target="#provenance-2">Provenance</a></li>
+  <li><a href="#fields-2" id="toc-fields-2" class="nav-link" data-scroll-target="#fields-2">Fields</a></li>
+  <li><a href="#notes-2" id="toc-notes-2" class="nav-link" data-scroll-target="#notes-2">Notes</a></li>
+  </ul></li>
+  <li><a href="#funnels_current" id="toc-funnels_current" class="nav-link" data-scroll-target="#funnels_current">funnels_current</a>
+  <ul>
+  <li><a href="#definition" id="toc-definition" class="nav-link" data-scroll-target="#definition">Definition</a></li>
+  <li><a href="#provenance-3" id="toc-provenance-3" class="nav-link" data-scroll-target="#provenance-3">Provenance</a></li>
+  <li><a href="#fields-3" id="toc-fields-3" class="nav-link" data-scroll-target="#fields-3">Fields</a></li>
+  <li><a href="#notes-3" id="toc-notes-3" class="nav-link" data-scroll-target="#notes-3">Notes</a></li>
+  </ul></li>
+  <li><a href="#funnel_metrics" id="toc-funnel_metrics" class="nav-link" data-scroll-target="#funnel_metrics">funnel_metrics</a>
+  <ul>
+  <li><a href="#provenance-4" id="toc-provenance-4" class="nav-link" data-scroll-target="#provenance-4">Provenance</a></li>
+  <li><a href="#fields-4" id="toc-fields-4" class="nav-link" data-scroll-target="#fields-4">Fields</a></li>
+  <li><a href="#notes-4" id="toc-notes-4" class="nav-link" data-scroll-target="#notes-4">Notes</a></li>
+  </ul></li>
+  <li><a href="#funnel_metrics_current" id="toc-funnel_metrics_current" class="nav-link" data-scroll-target="#funnel_metrics_current">funnel_metrics_current</a>
+  <ul>
+  <li><a href="#definition-1" id="toc-definition-1" class="nav-link" data-scroll-target="#definition-1">Definition</a></li>
+  <li><a href="#provenance-5" id="toc-provenance-5" class="nav-link" data-scroll-target="#provenance-5">Provenance</a></li>
+  <li><a href="#fields-5" id="toc-fields-5" class="nav-link" data-scroll-target="#fields-5">Fields</a></li>
+  <li><a href="#notes-5" id="toc-notes-5" class="nav-link" data-scroll-target="#notes-5">Notes</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../catalog/index.html">Data Catalog</a></li><li class="breadcrumb-item"><a href="../catalog/google_analytics.html">Google Analytics</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">Google Analytics</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Tables in the <code>google_analytics</code> schema, populated from the CanadaLogin GA4 property. Three scheduled Lambdas write into this schema each night, all in the <code>canadalogin-reporting-data-pipeline</code> repo’s <code>google_analytics</code> Terraform module:</p>
+<ul>
+<li><strong>06:30 ET</strong> - the funnel export, writing <a href="#funnels"><code>funnels</code></a></li>
+<li><strong>06:45 ET</strong> - the funnel metrics Lambda, deriving <a href="#funnel_metrics"><code>funnel_metrics</code></a> from the funnels the export just landed</li>
+<li><strong>07:00 ET</strong> - the daily export, writing <a href="#property_traffic"><code>property_traffic</code></a> and <a href="#page_traffic"><code>page_traffic</code></a>, then starting the crawler</li>
+</ul>
+<p><a href="#funnels_current"><code>funnels_current</code></a> and <a href="#funnel_metrics_current"><code>funnel_metrics_current</code></a> are views over <code>funnels</code> and <code>funnel_metrics</code> respectively, resolving each date to its current funnel version.</p>
+<section id="export-lag" class="level3">
+<h3 class="anchored" data-anchor-id="export-lag">Export lag</h3>
+<p>All four tables are pulled with a deliberate two-day lag - the nightly sweep that runs the morning of August 5, 2026 lands a window ending August 3, 2026, not August 4, because GA4 takes 24 to 48 hours to finish processing a day’s events. Each day is written once and never re-pulled, so a window read too early would stay artificially low forever.</p>
+<p>Two of these tables - <code>funnels</code> and <code>funnel_metrics</code> - are defined by version-controlled YAML rather than a fixed schema. <strong>For what a funnel step or a derived metric actually measures, the YAML on GitHub is the single canonical source</strong>, not this catalog: steps get renamed, re-scoped, or added as CanadaLogin’s own pages change, and the catalog entries below describe the table shape rather than the current step names. See <a href="https://github.com/cds-snc/canadalogin-reporting-data-pipeline/tree/main/infra/modules/google_analytics/funnel_src/funnels"><code>funnel_src/funnels/</code></a> in the pipeline repo.</p>
+</section>
+<section id="property_traffic" class="level2">
+<h2 class="anchored" data-anchor-id="property_traffic">property_traffic</h2>
+<p>Property-wide daily traffic for the CanadaLogin GA4 property, with no dimension beyond the day.</p>
+<p>Each row represents one day of aggregate site-wide traffic.</p>
+<p><code>Keywords</code>: Google Analytics, GA4, traffic, sessions, active users, page views</p>
+<section id="provenance" class="level3">
+<h3 class="anchored" data-anchor-id="provenance">Provenance</h3>
+<p>Pulled daily from the GA4 Data API (<code>runReport</code>) for the CanadaLogin property, via a Lambda authenticating through Google Cloud Workload Identity Federation (no stored service account key). Written as JSONL, then cast to typed Parquet by a Glue ETL job.</p>
+<ul>
+<li><strong>Updated</strong>: Daily, at 07:00 ET</li>
+<li><strong>Steward</strong>: EDCP Data and Research Team</li>
+<li><strong>Contact</strong>: <a href="mailto:colin.douglas@cds-snc.ca">Colin Douglas</a></li>
+<li><strong>Location</strong>: <code>s3://&lt;transformed-bucket&gt;/google_analytics/property_traffic/</code></li>
+</ul>
+</section>
+<section id="fields" class="level3">
+<h3 class="anchored" data-anchor-id="fields">Fields</h3>
+<p>One row per <code>date</code>.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Field Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>date</td>
+<td>string</td>
+<td>The reporting day, as a partition key (for example, “2026-07-23”)</td>
+</tr>
+<tr class="even">
+<td>sessions</td>
+<td>bigint</td>
+<td>Number of sessions started on this day, site-wide</td>
+</tr>
+<tr class="odd">
+<td>activeusers</td>
+<td>bigint</td>
+<td>Number of distinct active users on this day, site-wide</td>
+</tr>
+<tr class="even">
+<td>newusers</td>
+<td>bigint</td>
+<td>Number of users on this day who had not been seen before</td>
+</tr>
+<tr class="odd">
+<td>screenpageviews</td>
+<td>bigint</td>
+<td>Number of page views on this day, site-wide</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="notes" class="level3">
+<h3 class="anchored" data-anchor-id="notes">Notes</h3>
+<p><code>activeusers</code> is de-duplicated by GA4 within the day; it is not the sum of per-page unique users. This table is the collection canary for the GA4 pipeline: because it carries no dimension beyond <code>date</code>, a property-wide active-user collapse here distinguishes “GA stopped collecting” from “one page or one funnel’s tag broke,” which <a href="../catalog/google_analytics.html#page_traffic"><code>page_traffic</code></a> rows alone cannot do.</p>
+<p><code>screenpageviews</code> here should equal <code>SUM(screenpageviews)</code> from <a href="../catalog/google_analytics.html#page_traffic"><code>page_traffic</code></a> for the same <code>date</code> - the two tables’ only currently-summable metric, and a useful integrity check between them. <code>sessions</code> and <code>activeusers</code> do <strong>not</strong> reconcile the same way across the two tables (GA4 de-duplicates each within its own dimension combination), so do not expect them to match.</p>
+</section>
+</section>
+<section id="page_traffic" class="level2">
+<h2 class="anchored" data-anchor-id="page_traffic">page_traffic</h2>
+<p>Daily traffic for the CanadaLogin GA4 property, broken down by page.</p>
+<p>Each row represents one day of traffic to a single page, identified by both its title and its path.</p>
+<p><code>Keywords</code>: Google Analytics, GA4, page views, traffic, page title, page path</p>
+<section id="provenance-1" class="level3">
+<h3 class="anchored" data-anchor-id="provenance-1">Provenance</h3>
+<p>Pulled daily from the GA4 Data API (<code>runReport</code>) for the CanadaLogin property, via the same Lambda and pipeline as <a href="../catalog/google_analytics.html#property_traffic"><code>property_traffic</code></a>.</p>
+<ul>
+<li><strong>Updated</strong>: Daily, at 07:00 ET</li>
+<li><strong>Steward</strong>: EDCP Data and Research Team</li>
+<li><strong>Contact</strong>: <a href="mailto:colin.douglas@cds-snc.ca">Colin Douglas</a></li>
+<li><strong>Location</strong>: <code>s3://&lt;transformed-bucket&gt;/google_analytics/page_traffic/</code></li>
+</ul>
+</section>
+<section id="fields-1" class="level3">
+<h3 class="anchored" data-anchor-id="fields-1">Fields</h3>
+<p>One row per <code>date</code> per <code>pagetitle</code> per <code>pagepath</code>.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Field Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>date</td>
+<td>string</td>
+<td>The reporting day, as a partition key (for example, “2026-07-23”)</td>
+</tr>
+<tr class="even">
+<td>pagetitle</td>
+<td>string</td>
+<td>The page’s <code>&lt;title&gt;</code> at the time of the visit</td>
+</tr>
+<tr class="odd">
+<td>pagepath</td>
+<td>string</td>
+<td>The page’s URL path</td>
+</tr>
+<tr class="even">
+<td>sessions</td>
+<td>bigint</td>
+<td>Number of sessions that included this page on this day</td>
+</tr>
+<tr class="odd">
+<td>activeusers</td>
+<td>bigint</td>
+<td>Number of distinct active users who viewed this page on this day</td>
+</tr>
+<tr class="even">
+<td>screenpageviews</td>
+<td>bigint</td>
+<td>Number of times this page was viewed on this day</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="notes-1" class="level3">
+<h3 class="anchored" data-anchor-id="notes-1">Notes</h3>
+<p><strong>Keep both <code>pagetitle</code> and <code>pagepath</code> in mind when joining or filtering.</strong> Title alone is an unstable key: a page retitled in a release starts a fresh row with no link to its history (this has happened repeatedly to CanadaLogin’s sign-in and sign-up pages - see the <a href="../cookbook/google_analytics.html#task-success-rate">task success rate</a> metric for the concrete impact). Path alone is unreadable in a report. Prefer <code>pagepath</code> for anything that needs to survive a copy or title change.</p>
+<p><strong><code>activeusers</code> does not sum across pages.</strong> GA4 de-duplicates active users <em>within</em> a row’s dimension combination, so a user who visited three pages in a day appears in all three rows. Summing <code>activeusers</code> across pages, or across this table and <a href="../catalog/google_analytics.html#property_traffic"><code>property_traffic</code></a>, overcounts. <code>sessions</code> and <code>screenpageviews</code> are safe to sum; see the <a href="../catalog/google_analytics.html#property_traffic"><code>property_traffic</code></a> integrity-check note.</p>
+<p><code>screenpageviews</code> exposes per-step retries on a form page (views greater than 1 on a single page in a day is a friction signal invisible in a funnel’s pass/fail step counts).</p>
+</section>
+</section>
+<section id="funnels" class="level2">
+<h2 class="anchored" data-anchor-id="funnels">funnels</h2>
+<p>Step-by-step counts for each defined GA4 funnel (currently <code>sign_in</code> and <code>sign_up</code>), for a given reporting window.</p>
+<p>Each row represents one step of one funnel run, for one relying party (or the funnel’s total across all relying parties).</p>
+<p><code>Keywords</code>: Google Analytics, GA4, funnel, funnel step, task success, drop-off, abandonment, relying party</p>
+<section id="provenance-2" class="level3">
+<h3 class="anchored" data-anchor-id="provenance-2">Provenance</h3>
+<p>A funnel is defined as YAML, not SQL: one file per funnel in <a href="https://github.com/cds-snc/canadalogin-reporting-data-pipeline/tree/main/infra/modules/google_analytics/funnel_src/funnels"><code>funnel_src/funnels/</code></a> in the <code>canadalogin-reporting-data-pipeline</code> repo. A dedicated Lambda turns each funnel’s YAML into a GA4 Data API <code>runFunnelReport</code> request (via Workload Identity Federation, same auth pattern as <a href="../catalog/google_analytics.html#property_traffic"><code>property_traffic</code></a>) and writes the result as JSONL. <strong>The YAML on GitHub is the canonical definition of what each funnel measures</strong> - which pages or events count as which step, in what order, and over what population. This page describes the table shape; it does not enumerate step names, because they are versioned in that YAML and can change between funnel versions.</p>
+<ul>
+<li><strong>Updated</strong>: Daily, at 06:30 ET (a nightly sweep; see Notes)</li>
+<li><strong>Steward</strong>: EDCP Data and Research Team</li>
+<li><strong>Contact</strong>: <a href="mailto:colin.douglas@cds-snc.ca">Colin Douglas</a></li>
+<li><strong>Location</strong>: <code>s3://&lt;transformed-bucket&gt;/google_analytics/funnels/</code></li>
+</ul>
+</section>
+<section id="fields-2" class="level3">
+<h3 class="anchored" data-anchor-id="fields-2">Fields</h3>
+<p>One row per <code>funnel_id</code> per <code>funnel_version</code> per <code>window_days</code> per <code>window_end</code> per <code>funnelstepname</code> per <code>breakdown_value</code>.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Field Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>funnel_id</td>
+<td>string</td>
+<td>Partition key. Which funnel this row belongs to (for example, “sign_in”, “sign_up”) - matches a filename under <code>funnel_src/funnels/</code> on GitHub</td>
+</tr>
+<tr class="even">
+<td>funnel_version</td>
+<td>string</td>
+<td>Partition key. The funnel definition’s version at the time this row was run. A plain integer, but typed <code>string</code> by the crawler - see Notes</td>
+</tr>
+<tr class="odd">
+<td>window_days</td>
+<td>string</td>
+<td>Partition key. Length of the reporting window this row summarizes: “1” for a nightly monitoring run, “7” for a rolling weekly rate</td>
+</tr>
+<tr class="even">
+<td>window_end</td>
+<td>string</td>
+<td>Partition key. Last date (inclusive) of the reporting window, as text (for example, “2026-07-23”)</td>
+</tr>
+<tr class="odd">
+<td>funnelstepnumber</td>
+<td>bigint</td>
+<td>The step’s 1-indexed position in the funnel</td>
+</tr>
+<tr class="even">
+<td>funnelstepname</td>
+<td>string</td>
+<td>The step’s name, as declared in the funnel’s YAML on GitHub. Not a closed set - see Provenance</td>
+</tr>
+<tr class="odd">
+<td>breakdown_dimension</td>
+<td>string</td>
+<td>The bare GA4 dimension a funnel’s <code>breakdown:</code> block splits by (currently always “rp_name”, the relying party)</td>
+</tr>
+<tr class="even">
+<td>breakdown_value</td>
+<td>string</td>
+<td>The relying party this row covers, or the sentinel <code>RESERVED_TOTAL</code> for the funnel’s grand total across all relying parties (including any past GA4’s 15-value breakdown cap) - see Notes</td>
+</tr>
+<tr class="odd">
+<td>activeusers</td>
+<td>bigint</td>
+<td>Distinct active users who reached this step, for this relying party, within the window</td>
+</tr>
+<tr class="even">
+<td>funnelstepcompletionrate</td>
+<td>double</td>
+<td>GA4’s own step-over-step completion rate (this step’s users over the previous step’s)</td>
+</tr>
+<tr class="odd">
+<td>funnelstepabandonments</td>
+<td>bigint</td>
+<td>Users who reached this step but did not reach the next one</td>
+</tr>
+<tr class="even">
+<td>funnelstepabandonmentrate</td>
+<td>double</td>
+<td><code>funnelstepabandonments</code> as a proportion of this step’s <code>activeusers</code></td>
+</tr>
+<tr class="odd">
+<td>window_start</td>
+<td>string</td>
+<td>First date (inclusive) of the reporting window, as text. Derivable from <code>window_end</code> and <code>window_days</code>, but stored for convenience</td>
+</tr>
+<tr class="even">
+<td>window_incomplete</td>
+<td>boolean</td>
+<td><code>true</code> if this window was trimmed to the funnel’s <code>valid_from</code>/<code>valid_to</code> bounds (see Notes) - <strong>exclude these rows from any trend read as a full window</strong></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="notes-2" class="level3">
+<h3 class="anchored" data-anchor-id="notes-2">Notes</h3>
+<p><strong>A funnel’s step names, order and population can change between versions - always check GitHub, not a memory of a prior version.</strong> Every CanadaLogin funnel has already had at least one step renamed or re-scoped since it was first defined (see the <a href="../cookbook/google_analytics.html#task-success-rate">task success rate</a> metric for a worked example). <code>funnel_version</code> exists so old and new definitions coexist rather than silently overwriting each other: <strong>always pin <code>funnel_version</code> in a query</strong>, or use the <a href="../catalog/google_analytics.html#funnels_current"><code>funnels_current</code></a> view, which resolves the newest version per date automatically. Summing or averaging across versions blends two different definitions of the funnel into one meaningless number.</p>
+<p><strong><code>RESERVED_TOTAL</code> is a real GA4 sentinel, not a relying party.</strong> A funnel breakdown caps at 15 distinct values; <code>RESERVED_TOTAL</code> is GA4’s grand total across <em>all</em> relying parties, including any beyond that cap, and is the correct number to read as the funnel’s overall rate.</p>
+<p><strong><code>window_incomplete</code> rows are written, not dropped, and must be excluded from a trend.</strong> A window that reaches earlier than a funnel’s <code>valid_from</code> (or later than <code>valid_to</code>) is trimmed and flagged rather than skipped, so a scheduled job keeps running as a tagging boundary recedes. A trimmed 7-day row is still labelled <code>window_days = "7"</code> but covers fewer than 7 days - reading it as a full week understates or overstates the true rate depending on what changed at the boundary.</p>
+<p><strong><code>activeusers</code> is de-duplicated within its own window and is not additive across windows.</strong> Summing seven daily (<code>window_days = "1"</code>) rows for a week is not the same query as one <code>window_days = "7"</code> row for that week - repeat users within the week are counted once by the 7-day row and once per day they appeared by the daily rows. Rates hold close either way; raw counts do not. Never sum <code>activeusers</code> across rows with different <code>window_end</code> values.</p>
+<p>The nightly 06:30 ET run also self-heals: on a <code>funnel_version</code> bump, it backfills every past window still needed under the new version, so the “Updated” cadence above describes when new dates land, not necessarily when every partition was last (re)written.</p>
+</section>
+</section>
+<section id="funnels_current" class="level2">
+<h2 class="anchored" data-anchor-id="funnels_current">funnels_current</h2>
+<p>A view over <a href="../catalog/google_analytics.html#funnels"><code>funnels</code></a> that resolves the current <code>funnel_version</code> automatically. Query this instead of <code>funnels</code> directly unless a specific past version is genuinely what’s wanted.</p>
+<p>Each row is the same as a <code>funnels</code> row, restricted to the newest <code>funnel_version</code> available for that row’s <code>(funnel_id, window_days, window_end)</code>.</p>
+<p><code>Keywords</code>: Google Analytics, GA4, funnel, funnel version, current version</p>
+<section id="definition" class="level3">
+<h3 class="anchored" data-anchor-id="definition">Definition</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">OR</span> <span class="kw">REPLACE</span> <span class="kw">VIEW</span> funnels_current <span class="kw">AS</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">WITH</span> latest_per_date <span class="kw">AS</span> (</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">SELECT</span> funnel_id, window_days, window_end,</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>         <span class="fu">MAX</span>(<span class="fu">CAST</span>(funnel_version <span class="kw">AS</span> <span class="dt">integer</span>)) <span class="kw">AS</span> current_version</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">FROM</span> funnels</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">GROUP</span> <span class="kw">BY</span> funnel_id, window_days, window_end</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> f.<span class="op">*</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> funnels f</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="kw">JOIN</span> latest_per_date d</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">ON</span>  f.funnel_id   <span class="op">=</span> d.funnel_id</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">AND</span> f.window_days <span class="op">=</span> d.window_days</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">AND</span> f.window_end  <span class="op">=</span> d.window_end</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>  <span class="kw">AND</span> <span class="fu">CAST</span>(f.funnel_version <span class="kw">AS</span> <span class="dt">integer</span>) <span class="op">=</span> d.current_version;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="provenance-3" class="level3">
+<h3 class="anchored" data-anchor-id="provenance-3">Provenance</h3>
+<ul>
+<li><strong>Updated</strong>: Live view, not scheduled</li>
+<li><strong>Steward</strong>: EDCP Data and Research Team</li>
+<li><strong>Contact</strong>: <a href="mailto:colin.douglas@cds-snc.ca">Colin Douglas</a></li>
+</ul>
+</section>
+<section id="fields-3" class="level3">
+<h3 class="anchored" data-anchor-id="fields-3">Fields</h3>
+<p>Same as <a href="../catalog/google_analytics.html#funnels"><code>funnels</code></a>. <code>SELECT f.*</code> passes every base column through unchanged; the view’s own <code>current_version</code> column (used only to resolve the join) is not exposed.</p>
+</section>
+<section id="notes-3" class="level3">
+<h3 class="anchored" data-anchor-id="notes-3">Notes</h3>
+<p><strong>The partition keys are still typed <code>string</code> in the view’s output</strong>, the same as the base table - <code>MAX(funnel_version)</code> <strong>on the view</strong> still sorts lexically wrong if you ignore that the view has already picked one version per row. Query it the same way you’d query <code>funnels</code>: filter with quoted string literals (<code>WHERE window_days = '7'</code>, not <code>= 7</code>), and don’t re-aggregate across <code>funnel_version</code> since the view has already resolved it.</p>
+<p><strong>Resolution is per <code>(funnel_id, window_days, window_end)</code>, not a global max per funnel.</strong> If a funnel bumps from version 1 to version 2 partway through its history, dates before the bump still resolve to version 1 (version 2 was never run for them) and dates from the bump onward resolve to version 2 - one continuous time series, not a series that vanishes before the bump. This only holds because versions of the same funnel are assumed to measure the same underlying thing; it would not be a safe pattern for two versions that represent genuinely different metrics.</p>
+</section>
+</section>
+<section id="funnel_metrics" class="level2">
+<h2 class="anchored" data-anchor-id="funnel_metrics">funnel_metrics</h2>
+<p>Derived metrics computed from landed <a href="../catalog/google_analytics.html#funnels"><code>funnels</code></a> rows - currently task success rates, one per funnel.</p>
+<p>Each row represents one metric’s value, for one funnel run, for one relying party (or the funnel’s total across all relying parties).</p>
+<p><code>Keywords</code>: Google Analytics, GA4, funnel, task success, task success rate, derived metric</p>
+<section id="provenance-4" class="level3">
+<h3 class="anchored" data-anchor-id="provenance-4">Provenance</h3>
+<p>Like a funnel’s steps, a funnel’s derived metrics are declared in that funnel’s YAML on GitHub, in a <code>metrics:</code> block - see <a href="https://github.com/cds-snc/canadalogin-reporting-data-pipeline/tree/main/infra/modules/google_analytics/funnel_src/funnels"><code>funnel_src/funnels/</code></a> in the <code>canadalogin-reporting-data-pipeline</code> repo. <strong>The YAML is the canonical definition of what each metric measures</strong>, including which two steps a ratio divides. A separate Lambda reads the already-landed rows from <a href="../catalog/google_analytics.html#funnels"><code>funnels</code></a> (no new GA4 call) and computes every metric each funnel declares. See the <a href="../cookbook/google_analytics.html#task-success-rate">task success rate</a> cookbook entry for how the one metric type in use today (<code>step_ratio</code>) is calculated and interpreted.</p>
+<ul>
+<li><strong>Updated</strong>: Daily, at 06:45 ET, after the 06:30 ET funnel export</li>
+<li><strong>Steward</strong>: EDCP Data and Research Team</li>
+<li><strong>Contact</strong>: <a href="mailto:colin.douglas@cds-snc.ca">Colin Douglas</a></li>
+<li><strong>Location</strong>: <code>s3://&lt;transformed-bucket&gt;/google_analytics/funnel_metrics/</code></li>
+</ul>
+</section>
+<section id="fields-4" class="level3">
+<h3 class="anchored" data-anchor-id="fields-4">Fields</h3>
+<p>One row per <code>funnel_id</code> per <code>funnel_version</code> per <code>window_days</code> per <code>window_end</code> per <code>metric_id</code> per <code>breakdown_value</code>.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Field Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>funnel_id</td>
+<td>string</td>
+<td>Partition key. Which funnel this metric was computed from (for example, “sign_in”, “sign_up”)</td>
+</tr>
+<tr class="even">
+<td>funnel_version</td>
+<td>string</td>
+<td>Partition key. The funnel definition’s version the metric was computed under. Typed <code>string</code> by the crawler - see the <a href="../catalog/google_analytics.html#funnels"><code>funnels</code></a> Notes</td>
+</tr>
+<tr class="odd">
+<td>window_days</td>
+<td>string</td>
+<td>Partition key. Length of the reporting window: “1” (nightly monitor) or “7” (rolling weekly rate)</td>
+</tr>
+<tr class="even">
+<td>window_end</td>
+<td>string</td>
+<td>Partition key. Last date (inclusive) of the reporting window, as text</td>
+</tr>
+<tr class="odd">
+<td>metric_id</td>
+<td>string</td>
+<td>Which metric this row is. Declared per-funnel on GitHub; currently always “task_success” for both funnels, but not a closed set - see Provenance</td>
+</tr>
+<tr class="even">
+<td>metric_type</td>
+<td>string</td>
+<td>The metric’s calculation shape, from the same YAML declaration. Currently always “step_ratio” (one step’s <code>activeusers</code> over another’s)</td>
+</tr>
+<tr class="odd">
+<td>value</td>
+<td>double</td>
+<td>The computed metric value. <code>null</code>, not <code>0.0</code>, when the denominator is zero (nobody entered, so the rate is undefined - not a false zero)</td>
+</tr>
+<tr class="even">
+<td>breakdown_dimension</td>
+<td>string</td>
+<td>The bare dimension the source funnel’s <code>breakdown:</code> block splits by (currently always “rp_name”)</td>
+</tr>
+<tr class="odd">
+<td>breakdown_value</td>
+<td>string</td>
+<td>The relying party this row covers, or <code>RESERVED_TOTAL</code> for the funnel’s overall value - see <a href="../catalog/google_analytics.html#funnels"><code>funnels</code></a> Notes</td>
+</tr>
+<tr class="even">
+<td>window_start</td>
+<td>string</td>
+<td>First date (inclusive) of the reporting window, as text</td>
+</tr>
+<tr class="odd">
+<td>window_incomplete</td>
+<td>boolean</td>
+<td><code>true</code> if the underlying funnel window was trimmed to <code>valid_from</code>/<code>valid_to</code> - <strong>exclude these rows from a trend</strong>, same rule as <a href="../catalog/google_analytics.html#funnels"><code>funnels</code></a></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="notes-4" class="level3">
+<h3 class="anchored" data-anchor-id="notes-4">Notes</h3>
+<p><strong>This table deliberately does not carry the raw step values a ratio was computed from</strong> - only the result. The inputs are recoverable by joining back to <a href="../catalog/google_analytics.html#funnels"><code>funnels</code></a> on the same <code>(funnel_id, funnel_version, window_days, window_end, breakdown_value)</code>, if they’re needed.</p>
+<p><strong>Same versioning caveat as <code>funnels</code>, and the same fix applies</strong>: always pin <code>funnel_version</code>, or query <a href="../catalog/google_analytics.html#funnel_metrics_current"><code>funnel_metrics_current</code></a> rather than this table directly.</p>
+<p><strong>A metric is recomputed automatically when its funnel’s <code>funnel_version</code> bumps</strong> (the same nightly job backfills every past window under the new version), but adding a <code>metrics:</code> block to a funnel for the first time also triggers a one-time backfill across that funnel’s entire already-landed history - so a metric’s earliest <code>window_end</code> is not necessarily the date the metric was defined.</p>
+</section>
+</section>
+<section id="funnel_metrics_current" class="level2">
+<h2 class="anchored" data-anchor-id="funnel_metrics_current">funnel_metrics_current</h2>
+<p>A view over <a href="../catalog/google_analytics.html#funnel_metrics"><code>funnel_metrics</code></a> that resolves the current <code>funnel_version</code> automatically, the same way <a href="../catalog/google_analytics.html#funnels_current"><code>funnels_current</code></a> does for <code>funnels</code>. Query this instead of <code>funnel_metrics</code> directly unless a specific past version is genuinely what’s wanted.</p>
+<p>Each row is the same as a <code>funnel_metrics</code> row, restricted to the newest <code>funnel_version</code> available for that row’s <code>(funnel_id, window_days, window_end)</code>.</p>
+<p><code>Keywords</code>: Google Analytics, GA4, funnel, task success, funnel version, current version</p>
+<section id="definition-1" class="level3">
+<h3 class="anchored" data-anchor-id="definition-1">Definition</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">OR</span> <span class="kw">REPLACE</span> <span class="kw">VIEW</span> funnel_metrics_current <span class="kw">AS</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">WITH</span> latest_per_date <span class="kw">AS</span> (</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">SELECT</span> funnel_id, window_days, window_end,</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>         <span class="fu">MAX</span>(<span class="fu">CAST</span>(funnel_version <span class="kw">AS</span> <span class="dt">integer</span>)) <span class="kw">AS</span> current_version</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">FROM</span> funnel_metrics</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">GROUP</span> <span class="kw">BY</span> funnel_id, window_days, window_end</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> f.<span class="op">*</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> funnel_metrics f</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="kw">JOIN</span> latest_per_date d</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">ON</span>  f.funnel_id   <span class="op">=</span> d.funnel_id</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">AND</span> f.window_days <span class="op">=</span> d.window_days</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">AND</span> f.window_end  <span class="op">=</span> d.window_end</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>  <span class="kw">AND</span> <span class="fu">CAST</span>(f.funnel_version <span class="kw">AS</span> <span class="dt">integer</span>) <span class="op">=</span> d.current_version;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="provenance-5" class="level3">
+<h3 class="anchored" data-anchor-id="provenance-5">Provenance</h3>
+<ul>
+<li><strong>Updated</strong>: Live view, not scheduled</li>
+<li><strong>Steward</strong>: EDCP Data and Research Team</li>
+<li><strong>Contact</strong>: <a href="mailto:colin.douglas@cds-snc.ca">Colin Douglas</a></li>
+</ul>
+</section>
+<section id="fields-5" class="level3">
+<h3 class="anchored" data-anchor-id="fields-5">Fields</h3>
+<p>Same as <a href="../catalog/google_analytics.html#funnel_metrics"><code>funnel_metrics</code></a>. <code>SELECT f.*</code> passes every base column through unchanged; the view’s own <code>current_version</code> column (used only to resolve the join) is not exposed.</p>
+</section>
+<section id="notes-5" class="level3">
+<h3 class="anchored" data-anchor-id="notes-5">Notes</h3>
+<p>Same query rules as <a href="../catalog/google_analytics.html#funnels_current"><code>funnels_current</code></a>: partition key literals still need quotes (<code>window_days = '7'</code>, not <code>= 7</code>), and don’t re-aggregate across <code>funnel_version</code> since the view has already resolved it.</p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../catalog/jira.html" class="pagination-link" aria-label="Jira (PSOM)">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Jira (PSOM)</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../catalog/rp.html" class="pagination-link" aria-label="Relying Parties">
+        <span class="nav-page-text">Relying Parties</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
