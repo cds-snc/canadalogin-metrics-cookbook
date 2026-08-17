@@ -427,7 +427,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p><em>Interpretation notes.</em> <code>window_days = '7'</code> gives a rolling weekly rate, recomputed nightly on a 7-day window ending each date; <code>window_days = '1'</code> is the same metric on a single day, noisier but useful for same-day monitoring. Both are partition-key strings, not numbers, in this schema. A <code>value</code> of <code>NULL</code> means nobody reached the entry step that window (an undefined rate, not a true zero) - such rows are rare but real, and an average that treats them as <code>0.0</code> will read too pessimistic.</p>
+<p><em>Interpretation notes.</em> The queries above use <code>window_days = '7'</code>, a rolling weekly rate recomputed nightly on a 7-day window ending each date. Three window lengths exist, and switching between them is a one-line change:</p>
+<ul>
+<li><code>'1'</code> is the same metric on a single day. It is the noisiest of the three, but it is the only one that shows the exact date something changed.</li>
+<li><code>'7'</code> is the usual default. Every window holds one of each weekday, so day-of-week effects wash out.</li>
+<li><code>'28'</code> is a rolling four-week window. It is the steadiest of the three and the one to use for monthly reporting, but a step change takes 28 days to show up in it fully, so it is a poor way to check whether a fix worked.</li>
+</ul>
+<p>All three are partition-key strings, not numbers, in this schema. Windows within one <code>window_days</code> overlap, so consecutive rows are not independent readings: one unusual day moves 7 weekly rows and 28 monthly ones. A <code>value</code> of <code>NULL</code> means nobody reached the entry step that window (an undefined rate, not a true zero) - such rows are rare but real, and an average that treats them as <code>0.0</code> will read too pessimistic.</p>
 <p>These two funnels are not directly comparable to each other: sign-in’s rate stops at MFA for the structural reason described above, so it reads lower than a true completion rate would, while sign-up’s rate is a real completion figure. Comparing the two numbers as if they measured the same kind of finish line will overstate the sign-in/sign-up gap.</p>
 
 

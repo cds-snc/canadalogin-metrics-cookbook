@@ -571,7 +571,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tr class="odd">
 <td>window_days</td>
 <td>string</td>
-<td>Partition key. Length of the reporting window this row summarizes: “1” for a nightly monitoring run, “7” for a rolling weekly rate</td>
+<td>Partition key. Length of the reporting window this row summarizes: “1” for a nightly monitoring run, “7” for a rolling weekly rate, “28” for a rolling four-week rate</td>
 </tr>
 <tr class="even">
 <td>window_end</td>
@@ -635,9 +635,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="notes-2">Notes</h3>
 <p><strong>A funnel’s step names, order and population can change between versions - always check GitHub, not a memory of a prior version.</strong> Every CanadaLogin funnel has already had at least one step renamed or re-scoped since it was first defined (see the <a href="../cookbook/google_analytics.html#task-success-rate">task success rate</a> metric for a worked example). <code>funnel_version</code> exists so old and new definitions coexist rather than silently overwriting each other: <strong>always pin <code>funnel_version</code> in a query</strong>, or use the <a href="../catalog/google_analytics.html#funnels_current"><code>funnels_current</code></a> view, which resolves the newest version per date automatically. Summing or averaging across versions blends two different definitions of the funnel into one meaningless number.</p>
 <p><strong><code>RESERVED_TOTAL</code> is a real GA4 sentinel, not a relying party.</strong> A funnel breakdown caps at 15 distinct values; <code>RESERVED_TOTAL</code> is GA4’s grand total across <em>all</em> relying parties, including any beyond that cap, and is the correct number to read as the funnel’s overall rate.</p>
-<p><strong><code>window_incomplete</code> rows are written, not dropped, and must be excluded from a trend.</strong> A window that reaches earlier than a funnel’s <code>valid_from</code> (or later than <code>valid_to</code>) is trimmed and flagged rather than skipped, so a scheduled job keeps running as a tagging boundary recedes. A trimmed 7-day row is still labelled <code>window_days = "7"</code> but covers fewer than 7 days - reading it as a full week understates or overstates the true rate depending on what changed at the boundary.</p>
-<p><strong><code>activeusers</code> is de-duplicated within its own window and is not additive across windows.</strong> Summing seven daily (<code>window_days = "1"</code>) rows for a week is not the same query as one <code>window_days = "7"</code> row for that week - repeat users within the week are counted once by the 7-day row and once per day they appeared by the daily rows. Rates hold close either way; raw counts do not. Never sum <code>activeusers</code> across rows with different <code>window_end</code> values.</p>
-<p>The nightly 06:30 ET run also self-heals: on a <code>funnel_version</code> bump, it backfills every past window still needed under the new version, so the “Updated” cadence above describes when new dates land, not necessarily when every partition was last (re)written.</p>
+<p><strong><code>window_incomplete</code> rows are written, not dropped, and must be excluded from a trend.</strong> A window that reaches earlier than a funnel’s <code>valid_from</code> (or later than <code>valid_to</code>) is trimmed and flagged rather than skipped, so a scheduled job keeps running as a tagging boundary recedes.</p>
+<p><strong><code>activeusers</code> is de-duplicated within its own window and is not additive across windows.</strong> Summing seven daily (<code>window_days = "1"</code>) rows for a week, for example, is not the same query as one <code>window_days = "7"</code> row for that week - repeat users within the week are counted once by the 7-day row and once per day they appeared by the daily rows. Never sum <code>activeusers</code> across rows with different <code>window_end</code> or <code>window_days</code> values.</p>
 </section>
 </section>
 <section id="funnels_current" class="level2">
@@ -720,7 +719,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tr class="odd">
 <td>window_days</td>
 <td>string</td>
-<td>Partition key. Length of the reporting window: “1” (nightly monitor) or “7” (rolling weekly rate)</td>
+<td>Partition key. Length of the reporting window: “1” (nightly monitor), “7” (rolling weekly rate), or “28” (rolling four-week rate)</td>
 </tr>
 <tr class="even">
 <td>window_end</td>
