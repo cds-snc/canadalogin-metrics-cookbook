@@ -37,7 +37,7 @@ One row per `funnel_id` per `funnel_version` per `window_days` per
 |---|---|---|
 | funnel_id | string | Partition key. Which funnel this metric was computed from (for example, "sign_in", "sign_up") |
 | funnel_version | string | Partition key. The funnel definition's version the metric was computed under. Typed `string` by the crawler - see the [`funnels`](google_analytics.qmd#funnels) Notes |
-| window_days | string | Partition key. Length of the reporting window: "1" (nightly monitor) or "7" (rolling weekly rate) |
+| window_days | string | Partition key. Length of the reporting window: "1" (nightly monitor), "7" (rolling weekly rate), or "28" (rolling four-week rate) |
 | window_end | string | Partition key. Last date (inclusive) of the reporting window, as text |
 | metric_id | string | Which metric this row is. Declared per-funnel on GitHub; currently always "task_success" for both funnels, but not a closed set - see Provenance |
 | metric_type | string | The metric's calculation shape, from the same YAML declaration. Currently always "step_ratio" (one step's `activeusers` over another's) |

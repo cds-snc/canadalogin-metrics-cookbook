@@ -37,7 +37,7 @@ One row per `funnel_id` per `funnel_version` per `window_days` per
 |---|---|---|
 | funnel_id | string | Partition key. Which funnel this row belongs to (for example, "sign_in", "sign_up") - matches a filename under `funnel_src/funnels/` on GitHub |
 | funnel_version | string | Partition key. The funnel definition's version at the time this row was run. A plain integer, but typed `string` by the crawler - see Notes |
-| window_days | string | Partition key. Length of the reporting window this row summarizes: "1" for a nightly monitoring run, "7" for a rolling weekly rate |
+| window_days | string | Partition key. Length of the reporting window this row summarizes: "1" for a nightly monitoring run, "7" for a rolling weekly rate, "28" for a rolling four-week rate |
 | window_end | string | Partition key. Last date (inclusive) of the reporting window, as text (for example, "2026-07-23") |
 | funnelstepnumber | bigint | The step's 1-indexed position in the funnel |
 | funnelstepname | string | The step's name, as declared in the funnel's YAML on GitHub. Not a closed set - see Provenance |
@@ -73,19 +73,12 @@ correct number to read as the funnel's overall rate.
 **`window_incomplete` rows are written, not dropped, and must be excluded from
 a trend.** A window that reaches earlier than a funnel's `valid_from` (or later
 than `valid_to`) is trimmed and flagged rather than skipped, so a scheduled job
-keeps running as a tagging boundary recedes. A trimmed 7-day row is still
-labelled `window_days = "7"` but covers fewer than 7 days - reading it as a
-full week understates or overstates the true rate depending on what changed at
-the boundary.
+keeps running as a tagging boundary recedes. 
 
 **`activeusers` is de-duplicated within its own window and is not additive
-across windows.** Summing seven daily (`window_days = "1"`) rows for a week is
-not the same query as one `window_days = "7"` row for that week - repeat users
-within the week are counted once by the 7-day row and once per day they
-appeared by the daily rows. Rates hold close either way; raw counts do not.
-Never sum `activeusers` across rows with different `window_end` values.
+across windows.** Summing seven daily (`window_days = "1"`) rows for a week, 
+for example, is not the same query as one `window_days = "7"` row for that week -
+repeat users within the week are counted once by the 7-day row and once per day 
+they appeared by the daily rows. Never sum `activeusers` across rows with
+different `window_end` or `window_days` values.
 
-The nightly 06:30 ET run also self-heals: on a `funnel_version` bump, it
-backfills every past window still needed under the new version, so the
-"Updated" cadence above describes when new dates land, not necessarily when
-every partition was last (re)written.

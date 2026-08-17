@@ -130,13 +130,24 @@ tbl(con, in_schema("google_analytics", "funnel_metrics_current")) |>
 
 :::
 
-*Interpretation notes.* `window_days = '7'` gives a rolling weekly rate,
-recomputed nightly on a 7-day window ending each date; `window_days = '1'` is
-the same metric on a single day, noisier but useful for same-day monitoring.
-Both are partition-key strings, not numbers, in this schema. A `value` of
-`NULL` means nobody reached the entry step that window (an undefined rate, not
-a true zero) - such rows are rare but real, and an average that treats them as
-`0.0` will read too pessimistic.
+*Interpretation notes.* The queries above use `window_days = '7'`, a rolling
+weekly rate recomputed nightly on a 7-day window ending each date. Three window
+lengths exist, and switching between them is a one-line change:
+
+- `'1'` is the same metric on a single day. It is the noisiest of the three,
+  but it is the only one that shows the exact date something changed.
+- `'7'` is the usual default. Every window holds one of each weekday, so
+  day-of-week effects wash out.
+- `'28'` is a rolling four-week window. It is the steadiest of the three and
+  the one to use for monthly reporting, but a step change takes 28 days to
+  show up in it fully, so it is a poor way to check whether a fix worked.
+
+All three are partition-key strings, not numbers, in this schema. Windows within
+one `window_days` overlap, so consecutive rows are not independent readings: one
+unusual day moves 7 weekly rows and 28 monthly ones. A `value` of `NULL` means
+nobody reached the entry step that window (an undefined rate, not a true zero) -
+such rows are rare but real, and an average that treats them as `0.0` will read
+too pessimistic.
 
 These two funnels are not directly comparable to each other: sign-in's rate
 stops at MFA for the structural reason described above, so it reads lower than
