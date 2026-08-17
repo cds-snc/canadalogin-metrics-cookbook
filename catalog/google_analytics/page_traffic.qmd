@@ -25,8 +25,8 @@ One row per `date` per `streamname` per `pagetitle` per `pagepath`.
 | Field Name | Type | Description |
 |---|---|---|
 | date | string | The reporting day, as a partition key (for example, "2026-07-23") |
-| streamid | string | Numeric ID of the GA4 data stream that reported the page. Null before 2026-08-15 |
-| streamname | string | Display name of the GA4 data stream. Null before 2026-08-15 |
+| streamid | string | Numeric ID of the GA4 data stream that reported the page |
+| streamname | string | Display name of the GA4 data stream |
 | pagetitle | string | The page's `<title>` at the time of the visit |
 | pagepath | string | The page's URL path |
 | sessions | bigint | Number of sessions that included this page on this day |
