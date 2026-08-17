@@ -2,10 +2,10 @@
 
 Daily traffic for the CanadaLogin GA4 property, broken down by page.
 
-Each row represents one day of traffic to a single page, identified by both
-its title and its path.
+Each row represents one day of traffic to a single page, identified by its
+title, its path, and the data stream that reported it.
 
-`Keywords`: Google Analytics, GA4, page views, traffic, page title, page path
+`Keywords`: Google Analytics, GA4, page views, traffic, page title, page path, data stream
 
 ### Provenance
 
@@ -20,11 +20,13 @@ via the same Lambda and pipeline as
 
 ### Fields
 
-One row per `date` per `pagetitle` per `pagepath`.
+One row per `date` per `streamname` per `pagetitle` per `pagepath`.
 
 | Field Name | Type | Description |
 |---|---|---|
 | date | string | The reporting day, as a partition key (for example, "2026-07-23") |
+| streamid | string | Numeric ID of the GA4 data stream that reported the page. Null before 2026-08-15 |
+| streamname | string | Display name of the GA4 data stream. Null before 2026-08-15 |
 | pagetitle | string | The page's `<title>` at the time of the visit |
 | pagepath | string | The page's URL path |
 | sessions | bigint | Number of sessions that included this page on this day |
