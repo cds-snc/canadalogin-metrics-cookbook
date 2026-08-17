@@ -457,8 +457,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="page_traffic" class="level2">
 <h2 class="anchored" data-anchor-id="page_traffic">page_traffic</h2>
 <p>Daily traffic for the CanadaLogin GA4 property, broken down by page.</p>
-<p>Each row represents one day of traffic to a single page, identified by both its title and its path.</p>
-<p><code>Keywords</code>: Google Analytics, GA4, page views, traffic, page title, page path</p>
+<p>Each row represents one day of traffic to a single page, identified by its title, its path, and the data stream that reported it.</p>
+<p><code>Keywords</code>: Google Analytics, GA4, page views, traffic, page title, page path, data stream</p>
 <section id="provenance-1" class="level3">
 <h3 class="anchored" data-anchor-id="provenance-1">Provenance</h3>
 <p>Pulled daily from the GA4 Data API (<code>runReport</code>) for the CanadaLogin property, via the same Lambda and pipeline as <a href="../catalog/google_analytics.html#property_traffic"><code>property_traffic</code></a>.</p>
@@ -471,7 +471,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="fields-1" class="level3">
 <h3 class="anchored" data-anchor-id="fields-1">Fields</h3>
-<p>One row per <code>date</code> per <code>pagetitle</code> per <code>pagepath</code>.</p>
+<p>One row per <code>date</code> per <code>streamname</code> per <code>pagetitle</code> per <code>pagepath</code>.</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 33%">
@@ -490,6 +490,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>date</td>
 <td>string</td>
 <td>The reporting day, as a partition key (for example, “2026-07-23”)</td>
+</tr>
+<tr class="even">
+<td>streamid</td>
+<td>string</td>
+<td>Numeric ID of the GA4 data stream that reported the page</td>
+</tr>
+<tr class="odd">
+<td>streamname</td>
+<td>string</td>
+<td>Display name of the GA4 data stream</td>
 </tr>
 <tr class="even">
 <td>pagetitle</td>
