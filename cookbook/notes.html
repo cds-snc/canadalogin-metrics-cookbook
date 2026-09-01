@@ -384,7 +384,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span>   rp.alias al</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">JOIN</span>   rp.service s <span class="kw">ON</span> al.rp_id <span class="op">=</span> s.rp_id</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span>  s.is_internal</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Query the list rather than pasting it into a filter. A service is reclassified by editing the source spreadsheet, and a query holding its own copy of the list will not notice. The same subquery works as a <code>NOT IN</code> in SQL and as an <code>anti_join()</code> in dbplyr; both forms appear in <a href="../cookbook/ibm_verify.html#sign-ins-by-application">Sign-Ins by Application</a>.</p>
+<p>Query the list rather than pasting it into a filter. A service is reclassified by editing the source spreadsheet, and a query holding its own copy of the list will not notice. The same subquery works as a <code>NOT IN</code> in SQL and as an <code>anti_join()</code> in dbplyr; both forms appear in <a href="../cookbook/ibm_verify.html#sso-events-by-application">SSO Events by Application</a>.</p>
 <p>Whether to exclude internal applications at all depends on the reporting question.</p>
 
 
