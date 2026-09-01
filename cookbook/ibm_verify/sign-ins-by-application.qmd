@@ -1,21 +1,22 @@
-### Sign-Ins by Application
+### SSO Events by Application
 
-The total number of sign-ins recorded for each application over a selected time
+The total number of SSO events recorded for each application over a selected time
 period.
 
-This metric is useful for understanding overall usage volume across
-CanadaLogin-integrated applications. It counts sign-in events, not people. A
-single user may sign in multiple times and contribute multiple sign-ins.
+IBM Verify raises an SSO event when someone who is already signed in reaches an
+application. It uses the CanadaLogin session they already hold, so the person
+enters no password and no second factor. This metric is useful for understanding usage
+volume across CanadaLogin-integrated applications. It counts events, not people:
+one person reaching an application several times contributes several events.
 
-This metric is referred to in the source data as `total_logins`, but in
-reporting language it is usually clearer to describe it as **total sign-ins**.
+The source column is `total_logins`, but the event it counts is what IBM Verify
+calls an SSO event, part of application usage.
 
 *Alternative names*:
 
-- total sign-ins
-- sign-in volume
-- number of sign-ins
-- application sign-in count
+- application usage
+- SSO event volume
+- single sign-on events
 - total uses of CanadaLogin by application
 
 **Calculation.** Sum `total_logins` over the selected reporting period, grouped
@@ -28,7 +29,7 @@ by application.
 ```sql
 SELECT
   application_name,
-  SUM(total_logins) AS total_sign_ins
+  SUM(total_logins) AS total_sso_events
 FROM   ibm_verify.app_login_counts
 -- set the reporting window; see the timespans note in cookbook/notes.qmd
 WHERE  from_date BETWEEN DATE '2026-01-01' AND DATE '2026-05-28'
@@ -41,7 +42,7 @@ WHERE  from_date BETWEEN DATE '2026-01-01' AND DATE '2026-05-28'
       WHERE  s.is_internal
   )
 GROUP  BY application_name
-ORDER  BY total_sign_ins DESC;
+ORDER  BY total_sso_events DESC;
 ```
 
 ## R
@@ -63,18 +64,20 @@ tbl(con, in_schema("ibm_verify", "app_login_counts")) |>
   anti_join(internal_apps, by = "application_name") |>
   group_by(application_name) |>
   summarise(
-    total_sign_ins = sum(total_logins, na.rm = TRUE)
+    total_sso_events = sum(total_logins, na.rm = TRUE)
   ) |>
-  arrange(desc(total_sign_ins))
+  arrange(desc(total_sso_events))
 ```
 
 :::
 
-*Interpretation notes.* A sign-in count measures events, not people. Use this metric
-when the question is about system usage or activity volume. Use unique user
-metrics when the question is about reach.
+*Interpretation notes.* This counts events, not people. Use this metric when the
+question is about system usage or activity volume. Use unique user metrics when
+the question is about reach.
 
-Unlike the CanadaLogin-wide [sign-in count](#sign-ins), these per-application
-counts are not inflated by second factors. Authenticating against an application
-reuses the credentials from the CanadaLogin session, so each application sign-in
-is a single event rather than one event per authentication method.
+These are a different IBM Verify event type from the CanadaLogin-wide
+[authentication events](#authentication-events), so never add the two together or
+present them side by side as comparable figures. Unlike the authentication
+events, SSO events are not inflated by second factors, because reaching an
+application uses the session the person already holds rather than asking them
+to authenticate again.

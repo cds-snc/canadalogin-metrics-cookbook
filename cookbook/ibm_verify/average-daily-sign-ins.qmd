@@ -1,18 +1,18 @@
-### Average Daily Sign-Ins
+### Average Daily SSO Events
 
-The average number of sign-ins per day for each application over a selected
+The average number of SSO events per day for each application over a selected
 reporting period.
 
-This metric summarizes daily sign-in activity into a single per-application
+This metric summarizes daily application usage into a single per-application
 average value. It is useful for understanding typical daily usage during a launch
 period, reporting window, or monitoring period.
 
 *Alternative names*:
 
-- average sign-ins per day
-- typical daily sign-in volume
-- mean daily login volume
-- average daily sign-ins per application
+- average SSO events per day
+- typical daily usage volume
+- mean daily SSO event volume
+- average daily application usage
 
 **Calculation.** For each application, calculate the average of `total_logins`
 across all daily records in the selected reporting period.
@@ -24,7 +24,7 @@ across all daily records in the selected reporting period.
 ```sql
 SELECT
     application_name,
-    AVG(total_logins) AS average_daily_sign_ins
+    AVG(total_logins) AS average_daily_sso_events
 FROM ibm_verify.app_login_counts
 -- set the reporting window; see the timespans note in cookbook/notes.qmd
 WHERE from_date BETWEEN DATE '2026-04-22' AND DATE '2026-05-31'
@@ -36,7 +36,7 @@ WHERE from_date BETWEEN DATE '2026-04-22' AND DATE '2026-05-31'
 --     WHERE  s.is_internal
 -- )
 GROUP BY application_name
-ORDER BY average_daily_sign_ins DESC;
+ORDER BY average_daily_sso_events DESC;
 ```
 
 ## R
@@ -58,9 +58,9 @@ tbl(con, in_schema("ibm_verify", "app_login_counts")) |>
   # ) |>
   group_by(application_name) |>
   summarise(
-    average_daily_sign_ins = mean(total_logins, na.rm = TRUE)
+    average_daily_sso_events = mean(total_logins, na.rm = TRUE)
   ) |>
-  arrange(desc(average_daily_sign_ins))
+  arrange(desc(average_daily_sso_events))
 ```
 
 :::

@@ -1,6 +1,7 @@
-### Sign-In Success Rate
+### Authentication Success Rate
 
-The proportion of sign-in attempts that succeeded, across all of CanadaLogin.
+The proportion of authentication attempts that succeeded, across all of
+CanadaLogin. A failed attempt can be a wrong password or a failed second factor.
 
 This metric is useful for monitoring overall authentication health. A sustained
 drop can indicate a service problem, a misconfigured application, or elevated
@@ -8,10 +9,9 @@ attack traffic inflating the failure count.
 
 *Alternative names*:
 
-- authentication success rate
-- login success rate
-- overall sign-in success rate
-- successful sign-in proportion
+- sign-in success rate
+- overall authentication success rate
+- successful authentication proportion
 
 **Calculation.** Divide the sum of `successful_logins` by the sum of all attempts
 (`successful_logins + failed_logins`) over the selected reporting period.
@@ -29,7 +29,7 @@ Overall:
 ```sql
 SELECT
     CAST(SUM(successful_logins) AS DOUBLE)
-        / NULLIF(SUM(successful_logins + failed_logins), 0) AS sign_in_success_rate
+        / NULLIF(SUM(successful_logins + failed_logins), 0) AS authentication_success_rate
 FROM ibm_verify.auth_total_logins
 -- set the reporting window; see the timespans note in cookbook/notes.qmd
 WHERE from_date BETWEEN DATE '2026-01-01' AND DATE '2026-05-28';
@@ -41,7 +41,7 @@ By week:
 SELECT
     date_trunc('week', from_date) AS week_start,
     CAST(SUM(successful_logins) AS DOUBLE)
-        / NULLIF(SUM(successful_logins + failed_logins), 0) AS sign_in_success_rate
+        / NULLIF(SUM(successful_logins + failed_logins), 0) AS authentication_success_rate
 FROM ibm_verify.auth_total_logins
 -- set the reporting window; see the timespans note in cookbook/notes.qmd
 WHERE from_date BETWEEN DATE '2026-01-01' AND DATE '2026-05-28'
@@ -62,7 +62,7 @@ tbl(con, in_schema("ibm_verify", "auth_total_logins")) |>
     from_date <= as.Date("2026-05-28")
   ) |>
   summarise(
-    sign_in_success_rate =
+    authentication_success_rate =
       sum(as.double(successful_logins), na.rm = TRUE) /
         sum(successful_logins + failed_logins, na.rm = TRUE)
   )
@@ -82,7 +82,7 @@ tbl(con, in_schema("ibm_verify", "auth_total_logins")) |>
   mutate(week_start = floor_date(from_date, "week")) |>
   group_by(week_start) |>
   summarise(
-    sign_in_success_rate =
+    authentication_success_rate =
       sum(as.double(successful_logins), na.rm = TRUE) /
         sum(successful_logins + failed_logins, na.rm = TRUE)
   ) |>
@@ -92,7 +92,7 @@ tbl(con, in_schema("ibm_verify", "auth_total_logins")) |>
 :::
 
 *Interpretation notes.* The rate is a proportion between 0 and 1. Read it alongside
-sign-in volume: a low success rate on very low volume may just be noise, while
+authentication event volume: a low success rate on very low volume may just be noise, while
 the same rate on high volume is a real signal. In the weekly view, the first and
 last weeks of the reporting window are usually partial (the window rarely starts
 or ends on a Monday), so treat boundary weeks with caution when comparing trends.
@@ -102,6 +102,7 @@ in to CanadaLogin, IBM Verify records each method as its own event, so a mistype
 password is a failed event even when the user then succeeds and completes the
 sign-in (see the [`auth_total_logins`](../catalog/ibm_verify.qmd#auth_total_logins)
 caveat). The figure measures how often individual authentication steps succeed,
-not how often a sign-in session ultimately completes. This differs from the
-[per-application rate](#sign-in-success-rate-by-application), which measures
-credential validity against a relying party with no factors entered.
+not how often a sign-in ultimately completes. The
+[per-application rate](#sso-success-rate-by-application) counts a different IBM
+Verify event type, the handoff to a relying party with no factors entered, so the
+two rates are not comparable.

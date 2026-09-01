@@ -1,15 +1,16 @@
-### Sign-In Success Rate by Application
+### SSO Success Rate by Application
 
-The proportion of sign-in attempts that succeeded, broken down by application.
+The proportion of SSO events that succeeded, broken down by application.
 
-This metric helps isolate authentication problems to a specific application. An
-application with a markedly lower success rate than its peers is worth
-investigating for integration or configuration issues.
+This is the success rate of the handoff to an application, not of anyone signing
+in. It helps isolate problems to a specific application: one with a markedly
+lower success rate than its peers is worth investigating for integration or
+configuration issues.
 
 *Alternative names*:
 
-- authentication success rate by application
-- login success rate by application
+- application handoff success rate
+- single sign-on success rate by application
 - per-application sign-in success rate
 
 **Calculation.** Divide the sum of `successful_logins` by the sum of all attempts
@@ -24,7 +25,7 @@ by application.
 SELECT
     application_name,
     CAST(SUM(successful_logins) AS DOUBLE)
-        / NULLIF(SUM(successful_logins + failed_logins), 0) AS sign_in_success_rate
+        / NULLIF(SUM(successful_logins + failed_logins), 0) AS sso_success_rate
 FROM ibm_verify.app_login_counts
 -- set the reporting window; see the timespans note in cookbook/notes.qmd
 WHERE from_date BETWEEN DATE '2026-01-01' AND DATE '2026-05-28'
@@ -37,7 +38,7 @@ WHERE from_date BETWEEN DATE '2026-01-01' AND DATE '2026-05-28'
       WHERE  s.is_internal
   )
 GROUP BY application_name
-ORDER BY sign_in_success_rate DESC;
+ORDER BY sso_success_rate DESC;
 ```
 
 ## R
@@ -59,17 +60,19 @@ tbl(con, in_schema("ibm_verify", "app_login_counts")) |>
   anti_join(internal_apps, by = "application_name") |>
   group_by(application_name) |>
   summarise(
-    sign_in_success_rate =
+    sso_success_rate =
       sum(as.double(successful_logins), na.rm = TRUE) /
         sum(successful_logins + failed_logins, na.rm = TRUE)
   ) |>
-  arrange(desc(sign_in_success_rate))
+  arrange(desc(sso_success_rate))
 ```
 
 :::
 
-*Interpretation notes.* Compare applications against each other rather than against an
-absolute target. Note that this measures authentication against a relying party
-*after already signing in to CanadaLogin*. It does not require entering a password
-or a second factor; it simply checks whether a given credential is valid for
-signing in to an app.
+*Interpretation notes.* Compare applications against each other rather than
+against an absolute target. This measures the handoff to a relying party after the
+person has already signed in to CanadaLogin. The person enters no password and no
+second factor; the check is whether the session can be used for that application. It
+counts a different IBM Verify event type from the CanadaLogin-wide
+[authentication success rate](#authentication-success-rate), so the two are not
+comparable.

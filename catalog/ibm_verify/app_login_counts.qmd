@@ -1,11 +1,17 @@
 ## app_login_counts
 
-Daily sign-in counts for each CanadaLogin-integrated application.
+Daily SSO event counts for each CanadaLogin-integrated application.
 
 Each row represents one application on one day, summarizing that application's
-sign-in activity and unique-user reach for the day.
+usage and unique-user reach for the day. This table records what IBM Verify calls
+the `sso` event type, filed under application usage and raised when someone who is
+already signed in reaches an application.
 
-`Keywords`: sign-ins, logins, applications, unique users, adoption, daily counts
+[`auth_total_logins`](#auth_total_logins) records a different event type
+(`authentication`). Figures from the two tables are therefore not comparable and
+must never be added together or presented side by side.
+
+`Keywords`: SSO events, application usage, sign-ins, logins, applications, unique users, adoption, daily counts
 
 ### Provenance
 
@@ -24,13 +30,13 @@ One row per `application_name` per day.
 | application_name | string | Name of the integrated application (for example, "IRIS - PRC - Prod") |
 | from_date | timestamp | Start of the reporting day (midnight) |
 | to_date | timestamp | End of the reporting day (23:59:59) |
-| total_logins | integer | Total sign-in events recorded for the application that day. Counts events, not people. Reported as "total sign-ins" |
-| unique_users | integer | Number of distinct users who signed in to the application that day |
-| failed_logins | integer | Number of failed sign-in attempts that day |
-| successful_logins | integer | Number of successful sign-ins that day |
+| total_logins | integer | Total SSO events recorded for the application that day. Counts events, not people |
+| unique_users | integer | Number of distinct users who reached the application that day |
+| failed_logins | integer | Number of failed SSO events that day |
+| successful_logins | integer | Number of successful SSO events that day |
 | mtd_unique_users | integer | Cumulative distinct users for the application month-to-date. Resets at the start of each month |
 | ytd_unique_users | integer | Cumulative distinct users for the application year-to-date. Resets at the start of each calendar year |
-| rolling_365d_unique_users | integer | Distinct users who signed in to this application in the trailing 365 days ending on that row's date |
+| rolling_365d_unique_users | integer | Distinct users who reached this application in the trailing 365 days ending on that row's date |
 | fetched_at | timestamp | When the aggregation last fetched this row |
 | date | string | The reporting day as a text date (for example, "2026-04-23"). Mirrors `from_date` |
 
@@ -52,10 +58,10 @@ more than a year in the past. See the retention note on the
 
 Unlike [`auth_total_logins`](#auth_total_logins), these counts are *not* inflated
 by second factors. The per-authentication-method event inflation described there
-only happens when a user signs in to CanadaLogin itself. Authenticating against
-an integrated application reuses the credentials already established in the
-CanadaLogin session, so the user enters no password or second factor and a single
-application sign-in records a single event. `total_logins` and `successful_logins`
-still count events rather than people, because one person can sign in to an
-application repeatedly. Use `unique_users` when the question is about how many
+only happens when a person signs in to CanadaLogin itself. Reaching an integrated
+application uses the session they already hold: CanadaLogin issues the
+application a freshly minted assertion or token, the person enters no password or
+second factor, and one handoff records one SSO event. `total_logins` and
+`successful_logins` still count events rather than people, because one person can
+reach an application repeatedly. Use `unique_users` when the question is about how many
 distinct people used the application.

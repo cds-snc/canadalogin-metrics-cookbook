@@ -13,8 +13,8 @@ event type (Authentication Event, MFA Authentication Event, SSO, and so on).
 The dataset behind the IBM Verify reporting API retains only the most recent
 366.5 days of data. This does **not** limit the tables here. The daily aggregate
 rows are stored on our side and kept beyond a year, so any metric we calculate by
-aggregating those stored daily rows (sign-ins, MFA attempts, and other additive
-measures) is unaffected, no matter how far back the window reaches.
+aggregating those stored daily rows (authentication events, SSO events, MFA
+attempts, and other additive measures) is unaffected, no matter how far back the window reaches.
 
 The limit bites only on summaries that the **API itself** computes, because the
 API can only see the last 366.5 days when it does so. The cumulative unique-user

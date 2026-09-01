@@ -1,0 +1,4 @@
+# Whitelist style: ignore everything in notes/, then re-include files meant to be tracked.
+# To publish a note, add an explicit `!notes/<file>.md` line below.
+*
+!.gitignore

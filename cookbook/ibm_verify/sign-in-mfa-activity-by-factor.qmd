@@ -10,6 +10,10 @@ the public can present as a second factor when signing in: `sms_otp`,
 `fido2`. The internal and administrative factors that dominate the platform-wide
 view are left out.
 
+IBM Verify files MFA as a subtype of the authentication event rather than as an
+event type of its own, so these counts are a slice of the CanadaLogin-wide
+[authentication events](#authentication-events), not an independent stream.
+
 Two factors that reach the public are deliberately excluded:
 
 - `email_otp` is offered only to validate an email address at sign-up; it cannot
