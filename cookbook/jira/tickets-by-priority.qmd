@@ -11,6 +11,8 @@ The number of PSOM tickets in the latest snapshot grouped by priority level.
 **Calculation.** Filter to the most recent `date` partition and count tickets by
 `priority`.
 
+::: {.callout-note collapse="true" title="Example Queries"}
+
 ::: {.panel-tabset}
 
 ## SQL
@@ -36,5 +38,7 @@ psom |>
   count(priority, name = "ticket_count") |>
   arrange(desc(ticket_count))
 ```
+
+:::
 
 :::

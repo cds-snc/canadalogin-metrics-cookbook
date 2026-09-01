@@ -30,6 +30,8 @@ reached the queue, so an abandoned call still counts as demand. `test_calls` is 
 subset of accepted and is large enough at current volumes to be worth
 subtracting.
 
+::: {.callout-note collapse="true" title="Example Queries"}
+
 ::: {.panel-tabset}
 
 ## SQL
@@ -89,6 +91,8 @@ weekly |>
     calls_per_100_dau
   )
 ```
+
+:::
 
 :::
 

@@ -20,6 +20,8 @@ To track volume over time, bin the same sum by week. Truncating `from_date` to
 the week groups each day into its Monday-anchored bin, so the result is one
 authentication event total per Monday-to-Sunday week.
 
+::: {.callout-note collapse="true" title="Example Queries"}
+
 ::: {.panel-tabset}
 
 ## SQL
@@ -82,6 +84,8 @@ tbl(con, in_schema("ibm_verify", "auth_total_logins")) |>
   ) |>
   arrange(week_start)
 ```
+
+:::
 
 :::
 

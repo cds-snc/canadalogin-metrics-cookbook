@@ -29,6 +29,8 @@ A `since_apr22_unique_users` column (cumulative distinct users since launch) was
 previously available but has been removed; see the [data retention
 note](../../catalog/ibm_verify.qmd#data-retention).
 
+::: {.callout-note collapse="true" title="Example Queries"}
+
 ::: {.panel-tabset}
 
 ## SQL
@@ -78,6 +80,8 @@ tbl(con, in_schema("ibm_verify", "auth_total_logins")) |>
   ) |>
   pull(ytd_unique_users)
 ```
+
+:::
 
 :::
 

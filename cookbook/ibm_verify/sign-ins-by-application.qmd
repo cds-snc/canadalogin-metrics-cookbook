@@ -22,6 +22,8 @@ calls an SSO event, part of application usage.
 **Calculation.** Sum `total_logins` over the selected reporting period, grouped
 by application.
 
+::: {.callout-note collapse="true" title="Example Queries"}
+
 ::: {.panel-tabset}
 
 ## SQL
@@ -68,6 +70,8 @@ tbl(con, in_schema("ibm_verify", "app_login_counts")) |>
   ) |>
   arrange(desc(total_sso_events))
 ```
+
+:::
 
 :::
 

@@ -17,6 +17,8 @@ unreachable and committed that state to the history file.
 To count outage events per site over a reporting period, group the filtered rows
 by `slug` and count.
 
+::: {.callout-note collapse="true" title="Example Queries"}
+
 ::: {.panel-tabset}
 
 ## SQL
@@ -82,6 +84,8 @@ tbl(con, in_schema("sre", "uptime_timeseries")) |>
   count(slug, lang, name = "outage_event_count") |>
   arrange(desc(outage_event_count))
 ```
+
+:::
 
 :::
 

@@ -18,6 +18,8 @@ with no SLA configuration are excluded.
 the count of tickets where `sla_time_to_done_breached = 'True'` by the total
 count of SLA-active tickets.
 
+::: {.callout-note collapse="true" title="Example Queries"}
+
 ::: {.panel-tabset}
 
 ## SQL
@@ -48,6 +50,8 @@ psom |>
                           as.double(n())
   )
 ```
+
+:::
 
 :::
 

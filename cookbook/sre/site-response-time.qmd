@@ -18,6 +18,8 @@ five-minute pings in the named window.
 For a single-ping point-in-time reading (not an average), use
 `sre.uptime_timeseries.response_ms` instead.
 
+::: {.callout-note collapse="true" title="Example Queries"}
+
 ::: {.panel-tabset}
 
 ## SQL
@@ -81,6 +83,8 @@ tbl(con, in_schema("sre", "uptime_summary")) |>
   select(date, response_week_ms, response_alltime_ms) |>
   arrange(date)
 ```
+
+:::
 
 :::
 

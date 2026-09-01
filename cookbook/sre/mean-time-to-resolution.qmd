@@ -21,6 +21,8 @@ filtering a `from_date` column. Unresolved incidents have a null
 To break the figure out for service-level reporting, group the same average by
 `severity`.
 
+::: {.callout-note collapse="true" title="Example Queries"}
+
 ::: {.panel-tabset}
 
 ## SQL
@@ -79,6 +81,8 @@ tbl(con, in_schema("sre", "mttr_current")) |>
   ) |>
   arrange(severity)
 ```
+
+:::
 
 :::
 

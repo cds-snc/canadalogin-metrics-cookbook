@@ -52,6 +52,8 @@ silently blend two definitions together. Filter `breakdown_value =
 'RESERVED_TOTAL'` for the overall rate across all relying parties; substitute
 a specific relying party name for a per-RP figure.
 
+::: {.callout-note collapse="true" title="Example Queries"}
+
 ::: {.panel-tabset}
 
 ## SQL
@@ -127,6 +129,8 @@ tbl(con, in_schema("google_analytics", "funnel_metrics_current")) |>
   select(window_end, task_success_rate = value) |>
   arrange(window_end)
 ```
+
+:::
 
 :::
 

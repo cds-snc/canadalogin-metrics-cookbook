@@ -17,6 +17,8 @@ period, reporting window, or monitoring period.
 **Calculation.** For each application, calculate the average of `total_logins`
 across all daily records in the selected reporting period.
 
+::: {.callout-note collapse="true" title="Example Queries"}
+
 ::: {.panel-tabset}
 
 ## SQL
@@ -62,6 +64,8 @@ tbl(con, in_schema("ibm_verify", "app_login_counts")) |>
   ) |>
   arrange(desc(average_daily_sso_events))
 ```
+
+:::
 
 :::
 

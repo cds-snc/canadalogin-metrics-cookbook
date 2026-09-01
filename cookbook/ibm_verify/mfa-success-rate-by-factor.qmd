@@ -28,6 +28,8 @@ Note that `mfa_attempts` here counts `success` and `failure` events only. It is
 Factor](#all-mfa-activity-by-factor), which counts `sent` events for OTP factors
 instead.
 
+::: {.callout-note collapse="true" title="Example Queries"}
+
 ::: {.panel-tabset}
 
 ## SQL
@@ -114,6 +116,8 @@ tbl(con, in_schema("ibm_verify", "mfa_activity")) |>
   ) |>
   arrange(week_start, mfa_type)
 ```
+
+:::
 
 :::
 

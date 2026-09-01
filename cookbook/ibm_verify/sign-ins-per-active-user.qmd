@@ -20,6 +20,8 @@ can complete a sign-in (`sms_otp`, `voice_otp`, `fido2`). Divide by
 `mtd_unique_users` on the month's last day, which is that month's distinct
 signed-in users.
 
+::: {.callout-note collapse="true" title="Example Queries"}
+
 ::: {.panel-tabset}
 
 ## SQL
@@ -136,6 +138,8 @@ first_factor |>
   select(month, estimated_sessions, monthly_active_users, sign_ins_per_active_user) |>
   arrange(month)
 ```
+
+:::
 
 :::
 
