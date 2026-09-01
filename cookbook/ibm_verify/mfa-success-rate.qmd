@@ -21,6 +21,8 @@ To track the metric over time, bin the same calculation by week. Truncating
 `from_date` to the week groups each day into its Monday-anchored bin, so the
 result is one success rate per Monday-to-Sunday week.
 
+::: {.callout-note collapse="true" title="Example queries"}
+
 ::: {.panel-tabset}
 
 ## SQL
@@ -101,6 +103,8 @@ tbl(con, in_schema("ibm_verify", "mfa_activity")) |>
   ) |>
   arrange(week_start)
 ```
+
+:::
 
 :::
 

@@ -12,6 +12,8 @@ based on the latest weekly snapshot.
 **Calculation.** Filter to the most recent `date` partition and count tickets by
 `status`.
 
+::: {.callout-note collapse="true" title="Example queries"}
+
 ::: {.panel-tabset}
 
 ## SQL
@@ -37,5 +39,7 @@ psom |>
   count(status, name = "ticket_count") |>
   arrange(desc(ticket_count))
 ```
+
+:::
 
 :::

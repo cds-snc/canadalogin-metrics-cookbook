@@ -18,6 +18,8 @@ contribute more to the overall result.
 **Calculation.** Calculate a weighted average of weekly average call length,
 weighted by the number of answered calls.
 
+::: {.callout-note collapse="true" title="Example queries"}
+
 ::: {.panel-tabset}
 
 ## SQL
@@ -76,6 +78,8 @@ tbl(con, in_schema("call_centre", "weekly_activity_report")) |>
     calls_answered
   )
 ```
+
+:::
 
 :::
 

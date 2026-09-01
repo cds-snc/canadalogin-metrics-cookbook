@@ -17,6 +17,8 @@ and for understanding peak demand.
 **Calculation.** Take the maximum value of `unique_users` over the selected
 reporting period, grouped by application.
 
+::: {.callout-note collapse="true" title="Example queries"}
+
 ::: {.panel-tabset}
 
 ## SQL
@@ -82,6 +84,8 @@ tbl(con, in_schema("ibm_verify", "app_login_counts")) |>
   ) |>
   arrange(desc(peak_daily_unique_users))
 ```
+
+:::
 
 :::
 

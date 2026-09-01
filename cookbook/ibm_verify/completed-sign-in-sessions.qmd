@@ -21,6 +21,8 @@ from the first leaves one event per session: the first-factor success. So sum
 where `result = 'success'`, restricted to the factors that can complete a
 sign-in.
 
+::: {.callout-note collapse="true" title="Example queries"}
+
 ::: {.panel-tabset}
 
 ## SQL
@@ -82,6 +84,8 @@ mfa_successes <- tbl(con, in_schema("ibm_verify", "mfa_activity")) |>
 
 successful_events - mfa_successes
 ```
+
+:::
 
 :::
 

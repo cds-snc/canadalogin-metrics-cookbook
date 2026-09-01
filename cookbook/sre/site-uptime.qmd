@@ -21,6 +21,8 @@ five-minute pings over the named window.
 To track uptime over time for a specific site, remove the `MAX(date)` filter
 and group by `date`.
 
+::: {.callout-note collapse="true" title="Example queries"}
+
 ::: {.panel-tabset}
 
 ## SQL
@@ -84,6 +86,8 @@ tbl(con, in_schema("sre", "uptime_summary")) |>
   select(date, uptime_year, uptime_alltime) |>
   arrange(date)
 ```
+
+:::
 
 :::
 

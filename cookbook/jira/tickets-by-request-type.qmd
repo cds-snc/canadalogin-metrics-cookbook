@@ -14,6 +14,8 @@ most common.
 `request_type`. Tickets that are not JSM service requests will have an empty
 `request_type`; these are counted separately as `(non-service-request)`.
 
+::: {.callout-note collapse="true" title="Example queries"}
+
 ::: {.panel-tabset}
 
 ## SQL
@@ -40,5 +42,7 @@ psom |>
   count(request_type, name = "ticket_count") |>
   arrange(desc(ticket_count))
 ```
+
+:::
 
 :::

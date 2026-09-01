@@ -15,6 +15,8 @@ It summarizes how much of incoming demand the call centre actually served.
 **Calculation.** Divide the sum of `calls_answered` by the sum of
 `calls_accepted` over the selected reporting period.
 
+::: {.callout-note collapse="true" title="Example queries"}
+
 ::: {.panel-tabset}
 
 ## SQL
@@ -41,6 +43,8 @@ tbl(con, in_schema("call_centre", "weekly_activity_report")) |>
         sum(calls_accepted, na.rm = TRUE)
   )
 ```
+
+:::
 
 :::
 

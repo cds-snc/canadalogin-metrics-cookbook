@@ -16,6 +16,8 @@ compared to the overall volume.
 **Calculation.** Count records by cleaned topic, then divide each topic count by
 the total count across all topics.
 
+::: {.callout-note collapse="true" title="Example queries"}
+
 ::: {.panel-tabset}
 
 ## SQL
@@ -51,6 +53,8 @@ tbl(con, in_schema("call_centre", "weekly_topic_dump")) |>
   ) |>
   arrange(desc(topic_count))
 ```
+
+:::
 
 :::
 
