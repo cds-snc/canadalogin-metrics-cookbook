@@ -368,6 +368,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 <p><strong>Calculation.</strong> Average <code>mttr_detected_resolved</code> (minutes from <code>detected_at</code> to <code>resolved_at</code>, precomputed in the table) across the incidents whose <code>detected_at</code> falls in the reporting window, from <code>sre.mttr_current</code>. Because the incident timestamps are stored as America/Toronto strings rather than native dates, the window casts the <code>YYYY-MM-DD</code> prefix of <code>detected_at</code> to a <code>DATE</code> instead of filtering a <code>from_date</code> column. Unresolved incidents have a null <code>mttr_detected_resolved</code> and are excluded from the average.</p>
 <p>To break the figure out for service-level reporting, group the same average by <code>severity</code>.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Example queries">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Example queries
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
 <div class="tabset-margin-container"></div><div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href="">SQL</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href="">R</a></li></ul>
 <div class="tab-content">
@@ -414,6 +426,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
+</div>
+</div>
+</div>
 <p><em>Interpretation notes.</em> The figure is in minutes; divide by 60 for hours. It is a <strong>mean</strong>, so a single very long incident can pull it up sharply, especially given how few incidents there are in any window. Read it alongside the incident count, and consider a median or a Sev1-only cut when one outlier dominates.</p>
 <p>The window is anchored on <code>detected_at</code>, so an incident counts in the period it <em>began</em>, even if it was resolved in a later period. <code>severity</code> is unvalidated free text in the source sheet, so the grouped view reflects whatever values were typed (expect the occasional typo or spacing drift).</p>
 </section>
@@ -440,6 +455,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 <p><strong>Calculation.</strong> Filter to the most recent <code>date</code> partition and read the precomputed rolling-window uptime columns from <code>sre.uptime_summary</code>. Each <code>uptime_*</code> column is already a percentage (0-100), calculated from all five-minute pings over the named window.</p>
 <p>To track uptime over time for a specific site, remove the <code>MAX(date)</code> filter and group by <code>date</code>.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Example queries">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Example queries
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
 <div class="tabset-margin-container"></div><div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true" href="">SQL</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false" href="">R</a></li></ul>
 <div class="tab-content">
@@ -491,6 +518,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
+</div>
+</div>
+</div>
 <p><em>Interpretation notes.</em> The uptime windows are rolling, not calendar-aligned. <code>uptime_month</code> on a given <code>date</code> covers the 30 days trailing that date’s stats update (~23:2x UTC), not a fixed calendar month. To aggregate by calendar month, group by <code>substr(date, 1, 7)</code>.</p>
 </section>
 <section id="site-response-time" class="level3">
@@ -505,6 +535,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 <p><strong>Calculation.</strong> Filter to the most recent <code>date</code> partition and read the precomputed rolling-window response time columns from <code>sre.uptime_summary</code>. Each <code>response_*_ms</code> column is the mean response time in milliseconds over all five-minute pings in the named window.</p>
 <p>For a single-ping point-in-time reading (not an average), use <code>sre.uptime_timeseries.response_ms</code> instead.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Example queries">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Example queries
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
 <div class="tabset-margin-container"></div><div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true" href="">SQL</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false" href="">R</a></li></ul>
 <div class="tab-content">
@@ -556,6 +598,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
+</div>
+</div>
+</div>
 <p><em>Interpretation notes.</em> Response times are averages computed from all 288 five-minute pings in the window. Single-measurement spikes are smoothed out. During outage periods, pings that time out contribute high response times or are excluded depending on the upptime implementation, so treat response time trends during known outage windows with caution.</p>
 </section>
 <section id="outage-events" class="level3">
@@ -570,6 +615,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 <p><strong>Calculation.</strong> Filter <code>sre.uptime_timeseries</code> to rows where <code>status = 'down'</code>. Each such row represents a moment when the upptime bot detected the site was unreachable and committed that state to the history file.</p>
 <p>To count outage events per site over a reporting period, group the filtered rows by <code>slug</code> and count.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Example queries">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Example queries
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
 <div class="tabset-margin-container"></div><div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-4-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-1" role="tab" aria-controls="tabset-4-1" aria-selected="true" href="">SQL</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-4-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-2" role="tab" aria-controls="tabset-4-2" aria-selected="false" href="">R</a></li></ul>
 <div class="tab-content">
@@ -620,6 +677,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
 <span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(slug, lang, <span class="at">name =</span> <span class="st">"outage_event_count"</span>) <span class="sc">|&gt;</span></span>
 <span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(outage_event_count))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
