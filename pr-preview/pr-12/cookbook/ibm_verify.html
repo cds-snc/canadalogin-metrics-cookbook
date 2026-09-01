@@ -428,13 +428,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 <p><strong>Calculation.</strong> Sum <code>failed_logins</code> and <code>successful_logins</code> over the selected reporting period.</p>
 <p>To track volume over time, bin the same sum by week. Truncating <code>from_date</code> to the week groups each day into its Monday-anchored bin, so the result is one authentication event total per Monday-to-Sunday week.</p>
-<div class="callout callout-style-default callout-note callout-titled" title="Example Queries">
+<div class="callout callout-style-default callout-note callout-titled" title="Example queries">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Example Queries
+<span class="screen-reader-only">Note</span>Example queries
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -507,13 +507,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 <p><strong>Calculation.</strong> Divide the sum of <code>successful_logins</code> by the sum of all attempts (<code>successful_logins + failed_logins</code>) over the selected reporting period.</p>
 <p>To track the metric over time, bin the same calculation by week. Truncating <code>from_date</code> to the week groups each day into its Monday-anchored bin, so the result is one success rate per Monday-to-Sunday week.</p>
-<div class="callout callout-style-default callout-note callout-titled" title="Example Queries">
+<div class="callout callout-style-default callout-note callout-titled" title="Example queries">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Example Queries
+<span class="screen-reader-only">Note</span>Example queries
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -591,13 +591,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>sign-in sessions</li>
 </ul>
 <p><strong>Calculation.</strong> A completed session has exactly one successful first-factor event (the password) plus zero or more successful second factors. Both kinds of success are lumped together in <code>successful_logins</code> on <a href="../catalog/ibm_verify.html#auth_total_logins"><code>auth_total_logins</code></a>, while the second-factor successes are counted separately on <a href="../catalog/ibm_verify.html#mfa_activity"><code>mfa_activity</code></a>. Subtracting the second from the first leaves one event per session: the first-factor success. So sum <code>successful_logins</code> over the window and subtract the sum of <code>mfa_activity.count</code> where <code>result = 'success'</code>, restricted to the factors that can complete a sign-in.</p>
-<div class="callout callout-style-default callout-note callout-titled" title="Example Queries">
+<div class="callout callout-style-default callout-note callout-titled" title="Example queries">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Example Queries
+<span class="screen-reader-only">Note</span>Example queries
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -733,13 +733,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>monthly sign-in rate</li>
 </ul>
 <p><strong>Calculation.</strong> Per calendar month, estimate sessions as in Completed Sign-In Sessions: sum <code>successful_logins</code> and subtract the successes of the factors that can complete a sign-in (<code>sms_otp</code>, <code>voice_otp</code>, <code>fido2</code>). Divide by <code>mtd_unique_users</code> on the month’s last day, which is that month’s distinct signed-in users.</p>
-<div class="callout callout-style-default callout-note callout-titled" title="Example Queries">
+<div class="callout callout-style-default callout-note callout-titled" title="Example queries">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Example Queries
+<span class="screen-reader-only">Note</span>Example queries
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -884,13 +884,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 <p>These columns are cumulative, so the most recent row holds the current total.</p>
 <p>A <code>since_apr22_unique_users</code> column (cumulative distinct users since launch) was previously available but has been removed; see the <a href="../../catalog/ibm_verify.qmd#data-retention">data retention note</a>.</p>
-<div class="callout callout-style-default callout-note callout-titled" title="Example Queries">
+<div class="callout callout-style-default callout-note callout-titled" title="Example queries">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Example Queries
+<span class="screen-reader-only">Note</span>Example queries
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -955,13 +955,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>total uses of CanadaLogin by application</li>
 </ul>
 <p><strong>Calculation.</strong> Sum <code>total_logins</code> over the selected reporting period, grouped by application.</p>
-<div class="callout callout-style-default callout-note callout-titled" title="Example Queries">
+<div class="callout callout-style-default callout-note callout-titled" title="Example queries">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Example Queries
+<span class="screen-reader-only">Note</span>Example queries
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -1028,13 +1028,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>per-application sign-in success rate</li>
 </ul>
 <p><strong>Calculation.</strong> Divide the sum of <code>successful_logins</code> by the sum of all attempts (<code>successful_logins + failed_logins</code>) over the selected reporting period, grouped by application.</p>
-<div class="callout callout-style-default callout-note callout-titled" title="Example Queries">
+<div class="callout callout-style-default callout-note callout-titled" title="Example queries">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Example Queries
+<span class="screen-reader-only">Note</span>Example queries
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -1105,13 +1105,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>peak daily reach</li>
 </ul>
 <p><strong>Calculation.</strong> Take the maximum value of <code>unique_users</code> over the selected reporting period, grouped by application.</p>
-<div class="callout callout-style-default callout-note callout-titled" title="Example Queries">
+<div class="callout callout-style-default callout-note callout-titled" title="Example queries">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Example Queries
+<span class="screen-reader-only">Note</span>Example queries
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -1203,13 +1203,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 <p>The <code>WHERE from_date BETWEEN ...</code> bounds set the “as of” reporting date; the most recent row in the window holds the current cumulative total.</p>
 <p>A <code>since_apr22_unique_users</code> column (cumulative distinct users since launch) was previously available but has been removed; see the <a href="../../catalog/ibm_verify.qmd#data-retention">data retention note</a>.</p>
-<div class="callout callout-style-default callout-note callout-titled" title="Example Queries">
+<div class="callout callout-style-default callout-note callout-titled" title="Example queries">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-9-contents" aria-controls="callout-9" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Example Queries
+<span class="screen-reader-only">Note</span>Example queries
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -1347,13 +1347,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>apps per account</li>
 </ul>
 <p><strong>Calculation.</strong> Sum the latest year-to-date unique users across every application (from <code>app_login_counts</code>), then divide by the latest CanadaLogin-wide year-to-date unique users (from <code>auth_total_logins</code>). Both inputs are cumulative <code>ytd_unique_users</code> fields, so take the latest value per source rather than summing across days.</p>
-<div class="callout callout-style-default callout-note callout-titled" title="Example Queries">
+<div class="callout callout-style-default callout-note callout-titled" title="Example queries">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-10-contents" aria-controls="callout-10" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Example Queries
+<span class="screen-reader-only">Note</span>Example queries
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -1438,13 +1438,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>average daily application usage</li>
 </ul>
 <p><strong>Calculation.</strong> For each application, calculate the average of <code>total_logins</code> across all daily records in the selected reporting period.</p>
-<div class="callout callout-style-default callout-note callout-titled" title="Example Queries">
+<div class="callout callout-style-default callout-note callout-titled" title="Example queries">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-11-contents" aria-controls="callout-11" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Example Queries
+<span class="screen-reader-only">Note</span>Example queries
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -1515,13 +1515,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>MFA volume</li>
 </ul>
 <p><strong>Calculation.</strong> Sum <code>count</code> over the selected reporting period. OTP factor types (<code>sms_otp</code>, <code>email_otp</code>, <code>voice_otp</code>) record both a <code>sent</code> event and a subsequent <code>success</code>/<code>failure</code> event for the same challenge; to avoid double-counting, only the <code>sent</code> row is used for these types. Non-OTP factor types (<code>fido2</code>, <code>kq</code>, <code>totp</code>, <code>ibm_verify_push</code>) do not generate a <code>sent</code> event, so their <code>success</code>/<code>failure</code> rows are used instead. Add a <code>result</code> breakdown to separate successes from failures.</p>
-<div class="callout callout-style-default callout-note callout-titled" title="Example Queries">
+<div class="callout callout-style-default callout-note callout-titled" title="Example queries">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-12-contents" aria-controls="callout-12" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Example Queries
+<span class="screen-reader-only">Note</span>Example queries
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -1584,13 +1584,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 <p><strong>Calculation.</strong> Divide the sum of <code>count</code> where <code>result = 'success'</code> by the sum of <code>count</code> where <code>result</code> is <code>'success'</code> or <code>'failure'</code>. OTP factor types also produce a <code>'sent'</code> event per challenge, which must be excluded from both the numerator and the denominator, because <code>sent</code> rows do not represent outcomes.</p>
 <p>To track the metric over time, bin the same calculation by week. Truncating <code>from_date</code> to the week groups each day into its Monday-anchored bin, so the result is one success rate per Monday-to-Sunday week.</p>
-<div class="callout callout-style-default callout-note callout-titled" title="Example Queries">
+<div class="callout callout-style-default callout-note callout-titled" title="Example queries">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-13-contents" aria-controls="callout-13" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Example Queries
+<span class="screen-reader-only">Note</span>Example queries
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -1682,13 +1682,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 <p><strong>Calculation.</strong> Within each <code>mfa_type</code>, divide the sum of <code>count</code> where <code>result = 'success'</code> by the sum of <code>count</code> where <code>result</code> is <code>'success'</code> or <code>'failure'</code>. As with the overall <a href="#mfa-success-rate">MFA Success Rate</a>, <code>sent</code> rows are excluded from both the numerator and the denominator because they are not outcomes. <code>mfa_attempts</code> is the denominator (successes plus failures) and is reported alongside the rate so that low-volume factors, whose rates are noisy, can be discounted.</p>
 <p>Note that <code>mfa_attempts</code> here counts <code>success</code> and <code>failure</code> events only. It is <em>not</em> the de-duplicated usage volume reported by <a href="#all-mfa-activity-by-factor">All MFA Activity by Factor</a>, which counts <code>sent</code> events for OTP factors instead.</p>
-<div class="callout callout-style-default callout-note callout-titled" title="Example Queries">
+<div class="callout callout-style-default callout-note callout-titled" title="Example queries">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-14-contents" aria-controls="callout-14" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Example Queries
+<span class="screen-reader-only">Note</span>Example queries
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -1785,13 +1785,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>MFA factor share</li>
 </ul>
 <p><strong>Calculation.</strong> Sum <code>count</code> grouped by <code>mfa_type</code>, then divide each factor’s total by the overall total to get its share. As with <a href="#mfa-authentications">MFA Authentications</a>, de-duplicate before counting: OTP factor types (<code>sms_otp</code>, <code>email_otp</code>, <code>voice_otp</code>) record both a <code>sent</code> event and a subsequent <code>success</code>/<code>failure</code> event for the same challenge, so only the <code>sent</code> row is counted for these; non-OTP factor types (<code>fido2</code>, <code>kq</code>, <code>totp</code>, <code>ibm_verify_push</code>) have no <code>sent</code> event and are counted through their <code>success</code>/<code>failure</code> rows. Without this, OTP factors are roughly double-counted relative to non-OTP factors.</p>
-<div class="callout callout-style-default callout-note callout-titled" title="Example Queries">
+<div class="callout callout-style-default callout-note callout-titled" title="Example queries">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-15-contents" aria-controls="callout-15" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Example Queries
+<span class="screen-reader-only">Note</span>Example queries
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -1868,13 +1868,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>sign-in-capable factor distribution</li>
 </ul>
 <p><strong>Calculation.</strong> Restrict to the sign-in factors (<code>sms_otp</code>, <code>voice_otp</code>, <code>fido2</code>), then, as in <a href="#all-mfa-activity-by-factor">All MFA Activity by Factor</a>, de-duplicate before counting: the OTP factors (<code>sms_otp</code>, <code>voice_otp</code>) record both a <code>sent</code> event and a subsequent <code>success</code>/<code>failure</code> event for the same challenge, so only the <code>sent</code> row is counted for these; <code>fido2</code> (passkeys) has no <code>sent</code> event and is counted through its <code>success</code>/<code>failure</code> rows. Sum <code>count</code> grouped by <code>mfa_type</code>, then divide each factor’s total by the combined total to get its share.</p>
-<div class="callout callout-style-default callout-note callout-titled" title="Example Queries">
+<div class="callout callout-style-default callout-note callout-titled" title="Example queries">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-16-contents" aria-controls="callout-16" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Example Queries
+<span class="screen-reader-only">Note</span>Example queries
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>

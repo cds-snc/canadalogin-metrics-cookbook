@@ -368,13 +368,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 <p><strong>Calculation.</strong> Average <code>mttr_detected_resolved</code> (minutes from <code>detected_at</code> to <code>resolved_at</code>, precomputed in the table) across the incidents whose <code>detected_at</code> falls in the reporting window, from <code>sre.mttr_current</code>. Because the incident timestamps are stored as America/Toronto strings rather than native dates, the window casts the <code>YYYY-MM-DD</code> prefix of <code>detected_at</code> to a <code>DATE</code> instead of filtering a <code>from_date</code> column. Unresolved incidents have a null <code>mttr_detected_resolved</code> and are excluded from the average.</p>
 <p>To break the figure out for service-level reporting, group the same average by <code>severity</code>.</p>
-<div class="callout callout-style-default callout-note callout-titled" title="Example Queries">
+<div class="callout callout-style-default callout-note callout-titled" title="Example queries">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Example Queries
+<span class="screen-reader-only">Note</span>Example queries
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -455,13 +455,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 <p><strong>Calculation.</strong> Filter to the most recent <code>date</code> partition and read the precomputed rolling-window uptime columns from <code>sre.uptime_summary</code>. Each <code>uptime_*</code> column is already a percentage (0-100), calculated from all five-minute pings over the named window.</p>
 <p>To track uptime over time for a specific site, remove the <code>MAX(date)</code> filter and group by <code>date</code>.</p>
-<div class="callout callout-style-default callout-note callout-titled" title="Example Queries">
+<div class="callout callout-style-default callout-note callout-titled" title="Example queries">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Example Queries
+<span class="screen-reader-only">Note</span>Example queries
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -535,13 +535,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 <p><strong>Calculation.</strong> Filter to the most recent <code>date</code> partition and read the precomputed rolling-window response time columns from <code>sre.uptime_summary</code>. Each <code>response_*_ms</code> column is the mean response time in milliseconds over all five-minute pings in the named window.</p>
 <p>For a single-ping point-in-time reading (not an average), use <code>sre.uptime_timeseries.response_ms</code> instead.</p>
-<div class="callout callout-style-default callout-note callout-titled" title="Example Queries">
+<div class="callout callout-style-default callout-note callout-titled" title="Example queries">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Example Queries
+<span class="screen-reader-only">Note</span>Example queries
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -615,13 +615,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 <p><strong>Calculation.</strong> Filter <code>sre.uptime_timeseries</code> to rows where <code>status = 'down'</code>. Each such row represents a moment when the upptime bot detected the site was unreachable and committed that state to the history file.</p>
 <p>To count outage events per site over a reporting period, group the filtered rows by <code>slug</code> and count.</p>
-<div class="callout callout-style-default callout-note callout-titled" title="Example Queries">
+<div class="callout callout-style-default callout-note callout-titled" title="Example queries">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Example Queries
+<span class="screen-reader-only">Note</span>Example queries
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
