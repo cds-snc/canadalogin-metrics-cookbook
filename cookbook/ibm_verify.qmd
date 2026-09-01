@@ -22,8 +22,9 @@ sign-in, then as many handoffs as the user needs.
 | Session | The signed-in state at CanadaLogin, reusable by later handoffs | None |
 | SSO event | The session being used to reach a partner service | `app_login_counts` |
 
-"Sign-in" is prose only. No table counts it, so it is never a metric name, an
-output column name, or an axis label.
+"Sign-in" is prose only. No table counts it, so it is never an output column
+name or an axis label, and names a metric only where that metric is labelled an
+estimate.
 
 The relevant IBM Verify tables are:
 
@@ -49,14 +50,16 @@ place. See the internal applications note in [notes.qmd](notes.qmd).
 ## CanadaLogin Metrics
 
 Metrics in this section describe CanadaLogin overall, across all applications,
-sourced from `ibm_verify.auth_total_logins`.
+sourced mainly from `ibm_verify.auth_total_logins` (the estimated sessions metric
+also draws on `ibm_verify.mfa_activity`).
 
 {{< include ibm_verify/sign-ins.qmd >}}
 
 {{< include ibm_verify/sign-in-success-rate.qmd >}}
 
-<!-- Withdrawn 2026-09-01 pending investigation into an accurate measure of sign-ins -->
-<!-- {{< include ibm_verify/completed-sign-in-sessions.qmd >}} -->
+{{< include ibm_verify/completed-sign-in-sessions.qmd >}}
+
+{{< include ibm_verify/sign-ins-per-active-user.qmd >}}
 
 {{< include ibm_verify/cumulative-unique-users.qmd >}}
 
