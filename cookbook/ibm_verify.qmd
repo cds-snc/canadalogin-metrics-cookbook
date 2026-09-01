@@ -59,6 +59,8 @@ also draws on `ibm_verify.mfa_activity`).
 
 {{< include ibm_verify/completed-sign-in-sessions.qmd >}}
 
+{{< include ibm_verify/sign-ins-per-active-user.qmd >}}
+
 {{< include ibm_verify/cumulative-unique-users.qmd >}}
 
 ## Application Metrics

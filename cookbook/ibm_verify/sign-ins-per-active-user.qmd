@@ -1,0 +1,146 @@
+### Sign-Ins per Active User (Estimated)
+
+How often a typical user signs in to CanadaLogin over a calendar month, counting
+only the users who signed in at all that month.
+
+This builds on [Completed Sign-In
+Sessions](#completed-sign-in-sessions-estimated) and inherits its estimate and
+its assumptions. The denominator is `mtd_unique_users` read on the month's last
+day, so the reporting window has to be whole calendar months.
+
+*Alternative names*:
+
+- sign-in frequency
+- sessions per active user
+- monthly sign-in rate
+
+**Calculation.** Per calendar month, estimate sessions as in Completed Sign-In
+Sessions: sum `successful_logins` and subtract the successes of the factors that
+can complete a sign-in (`sms_otp`, `voice_otp`, `fido2`). Divide by
+`mtd_unique_users` on the month's last day, which is that month's distinct
+signed-in users.
+
+::: {.panel-tabset}
+
+## SQL
+
+```sql
+WITH first_factor AS (
+    SELECT
+        date_trunc('month', from_date) AS month,
+        SUM(successful_logins) AS successful_events
+    FROM ibm_verify.auth_total_logins
+    -- set the reporting window; whole calendar months only
+    WHERE from_date BETWEEN DATE '2026-05-01' AND DATE '2026-08-31'
+    GROUP BY 1
+),
+
+second_factor AS (
+    SELECT
+        date_trunc('month', from_date) AS month,
+        SUM(count) AS mfa_successes
+    FROM ibm_verify.mfa_activity
+    -- set the reporting window; whole calendar months only
+    WHERE from_date BETWEEN DATE '2026-05-01' AND DATE '2026-08-31'
+      -- outcome events only; a "sent" OTP is an issuance, not a success
+      AND result = 'success'
+      -- email_otp validates an email address at sign-up and never enters
+      -- successful_logins, so subtracting it would over-correct
+      AND mfa_type IN ('sms_otp', 'voice_otp', 'fido2')
+    GROUP BY 1
+),
+
+active_users AS (
+    SELECT month, mtd_unique_users AS monthly_active_users
+    FROM (
+        SELECT
+            date_trunc('month', from_date) AS month,
+            mtd_unique_users,
+            ROW_NUMBER() OVER (
+                PARTITION BY date_trunc('month', from_date)
+                ORDER BY from_date DESC
+            ) AS day_rank
+        FROM ibm_verify.auth_total_logins
+        -- set the reporting window; whole calendar months only
+        WHERE from_date BETWEEN DATE '2026-05-01' AND DATE '2026-08-31'
+    )
+    -- mtd_unique_users accumulates through the month, so the last day holds
+    -- the month's distinct signed-in users
+    WHERE day_rank = 1
+)
+
+SELECT
+    first_factor.month,
+    first_factor.successful_events - second_factor.mfa_successes
+        AS estimated_sessions,
+    active_users.monthly_active_users,
+    CAST(
+        first_factor.successful_events - second_factor.mfa_successes AS DOUBLE
+    ) / NULLIF(active_users.monthly_active_users, 0)
+        AS sign_ins_per_active_user
+FROM first_factor
+JOIN second_factor ON first_factor.month = second_factor.month
+JOIN active_users ON first_factor.month = active_users.month
+ORDER BY first_factor.month;
+```
+
+## R
+
+```r
+sign_in_types <- c("sms_otp", "voice_otp", "fido2")
+
+first_factor <- tbl(con, in_schema("ibm_verify", "auth_total_logins")) |>
+  # set the reporting window; whole calendar months only
+  filter(
+    from_date >= as.Date("2026-05-01"),
+    from_date <= as.Date("2026-08-31")
+  ) |>
+  group_by(month = floor_date(from_date, "month")) |>
+  summarise(successful_events = sum(as.double(successful_logins), na.rm = TRUE))
+
+second_factor <- tbl(con, in_schema("ibm_verify", "mfa_activity")) |>
+  # set the reporting window; whole calendar months only
+  filter(
+    from_date >= as.Date("2026-05-01"),
+    from_date <= as.Date("2026-08-31"),
+    # outcome events only; a "sent" OTP is an issuance, not a success
+    result == "success",
+    # email_otp validates an email address at sign-up and never enters
+    # successful_logins, so subtracting it would over-correct
+    mfa_type %in% sign_in_types
+  ) |>
+  group_by(month = floor_date(from_date, "month")) |>
+  summarise(mfa_successes = sum(as.double(count), na.rm = TRUE))
+
+active_users <- tbl(con, in_schema("ibm_verify", "auth_total_logins")) |>
+  # set the reporting window; whole calendar months only
+  filter(
+    from_date >= as.Date("2026-05-01"),
+    from_date <= as.Date("2026-08-31")
+  ) |>
+  group_by(month = floor_date(from_date, "month")) |>
+  # mtd_unique_users accumulates through the month, so the last day holds
+  # the month's distinct signed-in users
+  filter(from_date == max(from_date, na.rm = TRUE)) |>
+  ungroup() |>
+  select(month, monthly_active_users = mtd_unique_users)
+
+first_factor |>
+  inner_join(second_factor, by = "month") |>
+  inner_join(active_users, by = "month") |>
+  mutate(
+    estimated_sessions = successful_events - mfa_successes,
+    sign_ins_per_active_user =
+      as.double(estimated_sessions) / as.double(monthly_active_users)
+  ) |>
+  select(month, estimated_sessions, monthly_active_users, sign_ins_per_active_user) |>
+  arrange(month)
+```
+
+:::
+
+*Interpretation notes.* This is per *active* user, not per registered user. A user
+who does not sign in at all that month is not counted in the denominator.
+
+Sessions carry the undercount described in [Completed Sign-In
+Sessions](#completed-sign-in-sessions-estimated).
