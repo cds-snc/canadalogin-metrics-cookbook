@@ -12,7 +12,7 @@ based on the latest weekly snapshot.
 **Calculation.** Filter to the most recent `date` partition and count tickets by
 `status`.
 
-::: {.callout-note collapse="true" title="Example Queries"}
+::: {.callout-note collapse="true" title="Example queries"}
 
 ::: {.panel-tabset}
 

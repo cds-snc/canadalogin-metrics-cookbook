@@ -16,7 +16,7 @@ with a weighted mean.
 **Calculation.** Calculate a weighted average of `avg_handle_time_seconds`,
 weighted by `calls_answered`.
 
-::: {.callout-note collapse="true" title="Example Queries"}
+::: {.callout-note collapse="true" title="Example queries"}
 
 ::: {.panel-tabset}
 

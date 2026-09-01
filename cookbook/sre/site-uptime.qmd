@@ -21,7 +21,7 @@ five-minute pings over the named window.
 To track uptime over time for a specific site, remove the `MAX(date)` filter
 and group by `date`.
 
-::: {.callout-note collapse="true" title="Example Queries"}
+::: {.callout-note collapse="true" title="Example queries"}
 
 ::: {.panel-tabset}
 

@@ -18,7 +18,7 @@ contribute more to the overall result.
 **Calculation.** Calculate a weighted average of weekly average call length,
 weighted by the number of answered calls.
 
-::: {.callout-note collapse="true" title="Example Queries"}
+::: {.callout-note collapse="true" title="Example queries"}
 
 ::: {.panel-tabset}
 

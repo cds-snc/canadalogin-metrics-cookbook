@@ -20,7 +20,7 @@ can complete a sign-in (`sms_otp`, `voice_otp`, `fido2`). Divide by
 `mtd_unique_users` on the month's last day, which is that month's distinct
 signed-in users.
 
-::: {.callout-note collapse="true" title="Example Queries"}
+::: {.callout-note collapse="true" title="Example queries"}
 
 ::: {.panel-tabset}
 

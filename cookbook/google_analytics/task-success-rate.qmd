@@ -52,7 +52,7 @@ silently blend two definitions together. Filter `breakdown_value =
 'RESERVED_TOTAL'` for the overall rate across all relying parties; substitute
 a specific relying party name for a per-RP figure.
 
-::: {.callout-note collapse="true" title="Example Queries"}
+::: {.callout-note collapse="true" title="Example queries"}
 
 ::: {.panel-tabset}
 

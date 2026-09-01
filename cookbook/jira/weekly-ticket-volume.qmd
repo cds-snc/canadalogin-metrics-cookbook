@@ -12,7 +12,7 @@ how the backlog size changes over time.
 **Calculation.** Count the number of rows per `date` partition. Each partition
 is one Monday snapshot, so the result is one total per week.
 
-::: {.callout-note collapse="true" title="Example Queries"}
+::: {.callout-note collapse="true" title="Example queries"}
 
 ::: {.panel-tabset}
 

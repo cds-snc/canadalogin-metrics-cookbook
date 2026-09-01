@@ -16,7 +16,7 @@ compared to the overall volume.
 **Calculation.** Count records by cleaned topic, then divide each topic count by
 the total count across all topics.
 
-::: {.callout-note collapse="true" title="Example Queries"}
+::: {.callout-note collapse="true" title="Example queries"}
 
 ::: {.panel-tabset}
 

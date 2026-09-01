@@ -17,7 +17,7 @@ unreachable and committed that state to the history file.
 To count outage events per site over a reporting period, group the filtered rows
 by `slug` and count.
 
-::: {.callout-note collapse="true" title="Example Queries"}
+::: {.callout-note collapse="true" title="Example queries"}
 
 ::: {.panel-tabset}
 

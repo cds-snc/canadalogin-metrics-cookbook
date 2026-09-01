@@ -18,7 +18,7 @@ weeks with a weighted average rather than re-deriving from counts.
 **Calculation.** Calculate a weighted average of `pct_answered_within_60s`,
 weighted by `calls_answered`.
 
-::: {.callout-note collapse="true" title="Example Queries"}
+::: {.callout-note collapse="true" title="Example queries"}
 
 ::: {.panel-tabset}
 

@@ -28,7 +28,7 @@ Note that `mfa_attempts` here counts `success` and `failure` events only. It is
 Factor](#all-mfa-activity-by-factor), which counts `sent` events for OTP factors
 instead.
 
-::: {.callout-note collapse="true" title="Example Queries"}
+::: {.callout-note collapse="true" title="Example queries"}
 
 ::: {.panel-tabset}
 

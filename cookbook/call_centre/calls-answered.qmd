@@ -16,7 +16,7 @@ average call length and weighted average delay.
 **Calculation.** Use `calls_answered` by reporting period, or sum across periods
 for a total.
 
-::: {.callout-note collapse="true" title="Example Queries"}
+::: {.callout-note collapse="true" title="Example queries"}
 
 ::: {.panel-tabset}
 

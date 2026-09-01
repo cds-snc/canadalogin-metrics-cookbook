@@ -19,7 +19,7 @@ before the SLA scheme was configured) are excluded.
 the count of tickets where `sla_first_response_breached = 'True'` by the total
 count of SLA-active tickets.
 
-::: {.callout-note collapse="true" title="Example Queries"}
+::: {.callout-note collapse="true" title="Example queries"}
 
 ::: {.panel-tabset}
 

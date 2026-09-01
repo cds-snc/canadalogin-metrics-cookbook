@@ -35,7 +35,7 @@ counted for these; `fido2` (passkeys) has no `sent` event and is counted through
 its `success`/`failure` rows. Sum `count` grouped by `mfa_type`, then divide each
 factor's total by the combined total to get its share.
 
-::: {.callout-note collapse="true" title="Example Queries"}
+::: {.callout-note collapse="true" title="Example queries"}
 
 ::: {.panel-tabset}
 

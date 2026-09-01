@@ -22,7 +22,7 @@ calls an SSO event, part of application usage.
 **Calculation.** Sum `total_logins` over the selected reporting period, grouped
 by application.
 
-::: {.callout-note collapse="true" title="Example Queries"}
+::: {.callout-note collapse="true" title="Example queries"}
 
 ::: {.panel-tabset}
 

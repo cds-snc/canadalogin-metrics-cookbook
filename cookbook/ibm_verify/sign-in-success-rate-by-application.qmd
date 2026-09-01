@@ -17,7 +17,7 @@ configuration issues.
 (`successful_logins + failed_logins`) over the selected reporting period, grouped
 by application.
 
-::: {.callout-note collapse="true" title="Example Queries"}
+::: {.callout-note collapse="true" title="Example queries"}
 
 ::: {.panel-tabset}
 

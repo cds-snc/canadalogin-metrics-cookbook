@@ -11,7 +11,7 @@ The number of PSOM tickets in the latest snapshot grouped by priority level.
 **Calculation.** Filter to the most recent `date` partition and count tickets by
 `priority`.
 
-::: {.callout-note collapse="true" title="Example Queries"}
+::: {.callout-note collapse="true" title="Example queries"}
 
 ::: {.panel-tabset}
 

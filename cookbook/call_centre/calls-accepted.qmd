@@ -16,7 +16,7 @@ contact volume changes over time.
 **Calculation.** Use `calls_accepted` by reporting period, or sum across periods
 for a total.
 
-::: {.callout-note collapse="true" title="Example Queries"}
+::: {.callout-note collapse="true" title="Example queries"}
 
 ::: {.panel-tabset}
 

@@ -17,7 +17,7 @@ period, reporting window, or monitoring period.
 **Calculation.** For each application, calculate the average of `total_logins`
 across all daily records in the selected reporting period.
 
-::: {.callout-note collapse="true" title="Example Queries"}
+::: {.callout-note collapse="true" title="Example queries"}
 
 ::: {.panel-tabset}
 

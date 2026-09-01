@@ -30,7 +30,7 @@ row is counted for these; non-OTP factor types (`fido2`, `kq`, `totp`,
 `success`/`failure` rows. Without this, OTP factors are roughly double-counted
 relative to non-OTP factors.
 
-::: {.callout-note collapse="true" title="Example Queries"}
+::: {.callout-note collapse="true" title="Example queries"}
 
 ::: {.panel-tabset}
 

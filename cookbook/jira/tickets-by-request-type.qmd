@@ -14,7 +14,7 @@ most common.
 `request_type`. Tickets that are not JSM service requests will have an empty
 `request_type`; these are counted separately as `(non-service-request)`.
 
-::: {.callout-note collapse="true" title="Example Queries"}
+::: {.callout-note collapse="true" title="Example queries"}
 
 ::: {.panel-tabset}
 

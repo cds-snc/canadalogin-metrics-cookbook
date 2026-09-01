@@ -17,7 +17,7 @@ and for understanding peak demand.
 **Calculation.** Take the maximum value of `unique_users` over the selected
 reporting period, grouped by application.
 
-::: {.callout-note collapse="true" title="Example Queries"}
+::: {.callout-note collapse="true" title="Example queries"}
 
 ::: {.panel-tabset}
 

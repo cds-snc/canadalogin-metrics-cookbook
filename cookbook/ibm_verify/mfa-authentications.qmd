@@ -20,7 +20,7 @@ types (`fido2`, `kq`, `totp`, `ibm_verify_push`) do not generate a `sent`
 event, so their `success`/`failure` rows are used instead. Add a `result`
 breakdown to separate successes from failures.
 
-::: {.callout-note collapse="true" title="Example Queries"}
+::: {.callout-note collapse="true" title="Example queries"}
 
 ::: {.panel-tabset}
 

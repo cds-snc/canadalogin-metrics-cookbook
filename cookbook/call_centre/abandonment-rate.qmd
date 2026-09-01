@@ -16,7 +16,7 @@ It is closely tied to wait times: rising delay often drives rising abandonment.
 `calls_accepted` over the selected reporting period. Summing the raw counts gives
 a volume-weighted rate; do not average the weekly `calls_abandoned_pct` column.
 
-::: {.callout-note collapse="true" title="Example Queries"}
+::: {.callout-note collapse="true" title="Example queries"}
 
 ::: {.panel-tabset}
 

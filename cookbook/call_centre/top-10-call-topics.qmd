@@ -16,7 +16,7 @@ call centre.
 **Calculation.** Count records by cleaned topic, calculate topic share, and
 return the top 10 by topic count.
 
-::: {.callout-note collapse="true" title="Example Queries"}
+::: {.callout-note collapse="true" title="Example queries"}
 
 ::: {.panel-tabset}
 

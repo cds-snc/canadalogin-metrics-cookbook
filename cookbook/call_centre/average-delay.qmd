@@ -17,7 +17,7 @@ mean to avoid low-volume weeks distorting the result.
 **Calculation.** Calculate a weighted average of weekly average delay, weighted
 by the number of answered calls.
 
-::: {.callout-note collapse="true" title="Example Queries"}
+::: {.callout-note collapse="true" title="Example queries"}
 
 ::: {.panel-tabset}
 

@@ -21,7 +21,7 @@ from the first leaves one event per session: the first-factor success. So sum
 where `result = 'success'`, restricted to the factors that can complete a
 sign-in.
 
-::: {.callout-note collapse="true" title="Example Queries"}
+::: {.callout-note collapse="true" title="Example queries"}
 
 ::: {.panel-tabset}
 

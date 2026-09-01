@@ -28,7 +28,7 @@ A `since_apr22_unique_users` column (cumulative distinct users since launch) was
 previously available but has been removed; see the [data retention
 note](../../catalog/ibm_verify.qmd#data-retention).
 
-::: {.callout-note collapse="true" title="Example Queries"}
+::: {.callout-note collapse="true" title="Example queries"}
 
 ::: {.panel-tabset}
 
