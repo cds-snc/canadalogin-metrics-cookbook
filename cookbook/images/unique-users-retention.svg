@@ -4,9 +4,10 @@
   <rect x="40" y="52" width="380" height="28" fill="#D8D8D8"/>
   <rect x="420" y="52" width="180" height="28" fill="#CCDAE6" stroke="#004986" stroke-width="2"/>
   <text x="230" y="44" text-anchor="middle" fill="#666">Older than 90 days: who signed in is deleted</text>
-  <text x="510" y="98" text-anchor="middle" fill="#004986" font-weight="bold">Last 90 days: knows who</text>
-  <text x="600" y="120" text-anchor="end" fill="#333">Today</text>
-  <line x1="600" y1="48" x2="600" y2="108" stroke="#333" stroke-width="1.5"/>
+  <text x="510" y="98" text-anchor="middle" fill="#004986" font-weight="bold">Last 90 days:</text>
+  <text x="510" y="114" text-anchor="middle" fill="#004986" font-weight="bold">still knows who signed in</text>
+  <text x="600" y="138" text-anchor="end" fill="#333">Today</text>
+  <line x1="600" y1="48" x2="600" y2="130" stroke="#333" stroke-width="1.5"/>
 
   <!-- what the warehouse keeps -->
   <text x="40" y="160" fill="#333" font-weight="bold" font-size="15">What our data warehouse keeps (numbers only, never names)</text>
