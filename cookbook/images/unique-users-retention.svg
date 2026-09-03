@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="350" viewBox="0 0 640 350" font-family="Helvetica, Arial, sans-serif" font-size="14">
+  <!-- what IBM Verify holds -->
+  <text x="40" y="22" fill="#333" font-weight="bold" font-size="15">What IBM Verify holds</text>
+  <rect x="40" y="52" width="380" height="28" fill="#D8D8D8"/>
+  <rect x="420" y="52" width="180" height="28" fill="#CCDAE6" stroke="#004986" stroke-width="2"/>
+  <text x="230" y="44" text-anchor="middle" fill="#666">Older than 90 days: who signed in is deleted</text>
+  <text x="510" y="98" text-anchor="middle" fill="#004986" font-weight="bold">Last 90 days: knows who</text>
+  <text x="600" y="120" text-anchor="end" fill="#333">Today</text>
+  <line x1="600" y1="48" x2="600" y2="108" stroke="#333" stroke-width="1.5"/>
+
+  <!-- what the warehouse keeps -->
+  <text x="40" y="160" fill="#333" font-weight="bold" font-size="15">What our data warehouse keeps (numbers only, never names)</text>
+
+  <text x="40" y="188" fill="#333">One figure per day, kept forever</text>
+  <g fill="#004986">
+    <rect x="40" y="194" width="8" height="12"/><rect x="50" y="194" width="8" height="12"/><rect x="60" y="194" width="8" height="12"/><rect x="70" y="194" width="8" height="12"/><rect x="80" y="194" width="8" height="12"/><rect x="90" y="194" width="8" height="12"/><rect x="100" y="194" width="8" height="12"/><rect x="110" y="194" width="8" height="12"/><rect x="120" y="194" width="8" height="12"/><rect x="130" y="194" width="8" height="12"/><rect x="140" y="194" width="8" height="12"/><rect x="150" y="194" width="8" height="12"/><rect x="160" y="194" width="8" height="12"/><rect x="170" y="194" width="8" height="12"/><rect x="180" y="194" width="8" height="12"/><rect x="190" y="194" width="8" height="12"/><rect x="200" y="194" width="8" height="12"/><rect x="210" y="194" width="8" height="12"/><rect x="220" y="194" width="8" height="12"/><rect x="230" y="194" width="8" height="12"/><rect x="240" y="194" width="8" height="12"/><rect x="250" y="194" width="8" height="12"/><rect x="260" y="194" width="8" height="12"/><rect x="270" y="194" width="8" height="12"/><rect x="280" y="194" width="8" height="12"/><rect x="290" y="194" width="8" height="12"/><rect x="300" y="194" width="8" height="12"/><rect x="310" y="194" width="8" height="12"/><rect x="320" y="194" width="8" height="12"/><rect x="330" y="194" width="8" height="12"/><rect x="340" y="194" width="8" height="12"/><rect x="350" y="194" width="8" height="12"/><rect x="360" y="194" width="8" height="12"/><rect x="370" y="194" width="8" height="12"/><rect x="380" y="194" width="8" height="12"/><rect x="390" y="194" width="8" height="12"/><rect x="400" y="194" width="8" height="12"/><rect x="410" y="194" width="8" height="12"/><rect x="420" y="194" width="8" height="12"/><rect x="430" y="194" width="8" height="12"/><rect x="440" y="194" width="8" height="12"/><rect x="450" y="194" width="8" height="12"/><rect x="460" y="194" width="8" height="12"/><rect x="470" y="194" width="8" height="12"/><rect x="480" y="194" width="8" height="12"/><rect x="490" y="194" width="8" height="12"/><rect x="500" y="194" width="8" height="12"/><rect x="510" y="194" width="8" height="12"/><rect x="520" y="194" width="8" height="12"/><rect x="530" y="194" width="8" height="12"/><rect x="540" y="194" width="8" height="12"/><rect x="550" y="194" width="8" height="12"/><rect x="560" y="194" width="8" height="12"/><rect x="570" y="194" width="8" height="12"/><rect x="580" y="194" width="8" height="12"/><rect x="590" y="194" width="8" height="12"/>
+  </g>
+
+  <text x="40" y="238" fill="#333">One figure per calendar month, kept forever</text>
+  <g fill="#115740">
+    <rect x="40" y="244" width="66" height="12"/><rect x="110" y="244" width="66" height="12"/><rect x="180" y="244" width="66" height="12"/><rect x="250" y="244" width="66" height="12"/><rect x="320" y="244" width="66" height="12"/><rect x="390" y="244" width="66" height="12"/><rect x="460" y="244" width="66" height="12"/><rect x="530" y="244" width="68" height="12"/>
+  </g>
+
+  <text x="40" y="288" fill="#333">A window nobody asked for in advance, for example April 22 to June 30</text>
+  <rect x="200" y="294" width="200" height="12" fill="none" stroke="#AB2328" stroke-width="2" stroke-dasharray="6,4"/>
+  <text x="410" y="305" fill="#AB2328" font-weight="bold">not stored, and cannot be rebuilt</text>
+</svg>

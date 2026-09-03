@@ -16,6 +16,8 @@ Summing daily unique users gives a measure of user-days, not distinct people ove
 
 For distinct people over a longer period, use a cumulative unique user field such as `mtd_unique_users` or `ytd_unique_users`.
 
+For a plain-language explanation of why the daily figures cannot be added, and why no unique-user count exists for an arbitrary window, see [Why Unique Users Cannot Be Added Up](unique-users.qmd).
+
 ## Metrics can be reported over different timespans
 
 Most metrics are meaningful over more than one window. The three standard
