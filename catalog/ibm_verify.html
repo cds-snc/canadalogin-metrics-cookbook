@@ -50,9 +50,9 @@ ul.task-list li input[type="checkbox"] {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-5d240fd3a05d1af554a8ef88e5a2b7ef.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-f5ea3f02d456196a58b9ed42fd5667ba.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-5d240fd3a05d1af554a8ef88e5a2b7ef.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-5419338a0eee65f763cbca6d0605526c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-5f6b69c95b8e295342cccd310a9d592a.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-5419338a0eee65f763cbca6d0605526c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -426,6 +426,19 @@ ul.task-list li input[type="checkbox"] {
 <h3 class="anchored" data-anchor-id="notes">Notes</h3>
 <p><code>total_logins</code>, <code>unique_users</code>, <code>failed_logins</code>, and <code>successful_logins</code> are daily values. <code>mtd_unique_users</code>, <code>ytd_unique_users</code>, and <code>rolling_365d_unique_users</code> are cumulative counts of distinct users and should not be summed across rows; take the latest value within the window instead.</p>
 <p><code>rolling_365d_unique_users</code> is null before 2026-06-13, its implementation date.</p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><code>ytd_unique_users</code> and <code>rolling_365d_unique_users</code> may be unreliable. Both are computed by IBM Verify over a longer window than its underlying data retention actually covers, so the figures can undercount, and <code>ytd_unique_users</code> has been seen decreasing from one day to the next. Treat both as estimates only. See <a href="../cookbook/unique-users.html#year-to-date-and-365-day-figures">Why Unique Users Cannot Be Added Up</a> for detail.</p>
+</div>
+</div>
 <p>A <code>since_apr22_unique_users</code> field (cumulative distinct users since the April 22, 2026 public launch) was previously provided here. It has been removed from the pipeline because the source API retains only the most recent 366.5 days of data, so a since-launch cumulative count cannot be maintained once launch is more than a year in the past. See the retention note on the <a href="#data-retention">IBM Verify catalog overview</a>.</p>
 <p>Unlike <a href="#auth_total_logins"><code>auth_total_logins</code></a>, these counts are <em>not</em> inflated by second factors. The per-authentication-method event inflation described there only happens when a person signs in to CanadaLogin itself. Reaching an integrated application uses the session they already hold: CanadaLogin issues the application a freshly minted assertion or token, the person enters no password or second factor, and one handoff records one SSO event. <code>total_logins</code> and <code>successful_logins</code> still count events rather than people, because one person can reach an application repeatedly. Use <code>unique_users</code> when the question is about how many distinct people used the application.</p>
 </section>
@@ -524,6 +537,19 @@ ul.task-list li input[type="checkbox"] {
 <h3 class="anchored" data-anchor-id="notes-1">Notes</h3>
 <p><code>unique_users</code>, <code>failed_logins</code>, and <code>successful_logins</code> are daily values. The <code>mtd_</code>, <code>ytd_</code>, and <code>rolling_365d_</code> unique-user fields are cumulative and should not be summed across rows; take the latest value within the window instead.</p>
 <p><code>rolling_365d_unique_users</code> is null before 2026-06-13, its implementation date.</p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><code>ytd_unique_users</code> and <code>rolling_365d_unique_users</code> may be unreliable. Both are computed by IBM Verify over a longer window than its underlying data retention actually covers, so the figures can undercount, and <code>ytd_unique_users</code> has been seen decreasing from one day to the next. Treat both as estimates only. See <a href="../cookbook/unique-users.html#year-to-date-and-365-day-figures">Why Unique Users Cannot Be Added Up</a> for detail.</p>
+</div>
+</div>
 <p>A <code>since_apr22_unique_users</code> field (cumulative distinct users since the April 22, 2026 launch) was previously provided here. It has been removed from the pipeline because the source API retains only the most recent 366.5 days of data, so a since-launch cumulative count cannot be maintained once launch is more than a year in the past. See the retention note on the <a href="#data-retention">IBM Verify catalog overview</a>.</p>
 <p>When a user signs in to CanadaLogin itself, IBM Verify records each authentication method as a separate event. Entering a username and password followed by a second factor like an OTP counts as two successful events. A mistyped password that is then entered correctly, followed by a correct OTP, counts as three events: two successful and one failed. Both <code>successful_logins</code> and <code>failed_logins</code> are therefore inflated relative to the number of distinct sign-in sessions.</p>
 <p>This inflation applies only to signing in to CanadaLogin itself. Reaching an integrated application does not add to these counts at all: it raises an SSO event on <a href="#app_login_counts"><code>app_login_counts</code></a> instead. CanadaLogin uses the session the person already holds and issues the application a freshly minted assertion or token, so the person enters no password and no second factor.</p>

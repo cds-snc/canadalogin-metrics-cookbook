@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Jira (PSOM) – CanadaLogin Metrics Cookbook</title>
+<title>Why Unique Users Cannot Be Added Up – CanadaLogin Metrics Cookbook</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -36,8 +36,6 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../catalog/google_analytics.html" rel="next">
-<link href="../catalog/sre.html" rel="prev">
 <link href="../img/cds-snc.png" rel="icon" type="image/png">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
@@ -135,7 +133,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../catalog/index.html">Data Catalog</a></li><li class="breadcrumb-item"><a href="../catalog/jira.html">Jira (PSOM)</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Why Unique Users Cannot Be Added Up</li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -243,7 +241,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../catalog/jira.html" class="sidebar-item-text sidebar-link active">
+  <a href="../catalog/jira.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Jira (PSOM)</span></a>
   </div>
 </li>
@@ -277,21 +275,21 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#psom" id="toc-psom" class="nav-link active" data-scroll-target="#psom">PSOM</a>
-  <ul>
-  <li><a href="#provenance" id="toc-provenance" class="nav-link" data-scroll-target="#provenance">Provenance</a></li>
-  <li><a href="#fields" id="toc-fields" class="nav-link" data-scroll-target="#fields">Fields</a></li>
-  <li><a href="#notes" id="toc-notes" class="nav-link" data-scroll-target="#notes">Notes</a></li>
-  </ul></li>
+  <li><a href="#one-week-two-ways-of-counting" id="toc-one-week-two-ways-of-counting" class="nav-link active" data-scroll-target="#one-week-two-ways-of-counting">One week, two ways of counting</a></li>
+  <li><a href="#why-the-totals-do-not-add" id="toc-why-the-totals-do-not-add" class="nav-link" data-scroll-target="#why-the-totals-do-not-add">Why the totals do not add</a></li>
+  <li><a href="#what-we-keep-and-what-we-do-not" id="toc-what-we-keep-and-what-we-do-not" class="nav-link" data-scroll-target="#what-we-keep-and-what-we-do-not">What we keep, and what we do not</a></li>
+  <li><a href="#what-you-can-and-cannot-ask-for" id="toc-what-you-can-and-cannot-ask-for" class="nav-link" data-scroll-target="#what-you-can-and-cannot-ask-for">What you can and cannot ask for</a></li>
+  <li><a href="#year-to-date-and-365-day-figures" id="toc-year-to-date-and-365-day-figures" class="nav-link" data-scroll-target="#year-to-date-and-365-day-figures">Year-to-date and 365-day figures</a></li>
+  <li><a href="#if-you-need-a-window-we-do-not-have" id="toc-if-you-need-a-window-we-do-not-have" class="nav-link" data-scroll-target="#if-you-need-a-window-we-do-not-have">If you need a window we do not have</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../catalog/index.html">Data Catalog</a></li><li class="breadcrumb-item"><a href="../catalog/jira.html">Jira (PSOM)</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Jira (PSOM)</h1>
+<h1 class="title">Why Unique Users Cannot Be Added Up</h1>
 </div>
 
 
@@ -308,176 +306,113 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>Tables in the <code>jira</code> schema, populated by the weekly PSOM Jira Service Management sync pipeline.</p>
-<p>Each Monday at ~6:00 AM ET, the <code>psom-weekly-sync</code> Lambda fetches a full snapshot of all tickets from the PSOM project (<code>jtickets.atlassian.net</code>) and writes it as a Parquet partition in S3. The Glue crawler then updates the Athena table schema.</p>
-<section id="psom" class="level2">
-<h2 class="anchored" data-anchor-id="psom">PSOM</h2>
-<p>Weekly snapshot of all PSOM Jira Service Management tickets.</p>
-<p>One row per Jira issue per weekly snapshot. Each Monday run writes a full snapshot of all current PSOM tickets to a new <code>date=</code> partition. Previous partitions are preserved as an audit trail, enabling point-in-time analysis.</p>
-<p><strong>Jira source:</strong> <code>jtickets.atlassian.net</code>, project <code>PSOM</code>, fetched via <code>POST /rest/api/3/search/jql</code> with full comment history via <code>/rest/api/3/issue/{key}/comment</code>.</p>
-<p><code>Keywords</code>: jira, psom, tickets, service requests, SLA, support</p>
-<section id="provenance" class="level3">
-<h3 class="anchored" data-anchor-id="provenance">Provenance</h3>
-<p>Queried from PSOM Jira Cloud via API by the <code>psom-weekly-sync</code> Lambda function.</p>
+<p>A unique-user figure counts people, not sign-ins. That makes it behave differently from most numbers in this cookbook. This page explains the two rules that follow, why they exist, and what to ask for instead.</p>
+<p>The short version:</p>
+<ol type="1">
+<li>Unique-user figures for two periods cannot be added together.</li>
+<li>A unique-user figure only exists for the windows we set up in advance: each day and each calendar month. Any other window cannot be counted after the fact.</li>
+</ol>
+<section id="one-week-two-ways-of-counting" class="level2">
+<h2 class="anchored" data-anchor-id="one-week-two-ways-of-counting">One week, two ways of counting</h2>
+<p>Here is a week of sign-ins by five people. A dot means that person signed in that day.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/unique-users-week.svg" class="img-fluid figure-img" alt="Five people across a week. The daily counts of people add up to 12, but only five people appear in the grid."></p>
+<figcaption>A grid of five people against seven days, with a dot on each day a person signed in. The daily count of people is 2, 2, 2, 2, 2, 1, 1. Adding those gives 12, but there are only 5 names.</figcaption>
+</figure>
+</div>
+<p>Both totals are correct. They answer different questions.</p>
 <ul>
-<li><strong>Updated</strong>: Weekly, every Monday at ~06:00 ET</li>
-<li><strong>Steward</strong>: EDCP Data and Research Team</li>
-<li><strong>Contact</strong>: <a href="mailto:yinlin.zhang@cds-snc.ca">Yinlin Zhang</a> (Data and Research team)</li>
+<li><strong>12</strong> is the number of <em>person-days</em>: the number of times someone showed up on a given day. Amira counts five times because she came on five days.</li>
+<li><strong>5</strong> is the number of <em>people</em>. Amira counts once no matter how many days she came.</li>
 </ul>
+<p>The daily unique-user figure is the “people that day” row. Adding that row up gives person-days, not people. So a report that says “we had 12 unique users this week” would be wrong. The true figure is 5.</p>
 </section>
-<section id="fields" class="level3">
-<h3 class="anchored" data-anchor-id="fields">Fields</h3>
-<p>One row per Jira issue per weekly snapshot (<code>date</code> partition).</p>
+<section id="why-the-totals-do-not-add" class="level2">
+<h2 class="anchored" data-anchor-id="why-the-totals-do-not-add">Why the totals do not add</h2>
+<p>Adding two unique-user figures only works if nobody appears in both. In practice, the regular users appear in every period, and they get counted again each time.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/unique-users-overlap.svg" class="img-fluid figure-img" alt="Two overlapping circles labelled Monday and Tuesday. Amira is in both, so two plus two gives three people, not four."></p>
+<figcaption>Two overlapping circles. The Monday circle holds Ben and Amira, the Tuesday circle holds Amira and Chloe. Amira sits in the overlap.</figcaption>
+</figure>
+</div>
+<p>To get the true figure you need to know who was in the overlap. That means knowing <em>which</em> people were behind each count, and we do not have that information.</p>
+<p>The same thing happens across applications. Someone who uses two integrated applications is one unique user for CanadaLogin overall but appears in each application’s own count. Adding up the applications’ figures over-counts them, and the overall CanadaLogin figure will always be smaller than that sum.</p>
+</section>
+<section id="what-we-keep-and-what-we-do-not" class="level2">
+<h2 class="anchored" data-anchor-id="what-we-keep-and-what-we-do-not">What we keep, and what we do not</h2>
+<p>IBM Verify, the service behind CanadaLogin sign-in, is the only system that knows who signed in. It keeps that per-person record for 90 days, then deletes it.</p>
+<p>Our data warehouse never receives the per-person record at all. That is a deliberate choice, required by the security and privacy rules CanadaLogin operates under. Each day, IBM Verify counts up the day’s activity and hands us the finished numbers: how many people signed in that day, and how many distinct people have signed in so far this month. We store the numbers. We do not store, and cannot look up, who was behind them.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/unique-users-retention.svg" class="img-fluid figure-img" alt="IBM Verify keeps who signed in for 90 days. The warehouse keeps one figure per day and one per calendar month, both forever. A custom window such as April 22 to June 30 is not stored and cannot be rebuilt."></p>
+<figcaption>A timeline showing IBM Verify holding the per-person record for only the last 90 days, above three rows showing what the warehouse keeps: a figure per day, a figure per calendar month, and a custom window marked as not stored and not rebuildable.</figcaption>
+</figure>
+</div>
+<p>This is why a unique-user count exists only for the windows we asked for in advance. If nobody asked for “April 22 to June 30” before those days happened, the count was never made. We cannot make it now, because we hold no names to count, and after 90 days neither does IBM Verify.</p>
+</section>
+<section id="what-you-can-and-cannot-ask-for" class="level2">
+<h2 class="anchored" data-anchor-id="what-you-can-and-cannot-ask-for">What you can and cannot ask for</h2>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 33%">
-<col style="width: 33%">
-<col style="width: 33%">
+<col style="width: 50%">
+<col style="width: 50%">
 </colgroup>
 <thead>
 <tr class="header">
-<th>Field Name</th>
-<th>Type</th>
-<th>Description</th>
+<th>Question</th>
+<th>Can we answer it?</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>date</td>
-<td>varchar</td>
-<td>Partition key: the date the Lambda ran (<code>YYYY-MM-DD</code>).</td>
+<td>How many people signed in yesterday?</td>
+<td>Yes. We have a figure for every day.</td>
 </tr>
 <tr class="even">
-<td>key</td>
-<td>varchar</td>
-<td>Jira ticket key, e.g.&nbsp;<code>PSOM-42</code>.</td>
+<td>How many people signed in in July?</td>
+<td>Yes. We have a figure for every calendar month.</td>
 </tr>
 <tr class="odd">
-<td>summary</td>
-<td>varchar</td>
-<td>One-line ticket title.</td>
+<td>How many people signed in on average per day in July?</td>
+<td>Yes. Averaging the daily figures is fine; it is adding them that misleads.</td>
 </tr>
 <tr class="even">
-<td>description</td>
-<td>varchar</td>
-<td>Full ticket description, extracted from Atlassian Document Format (ADF) to plain text.</td>
+<td>How many people signed in from April 22 to June 30?</td>
+<td>No.&nbsp;That window was not set up in advance, and it cannot be rebuilt.</td>
 </tr>
 <tr class="odd">
-<td>issue_type</td>
-<td>varchar</td>
-<td>Jira issue type name, e.g.&nbsp;<code>Email Request</code>, <code>Partner Support Request form</code>.</td>
+<td>How many people signed in in the second quarter?</td>
+<td>No.&nbsp;A quarter is three monthly figures, and monthly figures cannot be added.</td>
 </tr>
 <tr class="even">
-<td>status</td>
-<td>varchar</td>
-<td>Current workflow status, e.g.&nbsp;<code>Done</code>, <code>Canceled</code>, <code>Escalated to PTT</code>, <code>Escalated to Auth PT</code>, <code>Ready to archive</code>.</td>
+<td>How many people used Application A or Application B?</td>
+<td>No.&nbsp;Each application has its own figure, and the two overlap.</td>
 </tr>
 <tr class="odd">
-<td>status_changed</td>
-<td>varchar</td>
-<td>ISO 8601 timestamp when the ticket’s status category last changed.</td>
-</tr>
-<tr class="even">
-<td>priority</td>
-<td>varchar</td>
-<td>Priority level, e.g.&nbsp;<code>High</code>, <code>Normal</code>, <code>Low</code>, <code>Critical</code>.</td>
-</tr>
-<tr class="odd">
-<td>assignee</td>
-<td>varchar</td>
-<td>Display name of the current assignee; empty string if unassigned.</td>
-</tr>
-<tr class="even">
-<td>reporter</td>
-<td>varchar</td>
-<td>Display name of the person who reported the ticket.</td>
-</tr>
-<tr class="odd">
-<td>creator</td>
-<td>varchar</td>
-<td>Display name of the person who created the ticket (may differ from reporter).</td>
-</tr>
-<tr class="even">
-<td>created</td>
-<td>varchar</td>
-<td>ISO 8601 timestamp when the ticket was created.</td>
-</tr>
-<tr class="odd">
-<td>updated</td>
-<td>varchar</td>
-<td>ISO 8601 timestamp of the most recent field or comment update.</td>
-</tr>
-<tr class="even">
-<td>due_date</td>
-<td>varchar</td>
-<td>Due date in <code>YYYY-MM-DD</code> format; empty string if not set.</td>
-</tr>
-<tr class="odd">
-<td>labels</td>
-<td>varchar</td>
-<td>Semicolon-separated list of labels applied to the ticket; empty string if none.</td>
-</tr>
-<tr class="even">
-<td>request_type</td>
-<td>varchar</td>
-<td>JSM service request type name, e.g.&nbsp;<code>New Access Request</code>. Empty for tickets created internally through Jira rather than the customer-facing portal (all PSOM tickets so far), which never set a request type.</td>
-</tr>
-<tr class="odd">
-<td>request_participants</td>
-<td>varchar</td>
-<td>Semicolon-separated display names of request participants (CC’d users).</td>
-</tr>
-<tr class="even">
-<td>organizations</td>
-<td>varchar</td>
-<td>Semicolon-separated names of JSM organizations the request is associated with.</td>
-</tr>
-<tr class="odd">
-<td>sla_first_response_due</td>
-<td>varchar</td>
-<td>ISO 8601 datetime the “Time to first response” SLA must be (or was) met by, per the SLA goal. For an open ticket this is the upcoming breach deadline; for a closed cycle, when the cycle stopped. Empty if no SLA clock.</td>
-</tr>
-<tr class="even">
-<td>sla_first_response_breached</td>
-<td>varchar</td>
-<td><code>"True"</code> if the first-response SLA was missed (no agent response within the agreed 4-hour window), <code>"False"</code> if it was met or is still within the window, <code>""</code> if no SLA clock. Stored as a string, not a native boolean.</td>
-</tr>
-<tr class="odd">
-<td>sla_time_to_done_due</td>
-<td>varchar</td>
-<td>ISO 8601 datetime the “Time to done” SLA must be (or was) met by, per the SLA goal. For an open ticket this is the upcoming breach deadline; for a closed cycle, when the cycle stopped. Empty if no SLA clock.</td>
-</tr>
-<tr class="even">
-<td>sla_time_to_done_breached</td>
-<td>varchar</td>
-<td><code>"True"</code> if the resolution SLA was missed (ticket not resolved within the agreed 16-hour window), <code>"False"</code> if it was met or is still within the window, <code>""</code> if no SLA clock. Stored as a string, not a native boolean.</td>
-</tr>
-<tr class="odd">
-<td>comment_count</td>
-<td>bigint</td>
-<td>Total number of comments on the ticket.</td>
-</tr>
-<tr class="even">
-<td>comments</td>
-<td>varchar</td>
-<td>JSON array string of all comments. Each element: <code>{"author": "...", "created": "...", "updated": "...", "body": "...", "internal": false}</code>. The <code>body</code> is ADF-extracted plain text. The <code>internal</code> flag is <code>true</code> for JSM internal notes.</td>
-</tr>
-<tr class="odd">
-<td>fetched_at</td>
-<td>varchar</td>
-<td>UTC timestamp when the Lambda wrote this row (<code>YYYY-MM-DD HH:MM:SS</code>).</td>
+<td>How many people have signed in this year?</td>
+<td>Not reliably. See the next section.</td>
 </tr>
 </tbody>
 </table>
+<p>Person-days, the “12” above, is a legitimate measure on its own. It is the right denominator for a rate such as calls per active user, where each day’s activity should count. Just do not present it as a number of people.</p>
 </section>
-<section id="notes" class="level3">
-<h3 class="anchored" data-anchor-id="notes">Notes</h3>
-<p>All timestamp columns (<code>created</code>, <code>updated</code>, <code>status_changed</code>, <code>sla_*_due</code>, <code>fetched_at</code>) are stored as <code>varchar</code>.</p>
-<p>SLA fields (<code>sla_first_response_*</code>, <code>sla_time_to_done_*</code>) are populated for tickets with an active JSM SLA clock. The <code>*_breached</code> columns hold the strings <code>"True"</code>/<code>"False"</code>, not a native boolean, so compare against <code>'True'</code>/<code>'False'</code> (not a bare boolean) and cast if you need one. <code>"False"</code> covers both SLAs that were met and open tickets still inside their window, so a breach rate computed on a single snapshot is a lower bound: an open ticket counted as <code>"False"</code> today can still breach later. Snapshots up to and including <code>date=2026-07-06</code> predate the SLA pipeline fix and have these columns empty; from <code>date=2026-07-07</code> on they are populated. Exclude empty-string rows when calculating breach rates.</p>
-<p>Each weekly run adds a new <code>date=</code> partition. All previous partitions are retained, so you can compare snapshots across weeks to track status changes over time.</p>
+<section id="year-to-date-and-365-day-figures" class="level2">
+<h2 class="anchored" data-anchor-id="year-to-date-and-365-day-figures">Year-to-date and 365-day figures</h2>
+<p>The tables also carry a year-to-date figure and a rolling 365-day figure. Both are calculated by IBM Verify over a window longer than the 90 days of per-person data it holds, so they cannot be right. The year-to-date figure has been seen going down from one day to the next, which a true cumulative count cannot do. Do not quote either figure until the pipeline is fixed. The daily and monthly figures are unaffected because both windows fit inside 90 days.</p>
+</section>
+<section id="if-you-need-a-window-we-do-not-have" class="level2">
+<h2 class="anchored" data-anchor-id="if-you-need-a-window-we-do-not-have">If you need a window we do not have</h2>
+<p>The Data and Research team cannot pull an ad hoc unique-user count for a custom date range. What they can do, given a legitimate business need, is add a new standing window to the pipeline so it is counted from then on. Before asking, know that:</p>
+<ul>
+<li>adding a window takes weeks, not days or hours;</li>
+<li>the new figure starts on the day it goes live, and nothing before that can be filled in;</li>
+<li>the window must be 90 days or shorter, for the reasons above.</li>
+</ul>
+<p>For the analyst-facing details, see the <a href="../cookbook/ibm_verify.html#cumulative-unique-users">Cumulative Unique Users</a> metric and the <a href="../catalog/ibm_verify.html#auth_total_logins"><code>auth_total_logins</code></a> catalog entry.</p>
 
 
-</section>
 </section>
 
 </main> <!-- /main -->
@@ -881,18 +816,6 @@ ul.task-list li input[type="checkbox"] {
     }
   });
   </script>
-<nav class="page-navigation">
-  <div class="nav-page nav-page-previous">
-      <a href="../catalog/sre.html" class="pagination-link" aria-label="Platform">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Platform</span>
-      </a>          
-  </div>
-  <div class="nav-page nav-page-next">
-      <a href="../catalog/google_analytics.html" class="pagination-link" aria-label="Google Analytics">
-        <span class="nav-page-text">Google Analytics</span> <i class="bi bi-arrow-right-short"></i>
-      </a>
-  </div>
-</nav>
 </div> <!-- /content -->
 
 

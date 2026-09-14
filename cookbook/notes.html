@@ -85,9 +85,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-5d240fd3a05d1af554a8ef88e5a2b7ef.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-f5ea3f02d456196a58b9ed42fd5667ba.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-5d240fd3a05d1af554a8ef88e5a2b7ef.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-5419338a0eee65f763cbca6d0605526c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-5f6b69c95b8e295342cccd310a9d592a.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-5419338a0eee65f763cbca6d0605526c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -352,6 +352,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="daily-unique-users-are-not-the-same-as-period-unique-users">Daily unique users are not the same as period unique users</h2>
 <p>Summing daily unique users gives a measure of user-days, not distinct people over the full period.</p>
 <p>For distinct people over a longer period, use a cumulative unique user field such as <code>mtd_unique_users</code> or <code>ytd_unique_users</code>.</p>
+<p>For a plain-language explanation of why the daily figures cannot be added, and why no unique-user count exists for an arbitrary window, see <a href="../cookbook/unique-users.html">Why Unique Users Cannot Be Added Up</a>.</p>
 </section>
 <section id="metrics-can-be-reported-over-different-timespans" class="level2">
 <h2 class="anchored" data-anchor-id="metrics-can-be-reported-over-different-timespans">Metrics can be reported over different timespans</h2>
@@ -369,6 +370,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Year-to-date: <code>ytd_unique_users</code></li>
 </ul>
 <p>Never sum these cumulative columns across rows.</p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><code>ytd_unique_users</code> (and the <code>rolling_365d_unique_users</code> field used elsewhere) may be unreliable. IBM Verify computes both over a longer window than its underlying data retention actually covers, so the figures can undercount and <code>ytd_unique_users</code> has been seen decreasing from one day to the next. Treat both as estimates only. See <a href="../cookbook/unique-users.html#year-to-date-and-365-day-figures">Why Unique Users Cannot Be Added Up</a> for detail.</p>
+</div>
+</div>
 <p>There is no cumulative since-launch column. The <code>since_apr22_unique_users</code> field that previously provided it has been removed: the cumulative count is computed by the IBM Verify API, which sees only the most recent 366.5 days of source data, so a since-launch total silently truncates once launch is more than a year in the past. The <code>mtd_</code> and <code>ytd_</code> windows are unaffected because they fall inside that horizon.</p>
 <p>This limit does not affect the additive metrics above. Those are aggregated from the daily rows we store on our side, which are retained beyond a year, so a date-bounded since-launch window over an additive metric stays correct however far back it reaches. See the <a href="../catalog/ibm_verify.html#data-retention">data retention note</a> in the catalog.</p>
 </section>
