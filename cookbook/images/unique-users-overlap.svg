@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="300" viewBox="0 0 640 300" font-family="Helvetica, Arial, sans-serif" font-size="15">
+  <circle cx="250" cy="150" r="105" fill="#CCDAE6" fill-opacity="0.7" stroke="#004986" stroke-width="2"/>
+  <circle cx="390" cy="150" r="105" fill="#F6BE00" fill-opacity="0.35" stroke="#E87722" stroke-width="2"/>
+  <g text-anchor="middle" font-weight="bold">
+    <text x="200" y="30" fill="#004986">Monday: 2 people</text>
+    <text x="440" y="30" fill="#E87722">Tuesday: 2 people</text>
+  </g>
+  <g text-anchor="middle" fill="#333">
+    <text x="190" y="155">Ben</text>
+    <text x="320" y="155" font-weight="bold">Amira</text>
+    <text x="450" y="155">Chloe</text>
+  </g>
+  <text x="320" y="285" text-anchor="middle" fill="#333">2 + 2 = 4 sign-in days, but Amira is in both circles, so only <tspan fill="#115740" font-weight="bold">3 people</tspan>.</text>
+</svg>

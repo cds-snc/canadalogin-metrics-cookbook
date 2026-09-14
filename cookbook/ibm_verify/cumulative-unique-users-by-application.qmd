@@ -24,6 +24,15 @@ column* you read (see [the note on reporting timespans](notes.qmd#metrics-can-be
 The `WHERE from_date BETWEEN ...` bounds set the "as of" reporting date; the
 most recent row in the window holds the current cumulative total.
 
+::: {.callout-warning}
+`ytd_unique_users` may be unreliable. IBM Verify computes it over a longer
+window than its underlying data retention actually covers, so the figure can
+undercount and has been seen decreasing from one day to the next. Treat it as
+an estimate only, and prefer `mtd_unique_users` where the reporting question
+allows. See [Why Unique Users Cannot Be Added
+Up](unique-users.qmd#year-to-date-and-365-day-figures) for detail.
+:::
+
 A `since_apr22_unique_users` column (cumulative distinct users since launch) was
 previously available but has been removed; see the [data retention
 note](../../catalog/ibm_verify.qmd#data-retention).

@@ -47,6 +47,16 @@ not be summed across rows; take the latest value within the window instead.
 
 `rolling_365d_unique_users` is null before 2026-06-13, its implementation date.
 
+::: {.callout-warning}
+`ytd_unique_users` and `rolling_365d_unique_users` may be unreliable. Both are
+computed by IBM Verify over a longer window than its underlying data retention
+actually covers, so the figures can undercount, and `ytd_unique_users` has
+been seen decreasing from one day to the next. Treat both as estimates only.
+See [Why Unique Users Cannot Be Added
+Up](../cookbook/unique-users.qmd#year-to-date-and-365-day-figures) for
+detail.
+:::
+
 A `since_apr22_unique_users` field (cumulative distinct users since the
 April 22, 2026 launch) was previously provided here. It has been removed from the
 pipeline because the source API retains only the most recent 366.5 days of data,

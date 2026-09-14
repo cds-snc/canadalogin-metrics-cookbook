@@ -16,6 +16,8 @@ Summing daily unique users gives a measure of user-days, not distinct people ove
 
 For distinct people over a longer period, use a cumulative unique user field such as `mtd_unique_users` or `ytd_unique_users`.
 
+For a plain-language explanation of why the daily figures cannot be added, and why no unique-user count exists for an arbitrary window, see [Why Unique Users Cannot Be Added Up](unique-users.qmd).
+
 ## Metrics can be reported over different timespans
 
 Most metrics are meaningful over more than one window. The three standard
@@ -42,6 +44,15 @@ latest value:
 - Year-to-date: `ytd_unique_users`
 
 Never sum these cumulative columns across rows.
+
+::: {.callout-warning}
+`ytd_unique_users` (and the `rolling_365d_unique_users` field used elsewhere)
+may be unreliable. IBM Verify computes both over a longer window than its
+underlying data retention actually covers, so the figures can undercount and
+`ytd_unique_users` has been seen decreasing from one day to the next. Treat
+both as estimates only. See [Why Unique Users Cannot Be Added
+Up](unique-users.qmd#year-to-date-and-365-day-figures) for detail.
+:::
 
 There is no cumulative since-launch column. The `since_apr22_unique_users` field
 that previously provided it has been removed: the cumulative count is computed by
