@@ -455,8 +455,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 <p><strong>Calculation.</strong> Filter to the most recent <code>date</code> partition and read the precomputed rolling-window uptime columns from <code>sre.uptime_summary</code>. Each <code>uptime_*</code> column is already a percentage (0-100), calculated from all five-minute pings over the named window.</p>
 <p>To track uptime over time for a specific site, remove the <code>MAX(date)</code> filter and group by <code>date</code>.</p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Upstream monitoring gap (July 28 – September 23, 2026):</strong> External synthetic health checks in <code>cds-snc/status-statut</code> halted during this ~8-week window. Because zero down minutes were recorded across zero executed pings, <code>sre.uptime_summary</code> defaulted to reporting <code>uptime_day = 100.0%</code> with <code>response_day_ms = 0</code>.</p>
+<ul>
+<li>When aggregating daily uptime or querying historical trends, filter out unmonitored days using <code>WHERE response_day_ms &gt; 0</code>.</li>
+<li>In snapshot queries, treat <code>response_day_ms = 0</code> (or <code>NULL</code>) as unmonitored rather than confirmed 100% availability.</li>
+</ul>
+</div>
+</div>
 <div class="callout callout-style-default callout-note callout-titled" title="Example queries">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -465,7 +482,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <div class="tabset-margin-container"></div><div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true" href="">SQL</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false" href="">R</a></li></ul>
@@ -493,7 +510,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co">-- set the reporting window; see the timespans note in cookbook/notes.qmd</span></span>
 <span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> slug <span class="op">=</span> <span class="st">'canada-login-website-en'</span></span>
 <span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">AND</span> <span class="fu">CAST</span>(<span class="dt">date</span> <span class="kw">AS</span> <span class="dt">DATE</span>) <span class="kw">BETWEEN</span> <span class="dt">DATE</span> <span class="st">'2026-01-01'</span> <span class="kw">AND</span> <span class="dt">DATE</span> <span class="st">'2026-06-30'</span></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> <span class="dt">date</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- exclude dates where upstream monitoring was inactive</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">AND</span> response_day_ms <span class="op">&gt;</span> <span class="dv">0</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> <span class="dt">date</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
 <p>Latest snapshot, all sites, all rolling windows:</p>
@@ -511,10 +530,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(</span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    slug <span class="sc">==</span> <span class="st">"canada-login-website-en"</span>,</span>
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as.Date</span>(date) <span class="sc">&gt;=</span> <span class="fu">as.Date</span>(<span class="st">"2026-01-01"</span>),</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as.Date</span>(date) <span class="sc">&lt;=</span> <span class="fu">as.Date</span>(<span class="st">"2026-06-30"</span>)</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(date, uptime_year, uptime_alltime) <span class="sc">|&gt;</span></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(date)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as.Date</span>(date) <span class="sc">&lt;=</span> <span class="fu">as.Date</span>(<span class="st">"2026-06-30"</span>),</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># exclude dates where upstream monitoring was inactive</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    response_day_ms <span class="sc">&gt;</span> <span class="dv">0</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(date, uptime_year, uptime_alltime) <span class="sc">|&gt;</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(date)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
@@ -522,6 +543,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p><em>Interpretation notes.</em> The uptime windows are rolling, not calendar-aligned. <code>uptime_month</code> on a given <code>date</code> covers the 30 days trailing that date’s stats update (~23:2x UTC), not a fixed calendar month. To aggregate by calendar month, group by <code>substr(date, 1, 7)</code>.</p>
+<p>Rolling windows (<code>uptime_week</code>, <code>uptime_month</code>, <code>uptime_year</code>, <code>uptime_alltime</code>) spanning the July 28 – September 23, 2026 gap incorporate unmonitored days recorded as 100% uptime, which may slightly elevate rolling availability figures.</p>
 </section>
 <section id="site-response-time" class="level3">
 <h3 class="anchored" data-anchor-id="site-response-time">Site Response Time</h3>
@@ -535,8 +557,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 <p><strong>Calculation.</strong> Filter to the most recent <code>date</code> partition and read the precomputed rolling-window response time columns from <code>sre.uptime_summary</code>. Each <code>response_*_ms</code> column is the mean response time in milliseconds over all five-minute pings in the named window.</p>
 <p>For a single-ping point-in-time reading (not an average), use <code>sre.uptime_timeseries.response_ms</code> instead.</p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Upstream monitoring gap (July 28 – September 23, 2026):</strong> External synthetic health checks in <code>cds-snc/status-statut</code> halted during this ~8-week window. Because zero pings were executed, average latency collapsed to <code>response_day_ms = 0</code> (a physical impossibility for real HTTP traffic).</p>
+<ul>
+<li>When querying historical response time trends or averages, filter out unmonitored days using <code>WHERE response_day_ms &gt; 0</code>.</li>
+</ul>
+</div>
+</div>
 <div class="callout callout-style-default callout-note callout-titled" title="Example queries">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -545,7 +583,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <div class="tabset-margin-container"></div><div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true" href="">SQL</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false" href="">R</a></li></ul>
@@ -573,7 +611,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co">-- set the reporting window; see the timespans note in cookbook/notes.qmd</span></span>
 <span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> slug <span class="op">=</span> <span class="st">'canada-login-website-en'</span></span>
 <span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">AND</span> <span class="fu">CAST</span>(<span class="dt">date</span> <span class="kw">AS</span> <span class="dt">DATE</span>) <span class="kw">BETWEEN</span> <span class="dt">DATE</span> <span class="st">'2026-01-01'</span> <span class="kw">AND</span> <span class="dt">DATE</span> <span class="st">'2026-06-30'</span></span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> <span class="dt">date</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- exclude dates where upstream monitoring was inactive</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">AND</span> response_day_ms <span class="op">&gt;</span> <span class="dv">0</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> <span class="dt">date</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div id="tabset-3-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-2-tab">
 <p>Latest snapshot, all sites, all rolling windows:</p>
@@ -591,10 +631,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(</span>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    slug <span class="sc">==</span> <span class="st">"canada-login-website-en"</span>,</span>
 <span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as.Date</span>(date) <span class="sc">&gt;=</span> <span class="fu">as.Date</span>(<span class="st">"2026-01-01"</span>),</span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as.Date</span>(date) <span class="sc">&lt;=</span> <span class="fu">as.Date</span>(<span class="st">"2026-06-30"</span>)</span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(date, response_week_ms, response_alltime_ms) <span class="sc">|&gt;</span></span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(date)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as.Date</span>(date) <span class="sc">&lt;=</span> <span class="fu">as.Date</span>(<span class="st">"2026-06-30"</span>),</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># exclude dates where upstream monitoring was inactive</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    response_day_ms <span class="sc">&gt;</span> <span class="dv">0</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(date, response_week_ms, response_alltime_ms) <span class="sc">|&gt;</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(date)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
@@ -602,6 +644,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p><em>Interpretation notes.</em> Response times are averages computed from all 288 five-minute pings in the window. Single-measurement spikes are smoothed out. During outage periods, pings that time out contribute high response times or are excluded depending on the upptime implementation, so treat response time trends during known outage windows with caution.</p>
+<p>During the July 28 – September 23, 2026 monitoring outage, <code>response_day_ms</code> was recorded as <code>0</code>, serving as a sentinel value. Failing to filter out these dates (<code>response_day_ms &gt; 0</code>) will artificially drag down historical average latency figures.</p>
 </section>
 <section id="outage-events" class="level3">
 <h3 class="anchored" data-anchor-id="outage-events">Outage Events</h3>
@@ -616,7 +659,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><strong>Calculation.</strong> Filter <code>sre.uptime_timeseries</code> to rows where <code>status = 'down'</code>. Each such row represents a moment when the upptime bot detected the site was unreachable and committed that state to the history file.</p>
 <p>To count outage events per site over a reporting period, group the filtered rows by <code>slug</code> and count.</p>
 <div class="callout callout-style-default callout-note callout-titled" title="Example queries">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -625,7 +668,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div id="callout-6" class="callout-6-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <div class="tabset-margin-container"></div><div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-4-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-1" role="tab" aria-controls="tabset-4-1" aria-selected="true" href="">SQL</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-4-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-2" role="tab" aria-controls="tabset-4-2" aria-selected="false" href="">R</a></li></ul>
@@ -684,6 +727,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p><em>Interpretation notes.</em> Each row in <code>sre.uptime_timeseries</code> is a single commit by the upptime bot. On a normal all-up day there is one row per site (the daily ~23:2x UTC snapshot). On an outage day there are additional rows (one when the site went down and one when it recovered), so <code>status = 'down'</code> rows count detection events, not total minutes of downtime. For total outage duration, use the <code>daily_minutes_down</code> JSON field in <code>sre.uptime_summary</code>.</p>
+<p>During the July 28 – September 23, 2026 upstream monitoring outage, zero ping commits were executed. The absence of <code>status = 'down'</code> rows during that window reflects inactive synthetic monitoring rather than confirmed 100% uptime.</p>
 
 
 </section>

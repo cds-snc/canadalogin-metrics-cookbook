@@ -629,7 +629,7 @@ ul.task-list li input[type="checkbox"] {
 <tr class="even">
 <td><code>response_day_ms</code></td>
 <td><code>bigint</code></td>
-<td>Average response time over the past 24 hours, in milliseconds.</td>
+<td>Average response time over the past 24 hours, in milliseconds. Equals <code>0</code> during unmonitored outage gaps (see notes).</td>
 </tr>
 <tr class="odd">
 <td><code>response_week_ms</code></td>
@@ -662,6 +662,7 @@ ul.task-list li input[type="checkbox"] {
 <section id="notes" class="level3">
 <h3 class="anchored" data-anchor-id="notes">Notes</h3>
 <p><strong>Timing note.</strong> When the Lambda runs on <strong>June 30</strong>, it fetches rolling-window statistics last recalculated at ~23:2x UTC on <strong>June 29</strong>. The resulting row lands in partition <code>date=2026-06-29</code>. All rolling windows trail backward from that reference point.</p>
+<p><strong>Upstream monitoring gap (July 28 – September 23, 2026).</strong> Automated synthetic probes in <code>cds-snc/status-statut</code> halted during this period due to GitHub Actions workflow execution protections. Daily summary rows were still ingested with <code>uptime_day = 100.0</code>, but with <code>response_day_ms = 0</code> serving as a natural sentinel indicator. Exclude these unmonitored dates in queries with <code>WHERE response_day_ms &gt; 0</code>.</p>
 </section>
 </section>
 <section id="uptime_timeseries" class="level2">
@@ -753,6 +754,7 @@ ul.task-list li input[type="checkbox"] {
 <h3 class="anchored" data-anchor-id="notes-1">Notes</h3>
 <p><strong><code>response_ms</code> is a single-ping measurement.</strong> It records the response time at the exact moment of the upptime bot’s commit, not a daily average. For averaged response times use <code>sre.uptime_summary</code> (<code>response_day_ms</code>, <code>response_week_ms</code>, etc.), which are computed from all 288 five-minute pings.</p>
 <p><strong><code>status = 'down'</code> rows count detection events, not outage duration.</strong> Each down row is one commit, one moment when upptime detected a failure. For total minutes of downtime on a given date, use the <code>daily_minutes_down</code> JSON column in <code>sre.uptime_summary</code>.</p>
+<p><strong>Upstream monitoring gap (July 28 – September 23, 2026).</strong> No automated ping commits were made to <code>cds-snc/status-statut</code> during this period because synthetic monitoring was halted. The table contains zero rows between July 28 and September 23, 2026.</p>
 
 
 </section>
