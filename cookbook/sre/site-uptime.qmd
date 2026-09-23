@@ -21,6 +21,19 @@ five-minute pings over the named window.
 To track uptime over time for a specific site, remove the `MAX(date)` filter
 and group by `date`.
 
+::: {.callout-warning}
+**Upstream monitoring gap (July 28 – September 23, 2026):**
+External synthetic health checks in `cds-snc/status-statut` halted during this
+~8-week window. Because zero down minutes were recorded across zero executed
+pings, `sre.uptime_summary` defaulted to reporting `uptime_day = 100.0%` with
+`response_day_ms = 0`.
+
+- When aggregating daily uptime or querying historical trends, filter out
+  unmonitored days using `WHERE response_day_ms > 0`.
+- In snapshot queries, treat `response_day_ms = 0` (or `NULL`) as unmonitored
+  rather than confirmed 100% availability.
+:::
+
 ::: {.callout-note collapse="true" title="Example queries"}
 
 ::: {.panel-tabset}
@@ -55,6 +68,8 @@ FROM sre.uptime_summary
 -- set the reporting window; see the timespans note in cookbook/notes.qmd
 WHERE slug = 'canada-login-website-en'
   AND CAST(date AS DATE) BETWEEN DATE '2026-01-01' AND DATE '2026-06-30'
+  -- exclude dates where upstream monitoring was inactive
+  AND response_day_ms > 0
 ORDER BY date;
 ```
 
@@ -81,7 +96,9 @@ tbl(con, in_schema("sre", "uptime_summary")) |>
   filter(
     slug == "canada-login-website-en",
     as.Date(date) >= as.Date("2026-01-01"),
-    as.Date(date) <= as.Date("2026-06-30")
+    as.Date(date) <= as.Date("2026-06-30"),
+    # exclude dates where upstream monitoring was inactive
+    response_day_ms > 0
   ) |>
   select(date, uptime_year, uptime_alltime) |>
   arrange(date)
@@ -95,3 +112,7 @@ tbl(con, in_schema("sre", "uptime_summary")) |>
 `uptime_month` on a given `date` covers the 30 days trailing that date's stats
 update (~23:2x UTC), not a fixed calendar month. To aggregate by calendar month,
 group by `substr(date, 1, 7)`.
+
+Rolling windows (`uptime_week`, `uptime_month`, `uptime_year`, `uptime_alltime`)
+spanning the July 28 – September 23, 2026 gap incorporate unmonitored days
+recorded as 100% uptime, which may slightly elevate rolling availability figures.

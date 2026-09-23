@@ -18,6 +18,16 @@ five-minute pings in the named window.
 For a single-ping point-in-time reading (not an average), use
 `sre.uptime_timeseries.response_ms` instead.
 
+::: {.callout-warning}
+**Upstream monitoring gap (July 28 – September 23, 2026):**
+External synthetic health checks in `cds-snc/status-statut` halted during this
+~8-week window. Because zero pings were executed, average latency collapsed to
+`response_day_ms = 0` (a physical impossibility for real HTTP traffic).
+
+- When querying historical response time trends or averages, filter out
+  unmonitored days using `WHERE response_day_ms > 0`.
+:::
+
 ::: {.callout-note collapse="true" title="Example queries"}
 
 ::: {.panel-tabset}
@@ -52,6 +62,8 @@ FROM sre.uptime_summary
 -- set the reporting window; see the timespans note in cookbook/notes.qmd
 WHERE slug = 'canada-login-website-en'
   AND CAST(date AS DATE) BETWEEN DATE '2026-01-01' AND DATE '2026-06-30'
+  -- exclude dates where upstream monitoring was inactive
+  AND response_day_ms > 0
 ORDER BY date;
 ```
 
@@ -78,7 +90,9 @@ tbl(con, in_schema("sre", "uptime_summary")) |>
   filter(
     slug == "canada-login-website-en",
     as.Date(date) >= as.Date("2026-01-01"),
-    as.Date(date) <= as.Date("2026-06-30")
+    as.Date(date) <= as.Date("2026-06-30"),
+    # exclude dates where upstream monitoring was inactive
+    response_day_ms > 0
   ) |>
   select(date, response_week_ms, response_alltime_ms) |>
   arrange(date)
@@ -93,3 +107,8 @@ five-minute pings in the window. Single-measurement spikes are smoothed out.
 During outage periods, pings that time out contribute high response times or are
 excluded depending on the upptime implementation, so treat response time trends
 during known outage windows with caution.
+
+During the July 28 – September 23, 2026 monitoring outage, `response_day_ms` was
+recorded as `0`, serving as a sentinel value. Failing to filter out these dates
+(`response_day_ms > 0`) will artificially drag down historical average latency
+figures.

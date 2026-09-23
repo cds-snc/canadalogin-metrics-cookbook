@@ -44,3 +44,8 @@ etc.), which are computed from all 288 five-minute pings.
 down row is one commit, one moment when upptime detected a failure. For total
 minutes of downtime on a given date, use the `daily_minutes_down` JSON column
 in `sre.uptime_summary`.
+
+**Upstream monitoring gap (July 28 – September 23, 2026).** No automated ping
+commits were made to `cds-snc/status-statut` during this period because synthetic
+monitoring was halted. The table contains zero rows between July 28 and September
+23, 2026.

@@ -42,7 +42,7 @@ site into the `date=YYYY-MM-DD` partition corresponding to the preceding day.
 | `uptime_month` | `double` | Uptime percentage over the past 30 days (~8,640 pings). |
 | `uptime_year` | `double` | Uptime percentage over the past 365 days (~105,120 pings). |
 | `uptime_alltime` | `double` | Uptime percentage across all pings since monitoring began (April 2, 2026). |
-| `response_day_ms` | `bigint` | Average response time over the past 24 hours, in milliseconds. |
+| `response_day_ms` | `bigint` | Average response time over the past 24 hours, in milliseconds. Equals `0` during unmonitored outage gaps (see notes). |
 | `response_week_ms` | `bigint` | Average response time over the past 7 days, in milliseconds. |
 | `response_month_ms` | `bigint` | Average response time over the past 30 days, in milliseconds. |
 | `response_year_ms` | `bigint` | Average response time over the past 365 days, in milliseconds. |
@@ -55,3 +55,9 @@ site into the `date=YYYY-MM-DD` partition corresponding to the preceding day.
 statistics last recalculated at ~23:2x UTC on **June 29**. The resulting row
 lands in partition `date=2026-06-29`. All rolling windows trail backward from
 that reference point.
+
+**Upstream monitoring gap (July 28 – September 23, 2026).** Automated synthetic
+probes in `cds-snc/status-statut` halted during this period due to GitHub Actions
+workflow execution protections. Daily summary rows were still ingested with
+`uptime_day = 100.0`, but with `response_day_ms = 0` serving as a natural sentinel
+indicator. Exclude these unmonitored dates in queries with `WHERE response_day_ms > 0`.
