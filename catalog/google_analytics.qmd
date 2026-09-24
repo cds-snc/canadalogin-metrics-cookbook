@@ -10,8 +10,9 @@ module:
 - **06:30 ET** - the funnel export, writing [`funnels`](#funnels)
 - **06:45 ET** - the funnel metrics Lambda, deriving [`funnel_metrics`](#funnel_metrics)
   from the funnels the export just landed
-- **07:00 ET** - the daily export, writing [`property_traffic`](#property_traffic)
-  and [`page_traffic`](#page_traffic), then starting the crawler
+- **07:00 ET** - the daily export, writing [`property_traffic`](#property_traffic),
+  [`page_traffic`](#page_traffic), and [`error_events`](#error_events), then
+  starting the crawler
 
 [`funnels_current`](#funnels_current) and
 [`funnel_metrics_current`](#funnel_metrics_current) are views over `funnels`
@@ -38,6 +39,8 @@ in the pipeline repo.
 {{< include google_analytics/property_traffic.qmd >}}
 
 {{< include google_analytics/page_traffic.qmd >}}
+
+{{< include google_analytics/error_events.qmd >}}
 
 {{< include google_analytics/funnels.qmd >}}
 
