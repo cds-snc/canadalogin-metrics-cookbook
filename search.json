@@ -329,6 +329,17 @@
     ]
   },
   {
+    "objectID": "catalog/google_analytics.html#error_events",
+    "href": "catalog/google_analytics.html#error_events",
+    "title": "Google Analytics",
+    "section": "error_events",
+    "text": "error_events\nDaily count of errors flagged by CanadaLogin to GA4.\nKeywords: Google Analytics, GA4, errors, error codes, forms\n\nProvenance\nPulled daily from the GA4 Data API (runReport). Only events with error or error_id fields are kept.\n\nUpdated: Daily, at 07:00 ET\nSteward: EDCP Data and Research Team\nContact: Colin Douglas\nLocation: s3://&lt;transformed-bucket&gt;/google_analytics/error_events/\n\n\n\nFields\n\n\n\n\n\n\n\n\nField Name\nType\nDescription\n\n\n\n\ndate\nstring\nReporting day, partition key (e.g., “2026-08-16”)\n\n\neventname\nstring\nGA4 event name (e.g., form_step_end, form_api_call_end)\n\n\nform_id\nstring\nForm that emitted the event (e.g., passwordrecovery, signup)\n\n\nstep\nstring\nForm step number\n\n\nerror\nstring\nerror event parameter.\n\n\nerror_id\nstring\nerror_id event parameter.\n\n\neventcount\nbigint\nNumber of events\n\n\ntotalusers\nbigint\nNumber of distinct users. Do not sum.\n\n\nerror_code\nstring\nerror_id, else error. Derived in the ETL\n\n\n\n\n\nNotes\nUse error_code, not error or error_id. Some pages report one or the other, and a few rare circumstances report both. This is an open defect. Error code is calculated as:\n\nerror_id if its not (not set) and not blank\notherwise the first word of error if its not (not set) and not blank\notherwise the row is dropped\n\nCode columns are strings. This means that leading zeros should not be dropped, but an open open defect remains where they are coerced to ints at some point upstream. This means that the error code “000” is sometimes reported as 000 and sometimes as 0.\nThe totalusers field does not sum across rows, do not add them. This is a common pitfall and the reason is similar to the reason we can’t sum unique users in IBM Verify.",
+    "crumbs": [
+      "Data Catalog",
+      "Google Analytics"
+    ]
+  },
+  {
     "objectID": "catalog/google_analytics.html#funnels",
     "href": "catalog/google_analytics.html#funnels",
     "title": "Google Analytics",

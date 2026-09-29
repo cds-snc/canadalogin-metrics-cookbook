@@ -325,31 +325,37 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#fields-1" id="toc-fields-1" class="nav-link" data-scroll-target="#fields-1">Fields</a></li>
   <li><a href="#notes-1" id="toc-notes-1" class="nav-link" data-scroll-target="#notes-1">Notes</a></li>
   </ul></li>
-  <li><a href="#funnels" id="toc-funnels" class="nav-link" data-scroll-target="#funnels">funnels</a>
+  <li><a href="#error_events" id="toc-error_events" class="nav-link" data-scroll-target="#error_events">error_events</a>
   <ul>
   <li><a href="#provenance-2" id="toc-provenance-2" class="nav-link" data-scroll-target="#provenance-2">Provenance</a></li>
   <li><a href="#fields-2" id="toc-fields-2" class="nav-link" data-scroll-target="#fields-2">Fields</a></li>
   <li><a href="#notes-2" id="toc-notes-2" class="nav-link" data-scroll-target="#notes-2">Notes</a></li>
   </ul></li>
-  <li><a href="#funnels_current" id="toc-funnels_current" class="nav-link" data-scroll-target="#funnels_current">funnels_current</a>
+  <li><a href="#funnels" id="toc-funnels" class="nav-link" data-scroll-target="#funnels">funnels</a>
   <ul>
-  <li><a href="#definition" id="toc-definition" class="nav-link" data-scroll-target="#definition">Definition</a></li>
   <li><a href="#provenance-3" id="toc-provenance-3" class="nav-link" data-scroll-target="#provenance-3">Provenance</a></li>
   <li><a href="#fields-3" id="toc-fields-3" class="nav-link" data-scroll-target="#fields-3">Fields</a></li>
   <li><a href="#notes-3" id="toc-notes-3" class="nav-link" data-scroll-target="#notes-3">Notes</a></li>
   </ul></li>
-  <li><a href="#funnel_metrics" id="toc-funnel_metrics" class="nav-link" data-scroll-target="#funnel_metrics">funnel_metrics</a>
+  <li><a href="#funnels_current" id="toc-funnels_current" class="nav-link" data-scroll-target="#funnels_current">funnels_current</a>
   <ul>
+  <li><a href="#definition" id="toc-definition" class="nav-link" data-scroll-target="#definition">Definition</a></li>
   <li><a href="#provenance-4" id="toc-provenance-4" class="nav-link" data-scroll-target="#provenance-4">Provenance</a></li>
   <li><a href="#fields-4" id="toc-fields-4" class="nav-link" data-scroll-target="#fields-4">Fields</a></li>
   <li><a href="#notes-4" id="toc-notes-4" class="nav-link" data-scroll-target="#notes-4">Notes</a></li>
   </ul></li>
-  <li><a href="#funnel_metrics_current" id="toc-funnel_metrics_current" class="nav-link" data-scroll-target="#funnel_metrics_current">funnel_metrics_current</a>
+  <li><a href="#funnel_metrics" id="toc-funnel_metrics" class="nav-link" data-scroll-target="#funnel_metrics">funnel_metrics</a>
   <ul>
-  <li><a href="#definition-1" id="toc-definition-1" class="nav-link" data-scroll-target="#definition-1">Definition</a></li>
   <li><a href="#provenance-5" id="toc-provenance-5" class="nav-link" data-scroll-target="#provenance-5">Provenance</a></li>
   <li><a href="#fields-5" id="toc-fields-5" class="nav-link" data-scroll-target="#fields-5">Fields</a></li>
   <li><a href="#notes-5" id="toc-notes-5" class="nav-link" data-scroll-target="#notes-5">Notes</a></li>
+  </ul></li>
+  <li><a href="#funnel_metrics_current" id="toc-funnel_metrics_current" class="nav-link" data-scroll-target="#funnel_metrics_current">funnel_metrics_current</a>
+  <ul>
+  <li><a href="#definition-1" id="toc-definition-1" class="nav-link" data-scroll-target="#definition-1">Definition</a></li>
+  <li><a href="#provenance-6" id="toc-provenance-6" class="nav-link" data-scroll-target="#provenance-6">Provenance</a></li>
+  <li><a href="#fields-6" id="toc-fields-6" class="nav-link" data-scroll-target="#fields-6">Fields</a></li>
+  <li><a href="#notes-6" id="toc-notes-6" class="nav-link" data-scroll-target="#notes-6">Notes</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -380,7 +386,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <ul>
 <li><strong>06:30 ET</strong> - the funnel export, writing <a href="#funnels"><code>funnels</code></a></li>
 <li><strong>06:45 ET</strong> - the funnel metrics Lambda, deriving <a href="#funnel_metrics"><code>funnel_metrics</code></a> from the funnels the export just landed</li>
-<li><strong>07:00 ET</strong> - the daily export, writing <a href="#property_traffic"><code>property_traffic</code></a> and <a href="#page_traffic"><code>page_traffic</code></a>, then starting the crawler</li>
+<li><strong>07:00 ET</strong> - the daily export, writing <a href="#property_traffic"><code>property_traffic</code></a>, <a href="#page_traffic"><code>page_traffic</code></a>, and <a href="#error_events"><code>error_events</code></a>, then starting the crawler</li>
 </ul>
 <p><a href="#funnels_current"><code>funnels_current</code></a> and <a href="#funnel_metrics_current"><code>funnel_metrics_current</code></a> are views over <code>funnels</code> and <code>funnel_metrics</code> respectively, resolving each date to its current funnel version.</p>
 <section id="export-lag" class="level3">
@@ -536,13 +542,103 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><code>screenpageviews</code> exposes per-step retries on a form page (views greater than 1 on a single page in a day is a friction signal invisible in a funnel’s pass/fail step counts).</p>
 </section>
 </section>
+<section id="error_events" class="level2">
+<h2 class="anchored" data-anchor-id="error_events">error_events</h2>
+<p>Daily count of errors flagged by CanadaLogin to GA4.</p>
+<p><code>Keywords</code>: Google Analytics, GA4, errors, error codes, forms</p>
+<section id="provenance-2" class="level3">
+<h3 class="anchored" data-anchor-id="provenance-2">Provenance</h3>
+<p>Pulled daily from the GA4 Data API (<code>runReport</code>). Only events with <code>error</code> or <code>error_id</code> fields are kept.</p>
+<ul>
+<li><strong>Updated</strong>: Daily, at 07:00 ET</li>
+<li><strong>Steward</strong>: EDCP Data and Research Team</li>
+<li><strong>Contact</strong>: <a href="mailto:colin.douglas@cds-snc.ca">Colin Douglas</a></li>
+<li><strong>Location</strong>: <code>s3://&lt;transformed-bucket&gt;/google_analytics/error_events/</code></li>
+</ul>
+</section>
+<section id="fields-2" class="level3">
+<h3 class="anchored" data-anchor-id="fields-2">Fields</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Field Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>date</td>
+<td>string</td>
+<td>Reporting day, partition key (e.g., “2026-08-16”)</td>
+</tr>
+<tr class="even">
+<td>eventname</td>
+<td>string</td>
+<td>GA4 event name (e.g., <code>form_step_end</code>, <code>form_api_call_end</code>)</td>
+</tr>
+<tr class="odd">
+<td>form_id</td>
+<td>string</td>
+<td>Form that emitted the event (e.g., <code>passwordrecovery</code>, <code>signup</code>)</td>
+</tr>
+<tr class="even">
+<td>step</td>
+<td>string</td>
+<td>Form step number</td>
+</tr>
+<tr class="odd">
+<td>error</td>
+<td>string</td>
+<td><code>error</code> event parameter.</td>
+</tr>
+<tr class="even">
+<td>error_id</td>
+<td>string</td>
+<td><code>error_id</code> event parameter.</td>
+</tr>
+<tr class="odd">
+<td>eventcount</td>
+<td>bigint</td>
+<td>Number of events</td>
+</tr>
+<tr class="even">
+<td>totalusers</td>
+<td>bigint</td>
+<td>Number of distinct users. Do not sum.</td>
+</tr>
+<tr class="odd">
+<td>error_code</td>
+<td>string</td>
+<td><code>error_id</code>, else <code>error</code>. Derived in the ETL</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="notes-2" class="level3">
+<h3 class="anchored" data-anchor-id="notes-2">Notes</h3>
+<p>Use <code>error_code</code>, not <code>error</code> or <code>error_id</code>. Some pages report one or the other, and a few rare circumstances report both. This is an open defect. Error code is calculated as:</p>
+<ul>
+<li><code>error_id</code> if its not <code>(not set)</code> and not blank</li>
+<li>otherwise the first word of <code>error</code> if its not <code>(not set)</code> and not blank</li>
+<li>otherwise the row is dropped</li>
+</ul>
+<p>Code columns are strings. This means that leading zeros should not be dropped, but an open open defect remains where they are coerced to ints <em>at some point upstream</em>. This means that the error code “000” is sometimes reported as <code>000</code> and sometimes as <code>0</code>.</p>
+<p>The <code>totalusers</code> field does not sum across rows, do not add them. This is a common pitfall and the reason is similar to the reason <a href="../cookbook/notes.html#daily-unique-users-are-not-the-same-as-period-unique-users">we can’t sum unique users</a> in IBM Verify.</p>
+</section>
+</section>
 <section id="funnels" class="level2">
 <h2 class="anchored" data-anchor-id="funnels">funnels</h2>
 <p>Step-by-step counts for each defined GA4 funnel (currently <code>sign_in</code> and <code>sign_up</code>), for a given reporting window.</p>
 <p>Each row represents one step of one funnel run, for one relying party (or the funnel’s total across all relying parties).</p>
 <p><code>Keywords</code>: Google Analytics, GA4, funnel, funnel step, task success, drop-off, abandonment, relying party</p>
-<section id="provenance-2" class="level3">
-<h3 class="anchored" data-anchor-id="provenance-2">Provenance</h3>
+<section id="provenance-3" class="level3">
+<h3 class="anchored" data-anchor-id="provenance-3">Provenance</h3>
 <p>A funnel is defined as YAML, not SQL: one file per funnel in <a href="https://github.com/cds-snc/canadalogin-reporting-data-pipeline/tree/main/infra/modules/google_analytics/funnel_src/funnels"><code>funnel_src/funnels/</code></a> in the <code>canadalogin-reporting-data-pipeline</code> repo. A dedicated Lambda turns each funnel’s YAML into a GA4 Data API <code>runFunnelReport</code> request (via Workload Identity Federation, same auth pattern as <a href="../catalog/google_analytics.html#property_traffic"><code>property_traffic</code></a>) and writes the result as JSONL. <strong>The YAML on GitHub is the canonical definition of what each funnel measures</strong> - which pages or events count as which step, in what order, and over what population. This page describes the table shape; it does not enumerate step names, because they are versioned in that YAML and can change between funnel versions.</p>
 <ul>
 <li><strong>Updated</strong>: Daily, at 06:30 ET (a nightly sweep; see Notes)</li>
@@ -551,8 +647,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><strong>Location</strong>: <code>s3://&lt;transformed-bucket&gt;/google_analytics/funnels/</code></li>
 </ul>
 </section>
-<section id="fields-2" class="level3">
-<h3 class="anchored" data-anchor-id="fields-2">Fields</h3>
+<section id="fields-3" class="level3">
+<h3 class="anchored" data-anchor-id="fields-3">Fields</h3>
 <p>One row per <code>funnel_id</code> per <code>funnel_version</code> per <code>window_days</code> per <code>window_end</code> per <code>funnelstepname</code> per <code>breakdown_value</code>.</p>
 <table class="caption-top table">
 <colgroup>
@@ -641,8 +737,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tbody>
 </table>
 </section>
-<section id="notes-2" class="level3">
-<h3 class="anchored" data-anchor-id="notes-2">Notes</h3>
+<section id="notes-3" class="level3">
+<h3 class="anchored" data-anchor-id="notes-3">Notes</h3>
 <p><strong>A funnel’s step names, order and population can change between versions - always check GitHub, not a memory of a prior version.</strong> Every CanadaLogin funnel has already had at least one step renamed or re-scoped since it was first defined (see the <a href="../cookbook/google_analytics.html#task-success-rate">task success rate</a> metric for a worked example). <code>funnel_version</code> exists so old and new definitions coexist rather than silently overwriting each other: <strong>always pin <code>funnel_version</code> in a query</strong>, or use the <a href="../catalog/google_analytics.html#funnels_current"><code>funnels_current</code></a> view, which resolves the newest version per date automatically. Summing or averaging across versions blends two different definitions of the funnel into one meaningless number.</p>
 <p><strong><code>RESERVED_TOTAL</code> is a real GA4 sentinel, not a relying party.</strong> A funnel breakdown caps at 15 distinct values; <code>RESERVED_TOTAL</code> is GA4’s grand total across <em>all</em> relying parties, including any beyond that cap, and is the correct number to read as the funnel’s overall rate.</p>
 <p><strong><code>window_incomplete</code> rows are written, not dropped, and must be excluded from a trend.</strong> A window that reaches earlier than a funnel’s <code>valid_from</code> (or later than <code>valid_to</code>) is trimmed and flagged rather than skipped, so a scheduled job keeps running as a tagging boundary recedes.</p>
@@ -671,20 +767,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">AND</span> f.window_end  <span class="op">=</span> d.window_end</span>
 <span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>  <span class="kw">AND</span> <span class="fu">CAST</span>(f.funnel_version <span class="kw">AS</span> <span class="dt">integer</span>) <span class="op">=</span> d.current_version;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-<section id="provenance-3" class="level3">
-<h3 class="anchored" data-anchor-id="provenance-3">Provenance</h3>
+<section id="provenance-4" class="level3">
+<h3 class="anchored" data-anchor-id="provenance-4">Provenance</h3>
 <ul>
 <li><strong>Updated</strong>: Live view, not scheduled</li>
 <li><strong>Steward</strong>: EDCP Data and Research Team</li>
 <li><strong>Contact</strong>: <a href="mailto:colin.douglas@cds-snc.ca">Colin Douglas</a></li>
 </ul>
 </section>
-<section id="fields-3" class="level3">
-<h3 class="anchored" data-anchor-id="fields-3">Fields</h3>
+<section id="fields-4" class="level3">
+<h3 class="anchored" data-anchor-id="fields-4">Fields</h3>
 <p>Same as <a href="../catalog/google_analytics.html#funnels"><code>funnels</code></a>. <code>SELECT f.*</code> passes every base column through unchanged; the view’s own <code>current_version</code> column (used only to resolve the join) is not exposed.</p>
 </section>
-<section id="notes-3" class="level3">
-<h3 class="anchored" data-anchor-id="notes-3">Notes</h3>
+<section id="notes-4" class="level3">
+<h3 class="anchored" data-anchor-id="notes-4">Notes</h3>
 <p><strong>The partition keys are still typed <code>string</code> in the view’s output</strong>, the same as the base table - <code>MAX(funnel_version)</code> <strong>on the view</strong> still sorts lexically wrong if you ignore that the view has already picked one version per row. Query it the same way you’d query <code>funnels</code>: filter with quoted string literals (<code>WHERE window_days = '7'</code>, not <code>= 7</code>), and don’t re-aggregate across <code>funnel_version</code> since the view has already resolved it.</p>
 <p><strong>Resolution is per <code>(funnel_id, window_days, window_end)</code>, not a global max per funnel.</strong> If a funnel bumps from version 1 to version 2 partway through its history, dates before the bump still resolve to version 1 (version 2 was never run for them) and dates from the bump onward resolve to version 2 - one continuous time series, not a series that vanishes before the bump. This only holds because versions of the same funnel are assumed to measure the same underlying thing; it would not be a safe pattern for two versions that represent genuinely different metrics.</p>
 </section>
@@ -694,8 +790,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Derived metrics computed from landed <a href="../catalog/google_analytics.html#funnels"><code>funnels</code></a> rows - currently task success rates, one per funnel.</p>
 <p>Each row represents one metric’s value, for one funnel run, for one relying party (or the funnel’s total across all relying parties).</p>
 <p><code>Keywords</code>: Google Analytics, GA4, funnel, task success, task success rate, derived metric</p>
-<section id="provenance-4" class="level3">
-<h3 class="anchored" data-anchor-id="provenance-4">Provenance</h3>
+<section id="provenance-5" class="level3">
+<h3 class="anchored" data-anchor-id="provenance-5">Provenance</h3>
 <p>Like a funnel’s steps, a funnel’s derived metrics are declared in that funnel’s YAML on GitHub, in a <code>metrics:</code> block - see <a href="https://github.com/cds-snc/canadalogin-reporting-data-pipeline/tree/main/infra/modules/google_analytics/funnel_src/funnels"><code>funnel_src/funnels/</code></a> in the <code>canadalogin-reporting-data-pipeline</code> repo. <strong>The YAML is the canonical definition of what each metric measures</strong>, including which two steps a ratio divides. A separate Lambda reads the already-landed rows from <a href="../catalog/google_analytics.html#funnels"><code>funnels</code></a> (no new GA4 call) and computes every metric each funnel declares. See the <a href="../cookbook/google_analytics.html#task-success-rate">task success rate</a> cookbook entry for how the one metric type in use today (<code>step_ratio</code>) is calculated and interpreted.</p>
 <ul>
 <li><strong>Updated</strong>: Daily, at 06:45 ET, after the 06:30 ET funnel export</li>
@@ -704,8 +800,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><strong>Location</strong>: <code>s3://&lt;transformed-bucket&gt;/google_analytics/funnel_metrics/</code></li>
 </ul>
 </section>
-<section id="fields-4" class="level3">
-<h3 class="anchored" data-anchor-id="fields-4">Fields</h3>
+<section id="fields-5" class="level3">
+<h3 class="anchored" data-anchor-id="fields-5">Fields</h3>
 <p>One row per <code>funnel_id</code> per <code>funnel_version</code> per <code>window_days</code> per <code>window_end</code> per <code>metric_id</code> per <code>breakdown_value</code>.</p>
 <table class="caption-top table">
 <thead>
@@ -774,8 +870,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tbody>
 </table>
 </section>
-<section id="notes-4" class="level3">
-<h3 class="anchored" data-anchor-id="notes-4">Notes</h3>
+<section id="notes-5" class="level3">
+<h3 class="anchored" data-anchor-id="notes-5">Notes</h3>
 <p><strong>This table deliberately does not carry the raw step values a ratio was computed from</strong> - only the result. The inputs are recoverable by joining back to <a href="../catalog/google_analytics.html#funnels"><code>funnels</code></a> on the same <code>(funnel_id, funnel_version, window_days, window_end, breakdown_value)</code>, if they’re needed.</p>
 <p><strong>Same versioning caveat as <code>funnels</code>, and the same fix applies</strong>: always pin <code>funnel_version</code>, or query <a href="../catalog/google_analytics.html#funnel_metrics_current"><code>funnel_metrics_current</code></a> rather than this table directly.</p>
 <p><strong>A metric is recomputed automatically when its funnel’s <code>funnel_version</code> bumps</strong> (the same nightly job backfills every past window under the new version), but adding a <code>metrics:</code> block to a funnel for the first time also triggers a one-time backfill across that funnel’s entire already-landed history - so a metric’s earliest <code>window_end</code> is not necessarily the date the metric was defined.</p>
@@ -803,20 +899,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">AND</span> f.window_end  <span class="op">=</span> d.window_end</span>
 <span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>  <span class="kw">AND</span> <span class="fu">CAST</span>(f.funnel_version <span class="kw">AS</span> <span class="dt">integer</span>) <span class="op">=</span> d.current_version;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-<section id="provenance-5" class="level3">
-<h3 class="anchored" data-anchor-id="provenance-5">Provenance</h3>
+<section id="provenance-6" class="level3">
+<h3 class="anchored" data-anchor-id="provenance-6">Provenance</h3>
 <ul>
 <li><strong>Updated</strong>: Live view, not scheduled</li>
 <li><strong>Steward</strong>: EDCP Data and Research Team</li>
 <li><strong>Contact</strong>: <a href="mailto:colin.douglas@cds-snc.ca">Colin Douglas</a></li>
 </ul>
 </section>
-<section id="fields-5" class="level3">
-<h3 class="anchored" data-anchor-id="fields-5">Fields</h3>
+<section id="fields-6" class="level3">
+<h3 class="anchored" data-anchor-id="fields-6">Fields</h3>
 <p>Same as <a href="../catalog/google_analytics.html#funnel_metrics"><code>funnel_metrics</code></a>. <code>SELECT f.*</code> passes every base column through unchanged; the view’s own <code>current_version</code> column (used only to resolve the join) is not exposed.</p>
 </section>
-<section id="notes-5" class="level3">
-<h3 class="anchored" data-anchor-id="notes-5">Notes</h3>
+<section id="notes-6" class="level3">
+<h3 class="anchored" data-anchor-id="notes-6">Notes</h3>
 <p>Same query rules as <a href="../catalog/google_analytics.html#funnels_current"><code>funnels_current</code></a>: partition key literals still need quotes (<code>window_days = '7'</code>, not <code>= 7</code>), and don’t re-aggregate across <code>funnel_version</code> since the view has already resolved it.</p>
 
 
