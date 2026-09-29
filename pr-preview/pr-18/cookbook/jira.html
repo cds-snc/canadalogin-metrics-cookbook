@@ -26,41 +26,6 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for syntax highlighting */
-html { -webkit-text-size-adjust: 100%; }
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
 </style>
 
 
@@ -71,9 +36,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../cookbook/google_analytics.html" rel="next">
-<link href="../cookbook/sre.html" rel="prev">
+<link href="../cookbook/jira/tickets-by-status.html" rel="next">
+<link href="../cookbook/sre/outage-events.html" rel="prev">
 <link href="../img/cds-snc.png" rel="icon" type="image/png">
+<script src="../site_libs/quarto-listing/list.min.js"></script>
+<script src="../site_libs/quarto-listing/quarto-listing.js"></script>
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -115,6 +82,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
+<script>
+
+  window.document.addEventListener("DOMContentLoaded", function (_event) {
+    const listingTargetEl = window.document.querySelector('#listing-metrics .list');
+    if (!listingTargetEl) {
+      // No listing discovered, do not attach.
+      return; 
+    }
+
+    const options = {
+      valueNames: ['listing-title','listing-description',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-title-sort'] }],
+      
+      searchColumns: ["listing-title","listing-author"],
+    };
+
+    window['quarto-listings'] = window['quarto-listings'] || {};
+    window['quarto-listings']['listing-metrics'] = new List('listing-metrics', options);
+
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  });
+
+  window.addEventListener('hashchange',() => {
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  })
+  </script>
 <!--
   Google Analytics (GA4) - CanadaLogin Metrics Cookbook stream (G-E72QKPP7TX),
   a second web stream in the same property as the Signal Check reports.
@@ -158,6 +154,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </script>
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-E72QKPP7TX"></script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
@@ -211,36 +236,322 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           </a> 
       </div>
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../cookbook/ibm_verify.html" class="sidebar-item-text sidebar-link">
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../cookbook/ibm_verify.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">IBM Verify</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false">
+ <span class="menu-text">CanadaLogin</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth3 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/ibm_verify/sign-ins.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Authentication Events</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../cookbook/call_centre.html" class="sidebar-item-text sidebar-link">
+  <a href="../cookbook/ibm_verify/sign-in-success-rate.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Authentication Success Rate</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/ibm_verify/completed-sign-in-sessions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Completed Sign-In Sessions (Estimated)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/ibm_verify/sign-ins-per-active-user.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Sign-Ins per Active User (Estimated)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/ibm_verify/cumulative-unique-users.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Cumulative Unique Users</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false">
+ <span class="menu-text">Applications</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth3 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/ibm_verify/sign-ins-by-application.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">SSO Events by Application</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/ibm_verify/sign-in-success-rate-by-application.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">SSO Success Rate by Application</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/ibm_verify/peak-daily-unique-users.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Peak Daily Unique Users</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/ibm_verify/cumulative-unique-users-by-application.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Cumulative Unique Users by Application</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/ibm_verify/applications-per-credential.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Applications per Credential</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/ibm_verify/average-daily-sign-ins.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Average Daily SSO Events</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false">
+ <span class="menu-text">MFA</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth3 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/ibm_verify/mfa-authentications.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">MFA Authentications</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/ibm_verify/mfa-success-rate.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">MFA Success Rate</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/ibm_verify/mfa-success-rate-by-factor.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">MFA Success Rate by Factor</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/ibm_verify/mfa-activity-by-factor.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">All MFA Activity by Factor</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/ibm_verify/sign-in-mfa-activity-by-factor.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Sign-in MFA Activity by Factor</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../cookbook/call_centre.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Call Centre</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/call_centre/calls-accepted.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Calls Accepted</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../cookbook/sre.html" class="sidebar-item-text sidebar-link">
+  <a href="../cookbook/call_centre/calls-answered.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Calls Answered</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/call_centre/average-call-length.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Average Call Length</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/call_centre/average-delay.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Average Delay</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/call_centre/abandonment-rate.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Abandonment Rate</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/call_centre/answer-rate.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Answer Rate</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/call_centre/service-level.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Service Level (Answered Within 60s)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/call_centre/average-handle-time.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Average Handle Time</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/call_centre/calls-per-active-user.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Calls per Active User</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/call_centre/call-topic-share.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Call Topic Share</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/call_centre/top-10-call-topics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Top 10 Call Topics</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../cookbook/sre.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Platform</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/sre/mean-time-to-resolution.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Mean Time to Resolution</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../cookbook/jira.html" class="sidebar-item-text sidebar-link active">
+  <a href="../cookbook/sre/site-uptime.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Site Uptime</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/sre/site-response-time.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Site Response Time</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/sre/outage-events.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Outage Events</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../cookbook/jira.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Jira (PSOM)</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth2 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/jira/tickets-by-status.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tickets by Status</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../cookbook/google_analytics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Google Analytics</span></a>
+  <a href="../cookbook/jira/weekly-ticket-volume.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Weekly Ticket Volume</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/jira/tickets-by-priority.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tickets by Priority</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/jira/sla-first-response-breach-rate.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">SLA First-Response Breach Rate</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/jira/sla-time-to-done-breach-rate.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">SLA Time-to-Done Breach Rate</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/jira/sla-pso-time-to-done-breach-rate.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">SLA PSO Time-to-Done Breach Rate</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../cookbook/google_analytics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Google Analytics</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/google_analytics/task-success-rate.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Task Success Rate</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../cookbook/unique-users.html" class="sidebar-item-text sidebar-link">
@@ -259,20 +570,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div class="sidebar-item-container"> 
             <a href="../catalog/index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Data Catalog</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-10" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../catalog/ibm_verify.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">IBM Verify</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-11" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth2 ">  
+      <ul id="quarto-sidebar-section-11" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../catalog/ibm_verify/app_login_counts.html" class="sidebar-item-text sidebar-link">
@@ -297,11 +608,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div class="sidebar-item-container"> 
             <a href="../catalog/call_centre.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Call Centre</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-12" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth2 ">  
+      <ul id="quarto-sidebar-section-12" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../catalog/call_centre/weekly_activity_report.html" class="sidebar-item-text sidebar-link">
@@ -320,11 +631,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div class="sidebar-item-container"> 
             <a href="../catalog/sre.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Platform</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-13" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth2 ">  
+      <ul id="quarto-sidebar-section-13" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../catalog/sre/mttr_current.html" class="sidebar-item-text sidebar-link">
@@ -355,11 +666,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div class="sidebar-item-container"> 
             <a href="../catalog/jira.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Jira (PSOM)</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="false" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-14" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth2 ">  
+      <ul id="quarto-sidebar-section-14" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../catalog/jira/psom.html" class="sidebar-item-text sidebar-link">
@@ -384,11 +695,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div class="sidebar-item-container"> 
             <a href="../catalog/google_analytics.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Google Analytics</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="false" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-15" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth2 ">  
+      <ul id="quarto-sidebar-section-15" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../catalog/google_analytics/property_traffic.html" class="sidebar-item-text sidebar-link">
@@ -437,11 +748,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div class="sidebar-item-container"> 
             <a href="../catalog/rp.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Relying Parties</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="false" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-16" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth2 ">  
+      <ul id="quarto-sidebar-section-16" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../catalog/rp/service.html" class="sidebar-item-text sidebar-link">
@@ -474,15 +785,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#psom-metrics" id="toc-psom-metrics" class="nav-link active" data-scroll-target="#psom-metrics">PSOM Metrics</a>
-  <ul>
-  <li><a href="#tickets-by-status" id="toc-tickets-by-status" class="nav-link" data-scroll-target="#tickets-by-status">Tickets by Status</a></li>
-  <li><a href="#weekly-ticket-volume" id="toc-weekly-ticket-volume" class="nav-link" data-scroll-target="#weekly-ticket-volume">Weekly Ticket Volume</a></li>
-  <li><a href="#tickets-by-priority" id="toc-tickets-by-priority" class="nav-link" data-scroll-target="#tickets-by-priority">Tickets by Priority</a></li>
-  <li><a href="#sla-first-response-breach-rate" id="toc-sla-first-response-breach-rate" class="nav-link" data-scroll-target="#sla-first-response-breach-rate">SLA First-Response Breach Rate</a></li>
-  <li><a href="#sla-time-to-done-breach-rate" id="toc-sla-time-to-done-breach-rate" class="nav-link" data-scroll-target="#sla-time-to-done-breach-rate">SLA Time-to-Done Breach Rate</a></li>
-  <li><a href="#sla-pso-time-to-done-breach-rate" id="toc-sla-pso-time-to-done-breach-rate" class="nav-link" data-scroll-target="#sla-pso-time-to-done-breach-rate">SLA PSO Time-to-Done Breach Rate</a></li>
-  </ul></li>
+  <li><a href="#psom-metrics" id="toc-psom-metrics" class="nav-link active" data-scroll-target="#psom-metrics">PSOM Metrics</a></li>
   </ul>
 </nav>
     </div>
@@ -518,345 +821,90 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><strong>Data cadence.</strong> The tables are updated once per day (at ~06:00 ET); before 2026-09-29 they were updated weekly, on Mondays. Each run writes a full snapshot of all tickets currently in the project to a new <code>date=</code> partition; previous partitions are preserved as an audit trail. Always filter to <code>date = (SELECT MAX(date) FROM &lt;table&gt;)</code> when querying the latest state. Join the tables on <code>key</code> and <code>date</code>.</p>
 <section id="psom-metrics" class="level2">
 <h2 class="anchored" data-anchor-id="psom-metrics">PSOM Metrics</h2>
-<section id="tickets-by-status" class="level3">
-<h3 class="anchored" data-anchor-id="tickets-by-status">Tickets by Status</h3>
-<p>The number of PSOM Jira tickets grouped by their current workflow status, based on the latest snapshot. The snapshot includes <code>Done</code> and <code>Canceled</code> tickets until they are archived.</p>
-<p><em>Alternative names</em>:</p>
-<ul>
-<li>ticket status breakdown</li>
-<li>open tickets by status</li>
-<li>PSOM ticket status distribution</li>
-</ul>
-<p><strong>Calculation.</strong> Filter to the most recent <code>date</code> partition and count tickets by <code>status</code>.</p>
-<div class="callout callout-style-default callout-note callout-titled" title="Example queries">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
+<div id="listing-metrics" class="quarto-listing quarto-listing-container-table">
+<table class="quarto-listing-table table">
+<thead>
+<tr>
+
+<th>
+Metric
+</th>
+
+<th>
+Description
+</th>
+
+</tr>
+</thead>
+<tbody class="list">
+
+<tr data-index="0" data-listing-file-modified-sort="1790685990716" data-listing-reading-time-sort="1" data-listing-word-count-sort="107" data-listing-title-sort="Tickets by Status" data-listing-filename-sort="tickets-by-status.qmd">
+<td>
+<a href="../cookbook/jira/tickets-by-status.html" class="title listing-title">Tickets by Status</a>
+</td>
+<td>
+<span class="listing-description">PSOM tickets in the latest snapshot, by workflow status.</span>
+</td>
+
+</tr>
+
+<tr data-index="1" data-listing-file-modified-sort="1790685990716" data-listing-reading-time-sort="1" data-listing-word-count-sort="175" data-listing-title-sort="Weekly Ticket Volume" data-listing-filename-sort="weekly-ticket-volume.qmd">
+<td>
+<a href="../cookbook/jira/weekly-ticket-volume.html" class="title listing-title">Weekly Ticket Volume</a>
+</td>
+<td>
+<span class="listing-description">Number of PSOM tickets in each Monday snapshot.</span>
+</td>
+
+</tr>
+
+<tr data-index="2" data-listing-file-modified-sort="1790685990716" data-listing-reading-time-sort="1" data-listing-word-count-sort="92" data-listing-title-sort="Tickets by Priority" data-listing-filename-sort="tickets-by-priority.qmd">
+<td>
+<a href="../cookbook/jira/tickets-by-priority.html" class="title listing-title">Tickets by Priority</a>
+</td>
+<td>
+<span class="listing-description">PSOM tickets in the latest snapshot, by priority.</span>
+</td>
+
+</tr>
+
+<tr data-index="3" data-listing-file-modified-sort="1790685990716" data-listing-reading-time-sort="2" data-listing-word-count-sort="364" data-listing-title-sort="SLA First-Response Breach Rate" data-listing-filename-sort="sla-first-response-breach-rate.qmd">
+<td>
+<a href="../cookbook/jira/sla-first-response-breach-rate.html" class="title listing-title">SLA First-Response Breach Rate</a>
+</td>
+<td>
+<span class="listing-description">Share of PSOM tickets that missed the time-to-first-response SLA.</span>
+</td>
+
+</tr>
+
+<tr data-index="4" data-listing-file-modified-sort="1790685990716" data-listing-reading-time-sort="2" data-listing-word-count-sort="387" data-listing-title-sort="SLA Time-to-Done Breach Rate" data-listing-filename-sort="sla-time-to-done-breach-rate.qmd">
+<td>
+<a href="../cookbook/jira/sla-time-to-done-breach-rate.html" class="title listing-title">SLA Time-to-Done Breach Rate</a>
+</td>
+<td>
+<span class="listing-description">Share of PSOM tickets that missed the time-to-done SLA.</span>
+</td>
+
+</tr>
+
+<tr data-index="5" data-listing-file-modified-sort="1790685990716" data-listing-reading-time-sort="3" data-listing-word-count-sort="404" data-listing-title-sort="SLA PSO Time-to-Done Breach Rate" data-listing-filename-sort="sla-pso-time-to-done-breach-rate.qmd">
+<td>
+<a href="../cookbook/jira/sla-pso-time-to-done-breach-rate.html" class="title listing-title">SLA PSO Time-to-Done Breach Rate</a>
+</td>
+<td>
+<span class="listing-description">Share of PSOM tickets that missed the PSO time-to-done SLA.</span>
+</td>
+
+</tr>
+
+</tbody>
+</table>
+<div class="listing-no-matching d-none">No matching items</div>
 </div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Example queries
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-1" class="callout-1-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href="">SQL</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href="">R</a></li></ul>
-<div class="tab-content">
-<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    status,</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> ticket_count</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> jira.psom</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> <span class="dt">date</span> <span class="op">=</span> (<span class="kw">SELECT</span> <span class="fu">MAX</span>(<span class="dt">date</span>) <span class="kw">FROM</span> jira.psom)</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> status</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> ticket_count <span class="kw">DESC</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>psom <span class="ot">&lt;-</span> <span class="fu">tbl</span>(con, <span class="fu">in_schema</span>(<span class="st">"jira"</span>, <span class="st">"psom"</span>))</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>latest_date <span class="ot">&lt;-</span> psom <span class="sc">|&gt;</span> <span class="fu">summarise</span>(<span class="at">d =</span> <span class="fu">max</span>(date, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">|&gt;</span> <span class="fu">pull</span>(d)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>psom <span class="sc">|&gt;</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">as.Date</span>(date) <span class="sc">==</span> <span class="fu">as.Date</span>(latest_date)) <span class="sc">|&gt;</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(status, <span class="at">name =</span> <span class="st">"ticket_count"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(ticket_count))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</section>
-<section id="weekly-ticket-volume" class="level3">
-<h3 class="anchored" data-anchor-id="weekly-ticket-volume">Weekly Ticket Volume</h3>
-<p>The total number of PSOM tickets captured in each Monday snapshot, showing how the number of tickets in the project changes over time.</p>
-<p><em>Alternative names</em>:</p>
-<ul>
-<li>total tickets per week</li>
-<li>weekly PSOM ticket count</li>
-<li>ticket volume trend</li>
-</ul>
-<p><strong>Calculation.</strong> Keep only the Monday <code>date</code> partitions and count the rows in each. The snapshot ran weekly on Mondays until 2026-09-28 and daily from 2026-09-29, so filtering to Mondays gives one comparable total per week across the whole history.</p>
-<div class="callout callout-style-default callout-note callout-titled" title="Example queries">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Example queries
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-2" class="callout-2-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true" href="">SQL</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false" href="">R</a></li></ul>
-<div class="tab-content">
-<div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">date</span>,</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> ticket_count</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> jira.psom</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> day_of_week(<span class="fu">CAST</span>(<span class="dt">date</span> <span class="kw">AS</span> <span class="dt">DATE</span>)) <span class="op">=</span> <span class="dv">1</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> <span class="dt">date</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> <span class="dt">date</span> <span class="kw">DESC</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tbl</span>(con, <span class="fu">in_schema</span>(<span class="st">"jira"</span>, <span class="st">"psom"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">wday</span>(<span class="fu">as.Date</span>(date), <span class="at">week_start =</span> <span class="dv">1</span>) <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">|&gt;</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(date, <span class="at">name =</span> <span class="st">"ticket_count"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(date))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<p><em>Interpretation notes.</em> This counts the tickets still in the project on each Monday, not the tickets opened that week or the open backlog. It includes <code>Done</code> and <code>Canceled</code> tickets until they are archived, and it drops when a batch of tickets is archived (from 52 to 25 between 2026-09-14 and 2026-09-21). The first snapshot, 2026-06-30, was a Tuesday, so the filter leaves it out.</p>
-</section>
-<section id="tickets-by-priority" class="level3">
-<h3 class="anchored" data-anchor-id="tickets-by-priority">Tickets by Priority</h3>
-<p>The number of PSOM tickets in the latest snapshot grouped by priority level.</p>
-<p><em>Alternative names</em>:</p>
-<ul>
-<li>ticket priority breakdown</li>
-<li>PSOM tickets by priority</li>
-<li>priority distribution</li>
-</ul>
-<p><strong>Calculation.</strong> Filter to the most recent <code>date</code> partition and count tickets by <code>priority</code>.</p>
-<div class="callout callout-style-default callout-note callout-titled" title="Example queries">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Example queries
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-3" class="callout-3-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true" href="">SQL</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false" href="">R</a></li></ul>
-<div class="tab-content">
-<div id="tabset-3-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-3-1-tab">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    priority,</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> ticket_count</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> jira.psom</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> <span class="dt">date</span> <span class="op">=</span> (<span class="kw">SELECT</span> <span class="fu">MAX</span>(<span class="dt">date</span>) <span class="kw">FROM</span> jira.psom)</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> priority</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> ticket_count <span class="kw">DESC</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<div id="tabset-3-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-2-tab">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>psom <span class="ot">&lt;-</span> <span class="fu">tbl</span>(con, <span class="fu">in_schema</span>(<span class="st">"jira"</span>, <span class="st">"psom"</span>))</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>latest_date <span class="ot">&lt;-</span> psom <span class="sc">|&gt;</span> <span class="fu">summarise</span>(<span class="at">d =</span> <span class="fu">max</span>(date, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">|&gt;</span> <span class="fu">pull</span>(d)</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>psom <span class="sc">|&gt;</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">as.Date</span>(date) <span class="sc">==</span> <span class="fu">as.Date</span>(latest_date)) <span class="sc">|&gt;</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(priority, <span class="at">name =</span> <span class="st">"ticket_count"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(ticket_count))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</section>
-<section id="sla-first-response-breach-rate" class="level3">
-<h3 class="anchored" data-anchor-id="sla-first-response-breach-rate">SLA First-Response Breach Rate</h3>
-<p>The proportion of PSOM tickets that missed the “Time to first response” SLA, based on the latest snapshot.</p>
-<p>This metric is useful for monitoring whether the team is meeting initial response commitments. Only tickets where the SLA clock started are included; tickets with no clock (e.g., non-service-request issue types or tickets created before the SLA scheme was configured) are excluded.</p>
-<p><em>Alternative names</em>:</p>
-<ul>
-<li>first response SLA breach rate</li>
-<li>time to first response SLA compliance</li>
-<li>first-response SLA failure rate</li>
-</ul>
-<p><strong>Calculation.</strong> From <a href="../catalog/jira/psom_sla.html"><code>jira.psom_sla</code></a>, filter to the most recent <code>date</code> partition, to <code>sla = 'first_response'</code>, and to rows where <code>breached</code> is not null (i.e., the clock started). Divide the count of rows where <code>breached</code> is true by the total count of those rows.</p>
-<div class="callout callout-style-default callout-note callout-titled" title="Example queries">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Example queries
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-4" class="callout-4-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-4-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-1" role="tab" aria-controls="tabset-4-1" aria-selected="true" href="">SQL</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-4-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-2" role="tab" aria-controls="tabset-4-2" aria-selected="false" href="">R</a></li></ul>
-<div class="tab-content">
-<div id="tabset-4-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-4-1-tab">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> total_sla_tickets,</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">SUM</span>(<span class="cf">CASE</span> <span class="cf">WHEN</span> breached <span class="cf">THEN</span> <span class="dv">1</span> <span class="cf">ELSE</span> <span class="dv">0</span> <span class="cf">END</span>) <span class="kw">AS</span> breached_count,</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">CAST</span>(<span class="fu">SUM</span>(<span class="cf">CASE</span> <span class="cf">WHEN</span> breached <span class="cf">THEN</span> <span class="dv">1</span> <span class="cf">ELSE</span> <span class="dv">0</span> <span class="cf">END</span>) <span class="kw">AS</span> <span class="dt">DOUBLE</span>)</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>        <span class="op">/</span> <span class="fu">NULLIF</span>(<span class="fu">COUNT</span>(<span class="op">*</span>), <span class="dv">0</span>) <span class="kw">AS</span> breach_rate</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> jira.psom_sla</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> <span class="dt">date</span> <span class="op">=</span> (<span class="kw">SELECT</span> <span class="fu">MAX</span>(<span class="dt">date</span>) <span class="kw">FROM</span> jira.psom_sla)</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">AND</span> sla <span class="op">=</span> <span class="st">'first_response'</span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">AND</span> breached <span class="kw">IS</span> <span class="kw">NOT</span> <span class="kw">NULL</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<div id="tabset-4-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-4-2-tab">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>psom_sla <span class="ot">&lt;-</span> <span class="fu">tbl</span>(con, <span class="fu">in_schema</span>(<span class="st">"jira"</span>, <span class="st">"psom_sla"</span>))</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>latest_date <span class="ot">&lt;-</span> psom_sla <span class="sc">|&gt;</span> <span class="fu">summarise</span>(<span class="at">d =</span> <span class="fu">max</span>(date, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">|&gt;</span> <span class="fu">pull</span>(d)</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>psom_sla <span class="sc">|&gt;</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as.Date</span>(date) <span class="sc">==</span> <span class="fu">as.Date</span>(latest_date),</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    sla <span class="sc">==</span> <span class="st">"first_response"</span>,</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    <span class="sc">!</span><span class="fu">is.na</span>(breached)</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">total_sla_tickets =</span> <span class="fu">n</span>(),</span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">breached_count    =</span> <span class="fu">sum</span>(<span class="fu">as.integer</span>(breached), <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">breach_rate       =</span> <span class="fu">sum</span>(<span class="fu">as.integer</span>(breached), <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">/</span> <span class="fu">as.double</span>(<span class="fu">n</span>())</span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<p><em>Interpretation notes.</em> The rate is a proportion between 0 and 1. Tickets whose clock never started (null <code>breached</code>) are excluded from both numerator and denominator. Check <code>total_sla_tickets</code> to understand the sample size underlying the rate.</p>
-<p>A breach means the ticket missed its own goal, which is set per ticket and counted in working hours (09:00 to 17:00). A ticket that is still waiting for a first response and is inside its goal is recorded as not breached (<code>false</code>), the same as a ticket that met the SLA. The rate on a live snapshot is therefore a lower bound: some of those open tickets may still breach before they are answered. It is most meaningful once the snapshot’s tickets are largely resolved.</p>
-</section>
-<section id="sla-time-to-done-breach-rate" class="level3">
-<h3 class="anchored" data-anchor-id="sla-time-to-done-breach-rate">SLA Time-to-Done Breach Rate</h3>
-<p>The proportion of PSOM tickets that missed the “Time to done” SLA, based on the latest snapshot.</p>
-<p>This metric reflects how well the team is resolving tickets within the agreed timeframe. It measures the whole ticket, including time spent escalated to another team. Only tickets where the SLA clock started are included; tickets with no clock are excluded.</p>
-<p><em>Alternative names</em>:</p>
-<ul>
-<li>time to done SLA breach rate</li>
-<li>resolution SLA compliance</li>
-<li>time-to-done SLA failure rate</li>
-</ul>
-<p><strong>Calculation.</strong> From <a href="../catalog/jira/psom_sla.html"><code>jira.psom_sla</code></a>, filter to the most recent <code>date</code> partition, to <code>sla = 'time_to_done'</code>, and to rows where <code>breached</code> is not null (i.e., the clock started). Divide the count of rows where <code>breached</code> is true by the total count of those rows.</p>
-<div class="callout callout-style-default callout-note callout-titled" title="Example queries">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Example queries
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-5" class="callout-5-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-5-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-1" role="tab" aria-controls="tabset-5-1" aria-selected="true" href="">SQL</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-5-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-2" role="tab" aria-controls="tabset-5-2" aria-selected="false" href="">R</a></li></ul>
-<div class="tab-content">
-<div id="tabset-5-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-5-1-tab">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> total_sla_tickets,</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">SUM</span>(<span class="cf">CASE</span> <span class="cf">WHEN</span> breached <span class="cf">THEN</span> <span class="dv">1</span> <span class="cf">ELSE</span> <span class="dv">0</span> <span class="cf">END</span>) <span class="kw">AS</span> breached_count,</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">CAST</span>(<span class="fu">SUM</span>(<span class="cf">CASE</span> <span class="cf">WHEN</span> breached <span class="cf">THEN</span> <span class="dv">1</span> <span class="cf">ELSE</span> <span class="dv">0</span> <span class="cf">END</span>) <span class="kw">AS</span> <span class="dt">DOUBLE</span>)</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>        <span class="op">/</span> <span class="fu">NULLIF</span>(<span class="fu">COUNT</span>(<span class="op">*</span>), <span class="dv">0</span>) <span class="kw">AS</span> breach_rate</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> jira.psom_sla</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> <span class="dt">date</span> <span class="op">=</span> (<span class="kw">SELECT</span> <span class="fu">MAX</span>(<span class="dt">date</span>) <span class="kw">FROM</span> jira.psom_sla)</span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">AND</span> sla <span class="op">=</span> <span class="st">'time_to_done'</span></span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">AND</span> breached <span class="kw">IS</span> <span class="kw">NOT</span> <span class="kw">NULL</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<div id="tabset-5-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-5-2-tab">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>psom_sla <span class="ot">&lt;-</span> <span class="fu">tbl</span>(con, <span class="fu">in_schema</span>(<span class="st">"jira"</span>, <span class="st">"psom_sla"</span>))</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>latest_date <span class="ot">&lt;-</span> psom_sla <span class="sc">|&gt;</span> <span class="fu">summarise</span>(<span class="at">d =</span> <span class="fu">max</span>(date, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">|&gt;</span> <span class="fu">pull</span>(d)</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>psom_sla <span class="sc">|&gt;</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as.Date</span>(date) <span class="sc">==</span> <span class="fu">as.Date</span>(latest_date),</span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    sla <span class="sc">==</span> <span class="st">"time_to_done"</span>,</span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    <span class="sc">!</span><span class="fu">is.na</span>(breached)</span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">total_sla_tickets =</span> <span class="fu">n</span>(),</span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">breached_count    =</span> <span class="fu">sum</span>(<span class="fu">as.integer</span>(breached), <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">breach_rate       =</span> <span class="fu">sum</span>(<span class="fu">as.integer</span>(breached), <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">/</span> <span class="fu">as.double</span>(<span class="fu">n</span>())</span>
-<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<p><em>Interpretation notes.</em> The rate is a proportion between 0 and 1. Tickets whose clock never started (null <code>breached</code>) are excluded from both numerator and denominator. Check <code>total_sla_tickets</code> to understand the sample size underlying the rate.</p>
-<p>The goal is set per ticket (16, 24, 40 and 72 working hours all occur), so a breach means the ticket missed its own target, not a shared one. Working hours run 09:00 to 17:00, so a 40-hour goal is one working week. To compare how long tickets took, use <code>elapsed_minutes</code> instead, which is populated from 2026-09-29.</p>
-<p>A ticket that is still open and inside its goal is recorded as not breached (<code>false</code>), the same as a ticket that met the SLA. The rate on a live snapshot is therefore a lower bound: some of those open tickets may still breach before they are resolved. It is most meaningful once the snapshot’s tickets are largely resolved.</p>
-</section>
-<section id="sla-pso-time-to-done-breach-rate" class="level3">
-<h3 class="anchored" data-anchor-id="sla-pso-time-to-done-breach-rate">SLA PSO Time-to-Done Breach Rate</h3>
-<p>The proportion of PSOM tickets that missed the “Time to Done - PSO” SLA, based on the latest snapshot.</p>
-<p>This metric reflects how well the PSO team is resolving tickets within the agreed timeframe, counting only the time the ticket is with that team. Unlike the whole-ticket <a href="#sla-time-to-done-breach-rate">SLA Time-to-Done Breach Rate</a>, its clock pauses while the ticket is escalated to the authentication team. Only tickets where the SLA clock started are included; tickets with no clock are excluded.</p>
-<p><em>Alternative names</em>:</p>
-<ul>
-<li>PSO touchtime SLA breach rate</li>
-<li>PSO time to done SLA compliance</li>
-<li>PSO time-to-done SLA failure rate</li>
-</ul>
-<p><strong>Calculation.</strong> From <a href="../catalog/jira/psom_sla.html"><code>jira.psom_sla</code></a>, filter to the most recent <code>date</code> partition, to <code>sla = 'pso_time_to_done'</code>, and to rows where <code>breached</code> is not null (i.e., the clock started). Divide the count of rows where <code>breached</code> is true by the total count of those rows.</p>
-<div class="callout callout-style-default callout-note callout-titled" title="Example queries">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Example queries
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-6" class="callout-6-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-6-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-6-1" role="tab" aria-controls="tabset-6-1" aria-selected="true" href="">SQL</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-6-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-6-2" role="tab" aria-controls="tabset-6-2" aria-selected="false" href="">R</a></li></ul>
-<div class="tab-content">
-<div id="tabset-6-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-6-1-tab">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> total_sla_tickets,</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">SUM</span>(<span class="cf">CASE</span> <span class="cf">WHEN</span> breached <span class="cf">THEN</span> <span class="dv">1</span> <span class="cf">ELSE</span> <span class="dv">0</span> <span class="cf">END</span>) <span class="kw">AS</span> breached_count,</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">CAST</span>(<span class="fu">SUM</span>(<span class="cf">CASE</span> <span class="cf">WHEN</span> breached <span class="cf">THEN</span> <span class="dv">1</span> <span class="cf">ELSE</span> <span class="dv">0</span> <span class="cf">END</span>) <span class="kw">AS</span> <span class="dt">DOUBLE</span>)</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>        <span class="op">/</span> <span class="fu">NULLIF</span>(<span class="fu">COUNT</span>(<span class="op">*</span>), <span class="dv">0</span>) <span class="kw">AS</span> breach_rate</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> jira.psom_sla</span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> <span class="dt">date</span> <span class="op">=</span> (<span class="kw">SELECT</span> <span class="fu">MAX</span>(<span class="dt">date</span>) <span class="kw">FROM</span> jira.psom_sla)</span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">AND</span> sla <span class="op">=</span> <span class="st">'pso_time_to_done'</span></span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">AND</span> breached <span class="kw">IS</span> <span class="kw">NOT</span> <span class="kw">NULL</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<div id="tabset-6-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-6-2-tab">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>psom_sla <span class="ot">&lt;-</span> <span class="fu">tbl</span>(con, <span class="fu">in_schema</span>(<span class="st">"jira"</span>, <span class="st">"psom_sla"</span>))</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>latest_date <span class="ot">&lt;-</span> psom_sla <span class="sc">|&gt;</span> <span class="fu">summarise</span>(<span class="at">d =</span> <span class="fu">max</span>(date, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">|&gt;</span> <span class="fu">pull</span>(d)</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>psom_sla <span class="sc">|&gt;</span></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(</span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as.Date</span>(date) <span class="sc">==</span> <span class="fu">as.Date</span>(latest_date),</span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    sla <span class="sc">==</span> <span class="st">"pso_time_to_done"</span>,</span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    <span class="sc">!</span><span class="fu">is.na</span>(breached)</span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">total_sla_tickets =</span> <span class="fu">n</span>(),</span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">breached_count    =</span> <span class="fu">sum</span>(<span class="fu">as.integer</span>(breached), <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">breach_rate       =</span> <span class="fu">sum</span>(<span class="fu">as.integer</span>(breached), <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">/</span> <span class="fu">as.double</span>(<span class="fu">n</span>())</span>
-<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<p><em>Interpretation notes.</em> The rate is a proportion between 0 and 1. Tickets whose clock never started (null <code>breached</code>) are excluded from both numerator and denominator. Check <code>total_sla_tickets</code> to understand the sample size underlying the rate.</p>
-<p>This clock only started on tickets created from about 2026-08-06, and the older snapshots have no <code>pso_time_to_done</code> rows, so the sample is smaller than for the other SLAs. The goal is set per ticket and counted in working hours (09:00 to 17:00), so a breach means the ticket missed its own target.</p>
-<p>A ticket that is still open and inside its goal is recorded as not breached (<code>false</code>), the same as a ticket that met the SLA. The rate on a live snapshot is therefore a lower bound: some of those open tickets may still breach before they are resolved. It is most meaningful once the snapshot’s tickets are largely resolved.</p>
-<!-- Tickets by Request Type is held back: request_type is empty for every -->
-<!-- ticket in the current snapshots, so the breakdown collapses into a single -->
-<!-- (non-service-request) bucket. This is by design, not a pipeline gap: the -->
-<!-- PSOM tickets so far were created internally through Jira rather than the -->
-<!-- customer-facing portal, so no JSM request type was set. Re-enable this -->
-<!-- include once portal-created tickets (which carry a request_type) appear. -->
-<!-- {{< include jira/tickets-by-request-type.qmd >}} -->
 
 
-</section>
+
 </section>
 
 </main> <!-- /main -->
@@ -1262,13 +1310,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../cookbook/sre.html" class="pagination-link" aria-label="Platform">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Platform</span>
+      <a href="../cookbook/sre/outage-events.html" class="pagination-link" aria-label="Outage Events">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Outage Events</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../cookbook/google_analytics.html" class="pagination-link" aria-label="Google Analytics">
-        <span class="nav-page-text">Google Analytics</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../cookbook/jira/tickets-by-status.html" class="pagination-link" aria-label="Tickets by Status">
+        <span class="nav-page-text">Tickets by Status</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

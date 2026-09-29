@@ -1,9 +1,98 @@
 [
   {
-    "listing": "/catalog/rp.html",
+    "listing": "/cookbook/sre.html",
     "items": [
-      "/catalog/rp/service.html",
-      "/catalog/rp/alias.html"
+      "/cookbook/sre/mean-time-to-resolution.html",
+      "/cookbook/sre/site-uptime.html",
+      "/cookbook/sre/site-response-time.html",
+      "/cookbook/sre/outage-events.html"
+    ]
+  },
+  {
+    "listing": "/cookbook/index.html",
+    "items": [
+      "/cookbook/call_centre/abandonment-rate.html",
+      "/cookbook/ibm_verify/mfa-activity-by-factor.html",
+      "/cookbook/call_centre/answer-rate.html",
+      "/cookbook/ibm_verify/applications-per-credential.html",
+      "/cookbook/ibm_verify/sign-ins.html",
+      "/cookbook/ibm_verify/sign-in-success-rate.html",
+      "/cookbook/call_centre/average-call-length.html",
+      "/cookbook/ibm_verify/average-daily-sign-ins.html",
+      "/cookbook/call_centre/average-delay.html",
+      "/cookbook/call_centre/average-handle-time.html",
+      "/cookbook/call_centre/call-topic-share.html",
+      "/cookbook/call_centre/calls-accepted.html",
+      "/cookbook/call_centre/calls-answered.html",
+      "/cookbook/call_centre/calls-per-active-user.html",
+      "/cookbook/ibm_verify/completed-sign-in-sessions.html",
+      "/cookbook/ibm_verify/cumulative-unique-users.html",
+      "/cookbook/ibm_verify/cumulative-unique-users-by-application.html",
+      "/cookbook/ibm_verify/mfa-authentications.html",
+      "/cookbook/ibm_verify/mfa-success-rate.html",
+      "/cookbook/ibm_verify/mfa-success-rate-by-factor.html",
+      "/cookbook/sre/mean-time-to-resolution.html",
+      "/cookbook/sre/outage-events.html",
+      "/cookbook/ibm_verify/peak-daily-unique-users.html",
+      "/cookbook/jira/sla-first-response-breach-rate.html",
+      "/cookbook/jira/sla-pso-time-to-done-breach-rate.html",
+      "/cookbook/jira/sla-time-to-done-breach-rate.html",
+      "/cookbook/ibm_verify/sign-ins-by-application.html",
+      "/cookbook/ibm_verify/sign-in-success-rate-by-application.html",
+      "/cookbook/call_centre/service-level.html",
+      "/cookbook/ibm_verify/sign-ins-per-active-user.html",
+      "/cookbook/ibm_verify/sign-in-mfa-activity-by-factor.html",
+      "/cookbook/sre/site-response-time.html",
+      "/cookbook/sre/site-uptime.html",
+      "/cookbook/google_analytics/task-success-rate.html",
+      "/cookbook/jira/tickets-by-priority.html",
+      "/cookbook/jira/tickets-by-status.html",
+      "/cookbook/call_centre/top-10-call-topics.html",
+      "/cookbook/jira/weekly-ticket-volume.html"
+    ]
+  },
+  {
+    "listing": "/catalog/sre.html",
+    "items": [
+      "/catalog/sre/mttr_current.html",
+      "/catalog/sre/mttr_history.html",
+      "/catalog/sre/uptime_summary.html",
+      "/catalog/sre/uptime_timeseries.html"
+    ]
+  },
+  {
+    "listing": "/catalog/jira.html",
+    "items": [
+      "/catalog/jira/psom.html",
+      "/catalog/jira/psom_sla.html",
+      "/catalog/jira/psom_comment.html"
+    ]
+  },
+  {
+    "listing": "/catalog/call_centre.html",
+    "items": [
+      "/catalog/call_centre/weekly_activity_report.html",
+      "/catalog/call_centre/weekly_topic_dump.html"
+    ]
+  },
+  {
+    "listing": "/catalog/google_analytics.html",
+    "items": [
+      "/catalog/google_analytics/property_traffic.html",
+      "/catalog/google_analytics/page_traffic.html",
+      "/catalog/google_analytics/error_events.html",
+      "/catalog/google_analytics/funnels.html",
+      "/catalog/google_analytics/funnels_current.html",
+      "/catalog/google_analytics/funnel_metrics.html",
+      "/catalog/google_analytics/funnel_metrics_current.html"
+    ]
+  },
+  {
+    "listing": "/catalog/ibm_verify.html",
+    "items": [
+      "/catalog/ibm_verify/app_login_counts.html",
+      "/catalog/ibm_verify/auth_total_logins.html",
+      "/catalog/ibm_verify/mfa_activity.html"
     ]
   },
   {
@@ -33,47 +122,64 @@
     ]
   },
   {
-    "listing": "/catalog/ibm_verify.html",
+    "listing": "/catalog/rp.html",
     "items": [
-      "/catalog/ibm_verify/app_login_counts.html",
-      "/catalog/ibm_verify/auth_total_logins.html",
-      "/catalog/ibm_verify/mfa_activity.html"
+      "/catalog/rp/service.html",
+      "/catalog/rp/alias.html"
     ]
   },
   {
-    "listing": "/catalog/google_analytics.html",
+    "listing": "/cookbook/call_centre.html",
     "items": [
-      "/catalog/google_analytics/property_traffic.html",
-      "/catalog/google_analytics/page_traffic.html",
-      "/catalog/google_analytics/error_events.html",
-      "/catalog/google_analytics/funnels.html",
-      "/catalog/google_analytics/funnels_current.html",
-      "/catalog/google_analytics/funnel_metrics.html",
-      "/catalog/google_analytics/funnel_metrics_current.html"
+      "/cookbook/call_centre/calls-accepted.html",
+      "/cookbook/call_centre/calls-answered.html",
+      "/cookbook/call_centre/average-call-length.html",
+      "/cookbook/call_centre/average-delay.html",
+      "/cookbook/call_centre/abandonment-rate.html",
+      "/cookbook/call_centre/answer-rate.html",
+      "/cookbook/call_centre/service-level.html",
+      "/cookbook/call_centre/average-handle-time.html",
+      "/cookbook/call_centre/calls-per-active-user.html",
+      "/cookbook/call_centre/call-topic-share.html",
+      "/cookbook/call_centre/top-10-call-topics.html"
     ]
   },
   {
-    "listing": "/catalog/call_centre.html",
+    "listing": "/cookbook/google_analytics.html",
     "items": [
-      "/catalog/call_centre/weekly_activity_report.html",
-      "/catalog/call_centre/weekly_topic_dump.html"
+      "/cookbook/google_analytics/task-success-rate.html"
     ]
   },
   {
-    "listing": "/catalog/jira.html",
+    "listing": "/cookbook/ibm_verify.html",
     "items": [
-      "/catalog/jira/psom.html",
-      "/catalog/jira/psom_sla.html",
-      "/catalog/jira/psom_comment.html"
+      "/cookbook/ibm_verify/sign-ins.html",
+      "/cookbook/ibm_verify/sign-in-success-rate.html",
+      "/cookbook/ibm_verify/completed-sign-in-sessions.html",
+      "/cookbook/ibm_verify/sign-ins-per-active-user.html",
+      "/cookbook/ibm_verify/cumulative-unique-users.html",
+      "/cookbook/ibm_verify/sign-ins-by-application.html",
+      "/cookbook/ibm_verify/sign-in-success-rate-by-application.html",
+      "/cookbook/ibm_verify/peak-daily-unique-users.html",
+      "/cookbook/ibm_verify/cumulative-unique-users-by-application.html",
+      "/cookbook/ibm_verify/applications-per-credential.html",
+      "/cookbook/ibm_verify/average-daily-sign-ins.html",
+      "/cookbook/ibm_verify/mfa-authentications.html",
+      "/cookbook/ibm_verify/mfa-success-rate.html",
+      "/cookbook/ibm_verify/mfa-success-rate-by-factor.html",
+      "/cookbook/ibm_verify/mfa-activity-by-factor.html",
+      "/cookbook/ibm_verify/sign-in-mfa-activity-by-factor.html"
     ]
   },
   {
-    "listing": "/catalog/sre.html",
+    "listing": "/cookbook/jira.html",
     "items": [
-      "/catalog/sre/mttr_current.html",
-      "/catalog/sre/mttr_history.html",
-      "/catalog/sre/uptime_summary.html",
-      "/catalog/sre/uptime_timeseries.html"
+      "/cookbook/jira/tickets-by-status.html",
+      "/cookbook/jira/weekly-ticket-volume.html",
+      "/cookbook/jira/tickets-by-priority.html",
+      "/cookbook/jira/sla-first-response-breach-rate.html",
+      "/cookbook/jira/sla-time-to-done-breach-rate.html",
+      "/cookbook/jira/sla-pso-time-to-done-breach-rate.html"
     ]
   }
 ]
