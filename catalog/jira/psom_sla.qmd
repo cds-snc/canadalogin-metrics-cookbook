@@ -44,7 +44,7 @@ ticket's SLA fields.
 - `time_to_done`: Jira's "Time to done", for the whole ticket. It keeps running
   while the ticket is escalated and pauses while waiting for the customer.
 - `pso_time_to_done`: "Time to Done - PSO", the PSO team's touchtime. It pauses
-  while the ticket is escalated to the authentication team. It only started
+  while the ticket is escalated, or waiting for the customer. It only started
   on tickets created from about 2026-08-06.
 - `escalated_to_pt`: "Escalated to PT", which runs while the ticket is escalated
   to the authentication team.

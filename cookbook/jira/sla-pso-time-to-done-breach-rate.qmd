@@ -9,9 +9,9 @@ on the latest snapshot.
 This metric reflects how well the PSO team is resolving tickets within the
 agreed timeframe, counting only the time the ticket is with that team. Unlike
 the whole-ticket [SLA Time-to-Done Breach Rate](sla-time-to-done-breach-rate.qmd),
-its clock pauses while the ticket is escalated to the authentication team. Only
-tickets where the SLA clock started are included; tickets with no clock are
-excluded.
+its clock pauses while the ticket is escalated. Like that SLA, it also pauses
+while waiting for the customer. Only tickets where the SLA clock started are
+included; tickets with no clock are excluded.
 
 ## Calculation
 
