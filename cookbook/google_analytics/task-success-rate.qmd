@@ -1,4 +1,7 @@
-### Task Success Rate
+---
+title: "Task Success Rate"
+description: "Share of users who started a task and reached its finishing point, from GA4 funnels."
+---
 
 The proportion of users who started a given task in CanadaLogin and reached that task's 
 defined finishing point, measured from Google Analytics 4 funnel data.
@@ -11,13 +14,7 @@ described below as of this writing, but the YAML is the canonical, versioned sou
 [`funnel_src/funnels/`](https://github.com/cds-snc/canadalogin-reporting-data-pipeline/tree/main/infra/modules/google_analytics/funnel_src/funnels) in the `canadalogin-reporting-data-pipeline` repo. 
 Check the YAML before trusting a step name quoted here.
 
-*Alternative names*:
-
-- funnel completion rate
-- task completion rate
-- funnel success rate
-
-#### Sign in
+## Sign in
 
 Funnel definition: [`sign_in.yaml`](https://github.com/cds-snc/canadalogin-reporting-data-pipeline/blob/main/infra/modules/google_analytics/funnel_src/funnels/sign_in.yaml).
 
@@ -27,11 +24,11 @@ see. **This is not a full sign-in completion rate.** A successful sign-in
 redirects off-site to IBM Verify and back to the relying party with no page in
 between, so GA4 has no event to mark true completion - reaching MFA is the
 closest proxy available. See the
-[`funnels`](../catalog/google_analytics/funnels.qmd) catalog entry for the
+[`funnels`](../../catalog/google_analytics/funnels.qmd) catalog entry for the
 `RESERVED_TOTAL` and `window_incomplete` conventions this table shares with
 `funnel_metrics`.
 
-#### Sign up
+## Sign up
 
 Funnel definition: [`sign_up.yaml`](https://github.com/cds-snc/canadalogin-reporting-data-pipeline/blob/main/infra/modules/google_analytics/funnel_src/funnels/sign_up.yaml).
 
@@ -40,13 +37,15 @@ Conditions; exit is the account-creation confirmation screen. Unlike sign-in,
 this **is** a true completion signal - the confirmation page is a real,
 first-party GA4 event.
 
-**Calculation.** Each funnel's task success rate is already computed and
+## Calculation
+
+Each funnel's task success rate is already computed and
 stored as one row per window in
-[`funnel_metrics`](../catalog/google_analytics/funnel_metrics.qmd): the
+[`funnel_metrics`](../../catalog/google_analytics/funnel_metrics.qmd): the
 exit step's `activeUsers` divided by the entry step's, for that funnel run.
 There is no ratio to compute by hand - filter to the funnel and metric, and
 read `value`. Query
-[`funnel_metrics_current`](../catalog/google_analytics/funnel_metrics_current.qmd)
+[`funnel_metrics_current`](../../catalog/google_analytics/funnel_metrics_current.qmd)
 rather than `funnel_metrics` directly, so a future funnel version bump can't
 silently blend two definitions together. Filter `breakdown_value =
 'RESERVED_TOTAL'` for the overall rate across all relying parties; substitute
@@ -134,7 +133,9 @@ tbl(con, in_schema("google_analytics", "funnel_metrics_current")) |>
 
 :::
 
-*Interpretation notes.* The queries above use `window_days = '7'`, a rolling
+## Interpretation notes
+
+The queries above use `window_days = '7'`, a rolling
 weekly rate recomputed nightly on a 7-day window ending each date. Three window
 lengths exist, and switching between them is a one-line change:
 
@@ -158,3 +159,9 @@ stops at MFA for the structural reason described above, so it reads lower than
 a true completion rate would, while sign-up's rate is a real completion
 figure. Comparing the two numbers as if they measured the same kind of finish
 line will overstate the sign-in/sign-up gap.
+
+## Alternative names
+
+- funnel completion rate
+- task completion rate
+- funnel success rate

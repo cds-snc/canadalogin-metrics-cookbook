@@ -1,5 +1,17 @@
 ---
 title: Google Analytics
+listing:
+  - id: metrics
+    contents:
+      - google_analytics/task-success-rate.qmd
+    type: table
+    fields: [title, description]
+    field-display-names:
+      title: Metric
+    sort: false
+    sort-ui: false
+    filter-ui: false
+
 ---
 
 Metrics derived from the CanadaLogin GA4 property, in the `google_analytics`
@@ -14,4 +26,7 @@ point to that YAML on GitHub as the definitive, current source, rather than
 hard-coding step names that may already be out of date by the time they're
 read.
 
-{{< include google_analytics/task-success-rate.qmd >}}
+## Metrics
+
+::: {#metrics}
+:::

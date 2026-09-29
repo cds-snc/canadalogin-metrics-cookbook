@@ -2,19 +2,14 @@
 project:
   type: website
   output-dir: _book
-  # Website projects render every .qmd by default; the cookbook subfolders hold
-  # include-only fragments, so exclude them (and the catalog template) here.
-  # Catalog subfolders hold one page per table and do render.
+  # Source subfolders hold one page per metric or table. The catalog template
+  # is excluded; draft pages are left out of the build by Quarto itself.
   render:
     - "*.qmd"
     - "cookbook/*.qmd"
+    - "cookbook/*/*.qmd"
     - "catalog/*.qmd"
     - "catalog/*/*.qmd"
-    - "!cookbook/ibm_verify/"
-    - "!cookbook/call_centre/"
-    - "!cookbook/sre/"
-    - "!cookbook/jira/"
-    - "!cookbook/google_analytics/"
     - "!catalog/data-catalog-template.qmd"
 
 website:
@@ -28,11 +23,65 @@ website:
       - section: "Metrics Cookbook"
         href: cookbook/index.qmd
         contents:
-          - cookbook/ibm_verify.qmd
-          - cookbook/call_centre.qmd
-          - cookbook/sre.qmd
-          - cookbook/jira.qmd
-          - cookbook/google_analytics.qmd
+          - section: "IBM Verify"
+            href: cookbook/ibm_verify.qmd
+            contents:
+              - section: "CanadaLogin"
+                contents:
+                  - cookbook/ibm_verify/sign-ins.qmd
+                  - cookbook/ibm_verify/sign-in-success-rate.qmd
+                  - cookbook/ibm_verify/completed-sign-in-sessions.qmd
+                  - cookbook/ibm_verify/sign-ins-per-active-user.qmd
+                  - cookbook/ibm_verify/cumulative-unique-users.qmd
+              - section: "Applications"
+                contents:
+                  - cookbook/ibm_verify/sign-ins-by-application.qmd
+                  - cookbook/ibm_verify/sign-in-success-rate-by-application.qmd
+                  - cookbook/ibm_verify/peak-daily-unique-users.qmd
+                  - cookbook/ibm_verify/cumulative-unique-users-by-application.qmd
+                  - cookbook/ibm_verify/applications-per-credential.qmd
+                  - cookbook/ibm_verify/average-daily-sign-ins.qmd
+              - section: "MFA"
+                contents:
+                  - cookbook/ibm_verify/mfa-authentications.qmd
+                  - cookbook/ibm_verify/mfa-success-rate.qmd
+                  - cookbook/ibm_verify/mfa-success-rate-by-factor.qmd
+                  - cookbook/ibm_verify/mfa-activity-by-factor.qmd
+                  - cookbook/ibm_verify/sign-in-mfa-activity-by-factor.qmd
+          - section: "Call Centre"
+            href: cookbook/call_centre.qmd
+            contents:
+              - cookbook/call_centre/calls-accepted.qmd
+              - cookbook/call_centre/calls-answered.qmd
+              - cookbook/call_centre/average-call-length.qmd
+              - cookbook/call_centre/average-delay.qmd
+              - cookbook/call_centre/abandonment-rate.qmd
+              - cookbook/call_centre/answer-rate.qmd
+              - cookbook/call_centre/service-level.qmd
+              - cookbook/call_centre/average-handle-time.qmd
+              - cookbook/call_centre/calls-per-active-user.qmd
+              - cookbook/call_centre/call-topic-share.qmd
+              - cookbook/call_centre/top-10-call-topics.qmd
+          - section: "Platform"
+            href: cookbook/sre.qmd
+            contents:
+              - cookbook/sre/mean-time-to-resolution.qmd
+              - cookbook/sre/site-uptime.qmd
+              - cookbook/sre/site-response-time.qmd
+              - cookbook/sre/outage-events.qmd
+          - section: "Jira (PSOM)"
+            href: cookbook/jira.qmd
+            contents:
+              - cookbook/jira/tickets-by-status.qmd
+              - cookbook/jira/weekly-ticket-volume.qmd
+              - cookbook/jira/tickets-by-priority.qmd
+              - cookbook/jira/sla-first-response-breach-rate.qmd
+              - cookbook/jira/sla-time-to-done-breach-rate.qmd
+              - cookbook/jira/sla-pso-time-to-done-breach-rate.qmd
+          - section: "Google Analytics"
+            href: cookbook/google_analytics.qmd
+            contents:
+              - cookbook/google_analytics/task-success-rate.qmd
           - cookbook/unique-users.qmd
           - cookbook/notes.qmd
 #          - cookbook/cross-source.qmd

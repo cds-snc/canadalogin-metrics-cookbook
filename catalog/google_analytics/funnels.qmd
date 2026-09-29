@@ -59,7 +59,7 @@ One row per `funnel_id` per `funnel_version` per `window_days` per
 always check GitHub, not a memory of a prior version.** Every CanadaLogin
 funnel has already had at least one step renamed or re-scoped since it was
 first defined (see the
-[task success rate](../../cookbook/google_analytics.qmd#task-success-rate)
+[task success rate](../../cookbook/google_analytics/task-success-rate.qmd)
 metric for a worked example). `funnel_version` exists so old and new
 definitions coexist rather than silently overwriting each other: **always pin
 `funnel_version` in a query**, or use the

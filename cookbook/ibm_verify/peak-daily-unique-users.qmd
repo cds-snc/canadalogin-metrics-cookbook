@@ -1,4 +1,7 @@
-### Peak Daily Unique Users
+---
+title: "Peak Daily Unique Users"
+description: "Highest number of unique users on any single day."
+---
 
 The highest number of unique users observed on any single day during the
 reporting period.
@@ -6,15 +9,9 @@ reporting period.
 This metric is useful for identifying the maximum daily reach of an application
 and for understanding peak demand.
 
-*Alternative names*:
+## Calculation
 
-- peak daily users
-- highest daily unique users
-- maximum daily active users
-- busiest day by unique users
-- peak daily reach
-
-**Calculation.** Take the maximum value of `unique_users` over the selected
+Take the maximum value of `unique_users` over the selected
 reporting period, grouped by application.
 
 ::: {.callout-note collapse="true" title="Example queries"}
@@ -90,5 +87,15 @@ tbl(con, in_schema("ibm_verify", "app_login_counts")) |>
 :::
 
 
-*Interpretation notes.* This metric identifies the busiest single day by unique user
+## Interpretation notes
+
+This metric identifies the busiest single day by unique user
 reach. The query above also returns the date on which that peak occurred.
+
+## Alternative names
+
+- peak daily users
+- highest daily unique users
+- maximum daily active users
+- busiest day by unique users
+- peak daily reach

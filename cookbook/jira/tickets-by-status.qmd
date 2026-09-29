@@ -1,16 +1,15 @@
-### Tickets by Status
+---
+title: "Tickets by Status"
+description: "PSOM tickets in the latest snapshot, by workflow status."
+---
 
 The number of PSOM Jira tickets grouped by their current workflow status,
 based on the latest snapshot. The snapshot includes `Done` and `Canceled`
 tickets until they are archived.
 
-*Alternative names*:
+## Calculation
 
-- ticket status breakdown
-- open tickets by status
-- PSOM ticket status distribution
-
-**Calculation.** Filter to the most recent `date` partition and count tickets by
+Filter to the most recent `date` partition and count tickets by
 `status`.
 
 ::: {.callout-note collapse="true" title="Example queries"}
@@ -44,3 +43,9 @@ psom |>
 :::
 
 :::
+
+## Alternative names
+
+- ticket status breakdown
+- open tickets by status
+- PSOM ticket status distribution

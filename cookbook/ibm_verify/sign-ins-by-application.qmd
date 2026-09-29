@@ -1,4 +1,7 @@
-### SSO Events by Application
+---
+title: "SSO Events by Application"
+description: "Total SSO events for each application."
+---
 
 The total number of SSO events recorded for each application over a selected time
 period.
@@ -12,14 +15,9 @@ one person reaching an application several times contributes several events.
 The source column is `total_logins`, but the event it counts is what IBM Verify
 calls an SSO event, part of application usage.
 
-*Alternative names*:
+## Calculation
 
-- application usage
-- SSO event volume
-- single sign-on events
-- total uses of CanadaLogin by application
-
-**Calculation.** Sum `total_logins` over the selected reporting period, grouped
+Sum `total_logins` over the selected reporting period, grouped
 by application.
 
 ::: {.callout-note collapse="true" title="Example queries"}
@@ -75,13 +73,22 @@ tbl(con, in_schema("ibm_verify", "app_login_counts")) |>
 
 :::
 
-*Interpretation notes.* This counts events, not people. Use this metric when the
+## Interpretation notes
+
+This counts events, not people. Use this metric when the
 question is about system usage or activity volume. Use unique user metrics when
 the question is about reach.
 
 These are a different IBM Verify event type from the CanadaLogin-wide
-[authentication events](#authentication-events), so never add the two together or
+[authentication events](sign-ins.qmd), so never add the two together or
 present them side by side as comparable figures. Unlike the authentication
 events, SSO events are not inflated by second factors, because reaching an
 application uses the session the person already holds rather than asking them
 to authenticate again.
+
+## Alternative names
+
+- application usage
+- SSO event volume
+- single sign-on events
+- total uses of CanadaLogin by application

@@ -1,20 +1,19 @@
-### Sign-Ins per Active User (Estimated)
+---
+title: "Sign-Ins per Active User (Estimated)"
+description: "Estimated sign-ins per user in a calendar month, among users who signed in."
+---
 
 How often a typical user signs in to CanadaLogin over a calendar month, counting
 only the users who signed in at all that month.
 
 This builds on [Completed Sign-In
-Sessions](#completed-sign-in-sessions-estimated) and inherits its estimate and
+Sessions](completed-sign-in-sessions.qmd) and inherits its estimate and
 its assumptions. The denominator is `mtd_unique_users` read on the month's last
 day, so the reporting window has to be whole calendar months.
 
-*Alternative names*:
+## Calculation
 
-- sign-in frequency
-- sessions per active user
-- monthly sign-in rate
-
-**Calculation.** Per calendar month, estimate sessions as in Completed Sign-In
+Per calendar month, estimate sessions as in Completed Sign-In
 Sessions: sum `successful_logins` and subtract the successes of the factors that
 can complete a sign-in (`sms_otp`, `voice_otp`, `fido2`). Divide by
 `mtd_unique_users` on the month's last day, which is that month's distinct
@@ -143,8 +142,16 @@ first_factor |>
 
 :::
 
-*Interpretation notes.* This is per *active* user, not per registered user. A user
+## Interpretation notes
+
+This is per *active* user, not per registered user. A user
 who does not sign in at all that month is not counted in the denominator.
 
 Sessions carry the undercount described in [Completed Sign-In
-Sessions](#completed-sign-in-sessions-estimated).
+Sessions](completed-sign-in-sessions.qmd).
+
+## Alternative names
+
+- sign-in frequency
+- sessions per active user
+- monthly sign-in rate

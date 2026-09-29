@@ -1,5 +1,22 @@
 ---
 title: Jira (PSOM)
+listing:
+  - id: metrics
+    contents:
+      - jira/tickets-by-status.qmd
+      - jira/weekly-ticket-volume.qmd
+      - jira/tickets-by-priority.qmd
+      - jira/sla-first-response-breach-rate.qmd
+      - jira/sla-time-to-done-breach-rate.qmd
+      - jira/sla-pso-time-to-done-breach-rate.qmd
+    type: table
+    fields: [title, description]
+    field-display-names:
+      title: Metric
+    sort: false
+    sort-ui: false
+    filter-ui: false
+
 ---
 
 Metrics in this section are calculated from PSOM Jira Service Management ticket
@@ -22,23 +39,5 @@ the tables on `key` and `date`.
 
 ## PSOM Metrics
 
-{{< include jira/tickets-by-status.qmd >}}
-
-{{< include jira/weekly-ticket-volume.qmd >}}
-
-{{< include jira/tickets-by-priority.qmd >}}
-
-{{< include jira/sla-first-response-breach-rate.qmd >}}
-
-{{< include jira/sla-time-to-done-breach-rate.qmd >}}
-
-{{< include jira/sla-pso-time-to-done-breach-rate.qmd >}}
-
-<!-- Tickets by Request Type is held back: request_type is empty for every -->
-<!-- ticket in the current snapshots, so the breakdown collapses into a single -->
-<!-- (non-service-request) bucket. This is by design, not a pipeline gap: the -->
-<!-- PSOM tickets so far were created internally through Jira rather than the -->
-<!-- customer-facing portal, so no JSM request type was set. Re-enable this -->
-<!-- include once portal-created tickets (which carry a request_type) appear. -->
-<!-- {{< include jira/tickets-by-request-type.qmd >}} -->
-
+::: {#metrics}
+:::

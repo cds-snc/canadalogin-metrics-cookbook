@@ -1,18 +1,16 @@
-### MFA Authentications
+---
+title: "MFA Authentications"
+description: "Total MFA attempts in a reporting period."
+---
 
 The total number of MFA attempts over a selected reporting period.
 
 This metric measures second-factor authentication volume. It counts attempts,
 not people, and includes both successful and failed challenges.
 
-*Alternative names*:
+## Calculation
 
-- MFA attempts
-- two-factor authentications
-- total MFA challenges
-- MFA volume
-
-**Calculation.** Sum `count` over the selected reporting period. OTP factor
+Sum `count` over the selected reporting period. OTP factor
 types (`sms_otp`, `email_otp`, `voice_otp`) record both a `sent` event and a
 subsequent `success`/`failure` event for the same challenge; to avoid
 double-counting, only the `sent` row is used for these types. Non-OTP factor
@@ -69,3 +67,10 @@ tbl(con, in_schema("ibm_verify", "mfa_activity")) |>
 :::
 
 :::
+
+## Alternative names
+
+- MFA attempts
+- two-factor authentications
+- total MFA challenges
+- MFA volume

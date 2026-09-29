@@ -42,7 +42,7 @@ One row per `date` per `streamname` per `pagetitle` per `pagepath`.
 Title alone is an unstable key: a page retitled in a release starts a fresh
 row with no link to its history (this has happened repeatedly to CanadaLogin's
 sign-in and sign-up pages - see the
-[task success rate](../../cookbook/google_analytics.qmd#task-success-rate)
+[task success rate](../../cookbook/google_analytics/task-success-rate.qmd)
 metric for the concrete impact). Path alone is unreadable in a report. Prefer
 `pagepath` for anything that needs to survive a copy or title change.
 

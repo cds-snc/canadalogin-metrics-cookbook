@@ -1,16 +1,14 @@
-### Site Response Time
+---
+title: "Site Response Time"
+description: "Average HTTP response time for each monitored site, over rolling windows."
+---
 
 The average HTTP response time for each monitored CanadaLogin site, aggregated
 over rolling windows from five-minute ping data.
 
-*Alternative names*:
+## Calculation
 
-- average response time
-- site latency
-- response latency by site
-- HTTP response time
-
-**Calculation.** Filter to the most recent `date` partition and read the
+Filter to the most recent `date` partition and read the
 precomputed rolling-window response time columns from `sre.uptime_summary`.
 Each `response_*_ms` column is the mean response time in milliseconds over all
 five-minute pings in the named window.
@@ -102,7 +100,9 @@ tbl(con, in_schema("sre", "uptime_summary")) |>
 
 :::
 
-*Interpretation notes.* Response times are averages computed from all 288
+## Interpretation notes
+
+Response times are averages computed from all 288
 five-minute pings in the window. Single-measurement spikes are smoothed out.
 During outage periods, pings that time out contribute high response times or are
 excluded depending on the upptime implementation, so treat response time trends
@@ -112,3 +112,10 @@ During the July 28 – September 23, 2026 monitoring outage, `response_day_ms` w
 recorded as `0`, serving as a sentinel value. Failing to filter out these dates
 (`response_day_ms > 0`) will artificially drag down historical average latency
 figures.
+
+## Alternative names
+
+- average response time
+- site latency
+- response latency by site
+- HTTP response time

@@ -1,4 +1,7 @@
-### Calls per Active User
+---
+title: "Calls per Active User"
+description: "Call volume relative to the active user base, comparable across weeks."
+---
 
 Call centre volume divided by the size of the active user base, so you can
 compare support demand across weeks even as the user base grows.
@@ -8,15 +11,9 @@ changes. Normalizing by active users takes that out and leaves how often a typic
 user needed to phone in on a given day. The figure is scaled to calls per 100
 active users to keep it in a readable range.
 
-*Alternative names*:
+## Calculation
 
-- call centre contact rate
-- normalized call volume
-- support contacts per active user
-- calls per 100 users
-- support demand
-
-**Calculation.** For each call centre reporting week, take `calls_accepted` from
+For each call centre reporting week, take `calls_accepted` from
 `call_centre.weekly_activity_report`, subtract that week's `test_calls`, and
 divide by the total user-days in that week, then multiply by 100. User-days is
 the sum of `ibm_verify.auth_total_logins.unique_users` over the days whose `date`
@@ -96,7 +93,9 @@ weekly |>
 
 :::
 
-*Interpretation notes.* Both sides are per-day averages over the same Sunday to
+## Interpretation notes
+
+Both sides are per-day averages over the same Sunday to
 Saturday week: average daily calls over average daily active users. On a typical
 day, roughly this many calls came in per 100 active users. This converts cleanly
 to a percentage, e.g., 2 calls per 100 users means 2% of users called on a given
@@ -115,3 +114,11 @@ centre boundaries.
 
 A week appears only once daily active user data exists for it, so the series
 starts near the April 22, 2026 launch.
+
+## Alternative names
+
+- call centre contact rate
+- normalized call volume
+- support contacts per active user
+- calls per 100 users
+- support demand

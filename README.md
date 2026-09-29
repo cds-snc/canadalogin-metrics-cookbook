@@ -22,17 +22,12 @@ The Metrics Cookbook and Data Catalog have parallel layouts: each opens with an
 `index.qmd` "About" page, then one page per data source, then an "Additional Notes"
 page (`notes.qmd`).
 
-Within `cookbook/`, each data source (for example `ibm_verify/`,
-`call_centre/`) is a folder of fragment `.qmd` files plus a sibling chapter
-wrapper (`ibm_verify.qmd`) that assembles them with `{{< include >}}`. The
-fragment folders are include-only and are excluded from rendering via the
-`render:` list in `_quarto.yml`.
-
-Within `catalog/`, each table is its own page (for example
-`catalog/ibm_verify/mfa_activity.qmd`), with a `title` of `schema.table` and a
-one-line `description` in its front matter. The sibling source page
-(`catalog/ibm_verify.qmd`) holds what the source's tables share and lists them
-with a Quarto listing. The catalog home page lists every table.
+Within `cookbook/` and `catalog/`, each data source (for example `ibm_verify/`,
+`call_centre/`) is a folder with one page per metric or table, plus a sibling
+source page (`ibm_verify.qmd`). Each metric or table page has a `title` and a
+one-line `description` in its front matter; catalog titles are `schema.table`.
+The source page holds what its metrics or tables share and lists them with a
+Quarto listing. Each home page lists every metric or table.
 
 ## Adding a catalog table
 
@@ -98,12 +93,16 @@ install.packages(c("testthat", "DBI", "RAthena", "dplyr", "dbplyr", "stringr", "
 
 ## Adding a metric
 
-1. Create a new `.qmd` file in the appropriate `cookbook/<source>/` subfolder, named after the metric (for example, `cookbook/ibm_verify/new-metric.qmd`).
-2. Start the file with a `###`-level heading.
-3. Add an `{{< include >}}` line in the chapter wrapper (`cookbook/<source>.qmd`) at the appropriate position.
+1. Create `cookbook/<source>/<metric>.qmd`, named after the metric, with
+   `title` and `description` front matter.
+2. Add it to the `contents:` of the right listing on the source page
+   (`cookbook/<source>.qmd`).
+3. Add it to the sidebar in `_quarto.yml`, under its source's section.
 
-Follow the existing metric files for the content structure: leading description, 
-alternative names, calculation, SQL/R tabset, and interpretation notes.
+Follow an existing metric page for the body: a leading description,
+`## Calculation` with the collapsed SQL/R example queries, then
+`## Interpretation notes` and `## Alternative names`. The site structure test
+above catches a page missing from the sidebar.
 
 As long as the metric uses the standard `## SQL` / `## R` panel-tabset, the
 parity test picks it up automatically - keep the SQL and R blocks paired in the

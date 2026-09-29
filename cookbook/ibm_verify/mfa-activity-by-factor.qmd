@@ -1,11 +1,14 @@
-### All MFA Activity by Factor
+---
+title: "All MFA Activity by Factor"
+description: "MFA attempts by factor, with each factor's share of the total."
+---
 
 The volume of MFA attempts broken down by factor type, with each factor's share
 of total activity. This is the platform-wide view: it covers every factor type
 the system records, including the internal and administrative factors (`kq`,
 `totp`, `qr`, `ibm_verify_push`) and the `email_otp` factor used only to validate
 emails at sign-up. For usage restricted to the factors the public can sign in
-with, see [Sign-in MFA Activity by Factor](#sign-in-mfa-activity-by-factor).
+with, see [Sign-in MFA Activity by Factor](sign-in-mfa-activity-by-factor.qmd).
 
 This metric shows which second factors are exercised across the whole platform.
 Historically the mix has been dominated by `sms_otp` and `email_otp`. Passkeys
@@ -13,16 +16,11 @@ Historically the mix has been dominated by `sms_otp` and `email_otp`. Passkeys
 volume is expected to grow from that point, while factors such as `totp`, `kq`,
 `qr`, `voice_otp`, and `ibm_verify_push` continue to see little use.
 
-*Alternative names*:
+## Calculation
 
-- MFA factor mix
-- second-factor distribution
-- MFA usage by method
-- MFA factor share
-
-**Calculation.** Sum `count` grouped by `mfa_type`, then divide each factor's
+Sum `count` grouped by `mfa_type`, then divide each factor's
 total by the overall total to get its share. As with [MFA
-Authentications](#mfa-authentications), de-duplicate before counting: OTP factor
+Authentications](mfa-authentications.qmd), de-duplicate before counting: OTP factor
 types (`sms_otp`, `email_otp`, `voice_otp`) record both a `sent` event and a
 subsequent `success`/`failure` event for the same challenge, so only the `sent`
 row is counted for these; non-OTP factor types (`fido2`, `kq`, `totp`,
@@ -88,6 +86,15 @@ tbl(con, in_schema("ibm_verify", "mfa_activity")) |>
 
 :::
 
-*Interpretation notes.* `factor_share` is a proportion between 0 and 1 and sums to 1
+## Interpretation notes
+
+`factor_share` is a proportion between 0 and 1 and sums to 1
 across all factors. Combine with the MFA success rate to spot factors that are
 both heavily used and failing often.
+
+## Alternative names
+
+- MFA factor mix
+- second-factor distribution
+- MFA usage by method
+- MFA factor share

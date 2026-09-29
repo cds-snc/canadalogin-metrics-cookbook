@@ -1,5 +1,50 @@
 ---
 title: IBM Verify
+listing:
+  - id: metrics-1
+    contents:
+      - ibm_verify/sign-ins.qmd
+      - ibm_verify/sign-in-success-rate.qmd
+      - ibm_verify/completed-sign-in-sessions.qmd
+      - ibm_verify/sign-ins-per-active-user.qmd
+      - ibm_verify/cumulative-unique-users.qmd
+    type: table
+    fields: [title, description]
+    field-display-names:
+      title: Metric
+    sort: false
+    sort-ui: false
+    filter-ui: false
+  - id: metrics-2
+    contents:
+      - ibm_verify/sign-ins-by-application.qmd
+      - ibm_verify/sign-in-success-rate-by-application.qmd
+      - ibm_verify/peak-daily-unique-users.qmd
+      - ibm_verify/cumulative-unique-users-by-application.qmd
+      - ibm_verify/applications-per-credential.qmd
+      - ibm_verify/average-daily-sign-ins.qmd
+    type: table
+    fields: [title, description]
+    field-display-names:
+      title: Metric
+    sort: false
+    sort-ui: false
+    filter-ui: false
+  - id: metrics-3
+    contents:
+      - ibm_verify/mfa-authentications.qmd
+      - ibm_verify/mfa-success-rate.qmd
+      - ibm_verify/mfa-success-rate-by-factor.qmd
+      - ibm_verify/mfa-activity-by-factor.qmd
+      - ibm_verify/sign-in-mfa-activity-by-factor.qmd
+    type: table
+    fields: [title, description]
+    field-display-names:
+      title: Metric
+    sort: false
+    sort-ui: false
+    filter-ui: false
+
 ---
 
 Metrics in this section come from IBM Verify, which records two different kinds
@@ -53,15 +98,8 @@ Metrics in this section describe CanadaLogin overall, across all applications,
 sourced mainly from `ibm_verify.auth_total_logins` (the estimated sessions metric
 also draws on `ibm_verify.mfa_activity`).
 
-{{< include ibm_verify/sign-ins.qmd >}}
-
-{{< include ibm_verify/sign-in-success-rate.qmd >}}
-
-{{< include ibm_verify/completed-sign-in-sessions.qmd >}}
-
-{{< include ibm_verify/sign-ins-per-active-user.qmd >}}
-
-{{< include ibm_verify/cumulative-unique-users.qmd >}}
+::: {#metrics-1}
+:::
 
 ## Application Metrics
 
@@ -71,17 +109,8 @@ Metrics in this section describe how much each application is used, sourced from
 person enters no password and no second factor, which is why these counts are not
 inflated the way the CanadaLogin-wide authentication events are.
 
-{{< include ibm_verify/sign-ins-by-application.qmd >}}
-
-{{< include ibm_verify/sign-in-success-rate-by-application.qmd >}}
-
-{{< include ibm_verify/peak-daily-unique-users.qmd >}}
-
-{{< include ibm_verify/cumulative-unique-users-by-application.qmd >}}
-
-{{< include ibm_verify/applications-per-credential.qmd >}}
-
-{{< include ibm_verify/average-daily-sign-ins.qmd >}}
+::: {#metrics-2}
+:::
 
 ## Multi-factor Authentication Metrics
 
@@ -94,12 +123,5 @@ IBM Verify files MFA as a subtype of the authentication event rather than as an
 event type of its own, so these counts are a slice of the CanadaLogin-wide
 authentication events, not a separate stream.
 
-{{< include ibm_verify/mfa-authentications.qmd >}}
-
-{{< include ibm_verify/mfa-success-rate.qmd >}}
-
-{{< include ibm_verify/mfa-success-rate-by-factor.qmd >}}
-
-{{< include ibm_verify/mfa-activity-by-factor.qmd >}}
-
-{{< include ibm_verify/sign-in-mfa-activity-by-factor.qmd >}}
+::: {#metrics-3}
+:::

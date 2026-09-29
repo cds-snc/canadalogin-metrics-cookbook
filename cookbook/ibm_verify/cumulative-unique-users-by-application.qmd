@@ -1,4 +1,7 @@
-### Cumulative Unique Users by Application
+---
+title: "Cumulative Unique Users by Application"
+description: "Distinct users per application this month or this calendar year."
+---
 
 The number of distinct users observed for each application over a chosen
 reporting window: this month or this calendar year.
@@ -7,16 +10,11 @@ The cumulative unique-user columns increase or remain stable over time. This
 metric is closer to "how many distinct people have used the application in this
 window" than the daily unique user metrics.
 
-*Alternative names*:
+## Calculation
 
-- month-to-date unique users by application
-- year-to-date unique users by application
-- distinct user reach per application
-- total unique people reached per application
-
-**Calculation.** Take the latest value of the cumulative unique-user column over
+Take the latest value of the cumulative unique-user column over
 the selected window, grouped by application. The window is chosen by *which
-column* you read (see [the note on reporting timespans](notes.qmd#metrics-can-be-reported-over-different-timespans)):
+column* you read (see [the note on reporting timespans](../notes.qmd#metrics-can-be-reported-over-different-timespans)):
 
 - `mtd_unique_users` for month-to-date
 - `ytd_unique_users` for year-to-date
@@ -30,7 +28,7 @@ window than its underlying data retention actually covers, so the figure can
 undercount and has been seen decreasing from one day to the next. Treat it as
 an estimate only, and prefer `mtd_unique_users` where the reporting question
 allows. See [Why Unique Users Cannot Be Added
-Up](unique-users.qmd#year-to-date-and-365-day-figures) for detail.
+Up](../unique-users.qmd#year-to-date-and-365-day-figures) for detail.
 :::
 
 A `since_apr22_unique_users` column (cumulative distinct users since launch) was
@@ -169,6 +167,15 @@ tbl(con, in_schema("ibm_verify", "app_login_counts")) |>
 
 :::
 
-*Interpretation notes.* Each column resets on its own cadence: `mtd_unique_users`
+## Interpretation notes
+
+Each column resets on its own cadence: `mtd_unique_users`
 resets at the start of each month and `ytd_unique_users` at the start of each
 calendar year. Do not sum these columns across rows; they are already cumulative.
+
+## Alternative names
+
+- month-to-date unique users by application
+- year-to-date unique users by application
+- distinct user reach per application
+- total unique people reached per application

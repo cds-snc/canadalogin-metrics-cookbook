@@ -1,18 +1,16 @@
-### Abandonment Rate
+---
+title: "Abandonment Rate"
+description: "Share of accepted calls abandoned before an agent answered."
+---
 
 The proportion of accepted calls that were abandoned before being answered.
 
 This metric is useful for understanding how often callers give up while waiting.
 It is closely tied to wait times: rising delay often drives rising abandonment.
 
-*Alternative names*:
+## Calculation
 
-- abandon rate
-- call abandonment rate
-- drop rate
-- proportion of calls abandoned
-
-**Calculation.** Divide the sum of `calls_abandoned` by the sum of
+Divide the sum of `calls_abandoned` by the sum of
 `calls_accepted` over the selected reporting period. Summing the raw counts gives
 a volume-weighted rate; do not average the weekly `calls_abandoned_pct` column.
 
@@ -49,5 +47,14 @@ tbl(con, in_schema("call_centre", "weekly_activity_report")) |>
 
 :::
 
-*Interpretation notes.* The rate is a proportion between 0 and 1. Read it together with
+## Interpretation notes
+
+The rate is a proportion between 0 and 1. Read it together with
 average delay; a spike in abandonment usually coincides with longer waits.
+
+## Alternative names
+
+- abandon rate
+- call abandonment rate
+- drop rate
+- proportion of calls abandoned

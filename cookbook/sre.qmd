@@ -1,5 +1,29 @@
 ---
 title: Platform
+listing:
+  - id: metrics-1
+    contents:
+      - sre/mean-time-to-resolution.qmd
+    type: table
+    fields: [title, description]
+    field-display-names:
+      title: Metric
+    sort: false
+    sort-ui: false
+    filter-ui: false
+  - id: metrics-2
+    contents:
+      - sre/site-uptime.qmd
+      - sre/site-response-time.qmd
+      - sre/outage-events.qmd
+    type: table
+    fields: [title, description]
+    field-display-names:
+      title: Metric
+    sort: false
+    sort-ui: false
+    filter-ui: false
+
 ---
 
 Site reliability metrics for the CanadaLogin platform, in the `sre` schema.
@@ -19,7 +43,8 @@ a `from_date` column.
 
 ## Incident Response Metrics
 
-{{< include sre/mean-time-to-resolution.qmd >}}
+::: {#metrics-1}
+:::
 
 ## Site Uptime Metrics
 
@@ -40,8 +65,5 @@ Both tables are partitioned by `date=YYYY-MM-DD`. Because `date` is a `varchar`
 (derived from the Hive partition path), cast it before doing date arithmetic:
 `CAST(date AS DATE)` in SQL; `as.Date(date)` in R.
 
-{{< include sre/site-uptime.qmd >}}
-
-{{< include sre/site-response-time.qmd >}}
-
-{{< include sre/outage-events.qmd >}}
+::: {#metrics-2}
+:::

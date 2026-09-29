@@ -1,4 +1,7 @@
-### Average Call Length
+---
+title: "Average Call Length"
+description: "Average length of answered calls."
+---
 
 The average length of answered calls.
 
@@ -7,15 +10,9 @@ The overall average call length is calculated as a weighted mean of
 simple average of weekly averages because weeks with more answered calls should
 contribute more to the overall result.
 
-*Alternative names*:
+## Calculation
 
-- average call duration
-- average handle time
-- average length of call
-- typical call length
-- average time on call
-
-**Calculation.** Calculate a weighted average of weekly average call length,
+Calculate a weighted average of weekly average call length,
 weighted by the number of answered calls.
 
 ::: {.callout-note collapse="true" title="Example queries"}
@@ -83,5 +80,15 @@ tbl(con, in_schema("call_centre", "weekly_activity_report")) |>
 
 :::
 
-*Interpretation notes.* Use a weighted average rather than a simple average of weekly
+## Interpretation notes
+
+Use a weighted average rather than a simple average of weekly
 averages. A simple average may give too much influence to low-volume weeks.
+
+## Alternative names
+
+- average call duration
+- average handle time
+- average length of call
+- typical call length
+- average time on call

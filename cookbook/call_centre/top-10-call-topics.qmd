@@ -1,19 +1,16 @@
-### Top 10 Call Topics
+---
+title: "Top 10 Call Topics"
+description: "The ten most common call topics."
+---
 
 The ten most common call topics in the call centre topic data.
 
 This is useful for quickly identifying the most common reasons people contact the
 call centre.
 
-*Alternative names*:
+## Calculation
 
-- top 10 call reasons
-- most common call topics
-- top contact drivers
-- main reasons for calling
-- top caller issues
-
-**Calculation.** Count records by cleaned topic, calculate topic share, and
+Count records by cleaned topic, calculate topic share, and
 return the top 10 by topic count.
 
 ::: {.callout-note collapse="true" title="Example queries"}
@@ -70,6 +67,16 @@ tbl(con, in_schema("call_centre", "weekly_topic_dump")) |>
 
 :::
 
-*Interpretation notes.* The top 10 view is useful for quick reporting but may hide
+## Interpretation notes
+
+The top 10 view is useful for quick reporting but may hide
 important lower-volume issues. In cases where there are not many calls, it may be
 useful to limit this list to a top 5, or to truncate ties at the end of the list.
+
+## Alternative names
+
+- top 10 call reasons
+- most common call topics
+- top contact drivers
+- main reasons for calling
+- top caller issues

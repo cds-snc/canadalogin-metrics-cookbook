@@ -22,7 +22,7 @@ definition of what each metric measures**, including which two steps a ratio
 divides. A separate Lambda reads the already-landed rows from
 [`funnels`](funnels.qmd) (no new GA4 call) and computes every
 metric each funnel declares. See the
-[task success rate](../../cookbook/google_analytics.qmd#task-success-rate)
+[task success rate](../../cookbook/google_analytics/task-success-rate.qmd)
 cookbook entry for how the one metric type in use today (`step_ratio`) is
 calculated and interpreted.
 
