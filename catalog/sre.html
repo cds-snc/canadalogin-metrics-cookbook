@@ -36,9 +36,11 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../catalog/jira.html" rel="next">
-<link href="../catalog/call_centre.html" rel="prev">
+<link href="../catalog/sre/mttr_current.html" rel="next">
+<link href="../catalog/call_centre/weekly_topic_dump.html" rel="prev">
 <link href="../img/cds-snc.png" rel="icon" type="image/png">
+<script src="../site_libs/quarto-listing/list.min.js"></script>
+<script src="../site_libs/quarto-listing/quarto-listing.js"></script>
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -50,9 +52,9 @@ ul.task-list li input[type="checkbox"] {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-e05a9d79028a75e8f098d74edd481a3e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-54f932ef1d9b2284b0c0dfbe652c8948.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-e05a9d79028a75e8f098d74edd481a3e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-8b76eb07b549522d1afae2dc4e9871db.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-4ea69f0bb438d4cd2a1c451ff2c5348b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-8b76eb07b549522d1afae2dc4e9871db.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -80,6 +82,63 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
+<script>
+
+  window.document.addEventListener("DOMContentLoaded", function (_event) {
+    const listingTargetEl = window.document.querySelector('#listing-mttr-tables .list');
+    if (!listingTargetEl) {
+      // No listing discovered, do not attach.
+      return; 
+    }
+
+    const options = {
+      valueNames: ['listing-title','listing-description',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-title-sort'] }],
+      
+      searchColumns: ["listing-title","listing-author"],
+    };
+
+    window['quarto-listings'] = window['quarto-listings'] || {};
+    window['quarto-listings']['listing-mttr-tables'] = new List('listing-mttr-tables', options);
+
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  });
+
+  window.addEventListener('hashchange',() => {
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  })
+  
+
+  window.document.addEventListener("DOMContentLoaded", function (_event) {
+    const listingTargetEl = window.document.querySelector('#listing-uptime-tables .list');
+    if (!listingTargetEl) {
+      // No listing discovered, do not attach.
+      return; 
+    }
+
+    const options = {
+      valueNames: ['listing-title','listing-description',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-title-sort'] }],
+      
+      searchColumns: ["listing-title","listing-author"],
+    };
+
+    window['quarto-listings'] = window['quarto-listings'] || {};
+    window['quarto-listings']['listing-uptime-tables'] = new List('listing-uptime-tables', options);
+
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  });
+
+  window.addEventListener('hashchange',() => {
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  })
+  </script>
 <!--
   Google Analytics (GA4) - CanadaLogin Metrics Cookbook stream (G-E72QKPP7TX),
   a second web stream in the same property as the Signal Check reports.
@@ -123,6 +182,35 @@ ul.task-list li input[type="checkbox"] {
 </script>
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-E72QKPP7TX"></script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
@@ -176,89 +264,542 @@ ul.task-list li input[type="checkbox"] {
           </a> 
       </div>
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../cookbook/ibm_verify.html" class="sidebar-item-text sidebar-link">
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../cookbook/ibm_verify.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">IBM Verify</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false">
+ <span class="menu-text">CanadaLogin</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth3 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/ibm_verify/sign-ins.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Authentication Events</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../cookbook/call_centre.html" class="sidebar-item-text sidebar-link">
+  <a href="../cookbook/ibm_verify/sign-in-success-rate.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Authentication Success Rate</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/ibm_verify/completed-sign-in-sessions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Completed Sign-In Sessions (Estimated)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/ibm_verify/sign-ins-per-active-user.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Sign-Ins per Active User (Estimated)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/ibm_verify/cumulative-unique-users.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Cumulative Unique Users</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false">
+ <span class="menu-text">Applications</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth3 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/ibm_verify/sign-ins-by-application.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">SSO Events by Application</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/ibm_verify/sign-in-success-rate-by-application.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">SSO Success Rate by Application</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/ibm_verify/peak-daily-unique-users.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Peak Daily Unique Users</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/ibm_verify/cumulative-unique-users-by-application.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Cumulative Unique Users by Application</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/ibm_verify/applications-per-credential.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Applications per Credential</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/ibm_verify/average-daily-sign-ins.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Average Daily SSO Events</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false">
+ <span class="menu-text">MFA</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth3 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/ibm_verify/mfa-authentications.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">MFA Authentications</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/ibm_verify/mfa-success-rate.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">MFA Success Rate</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/ibm_verify/mfa-success-rate-by-factor.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">MFA Success Rate by Factor</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/ibm_verify/mfa-activity-by-factor.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">All MFA Activity by Factor</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/ibm_verify/sign-in-mfa-activity-by-factor.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Sign-in MFA Activity by Factor</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../cookbook/call_centre.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Call Centre</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/call_centre/calls-accepted.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Calls Accepted</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../cookbook/sre.html" class="sidebar-item-text sidebar-link">
+  <a href="../cookbook/call_centre/calls-answered.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Calls Answered</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/call_centre/average-call-length.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Average Call Length</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/call_centre/average-delay.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Average Delay</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/call_centre/abandonment-rate.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Abandonment Rate</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/call_centre/answer-rate.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Answer Rate</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/call_centre/service-level.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Service Level (Answered Within 60s)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/call_centre/average-handle-time.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Average Handle Time</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/call_centre/calls-per-active-user.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Calls per Active User</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/call_centre/call-topic-share.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Call Topic Share</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/call_centre/top-10-call-topics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Top 10 Call Topics</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../cookbook/sre.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Platform</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/sre/mean-time-to-resolution.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Mean Time to Resolution</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../cookbook/jira.html" class="sidebar-item-text sidebar-link">
+  <a href="../cookbook/sre/site-uptime.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Site Uptime</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/sre/site-response-time.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Site Response Time</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/sre/outage-events.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Outage Events</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../cookbook/jira.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Jira (PSOM)</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/jira/tickets-by-status.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tickets by Status</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../cookbook/google_analytics.html" class="sidebar-item-text sidebar-link">
+  <a href="../cookbook/jira/weekly-ticket-volume.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Weekly Ticket Volume</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/jira/tickets-by-priority.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tickets by Priority</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/jira/sla-first-response-breach-rate.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">SLA First-Response Breach Rate</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/jira/sla-time-to-done-breach-rate.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">SLA Time-to-Done Breach Rate</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/jira/sla-pso-time-to-done-breach-rate.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">SLA PSO Time-to-Done Breach Rate</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../cookbook/google_analytics.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Google Analytics</span></a>
-  </div>
-</li>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../cookbook/notes.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Additional Notes</span></a>
+  <a href="../cookbook/google_analytics/task-success-rate.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Task Success Rate</span></a>
   </div>
 </li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../cookbook/notes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Additional Notes</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-10" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/unique-users.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Adding Up Unique Users</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../catalog/index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Data Catalog</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-11" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../catalog/ibm_verify.html" class="sidebar-item-text sidebar-link">
+      <ul id="quarto-sidebar-section-11" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../catalog/ibm_verify.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">IBM Verify</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-12" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-12" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../catalog/ibm_verify/app_login_counts.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">app_login_counts</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../catalog/call_centre.html" class="sidebar-item-text sidebar-link">
+  <a href="../catalog/ibm_verify/auth_total_logins.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">auth_total_logins</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../catalog/ibm_verify/mfa_activity.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">mfa_activity</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../catalog/call_centre.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Call Centre</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-13" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-13" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../catalog/call_centre/weekly_activity_report.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">weekly_activity_report</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../catalog/sre.html" class="sidebar-item-text sidebar-link active">
+  <a href="../catalog/call_centre/weekly_topic_dump.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">weekly_topic_dump</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../catalog/sre.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Platform</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-14" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-14" class="collapse list-unstyled sidebar-section depth2 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../catalog/sre/mttr_current.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">mttr_current</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../catalog/jira.html" class="sidebar-item-text sidebar-link">
+  <a href="../catalog/sre/mttr_history.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">mttr_history</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../catalog/sre/uptime_summary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">uptime_summary</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../catalog/sre/uptime_timeseries.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">uptime_timeseries</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../catalog/jira.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Jira (PSOM)</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-15" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-15" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../catalog/jira/psom.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">psom</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../catalog/google_analytics.html" class="sidebar-item-text sidebar-link">
+  <a href="../catalog/jira/psom_sla.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">psom_sla</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../catalog/jira/psom_comment.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">psom_comment</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../catalog/google_analytics.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Google Analytics</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-16" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-16" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../catalog/google_analytics/property_traffic.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">property_traffic</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../catalog/rp.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Relying Parties</span></a>
+  <a href="../catalog/google_analytics/page_traffic.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">page_traffic</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../catalog/google_analytics/error_events.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">error_events</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../catalog/google_analytics/funnels.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">funnels</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../catalog/google_analytics/funnels_current.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">funnels_current</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../catalog/google_analytics/funnel_metrics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">funnel_metrics</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../catalog/google_analytics/funnel_metrics_current.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">funnel_metrics_current</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../catalog/rp.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Relying Parties</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-17" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-17" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../catalog/rp/service.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">service</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../catalog/rp/alias.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">alias</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../catalog/notes.html" class="sidebar-item-text sidebar-link">
@@ -277,29 +818,11 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#data-quality" id="toc-data-quality" class="nav-link active" data-scroll-target="#data-quality">Data quality</a></li>
-  <li><a href="#mttr_current" id="toc-mttr_current" class="nav-link" data-scroll-target="#mttr_current">mttr_current</a>
+  <li><a href="#incident-tables" id="toc-incident-tables" class="nav-link active" data-scroll-target="#incident-tables">Incident Tables</a>
   <ul>
-  <li><a href="#provenance" id="toc-provenance" class="nav-link" data-scroll-target="#provenance">Provenance</a></li>
-  <li><a href="#fields" id="toc-fields" class="nav-link" data-scroll-target="#fields">Fields</a></li>
-  </ul></li>
-  <li><a href="#mttr_history" id="toc-mttr_history" class="nav-link" data-scroll-target="#mttr_history">mttr_history</a>
-  <ul>
-  <li><a href="#fields-1" id="toc-fields-1" class="nav-link" data-scroll-target="#fields-1">Fields</a></li>
+  <li><a href="#data-quality" id="toc-data-quality" class="nav-link" data-scroll-target="#data-quality">Data quality</a></li>
   </ul></li>
   <li><a href="#uptime-tables" id="toc-uptime-tables" class="nav-link" data-scroll-target="#uptime-tables">Uptime Tables</a></li>
-  <li><a href="#uptime_summary" id="toc-uptime_summary" class="nav-link" data-scroll-target="#uptime_summary">uptime_summary</a>
-  <ul>
-  <li><a href="#provenance-1" id="toc-provenance-1" class="nav-link" data-scroll-target="#provenance-1">Provenance</a></li>
-  <li><a href="#fields-2" id="toc-fields-2" class="nav-link" data-scroll-target="#fields-2">Fields</a></li>
-  <li><a href="#notes" id="toc-notes" class="nav-link" data-scroll-target="#notes">Notes</a></li>
-  </ul></li>
-  <li><a href="#uptime_timeseries" id="toc-uptime_timeseries" class="nav-link" data-scroll-target="#uptime_timeseries">uptime_timeseries</a>
-  <ul>
-  <li><a href="#provenance-2" id="toc-provenance-2" class="nav-link" data-scroll-target="#provenance-2">Provenance</a></li>
-  <li><a href="#fields-3" id="toc-fields-3" class="nav-link" data-scroll-target="#fields-3">Fields</a></li>
-  <li><a href="#notes-1" id="toc-notes-1" class="nav-link" data-scroll-target="#notes-1">Notes</a></li>
-  </ul></li>
   </ul>
 </nav>
     </div>
@@ -326,6 +849,49 @@ ul.task-list li input[type="checkbox"] {
 
 
 <p>Platform metrics for CanadaLogin, in the <code>sre</code> schema. Currently, both tables are derived from the CanadaLogin Platform team’s <code>CanadaLogin_MTTR_Dashboard</code> Google Sheet (maintained by hand in the CDS Google Drive) and fetched by the <code>sre-mttr-sheets-fetcher</code> Lambda using Google Sheets API 6am ET every Monday. They share one source and grain (one row per incident); they differ only in history: <code>mttr_current</code> holds the latest state of each incident, while <code>mttr_history</code> accumulates a dated snapshot of every incident on each upload.</p>
+<section id="incident-tables" class="level2">
+<h2 class="anchored" data-anchor-id="incident-tables">Incident Tables</h2>
+<div id="listing-mttr-tables" class="quarto-listing quarto-listing-container-table">
+<table class="quarto-listing-table table">
+<thead>
+<tr>
+
+<th>
+Table
+</th>
+
+<th>
+Description
+</th>
+
+</tr>
+</thead>
+<tbody class="list">
+
+<tr data-index="0" data-listing-file-modified-sort="1790688926435" data-listing-reading-time-sort="3" data-listing-word-count-sort="407" data-listing-title-sort="sre.mttr_current" data-listing-filename-sort="mttr_current.qmd">
+<td>
+<a href="../catalog/sre/mttr_current.html" class="title listing-title">sre.mttr_current</a>
+</td>
+<td>
+<span class="listing-description">Latest state of every incident, one row per incident.</span>
+</td>
+
+</tr>
+
+<tr data-index="1" data-listing-file-modified-sort="1790688926435" data-listing-reading-time-sort="1" data-listing-word-count-sort="113" data-listing-title-sort="sre.mttr_history" data-listing-filename-sort="mttr_history.qmd">
+<td>
+<a href="../catalog/sre/mttr_history.html" class="title listing-title">sre.mttr_history</a>
+</td>
+<td>
+<span class="listing-description">Dated snapshots of every incident, one row per incident per snapshot.</span>
+</td>
+
+</tr>
+
+</tbody>
+</table>
+<div class="listing-no-matching d-none">No matching items</div>
+</div>
 <section id="data-quality" class="level3">
 <h3 class="anchored" data-anchor-id="data-quality">Data quality</h3>
 <p>Because the source is a hand-maintained spreadsheet, a few caveats apply to both tables:</p>
@@ -336,428 +902,54 @@ ul.task-list li input[type="checkbox"] {
 <li><strong>The duration columns are rounded to the nearest minute</strong> from second-precision source times, so recomputing them from the displayed (minute-precision) timestamp strings can differ by up to a minute.</li>
 </ul>
 </section>
-<section id="mttr_current" class="level2">
-<h2 class="anchored" data-anchor-id="mttr_current">mttr_current</h2>
-<p>The latest known state of every CanadaLogin incident, one row per incident.</p>
-<p>Each row is a single incident. The table is overwritten on each upload with the most recent values, so it never grows beyond the current incident set. For point-in-time history, see <a href="#mttr_history"><code>mttr_history</code></a>.</p>
-<p><code>Keywords</code>: MTTR, MTTA, MTTM, incident, incident response, postmortem, severity, reliability, SRE, mean time to resolve</p>
-<section id="provenance" class="level3">
-<h3 class="anchored" data-anchor-id="provenance">Provenance</h3>
-<p>Fetched automatically every Monday at 06:00 ET from the CanadaLogin MTTR Dashboard Google Sheet using the sre-mttr-sheets-fetcher Lambda. Each upload overwrites this table wholesale with the current incident state and appends a dated snapshot to <a href="#mttr_history"><code>mttr_history</code></a>.</p>
-<ul>
-<li><strong>Updated</strong>: Weekly, Every Monday 06:00 ET</li>
-<li><strong>Steward</strong>: EDCP Data and Research Team</li>
-<li><strong>Contact</strong>: <a href="mailto:yinlin.zhang@cds-snc.ca">Yinlin Zhang</a> (Data and Research team) or <a href="mailto:obinna.okongwu@cds-snc.ca">Obie Okongwu</a> (CL Platform Team)</li>
-</ul>
-</section>
-<section id="fields" class="level3">
-<h3 class="anchored" data-anchor-id="fields">Fields</h3>
-<p>One row per incident, keyed by <code>incident_id</code>. See the schema-level <a href="#data-quality">Data quality</a> note for caveats that apply to the string timestamps, URL columns, free-text categories, and rounded durations.</p>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 33%">
-<col style="width: 33%">
-<col style="width: 33%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Field Name</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>incident_id</td>
-<td>string</td>
-<td>Unique identifier for the incident, format <code>INC-NNN</code></td>
-</tr>
-<tr class="even">
-<td>slack_channel</td>
-<td>string</td>
-<td>URL of the incident’s dedicated Slack channel</td>
-</tr>
-<tr class="odd">
-<td>severity</td>
-<td>string</td>
-<td>Incident severity. One of “Sev1”, “Sev2”, “Sev3”, or “Sev4” (Sev1 most severe, Sev4 least). Free text in the source, not strictly enforced</td>
-</tr>
-<tr class="even">
-<td>service</td>
-<td>string</td>
-<td>The CanadaLogin service affected</td>
-</tr>
-<tr class="odd">
-<td>component</td>
-<td>string</td>
-<td>The specific subsystem affected, more granular than <code>service</code>. Free text</td>
-</tr>
-<tr class="even">
-<td>short_description</td>
-<td>string</td>
-<td>One-line free-text summary of the incident</td>
-</tr>
-<tr class="odd">
-<td>detected_at</td>
-<td>string</td>
-<td>When the incident was detected, America/Toronto local time at minute precision (<code>YYYY-MM-DD HH:MM</code>)</td>
-</tr>
-<tr class="even">
-<td>acknowledged_at</td>
-<td>string</td>
-<td>When the incident was acknowledged. Same format and timezone as <code>detected_at</code></td>
-</tr>
-<tr class="odd">
-<td>mitigated_at</td>
-<td>string</td>
-<td>When the incident was mitigated. Same format and timezone as <code>detected_at</code></td>
-</tr>
-<tr class="even">
-<td>resolved_at</td>
-<td>string</td>
-<td>When the incident was fully resolved. Same format and timezone as <code>detected_at</code></td>
-</tr>
-<tr class="odd">
-<td>root_cause_category</td>
-<td>string</td>
-<td>Free-text root-cause classification</td>
-</tr>
-<tr class="even">
-<td>mtta_alert_ack</td>
-<td>integer</td>
-<td>Minutes from <code>detected_at</code> to <code>acknowledged_at</code>, rounded to the nearest minute</td>
-</tr>
-<tr class="odd">
-<td>mttm_detected_mitigated</td>
-<td>integer</td>
-<td>Minutes from <code>detected_at</code> to <code>mitigated_at</code>, rounded to the nearest minute</td>
-</tr>
-<tr class="even">
-<td>mttr_detected_resolved</td>
-<td>integer</td>
-<td>Minutes from <code>detected_at</code> to <code>resolved_at</code>, rounded to the nearest minute</td>
-</tr>
-<tr class="odd">
-<td>postmortem_link</td>
-<td>string</td>
-<td>URL of the incident’s postmortem Google Doc. Optional</td>
-</tr>
-<tr class="even">
-<td>week</td>
-<td>integer</td>
-<td>ISO-8601 week number (1-53) of <code>detected_at</code></td>
-</tr>
-<tr class="odd">
-<td>month</td>
-<td>string</td>
-<td>Calendar month of <code>detected_at</code>, first-of-month formatted as <code>mmm-yy</code> text (for example “Feb-26”)</td>
-</tr>
-<tr class="even">
-<td>fetched_at</td>
-<td>timestamp</td>
-<td>When the pipeline ingested this snapshot, in UTC</td>
-</tr>
-</tbody>
-</table>
-</section>
-</section>
-<section id="mttr_history" class="level2">
-<h2 class="anchored" data-anchor-id="mttr_history">mttr_history</h2>
-<p>The append-only companion to <a href="#mttr_current"><code>mttr_current</code></a>: same source, columns, and provenance, but instead of holding only the latest state it accumulates a dated snapshot of every incident on each upload.</p>
-<p>Each row is one incident (<code>incident_id</code>) as it appeared on one snapshot <code>date</code>, so an incident’s metrics can change from one snapshot to the next as it is re-triaged. A row is unique on (<code>incident_id</code>, <code>date</code>).</p>
-<p><code>Keywords</code>: MTTR, MTTA, MTTM, incident, incident response, snapshot, history, severity, reliability, SRE, mean time to resolve</p>
-<section id="fields-1" class="level3">
-<h3 class="anchored" data-anchor-id="fields-1">Fields</h3>
-<p>Every column is identical to <a href="#mttr_current"><code>mttr_current</code></a>, with one addition:</p>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 33%">
-<col style="width: 33%">
-<col style="width: 33%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Field Name</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>date</td>
-<td>string</td>
-<td>Snapshot date as <code>YYYY-MM-DD</code> text; the grain that lets this table accumulate. Equals the date portion of <code>fetched_at</code></td>
-</tr>
-</tbody>
-</table>
-</section>
 </section>
 <section id="uptime-tables" class="level2">
 <h2 class="anchored" data-anchor-id="uptime-tables">Uptime Tables</h2>
 <p>The uptime tables are sourced from the <a href="https://github.com/cds-snc/status-statut"><code>cds-snc/status-statut</code></a> public GitHub repository and updated automatically each day. No manual steps required.</p>
-</section>
-<section id="uptime_summary" class="level2">
-<h2 class="anchored" data-anchor-id="uptime_summary">uptime_summary</h2>
-<p>One row per monitored site per day. Each row is a snapshot of rolling-window statistics fetched from <code>history/summary.json</code> in the <a href="https://github.com/cds-snc/status-statut"><code>cds-snc/status-statut</code></a> GitHub repository at 04:00 ET.</p>
-<section id="provenance-1" class="level3">
-<h3 class="anchored" data-anchor-id="provenance-1">Provenance</h3>
-<p>Fully automated. No manual upload required. The <a href="https://github.com/upptime/upptime">upptime</a> <code>summary.yml</code> GitHub Action recalculates all rolling-window metrics from the full five-minute ping history once per day (~00:00 UTC), rewriting <code>summary.json</code>. The Lambda runs at 04:00 ET and fetches that file, writing one Parquet row per site into the <code>date=YYYY-MM-DD</code> partition corresponding to the preceding day.</p>
-<ul>
-<li><strong>Updated</strong>: Daily, at ~04:00 ET</li>
-<li><strong>Steward</strong>: EDCP Data and Research Team</li>
-<li><strong>Contact</strong>: <a href="mailto:yinlin.zhang@cds-snc.ca">Yinlin Zhang</a> (Data and Research team)</li>
-</ul>
-<p><strong>Six monitored sites:</strong></p>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 33%">
-<col style="width: 33%">
-<col style="width: 33%">
-</colgroup>
+<div id="listing-uptime-tables" class="quarto-listing quarto-listing-container-table">
+<table class="quarto-listing-table table">
 <thead>
-<tr class="header">
-<th><code>slug</code></th>
-<th><code>lang</code></th>
-<th><code>url</code></th>
+<tr>
+
+<th>
+Table
+</th>
+
+<th>
+Description
+</th>
+
 </tr>
 </thead>
-<tbody>
-<tr class="odd">
-<td><code>canada-login-website-en</code></td>
-<td><code>WEB-EN</code></td>
-<td><code>https://login.canada.ca</code></td>
+<tbody class="list">
+
+<tr data-index="0" data-listing-file-modified-sort="1790688926435" data-listing-reading-time-sort="3" data-listing-word-count-sort="497" data-listing-title-sort="sre.uptime_summary" data-listing-filename-sort="uptime_summary.qmd">
+<td>
+<a href="../catalog/sre/uptime_summary.html" class="title listing-title">sre.uptime_summary</a>
+</td>
+<td>
+<span class="listing-description">Daily rolling-window uptime and response-time figures for each monitored site.</span>
+</td>
+
 </tr>
-<tr class="even">
-<td><code>canada-login-website-fr</code></td>
-<td><code>WEB-FR</code></td>
-<td><code>https://connexion.canada.ca</code></td>
+
+<tr data-index="1" data-listing-file-modified-sort="1790688926435" data-listing-reading-time-sort="2" data-listing-word-count-sort="386" data-listing-title-sort="sre.uptime_timeseries" data-listing-filename-sort="uptime_timeseries.qmd">
+<td>
+<a href="../catalog/sre/uptime_timeseries.html" class="title listing-title">sre.uptime_timeseries</a>
+</td>
+<td>
+<span class="listing-description">Status snapshots for each monitored site, one row per upptime bot commit.</span>
+</td>
+
 </tr>
-<tr class="odd">
-<td><code>canada-login-manage-profile-staging</code></td>
-<td><code>MP-STAGING</code></td>
-<td><code>https://app.login-connexion.alpha.canada.ca</code></td>
-</tr>
-<tr class="even">
-<td><code>canada-login-manage-profile-prod</code></td>
-<td><code>MP-PROD</code></td>
-<td><code>https://app.login-connexion.canada.ca</code></td>
-</tr>
-<tr class="odd">
-<td><code>canada-login-idp-staging</code></td>
-<td><code>IDP-STAGING</code></td>
-<td><code>https://auth.login-connexion.alpha.canada.ca</code></td>
-</tr>
-<tr class="even">
-<td><code>canada-login-idp-prod</code></td>
-<td><code>IDP-PROD</code></td>
-<td><code>https://auth.login-connexion.canada.ca</code></td>
-</tr>
+
 </tbody>
 </table>
-</section>
-<section id="fields-2" class="level3">
-<h3 class="anchored" data-anchor-id="fields-2">Fields</h3>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 33%">
-<col style="width: 33%">
-<col style="width: 33%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Field Name</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><code>date</code></td>
-<td><code>varchar</code></td>
-<td>Hive partition key: the date the Lambda ran for (yesterday’s date, <code>YYYY-MM-DD</code>).</td>
-</tr>
-<tr class="even">
-<td><code>fetch_date</code></td>
-<td><code>varchar</code></td>
-<td>UTC timestamp when the Lambda fetched the data (<code>YYYY-MM-DD HH:MM:SS</code>). Useful for diagnosing staleness.</td>
-</tr>
-<tr class="odd">
-<td><code>slug</code></td>
-<td><code>varchar</code></td>
-<td>Upptime site identifier. One of the six values in the table above.</td>
-</tr>
-<tr class="even">
-<td><code>lang</code></td>
-<td><code>varchar</code></td>
-<td>Short label identifying the site variant, one of the six values in the table above.</td>
-</tr>
-<tr class="odd">
-<td><code>url</code></td>
-<td><code>varchar</code></td>
-<td>The monitored URL.</td>
-</tr>
-<tr class="even">
-<td><code>status</code></td>
-<td><code>varchar</code></td>
-<td>Site status at fetch time: <code>up</code> or <code>down</code>.</td>
-</tr>
-<tr class="odd">
-<td><code>uptime_day</code></td>
-<td><code>double</code></td>
-<td>Uptime percentage over the past 24 hours (~288 five-minute pings).</td>
-</tr>
-<tr class="even">
-<td><code>uptime_week</code></td>
-<td><code>double</code></td>
-<td>Uptime percentage over the past 7 days (~2,016 pings).</td>
-</tr>
-<tr class="odd">
-<td><code>uptime_month</code></td>
-<td><code>double</code></td>
-<td>Uptime percentage over the past 30 days (~8,640 pings).</td>
-</tr>
-<tr class="even">
-<td><code>uptime_year</code></td>
-<td><code>double</code></td>
-<td>Uptime percentage over the past 365 days (~105,120 pings).</td>
-</tr>
-<tr class="odd">
-<td><code>uptime_alltime</code></td>
-<td><code>double</code></td>
-<td>Uptime percentage across all pings since monitoring began (April 2, 2026).</td>
-</tr>
-<tr class="even">
-<td><code>response_day_ms</code></td>
-<td><code>bigint</code></td>
-<td>Average response time over the past 24 hours, in milliseconds. Equals <code>0</code> during unmonitored outage gaps (see notes).</td>
-</tr>
-<tr class="odd">
-<td><code>response_week_ms</code></td>
-<td><code>bigint</code></td>
-<td>Average response time over the past 7 days, in milliseconds.</td>
-</tr>
-<tr class="even">
-<td><code>response_month_ms</code></td>
-<td><code>bigint</code></td>
-<td>Average response time over the past 30 days, in milliseconds.</td>
-</tr>
-<tr class="odd">
-<td><code>response_year_ms</code></td>
-<td><code>bigint</code></td>
-<td>Average response time over the past 365 days, in milliseconds.</td>
-</tr>
-<tr class="even">
-<td><code>response_alltime_ms</code></td>
-<td><code>bigint</code></td>
-<td>Average response time across all pings since monitoring began, in milliseconds.</td>
-</tr>
-<tr class="odd">
-<td><code>daily_minutes_down</code></td>
-<td><code>varchar</code></td>
-<td>JSON string mapping each outage date to total minutes down on that date.</td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="notes" class="level3">
-<h3 class="anchored" data-anchor-id="notes">Notes</h3>
-<p><strong>Timing note.</strong> When the Lambda runs on <strong>June 30</strong>, it fetches rolling-window statistics last recalculated at ~23:2x UTC on <strong>June 29</strong>. The resulting row lands in partition <code>date=2026-06-29</code>. All rolling windows trail backward from that reference point.</p>
-<p><strong>Upstream monitoring gap (July 28 – September 23, 2026).</strong> Automated synthetic probes in <code>cds-snc/status-statut</code> halted during this period due to GitHub Actions workflow execution protections. Daily summary rows were still ingested with <code>uptime_day = 100.0</code>, but with <code>response_day_ms = 0</code> serving as a natural sentinel indicator. Exclude these unmonitored dates in queries with <code>WHERE response_day_ms &gt; 0</code>.</p>
-</section>
-</section>
-<section id="uptime_timeseries" class="level2">
-<h2 class="anchored" data-anchor-id="uptime_timeseries">uptime_timeseries</h2>
-<p>One row per upptime bot commit per site. The upptime bot commits to the <code>cds-snc/status-statut</code> history YAML files once per day (~23:2x UTC) as a daily snapshot, plus additional commits immediately when a status change is detected mid-day.</p>
-<section id="provenance-2" class="level3">
-<h3 class="anchored" data-anchor-id="provenance-2">Provenance</h3>
-<p>Fully automated. No manual upload required. Sourced from the GitHub Commits API for each site’s history file (<code>history/&lt;slug&gt;.yml</code>).</p>
-<ul>
-<li><strong>Updated</strong>: Daily, at ~04:00 ET</li>
-<li><strong>Steward</strong>: EDCP Data and Research Team</li>
-<li><strong>Contact</strong>: <a href="mailto:yinlin.zhang@cds-snc.ca">Yinlin Zhang</a> (Data and Research team)</li>
-</ul>
-<p><strong>Expected row count per site per day:</strong></p>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>Scenario</th>
-<th>Expected rows</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Normal all-up day</td>
-<td>1 (daily ~23:2x UTC snapshot, <code>status = 'up'</code>)</td>
-</tr>
-<tr class="even">
-<td>Outage day</td>
-<td>2+ (down event + recovery event + daily snapshot)</td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="fields-3" class="level3">
-<h3 class="anchored" data-anchor-id="fields-3">Fields</h3>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 33%">
-<col style="width: 33%">
-<col style="width: 33%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Field Name</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><code>date</code></td>
-<td><code>varchar</code></td>
-<td>Hive partition key: the UTC date of the commit (<code>YYYY-MM-DD</code>). Use in <code>WHERE date = '...'</code> or <code>WHERE CAST(date AS DATE) BETWEEN ...</code> filters.</td>
-</tr>
-<tr class="even">
-<td><code>ping_timestamp</code></td>
-<td><code>varchar</code></td>
-<td>UTC timestamp of the upptime bot’s commit (<code>YYYY-MM-DD HH:MM:SS</code>). On a normal day this is the daily snapshot at ~23:2x UTC. On an outage day earlier commits record when the site went down or recovered.</td>
-</tr>
-<tr class="odd">
-<td><code>slug</code></td>
-<td><code>varchar</code></td>
-<td>Upptime site identifier, same six values as in <code>sre.uptime_summary</code>.</td>
-</tr>
-<tr class="even">
-<td><code>lang</code></td>
-<td><code>varchar</code></td>
-<td>Short label, same six values as in <code>sre.uptime_summary</code>.</td>
-</tr>
-<tr class="odd">
-<td><code>status</code></td>
-<td><code>varchar</code></td>
-<td>Ping result at the moment of this commit: <code>up</code>, <code>down</code>, or <code>unknown</code>.</td>
-</tr>
-<tr class="even">
-<td><code>http_code</code></td>
-<td><code>bigint</code></td>
-<td>HTTP status code at the moment of this commit. <code>200</code> on a normal day; <code>0</code> or <code>503</code> when down. <code>null</code> if unparseable.</td>
-</tr>
-<tr class="odd">
-<td><code>response_ms</code></td>
-<td><code>bigint</code></td>
-<td>Response time in milliseconds at the moment of this commit. Single-ping measurement at commit time, not a daily average. <code>null</code> if unparseable.</td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="notes-1" class="level3">
-<h3 class="anchored" data-anchor-id="notes-1">Notes</h3>
-<p><strong><code>response_ms</code> is a single-ping measurement.</strong> It records the response time at the exact moment of the upptime bot’s commit, not a daily average. For averaged response times use <code>sre.uptime_summary</code> (<code>response_day_ms</code>, <code>response_week_ms</code>, etc.), which are computed from all 288 five-minute pings.</p>
-<p><strong><code>status = 'down'</code> rows count detection events, not outage duration.</strong> Each down row is one commit, one moment when upptime detected a failure. For total minutes of downtime on a given date, use the <code>daily_minutes_down</code> JSON column in <code>sre.uptime_summary</code>.</p>
-<p><strong>Upstream monitoring gap (July 28 – September 23, 2026).</strong> No automated ping commits were made to <code>cds-snc/status-statut</code> during this period because synthetic monitoring was halted. The table contains zero rows between July 28 and September 23, 2026.</p>
+<div class="listing-no-matching d-none">No matching items</div>
+</div>
 
 
-</section>
+
 </section>
 
 </main> <!-- /main -->
@@ -1163,13 +1355,13 @@ ul.task-list li input[type="checkbox"] {
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../catalog/call_centre.html" class="pagination-link" aria-label="Call Centre">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Call Centre</span>
+      <a href="../catalog/call_centre/weekly_topic_dump.html" class="pagination-link" aria-label="weekly_topic_dump">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">weekly_topic_dump</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../catalog/jira.html" class="pagination-link" aria-label="Jira (PSOM)">
-        <span class="nav-page-text">Jira (PSOM)</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../catalog/sre/mttr_current.html" class="pagination-link" aria-label="mttr_current">
+        <span class="nav-page-text">mttr_current</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

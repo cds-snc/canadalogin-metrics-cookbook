@@ -36,6 +36,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
+<link href="../catalog/index.html" rel="next">
+<link href="../cookbook/notes.html" rel="prev">
 <link href="../img/cds-snc.png" rel="icon" type="image/png">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
@@ -48,9 +50,9 @@ ul.task-list li input[type="checkbox"] {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-e05a9d79028a75e8f098d74edd481a3e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-54f932ef1d9b2284b0c0dfbe652c8948.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-e05a9d79028a75e8f098d74edd481a3e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-8b76eb07b549522d1afae2dc4e9871db.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-4ea69f0bb438d4cd2a1c451ff2c5348b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-8b76eb07b549522d1afae2dc4e9871db.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -133,7 +135,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Why Unique Users Cannot Be Added Up</li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../cookbook/index.html">Metrics Cookbook</a></li><li class="breadcrumb-item"><a href="../cookbook/notes.html">Additional Notes</a></li><li class="breadcrumb-item"><a href="../cookbook/unique-users.html">Adding Up Unique Users</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -174,89 +176,542 @@ ul.task-list li input[type="checkbox"] {
           </a> 
       </div>
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../cookbook/ibm_verify.html" class="sidebar-item-text sidebar-link">
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../cookbook/ibm_verify.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">IBM Verify</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false">
+ <span class="menu-text">CanadaLogin</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth3 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/ibm_verify/sign-ins.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Authentication Events</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../cookbook/call_centre.html" class="sidebar-item-text sidebar-link">
+  <a href="../cookbook/ibm_verify/sign-in-success-rate.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Authentication Success Rate</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/ibm_verify/completed-sign-in-sessions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Completed Sign-In Sessions (Estimated)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/ibm_verify/sign-ins-per-active-user.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Sign-Ins per Active User (Estimated)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/ibm_verify/cumulative-unique-users.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Cumulative Unique Users</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false">
+ <span class="menu-text">Applications</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth3 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/ibm_verify/sign-ins-by-application.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">SSO Events by Application</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/ibm_verify/sign-in-success-rate-by-application.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">SSO Success Rate by Application</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/ibm_verify/peak-daily-unique-users.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Peak Daily Unique Users</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/ibm_verify/cumulative-unique-users-by-application.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Cumulative Unique Users by Application</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/ibm_verify/applications-per-credential.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Applications per Credential</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/ibm_verify/average-daily-sign-ins.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Average Daily SSO Events</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false">
+ <span class="menu-text">MFA</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth3 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/ibm_verify/mfa-authentications.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">MFA Authentications</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/ibm_verify/mfa-success-rate.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">MFA Success Rate</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/ibm_verify/mfa-success-rate-by-factor.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">MFA Success Rate by Factor</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/ibm_verify/mfa-activity-by-factor.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">All MFA Activity by Factor</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/ibm_verify/sign-in-mfa-activity-by-factor.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Sign-in MFA Activity by Factor</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../cookbook/call_centre.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Call Centre</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/call_centre/calls-accepted.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Calls Accepted</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../cookbook/sre.html" class="sidebar-item-text sidebar-link">
+  <a href="../cookbook/call_centre/calls-answered.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Calls Answered</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/call_centre/average-call-length.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Average Call Length</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/call_centre/average-delay.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Average Delay</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/call_centre/abandonment-rate.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Abandonment Rate</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/call_centre/answer-rate.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Answer Rate</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/call_centre/service-level.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Service Level (Answered Within 60s)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/call_centre/average-handle-time.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Average Handle Time</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/call_centre/calls-per-active-user.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Calls per Active User</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/call_centre/call-topic-share.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Call Topic Share</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/call_centre/top-10-call-topics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Top 10 Call Topics</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../cookbook/sre.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Platform</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/sre/mean-time-to-resolution.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Mean Time to Resolution</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../cookbook/jira.html" class="sidebar-item-text sidebar-link">
+  <a href="../cookbook/sre/site-uptime.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Site Uptime</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/sre/site-response-time.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Site Response Time</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/sre/outage-events.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Outage Events</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../cookbook/jira.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Jira (PSOM)</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/jira/tickets-by-status.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tickets by Status</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../cookbook/google_analytics.html" class="sidebar-item-text sidebar-link">
+  <a href="../cookbook/jira/weekly-ticket-volume.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Weekly Ticket Volume</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/jira/tickets-by-priority.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tickets by Priority</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/jira/sla-first-response-breach-rate.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">SLA First-Response Breach Rate</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/jira/sla-time-to-done-breach-rate.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">SLA Time-to-Done Breach Rate</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/jira/sla-pso-time-to-done-breach-rate.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">SLA PSO Time-to-Done Breach Rate</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../cookbook/google_analytics.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Google Analytics</span></a>
-  </div>
-</li>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../cookbook/notes.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Additional Notes</span></a>
+  <a href="../cookbook/google_analytics/task-success-rate.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Task Success Rate</span></a>
   </div>
 </li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../cookbook/notes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Additional Notes</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-10" class="collapse list-unstyled sidebar-section depth2 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/unique-users.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Adding Up Unique Users</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../catalog/index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Data Catalog</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-11" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../catalog/ibm_verify.html" class="sidebar-item-text sidebar-link">
+      <ul id="quarto-sidebar-section-11" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../catalog/ibm_verify.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">IBM Verify</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-12" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-12" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../catalog/ibm_verify/app_login_counts.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">app_login_counts</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../catalog/call_centre.html" class="sidebar-item-text sidebar-link">
+  <a href="../catalog/ibm_verify/auth_total_logins.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">auth_total_logins</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../catalog/ibm_verify/mfa_activity.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">mfa_activity</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../catalog/call_centre.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Call Centre</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-13" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-13" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../catalog/call_centre/weekly_activity_report.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">weekly_activity_report</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../catalog/sre.html" class="sidebar-item-text sidebar-link">
+  <a href="../catalog/call_centre/weekly_topic_dump.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">weekly_topic_dump</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../catalog/sre.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Platform</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-14" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-14" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../catalog/sre/mttr_current.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">mttr_current</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../catalog/jira.html" class="sidebar-item-text sidebar-link">
+  <a href="../catalog/sre/mttr_history.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">mttr_history</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../catalog/sre/uptime_summary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">uptime_summary</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../catalog/sre/uptime_timeseries.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">uptime_timeseries</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../catalog/jira.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Jira (PSOM)</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-15" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-15" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../catalog/jira/psom.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">psom</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../catalog/google_analytics.html" class="sidebar-item-text sidebar-link">
+  <a href="../catalog/jira/psom_sla.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">psom_sla</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../catalog/jira/psom_comment.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">psom_comment</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../catalog/google_analytics.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Google Analytics</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-16" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-16" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../catalog/google_analytics/property_traffic.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">property_traffic</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../catalog/rp.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Relying Parties</span></a>
+  <a href="../catalog/google_analytics/page_traffic.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">page_traffic</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../catalog/google_analytics/error_events.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">error_events</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../catalog/google_analytics/funnels.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">funnels</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../catalog/google_analytics/funnels_current.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">funnels_current</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../catalog/google_analytics/funnel_metrics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">funnel_metrics</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../catalog/google_analytics/funnel_metrics_current.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">funnel_metrics_current</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../catalog/rp.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Relying Parties</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-17" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-17" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../catalog/rp/service.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">service</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../catalog/rp/alias.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">alias</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../catalog/notes.html" class="sidebar-item-text sidebar-link">
@@ -287,7 +742,7 @@ ul.task-list li input[type="checkbox"] {
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../cookbook/index.html">Metrics Cookbook</a></li><li class="breadcrumb-item"><a href="../cookbook/notes.html">Additional Notes</a></li><li class="breadcrumb-item"><a href="../cookbook/unique-users.html">Adding Up Unique Users</a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title">Why Unique Users Cannot Be Added Up</h1>
 </div>
@@ -410,7 +865,7 @@ ul.task-list li input[type="checkbox"] {
 <li>the new figure starts on the day it goes live, and nothing before that can be filled in;</li>
 <li>the window must be 90 days or shorter, for the reasons above.</li>
 </ul>
-<p>For the analyst-facing details, see the <a href="../cookbook/ibm_verify.html#cumulative-unique-users">Cumulative Unique Users</a> metric and the <a href="../catalog/ibm_verify.html#auth_total_logins"><code>auth_total_logins</code></a> catalog entry.</p>
+<p>For the analyst-facing details, see the <a href="../cookbook/ibm_verify/cumulative-unique-users.html">Cumulative Unique Users</a> metric and the <a href="../catalog/ibm_verify/auth_total_logins.html"><code>auth_total_logins</code></a> catalog entry.</p>
 
 
 </section>
@@ -816,6 +1271,18 @@ ul.task-list li input[type="checkbox"] {
     }
   });
   </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../cookbook/notes.html" class="pagination-link" aria-label="Additional Notes">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Additional Notes</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../catalog/index.html" class="pagination-link" aria-label="Data Catalog">
+        <span class="nav-page-text">Data Catalog</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
 </div> <!-- /content -->
 
 

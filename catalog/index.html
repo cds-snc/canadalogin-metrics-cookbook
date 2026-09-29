@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>index – CanadaLogin Metrics Cookbook</title>
+<title>About – CanadaLogin Metrics Cookbook</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -37,8 +37,10 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
 <link href="../catalog/ibm_verify.html" rel="next">
-<link href="../cookbook/notes.html" rel="prev">
+<link href="../cookbook/unique-users.html" rel="prev">
 <link href="../img/cds-snc.png" rel="icon" type="image/png">
+<script src="../site_libs/quarto-listing/list.min.js"></script>
+<script src="../site_libs/quarto-listing/quarto-listing.js"></script>
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -50,9 +52,9 @@ ul.task-list li input[type="checkbox"] {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-e05a9d79028a75e8f098d74edd481a3e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-54f932ef1d9b2284b0c0dfbe652c8948.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-e05a9d79028a75e8f098d74edd481a3e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-8b76eb07b549522d1afae2dc4e9871db.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-4ea69f0bb438d4cd2a1c451ff2c5348b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-8b76eb07b549522d1afae2dc4e9871db.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -80,6 +82,35 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
+<script>
+
+  window.document.addEventListener("DOMContentLoaded", function (_event) {
+    const listingTargetEl = window.document.querySelector('#listing-all-tables .list');
+    if (!listingTargetEl) {
+      // No listing discovered, do not attach.
+      return; 
+    }
+
+    const options = {
+      valueNames: ['listing-title','listing-description',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-title-sort'] }],
+      
+      searchColumns: ["listing-title","listing-author"],
+    };
+
+    window['quarto-listings'] = window['quarto-listings'] || {};
+    window['quarto-listings']['listing-all-tables'] = new List('listing-all-tables', options);
+
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  });
+
+  window.addEventListener('hashchange',() => {
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  })
+  </script>
 <!--
   Google Analytics (GA4) - CanadaLogin Metrics Cookbook stream (G-E72QKPP7TX),
   a second web stream in the same property as the Signal Check reports.
@@ -123,6 +154,35 @@ ul.task-list li input[type="checkbox"] {
 </script>
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-E72QKPP7TX"></script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
@@ -176,89 +236,542 @@ ul.task-list li input[type="checkbox"] {
           </a> 
       </div>
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../cookbook/ibm_verify.html" class="sidebar-item-text sidebar-link">
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../cookbook/ibm_verify.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">IBM Verify</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false">
+ <span class="menu-text">CanadaLogin</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth3 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/ibm_verify/sign-ins.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Authentication Events</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../cookbook/call_centre.html" class="sidebar-item-text sidebar-link">
+  <a href="../cookbook/ibm_verify/sign-in-success-rate.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Authentication Success Rate</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/ibm_verify/completed-sign-in-sessions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Completed Sign-In Sessions (Estimated)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/ibm_verify/sign-ins-per-active-user.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Sign-Ins per Active User (Estimated)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/ibm_verify/cumulative-unique-users.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Cumulative Unique Users</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false">
+ <span class="menu-text">Applications</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth3 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/ibm_verify/sign-ins-by-application.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">SSO Events by Application</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/ibm_verify/sign-in-success-rate-by-application.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">SSO Success Rate by Application</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/ibm_verify/peak-daily-unique-users.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Peak Daily Unique Users</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/ibm_verify/cumulative-unique-users-by-application.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Cumulative Unique Users by Application</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/ibm_verify/applications-per-credential.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Applications per Credential</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/ibm_verify/average-daily-sign-ins.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Average Daily SSO Events</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false">
+ <span class="menu-text">MFA</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth3 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/ibm_verify/mfa-authentications.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">MFA Authentications</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/ibm_verify/mfa-success-rate.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">MFA Success Rate</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/ibm_verify/mfa-success-rate-by-factor.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">MFA Success Rate by Factor</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/ibm_verify/mfa-activity-by-factor.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">All MFA Activity by Factor</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/ibm_verify/sign-in-mfa-activity-by-factor.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Sign-in MFA Activity by Factor</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../cookbook/call_centre.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Call Centre</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/call_centre/calls-accepted.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Calls Accepted</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../cookbook/sre.html" class="sidebar-item-text sidebar-link">
+  <a href="../cookbook/call_centre/calls-answered.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Calls Answered</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/call_centre/average-call-length.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Average Call Length</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/call_centre/average-delay.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Average Delay</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/call_centre/abandonment-rate.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Abandonment Rate</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/call_centre/answer-rate.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Answer Rate</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/call_centre/service-level.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Service Level (Answered Within 60s)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/call_centre/average-handle-time.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Average Handle Time</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/call_centre/calls-per-active-user.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Calls per Active User</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/call_centre/call-topic-share.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Call Topic Share</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/call_centre/top-10-call-topics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Top 10 Call Topics</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../cookbook/sre.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Platform</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/sre/mean-time-to-resolution.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Mean Time to Resolution</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../cookbook/jira.html" class="sidebar-item-text sidebar-link">
+  <a href="../cookbook/sre/site-uptime.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Site Uptime</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/sre/site-response-time.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Site Response Time</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/sre/outage-events.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Outage Events</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../cookbook/jira.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Jira (PSOM)</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/jira/tickets-by-status.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tickets by Status</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../cookbook/google_analytics.html" class="sidebar-item-text sidebar-link">
+  <a href="../cookbook/jira/weekly-ticket-volume.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Weekly Ticket Volume</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/jira/tickets-by-priority.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tickets by Priority</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/jira/sla-first-response-breach-rate.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">SLA First-Response Breach Rate</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/jira/sla-time-to-done-breach-rate.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">SLA Time-to-Done Breach Rate</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/jira/sla-pso-time-to-done-breach-rate.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">SLA PSO Time-to-Done Breach Rate</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../cookbook/google_analytics.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Google Analytics</span></a>
-  </div>
-</li>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../cookbook/notes.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Additional Notes</span></a>
+  <a href="../cookbook/google_analytics/task-success-rate.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Task Success Rate</span></a>
   </div>
 </li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../cookbook/notes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Additional Notes</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-10" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/unique-users.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Adding Up Unique Users</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../catalog/index.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Data Catalog</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-11" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../catalog/ibm_verify.html" class="sidebar-item-text sidebar-link">
+      <ul id="quarto-sidebar-section-11" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../catalog/ibm_verify.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">IBM Verify</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-12" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-12" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../catalog/ibm_verify/app_login_counts.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">app_login_counts</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../catalog/call_centre.html" class="sidebar-item-text sidebar-link">
+  <a href="../catalog/ibm_verify/auth_total_logins.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">auth_total_logins</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../catalog/ibm_verify/mfa_activity.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">mfa_activity</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../catalog/call_centre.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Call Centre</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-13" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-13" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../catalog/call_centre/weekly_activity_report.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">weekly_activity_report</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../catalog/sre.html" class="sidebar-item-text sidebar-link">
+  <a href="../catalog/call_centre/weekly_topic_dump.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">weekly_topic_dump</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../catalog/sre.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Platform</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-14" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-14" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../catalog/sre/mttr_current.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">mttr_current</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../catalog/jira.html" class="sidebar-item-text sidebar-link">
+  <a href="../catalog/sre/mttr_history.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">mttr_history</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../catalog/sre/uptime_summary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">uptime_summary</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../catalog/sre/uptime_timeseries.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">uptime_timeseries</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../catalog/jira.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Jira (PSOM)</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-15" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-15" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../catalog/jira/psom.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">psom</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../catalog/google_analytics.html" class="sidebar-item-text sidebar-link">
+  <a href="../catalog/jira/psom_sla.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">psom_sla</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../catalog/jira/psom_comment.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">psom_comment</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../catalog/google_analytics.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Google Analytics</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-16" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-16" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../catalog/google_analytics/property_traffic.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">property_traffic</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../catalog/rp.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Relying Parties</span></a>
+  <a href="../catalog/google_analytics/page_traffic.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">page_traffic</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../catalog/google_analytics/error_events.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">error_events</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../catalog/google_analytics/funnels.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">funnels</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../catalog/google_analytics/funnels_current.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">funnels_current</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../catalog/google_analytics/funnel_metrics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">funnel_metrics</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../catalog/google_analytics/funnel_metrics_current.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">funnel_metrics_current</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../catalog/rp.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Relying Parties</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-17" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-17" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../catalog/rp/service.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">service</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../catalog/rp/alias.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">alias</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../catalog/notes.html" class="sidebar-item-text sidebar-link">
@@ -277,73 +790,288 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#about" id="toc-about" class="nav-link active" data-scroll-target="#about">About</a>
-  <ul>
-  <li><a href="#relying-parties" id="toc-relying-parties" class="nav-link" data-scroll-target="#relying-parties">Relying Parties</a></li>
-  <li><a href="#ibm-verify" id="toc-ibm-verify" class="nav-link" data-scroll-target="#ibm-verify">IBM Verify</a></li>
-  <li><a href="#call-centre" id="toc-call-centre" class="nav-link" data-scroll-target="#call-centre">Call Centre</a></li>
-  <li><a href="#platform" id="toc-platform" class="nav-link" data-scroll-target="#platform">Platform</a></li>
-  <li><a href="#google-analytics" id="toc-google-analytics" class="nav-link" data-scroll-target="#google-analytics">Google Analytics</a></li>
-  </ul></li>
+  <li><a href="#sources" id="toc-sources" class="nav-link active" data-scroll-target="#sources">Sources</a></li>
+  <li><a href="#all-tables" id="toc-all-tables" class="nav-link" data-scroll-target="#all-tables">All Tables</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">About</h1>
+</div>
 
 
 
+<div class="quarto-title-meta">
 
-<section id="about" class="level1">
-<h1>About</h1>
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
 <p>The data catalog describes the tables available to analysts. It is distinct from the metrics cookbook; the cookbook explains how to <em>derive</em> metrics, while the catalog describes the <em>tables</em> those metrics are calculated from, field by field.</p>
-<section id="relying-parties" class="level2">
-<h2 class="anchored" data-anchor-id="relying-parties"><a href="../catalog/rp.html">Relying Parties</a></h2>
-<p>Reference tables in the <code>rp</code> schema that identify the services using CanadaLogin and their various aliases.</p>
+<section id="sources" class="level2">
+<h2 class="anchored" data-anchor-id="sources">Sources</h2>
+<p>Each source page covers what its tables share: where the data comes from, when it updates, and caveats that apply to all of them.</p>
 <ul>
-<li><a href="../catalog/rp.html#service"><code>service</code></a> - one row per relying party, with its names, operator, and launch date</li>
-<li><a href="../catalog/rp.html#alias"><code>alias</code></a> - the names each source system uses for a service, mapped back to one <code>rp_id</code></li>
+<li><a href="../catalog/rp.html">Relying Parties</a> - reference tables in the <code>rp</code> schema that identify the services using CanadaLogin and their aliases</li>
+<li><a href="../catalog/ibm_verify.html">IBM Verify</a> - derived tables in the <code>ibm_verify</code> schema, pulled from the IBM Verify reporting API</li>
+<li><a href="../catalog/call_centre.html">Call Centre</a> - weekly call centre data from the CanadaLogin support queue reports</li>
+<li><a href="../catalog/sre.html">Platform</a> - incident response and uptime tables in the <code>sre</code> schema</li>
+<li><a href="../catalog/jira.html">Jira (PSOM)</a> - daily snapshots of PSOM support tickets in the <code>jira</code> schema</li>
+<li><a href="../catalog/google_analytics.html">Google Analytics</a> - tables in the <code>google_analytics</code> schema, populated from the CanadaLogin GA4 property</li>
 </ul>
 </section>
-<section id="ibm-verify" class="level2">
-<h2 class="anchored" data-anchor-id="ibm-verify"><a href="../catalog/ibm_verify.html">IBM Verify</a></h2>
-<p>Derived tables in the <code>ibm_verify</code> schema, pulled from the IBM Verify reporting API.</p>
-<ul>
-<li><a href="../catalog/ibm_verify.html#app_login_counts"><code>app_login_counts</code></a> - daily sign-in counts by application</li>
-<li><a href="../catalog/ibm_verify.html#auth_total_logins"><code>auth_total_logins</code></a> - daily, CanadaLogin-wide sign-in totals</li>
-<li><a href="../catalog/ibm_verify.html#mfa_activity"><code>mfa_activity</code></a> - multi-factor authentication activity by factor and result</li>
-</ul>
-</section>
-<section id="call-centre" class="level2">
-<h2 class="anchored" data-anchor-id="call-centre"><a href="../catalog/call_centre.html">Call Centre</a></h2>
-<p>Weekly call centre data extracted from the CanadaLogin support weekly Excel reports.</p>
-<ul>
-<li><a href="../catalog/call_centre.html#weekly_activity_report"><code>weekly_activity_report</code></a> - weekly call volume and service-level summary</li>
-<li><a href="../catalog/call_centre.html#weekly_topic_dump"><code>weekly_topic_dump</code></a> - individual call records with topic classifications</li>
-</ul>
-</section>
-<section id="platform" class="level2">
-<h2 class="anchored" data-anchor-id="platform"><a href="../catalog/sre.html">Platform</a></h2>
-<p>Site reliability metrics for the CanadaLogin platform, in the <code>sre</code> schema. Currently incident-response tables, with other reliability measures to follow.</p>
-<ul>
-<li><a href="../catalog/sre.html#mttr_current"><code>mttr_current</code></a> - latest state of every incident, one row per incident</li>
-<li><a href="../catalog/sre.html#mttr_history"><code>mttr_history</code></a> - dated snapshots of every incident, preserving how each evolved</li>
-</ul>
-</section>
-<section id="google-analytics" class="level2">
-<h2 class="anchored" data-anchor-id="google-analytics"><a href="../catalog/google_analytics.html">Google Analytics</a></h2>
-<p>Tables in the <code>google_analytics</code> schema, populated from the CanadaLogin GA4 property.</p>
-<ul>
-<li><a href="../catalog/google_analytics.html#property_traffic"><code>property_traffic</code></a> - property-wide daily traffic, one row per day</li>
-<li><a href="../catalog/google_analytics.html#page_traffic"><code>page_traffic</code></a> - daily traffic by page title, path, and data stream</li>
-<li><a href="../catalog/google_analytics.html#funnels"><code>funnels</code></a> - step-by-step counts for each defined GA4 funnel</li>
-<li><a href="../catalog/google_analytics.html#funnels_current"><code>funnels_current</code></a> - <code>funnels</code>, resolved to each date’s current funnel version</li>
-<li><a href="../catalog/google_analytics.html#funnel_metrics"><code>funnel_metrics</code></a> - derived metrics computed from funnel rows, such as task success rate</li>
-<li><a href="../catalog/google_analytics.html#funnel_metrics_current"><code>funnel_metrics_current</code></a> - <code>funnel_metrics</code>, resolved to each date’s current funnel version</li>
-</ul>
+<section id="all-tables" class="level2">
+<h2 class="anchored" data-anchor-id="all-tables">All Tables</h2>
+<div id="listing-all-tables" class="quarto-listing quarto-listing-container-table">
+<div class="listing-actions-group">
+    <div class="input-group input-group-sm quarto-listing-filter">
+      <span class="input-group-text"><i class="bi bi-search"></i></span>
+      <input type="text" class="search form-control" placeholder="Filter">
+    </div>
+</div>
+<table class="quarto-listing-table table">
+<thead>
+<tr>
+
+<th>
+Table
+</th>
+
+<th>
+Description
+</th>
+
+</tr>
+</thead>
+<tbody class="list">
+
+<tr data-index="0" data-listing-file-modified-sort="1790688926433" data-listing-reading-time-sort="4" data-listing-word-count-sort="679" data-listing-title-sort="call_centre.weekly_activity_report" data-listing-filename-sort="weekly_activity_report.qmd">
+<td>
+<a href="../catalog/call_centre/weekly_activity_report.html" class="title listing-title">call_centre.weekly_activity_report</a>
+</td>
+<td>
+<span class="listing-description">Weekly call volume and service-level summary for the support queue, one row per week.</span>
+</td>
+
+</tr>
+
+<tr data-index="1" data-listing-file-modified-sort="1790688926434" data-listing-reading-time-sort="2" data-listing-word-count-sort="378" data-listing-title-sort="call_centre.weekly_topic_dump" data-listing-filename-sort="weekly_topic_dump.qmd">
+<td>
+<a href="../catalog/call_centre/weekly_topic_dump.html" class="title listing-title">call_centre.weekly_topic_dump</a>
+</td>
+<td>
+<span class="listing-description">Individual support calls with their topic classifications, one row per topic per call.</span>
+</td>
+
+</tr>
+
+<tr data-index="2" data-listing-file-modified-sort="1790688926434" data-listing-reading-time-sort="2" data-listing-word-count-sort="274" data-listing-title-sort="google_analytics.error_events" data-listing-filename-sort="error_events.qmd">
+<td>
+<a href="../catalog/google_analytics/error_events.html" class="title listing-title">google_analytics.error_events</a>
+</td>
+<td>
+<span class="listing-description">Daily count of errors CanadaLogin flags to GA4.</span>
+</td>
+
+</tr>
+
+<tr data-index="3" data-listing-file-modified-sort="1790688926434" data-listing-reading-time-sort="3" data-listing-word-count-sort="510" data-listing-title-sort="google_analytics.funnel_metrics" data-listing-filename-sort="funnel_metrics.qmd">
+<td>
+<a href="../catalog/google_analytics/funnel_metrics.html" class="title listing-title">google_analytics.funnel_metrics</a>
+</td>
+<td>
+<span class="listing-description">Metrics derived from funnel rows, such as task success rate.</span>
+</td>
+
+</tr>
+
+<tr data-index="4" data-listing-file-modified-sort="1790688926434" data-listing-reading-time-sort="1" data-listing-word-count-sort="185" data-listing-title-sort="google_analytics.funnel_metrics_current" data-listing-filename-sort="funnel_metrics_current.qmd">
+<td>
+<a href="../catalog/google_analytics/funnel_metrics_current.html" class="title listing-title">google_analytics.funnel_metrics_current</a>
+</td>
+<td>
+<span class="listing-description">Funnel metrics, resolved to the current funnel version for each date.</span>
+</td>
+
+</tr>
+
+<tr data-index="5" data-listing-file-modified-sort="1790688926434" data-listing-reading-time-sort="4" data-listing-word-count-sort="730" data-listing-title-sort="google_analytics.funnels" data-listing-filename-sort="funnels.qmd">
+<td>
+<a href="../catalog/google_analytics/funnels.html" class="title listing-title">google_analytics.funnels</a>
+</td>
+<td>
+<span class="listing-description">Step-by-step counts for each defined GA4 funnel.</span>
+</td>
+
+</tr>
+
+<tr data-index="6" data-listing-file-modified-sort="1790688926434" data-listing-reading-time-sort="2" data-listing-word-count-sort="308" data-listing-title-sort="google_analytics.funnels_current" data-listing-filename-sort="funnels_current.qmd">
+<td>
+<a href="../catalog/google_analytics/funnels_current.html" class="title listing-title">google_analytics.funnels_current</a>
+</td>
+<td>
+<span class="listing-description">Funnel step counts, resolved to the current funnel version for each date.</span>
+</td>
+
+</tr>
+
+<tr data-index="7" data-listing-file-modified-sort="1790688926434" data-listing-reading-time-sort="2" data-listing-word-count-sort="349" data-listing-title-sort="google_analytics.page_traffic" data-listing-filename-sort="page_traffic.qmd">
+<td>
+<a href="../catalog/google_analytics/page_traffic.html" class="title listing-title">google_analytics.page_traffic</a>
+</td>
+<td>
+<span class="listing-description">Daily GA4 traffic by page title, path, and data stream.</span>
+</td>
+
+</tr>
+
+<tr data-index="8" data-listing-file-modified-sort="1790688926434" data-listing-reading-time-sort="2" data-listing-word-count-sort="264" data-listing-title-sort="google_analytics.property_traffic" data-listing-filename-sort="property_traffic.qmd">
+<td>
+<a href="../catalog/google_analytics/property_traffic.html" class="title listing-title">google_analytics.property_traffic</a>
+</td>
+<td>
+<span class="listing-description">Property-wide daily GA4 traffic, one row per day.</span>
+</td>
+
+</tr>
+
+<tr data-index="9" data-listing-file-modified-sort="1790688926434" data-listing-reading-time-sort="3" data-listing-word-count-sort="534" data-listing-title-sort="ibm_verify.app_login_counts" data-listing-filename-sort="app_login_counts.qmd">
+<td>
+<a href="../catalog/ibm_verify/app_login_counts.html" class="title listing-title">ibm_verify.app_login_counts</a>
+</td>
+<td>
+<span class="listing-description">Daily SSO event counts by application.</span>
+</td>
+
+</tr>
+
+<tr data-index="10" data-listing-file-modified-sort="1790688926434" data-listing-reading-time-sort="3" data-listing-word-count-sort="585" data-listing-title-sort="ibm_verify.auth_total_logins" data-listing-filename-sort="auth_total_logins.qmd">
+<td>
+<a href="../catalog/ibm_verify/auth_total_logins.html" class="title listing-title">ibm_verify.auth_total_logins</a>
+</td>
+<td>
+<span class="listing-description">Daily CanadaLogin-wide authentication event totals.</span>
+</td>
+
+</tr>
+
+<tr data-index="11" data-listing-file-modified-sort="1790688926434" data-listing-reading-time-sort="2" data-listing-word-count-sort="311" data-listing-title-sort="ibm_verify.mfa_activity" data-listing-filename-sort="mfa_activity.qmd">
+<td>
+<a href="../catalog/ibm_verify/mfa_activity.html" class="title listing-title">ibm_verify.mfa_activity</a>
+</td>
+<td>
+<span class="listing-description">Daily multi-factor authentication activity by factor and result.</span>
+</td>
+
+</tr>
+
+<tr data-index="12" data-listing-file-modified-sort="1790688926434" data-listing-reading-time-sort="3" data-listing-word-count-sort="565" data-listing-title-sort="jira.psom" data-listing-filename-sort="psom.qmd">
+<td>
+<a href="../catalog/jira/psom.html" class="title listing-title">jira.psom</a>
+</td>
+<td>
+<span class="listing-description">Daily snapshot of every PSOM Jira ticket, one row per ticket per snapshot.</span>
+</td>
+
+</tr>
+
+<tr data-index="13" data-listing-file-modified-sort="1790688926434" data-listing-reading-time-sort="2" data-listing-word-count-sort="302" data-listing-title-sort="jira.psom_comment" data-listing-filename-sort="psom_comment.qmd">
+<td>
+<a href="../catalog/jira/psom_comment.html" class="title listing-title">jira.psom_comment</a>
+</td>
+<td>
+<span class="listing-description">Every comment on every PSOM ticket, one row per comment per snapshot.</span>
+</td>
+
+</tr>
+
+<tr data-index="14" data-listing-file-modified-sort="1790688926434" data-listing-reading-time-sort="3" data-listing-word-count-sort="525" data-listing-title-sort="jira.psom_sla" data-listing-filename-sort="psom_sla.qmd">
+<td>
+<a href="../catalog/jira/psom_sla.html" class="title listing-title">jira.psom_sla</a>
+</td>
+<td>
+<span class="listing-description">SLA clock state for each PSOM ticket, one row per ticket per SLA per snapshot.</span>
+</td>
+
+</tr>
+
+<tr data-index="15" data-listing-file-modified-sort="1790688926434" data-listing-reading-time-sort="2" data-listing-word-count-sort="376" data-listing-title-sort="rp.alias" data-listing-filename-sort="alias.qmd">
+<td>
+<a href="../catalog/rp/alias.html" class="title listing-title">rp.alias</a>
+</td>
+<td>
+<span class="listing-description">Maps each name a source system uses for a service back to one rp_id.</span>
+</td>
+
+</tr>
+
+<tr data-index="16" data-listing-file-modified-sort="1790688926435" data-listing-reading-time-sort="3" data-listing-word-count-sort="411" data-listing-title-sort="rp.service" data-listing-filename-sort="service.qmd">
+<td>
+<a href="../catalog/rp/service.html" class="title listing-title">rp.service</a>
+</td>
+<td>
+<span class="listing-description">One row per relying party, with its names, operator, and launch date.</span>
+</td>
+
+</tr>
+
+<tr data-index="17" data-listing-file-modified-sort="1790688926435" data-listing-reading-time-sort="3" data-listing-word-count-sort="407" data-listing-title-sort="sre.mttr_current" data-listing-filename-sort="mttr_current.qmd">
+<td>
+<a href="../catalog/sre/mttr_current.html" class="title listing-title">sre.mttr_current</a>
+</td>
+<td>
+<span class="listing-description">Latest state of every incident, one row per incident.</span>
+</td>
+
+</tr>
+
+<tr data-index="18" data-listing-file-modified-sort="1790688926435" data-listing-reading-time-sort="1" data-listing-word-count-sort="113" data-listing-title-sort="sre.mttr_history" data-listing-filename-sort="mttr_history.qmd">
+<td>
+<a href="../catalog/sre/mttr_history.html" class="title listing-title">sre.mttr_history</a>
+</td>
+<td>
+<span class="listing-description">Dated snapshots of every incident, one row per incident per snapshot.</span>
+</td>
+
+</tr>
+
+<tr data-index="19" data-listing-file-modified-sort="1790688926435" data-listing-reading-time-sort="3" data-listing-word-count-sort="497" data-listing-title-sort="sre.uptime_summary" data-listing-filename-sort="uptime_summary.qmd">
+<td>
+<a href="../catalog/sre/uptime_summary.html" class="title listing-title">sre.uptime_summary</a>
+</td>
+<td>
+<span class="listing-description">Daily rolling-window uptime and response-time figures for each monitored site.</span>
+</td>
+
+</tr>
+
+<tr data-index="20" data-listing-file-modified-sort="1790688926435" data-listing-reading-time-sort="2" data-listing-word-count-sort="386" data-listing-title-sort="sre.uptime_timeseries" data-listing-filename-sort="uptime_timeseries.qmd">
+<td>
+<a href="../catalog/sre/uptime_timeseries.html" class="title listing-title">sre.uptime_timeseries</a>
+</td>
+<td>
+<span class="listing-description">Status snapshots for each monitored site, one row per upptime bot commit.</span>
+</td>
+
+</tr>
+
+</tbody>
+</table>
+<div class="listing-no-matching d-none">No matching items</div>
+</div>
 
 
-</section>
+
 </section>
 
 </main> <!-- /main -->
@@ -749,8 +1477,8 @@ ul.task-list li input[type="checkbox"] {
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../cookbook/notes.html" class="pagination-link" aria-label="Additional Notes">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Additional Notes</span>
+      <a href="../cookbook/unique-users.html" class="pagination-link" aria-label="Adding Up Unique Users">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Adding Up Unique Users</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
