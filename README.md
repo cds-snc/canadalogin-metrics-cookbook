@@ -15,7 +15,7 @@ _quarto.yml      # website config: sidebar, render list, and theme
 index.qmd        # book-level introduction linking the two chapters
 cookbook/        # Metrics Cookbook: one file per metric, grouped by source
 catalog/         # Data Catalog: one file per table, grouped by source
-custom.scss      # theme overrides (bold nav/TOC entries, wider TOC column)
+custom.scss      # theme overrides (bold top-level nav, wider TOC column)
 ```
 
 The Metrics Cookbook and Data Catalog have parallel layouts: each opens with an
