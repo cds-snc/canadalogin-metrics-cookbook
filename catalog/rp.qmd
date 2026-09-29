@@ -1,5 +1,17 @@
 ---
 title: Relying Parties
+listing:
+  - id: tables
+    contents:
+      - rp/service.qmd
+      - rp/alias.qmd
+    type: table
+    fields: [title, description]
+    field-display-names:
+      title: Table
+    sort: false
+    sort-ui: false
+    filter-ui: false
 ---
 
 Reference tables for identifying and grouping the services that use CanadaLogin,
@@ -17,7 +29,12 @@ read every weekday by the `rp-sync` Lambda in
 [`cds-snc/canadalogin-reporting-data-pipeline`](https://github.com/cds-snc/canadalogin-reporting-data-pipeline).
 That pipeline owns the table structure. Do not change it from this side.
 
-### Joining through the lookup
+## Tables
+
+::: {#tables}
+:::
+
+## Joining through the lookup
 
 Resolve a source-system name to a relying party by joining on `alias`, then join
 `rp_id` to `service` for the attributes:
@@ -36,7 +53,7 @@ Aggregate after the join, never before. Several IBM Verify application names can
 map to one service, so a pre-aggregated count keyed on `application_name` will
 split a service across its environments.
 
-### Data quality
+## Data quality
 
 Because the source is a hand-maintained spreadsheet, a few caveats apply to both
 tables:
@@ -52,7 +69,3 @@ tables:
   spacing. Group by `gc_orgid` rather than `operator`.
 - **Neither table keeps history.** Each refresh overwrites the previous one, so
   a service renamed in the sheet is renamed retroactively for every report.
-
-{{< include rp/service.qmd >}}
-
-{{< include rp/alias.qmd >}}

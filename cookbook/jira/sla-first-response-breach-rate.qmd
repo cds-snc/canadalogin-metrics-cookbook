@@ -14,7 +14,7 @@ before the SLA scheme was configured) are excluded.
 - time to first response SLA compliance
 - first-response SLA failure rate
 
-**Calculation.** From [`jira.psom_sla`](../catalog/jira.qmd#psom_sla), filter
+**Calculation.** From [`jira.psom_sla`](../catalog/jira/psom_sla.qmd), filter
 to the most recent `date` partition, to `sla = 'first_response'`, and to rows
 where `breached` is not null (i.e., the clock started). Divide the count of
 rows where `breached` is true by the total count of those rows.

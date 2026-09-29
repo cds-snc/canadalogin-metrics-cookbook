@@ -22,11 +22,35 @@ The Metrics Cookbook and Data Catalog have parallel layouts: each opens with an
 `index.qmd` "About" page, then one page per data source, then an "Additional Notes"
 page (`notes.qmd`).
 
-Within `cookbook/` and `catalog/`, each data source (for example `ibm_verify/`,
+Within `cookbook/`, each data source (for example `ibm_verify/`,
 `call_centre/`) is a folder of fragment `.qmd` files plus a sibling chapter
 wrapper (`ibm_verify.qmd`) that assembles them with `{{< include >}}`. The
 fragment folders are include-only and are excluded from rendering via the
 `render:` list in `_quarto.yml`.
+
+Within `catalog/`, each table is its own page (for example
+`catalog/ibm_verify/mfa_activity.qmd`), with a `title` of `schema.table` and a
+one-line `description` in its front matter. The sibling source page
+(`catalog/ibm_verify.qmd`) holds what the source's tables share and lists them
+with a Quarto listing. The catalog home page lists every table.
+
+## Adding a catalog table
+
+1. Create `catalog/<schema>/<table>.qmd` with `title` and `description` front
+   matter. Follow an existing table page for the body: intro, `Keywords`, then
+   `## Provenance`, `## Fields`, and `## Notes`.
+2. Add it to the `contents:` of the listing on the source page
+   (`catalog/<schema>.qmd`).
+3. Add it to the sidebar in `_quarto.yml`, under its source's section.
+
+The site structure test fails if a rendered page is missing from the sidebar,
+or if a sidebar entry points to a page that does not exist:
+
+```bash
+Rscript -e 'testthat::test_file("tests/test_site_structure.R", stop_on_failure = TRUE)'
+```
+
+It runs on every pull request.
 
 ## Local preview
 

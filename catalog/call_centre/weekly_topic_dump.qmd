@@ -1,4 +1,7 @@
-## weekly_topic_dump
+---
+title: "call_centre.weekly_topic_dump"
+description: "Individual support calls with their topic classifications, one row per topic per call."
+---
 
 Individual call records from the CanadaLogin support queue, with topic
 classifications for each call.
@@ -8,7 +11,7 @@ call may have multiple rows if multiple topics were recorded.
 
 `Keywords`: call centre, topics, call reasons, contact drivers, caller issues
 
-### Provenance
+## Provenance
 
 Sourced from a weekly Excel report that is typically sent to the EDCP Data and Research
 team via email. That spreadsheet is extracted and loaded into the data repository via
@@ -20,7 +23,7 @@ from the source file.
 * **Steward**: EDCP Data and Research Team
 * **Contact**: [Colin Douglas](mailto:colin.douglas@cds-snc.ca)
 
-### Fields
+## Fields
 
 One row per topic record per call. A single call (`call_no`) may appear on
 multiple rows if more than one topic was recorded.
@@ -40,11 +43,11 @@ multiple rows if more than one topic was recorded.
 | programcontact | string | Program contact information provided to the caller, if any. Often missing |
 | source | float | Unused |
 
-### Notes
+## Notes
 
 Because a single call can generate multiple topic rows, do not count rows to get
 call volume. Use `COUNT(DISTINCT call_no)` or join to
-[`weekly_activity_report`](#weekly_activity_report) for call counts.
+[`weekly_activity_report`](weekly_activity_report.qmd) for call counts.
 
 `statobject` frequently contains leading/trailing whitespace and repeated
 internal spaces. Always clean it before grouping:
@@ -53,7 +56,7 @@ internal spaces. Always clean it before grouping:
 REGEXP_REPLACE(TRIM(statobject), '\s+', ' ') AS call_topic
 ```
 
-See the [Call Centre metrics](../cookbook/call_centre.qmd) chapter for topic count
+See the [Call Centre metrics](../../cookbook/call_centre.qmd) chapter for topic count
 and topic share example SQL.
 
 `call_datetime` is a native `timestamp` and can be used directly. `call_date` is

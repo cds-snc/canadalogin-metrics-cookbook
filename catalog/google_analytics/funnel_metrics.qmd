@@ -1,6 +1,9 @@
-## funnel_metrics
+---
+title: "google_analytics.funnel_metrics"
+description: "Metrics derived from funnel rows, such as task success rate."
+---
 
-Derived metrics computed from landed [`funnels`](google_analytics.qmd#funnels)
+Derived metrics computed from landed [`funnels`](funnels.qmd)
 rows - currently task success rates, one per funnel.
 
 Each row represents one metric's value, for one funnel run, for one relying
@@ -9,7 +12,7 @@ party (or the funnel's total across all relying parties).
 `Keywords`: Google Analytics, GA4, funnel, task success, task success rate,
 derived metric
 
-### Provenance
+## Provenance
 
 Like a funnel's steps, a funnel's derived metrics are declared in that
 funnel's YAML on GitHub, in a `metrics:` block - see
@@ -17,9 +20,9 @@ funnel's YAML on GitHub, in a `metrics:` block - see
 in the `canadalogin-reporting-data-pipeline` repo. **The YAML is the canonical
 definition of what each metric measures**, including which two steps a ratio
 divides. A separate Lambda reads the already-landed rows from
-[`funnels`](google_analytics.qmd#funnels) (no new GA4 call) and computes every
+[`funnels`](funnels.qmd) (no new GA4 call) and computes every
 metric each funnel declares. See the
-[task success rate](../cookbook/google_analytics.qmd#task-success-rate)
+[task success rate](../../cookbook/google_analytics.qmd#task-success-rate)
 cookbook entry for how the one metric type in use today (`step_ratio`) is
 calculated and interpreted.
 
@@ -28,7 +31,7 @@ calculated and interpreted.
 * **Contact**: [Colin Douglas](mailto:colin.douglas@cds-snc.ca)
 * **Location**: `s3://<transformed-bucket>/google_analytics/funnel_metrics/`
 
-### Fields
+## Fields
 
 One row per `funnel_id` per `funnel_version` per `window_days` per
 `window_end` per `metric_id` per `breakdown_value`.
@@ -36,28 +39,28 @@ One row per `funnel_id` per `funnel_version` per `window_days` per
 | Field Name | Type | Description |
 |---|---|---|
 | funnel_id | string | Partition key. Which funnel this metric was computed from (for example, "sign_in", "sign_up") |
-| funnel_version | string | Partition key. The funnel definition's version the metric was computed under. Typed `string` by the crawler - see the [`funnels`](google_analytics.qmd#funnels) Notes |
+| funnel_version | string | Partition key. The funnel definition's version the metric was computed under. Typed `string` by the crawler - see the [`funnels`](funnels.qmd) Notes |
 | window_days | string | Partition key. Length of the reporting window: "1" (nightly monitor), "7" (rolling weekly rate), or "28" (rolling four-week rate) |
 | window_end | string | Partition key. Last date (inclusive) of the reporting window, as text |
 | metric_id | string | Which metric this row is. Declared per-funnel on GitHub; currently always "task_success" for both funnels, but not a closed set - see Provenance |
 | metric_type | string | The metric's calculation shape, from the same YAML declaration. Currently always "step_ratio" (one step's `activeusers` over another's) |
 | value | double | The computed metric value. `null`, not `0.0`, when the denominator is zero (nobody entered, so the rate is undefined - not a false zero) |
 | breakdown_dimension | string | The bare dimension the source funnel's `breakdown:` block splits by (currently always "rp_name") |
-| breakdown_value | string | The relying party this row covers, or `RESERVED_TOTAL` for the funnel's overall value - see [`funnels`](google_analytics.qmd#funnels) Notes |
+| breakdown_value | string | The relying party this row covers, or `RESERVED_TOTAL` for the funnel's overall value - see [`funnels`](funnels.qmd) Notes |
 | window_start | string | First date (inclusive) of the reporting window, as text |
-| window_incomplete | boolean | `true` if the underlying funnel window was trimmed to `valid_from`/`valid_to` - **exclude these rows from a trend**, same rule as [`funnels`](google_analytics.qmd#funnels) |
+| window_incomplete | boolean | `true` if the underlying funnel window was trimmed to `valid_from`/`valid_to` - **exclude these rows from a trend**, same rule as [`funnels`](funnels.qmd) |
 
-### Notes
+## Notes
 
 **This table deliberately does not carry the raw step values a ratio was
 computed from** - only the result. The inputs are recoverable by joining back
-to [`funnels`](google_analytics.qmd#funnels) on the same
+to [`funnels`](funnels.qmd) on the same
 `(funnel_id, funnel_version, window_days, window_end, breakdown_value)`, if
 they're needed.
 
 **Same versioning caveat as `funnels`, and the same fix applies**: always pin
 `funnel_version`, or query
-[`funnel_metrics_current`](google_analytics.qmd#funnel_metrics_current) rather
+[`funnel_metrics_current`](funnel_metrics_current.qmd) rather
 than this table directly.
 
 **A metric is recomputed automatically when its funnel's `funnel_version`

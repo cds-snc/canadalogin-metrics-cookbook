@@ -1,4 +1,7 @@
-## app_login_counts
+---
+title: "ibm_verify.app_login_counts"
+description: "Daily SSO event counts by application."
+---
 
 Daily SSO event counts for each CanadaLogin-integrated application.
 
@@ -7,13 +10,13 @@ usage and unique-user reach for the day. This table records what IBM Verify call
 the `sso` event type, filed under application usage and raised when someone who is
 already signed in reaches an application.
 
-[`auth_total_logins`](#auth_total_logins) records a different event type
+[`auth_total_logins`](auth_total_logins.qmd) records a different event type
 (`authentication`). Figures from the two tables are therefore not comparable and
 must never be added together or presented side by side.
 
 `Keywords`: SSO events, application usage, sign-ins, logins, applications, unique users, adoption, daily counts
 
-### Provenance
+## Provenance
 
 Queried directly from the IBM Verify production instance via API.
 
@@ -21,7 +24,7 @@ Queried directly from the IBM Verify production instance via API.
 * **Steward**: EDCP Data and Research Team
 * **Contact**: [Yinlin Zhang](mailto:yinlin.zhang@cds-snc.ca)
 
-### Fields
+## Fields
 
 One row per `application_name` per day.
 
@@ -40,7 +43,7 @@ One row per `application_name` per day.
 | fetched_at | timestamp | When the aggregation last fetched this row |
 | date | string | The reporting day as a text date (for example, "2026-04-23"). Mirrors `from_date` |
 
-### Notes
+## Notes
 
 `total_logins`, `unique_users`, `failed_logins`, and `successful_logins` are
 daily values. `mtd_unique_users`, `ytd_unique_users`, and
@@ -55,7 +58,7 @@ computed by IBM Verify over a longer window than its underlying data retention
 actually covers, so the figures can undercount, and `ytd_unique_users` has
 been seen decreasing from one day to the next. Treat both as estimates only.
 See [Why Unique Users Cannot Be Added
-Up](../cookbook/unique-users.qmd#year-to-date-and-365-day-figures) for
+Up](../../cookbook/unique-users.qmd#year-to-date-and-365-day-figures) for
 detail.
 :::
 
@@ -64,9 +67,9 @@ April 22, 2026 public launch) was previously provided here. It has been removed
 from the pipeline because the source API retains only the most recent 366.5 days
 of data, so a since-launch cumulative count cannot be maintained once launch is
 more than a year in the past. See the retention note on the
-[IBM Verify catalog overview](#data-retention).
+[IBM Verify catalog overview](../ibm_verify.qmd#data-retention).
 
-Unlike [`auth_total_logins`](#auth_total_logins), these counts are *not* inflated
+Unlike [`auth_total_logins`](auth_total_logins.qmd), these counts are *not* inflated
 by second factors. The per-authentication-method event inflation described there
 only happens when a person signs in to CanadaLogin itself. Reaching an integrated
 application uses the session they already hold: CanadaLogin issues the

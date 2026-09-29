@@ -27,7 +27,7 @@ see. **This is not a full sign-in completion rate.** A successful sign-in
 redirects off-site to IBM Verify and back to the relying party with no page in
 between, so GA4 has no event to mark true completion - reaching MFA is the
 closest proxy available. See the
-[`funnels`](../catalog/google_analytics.qmd#funnels) catalog entry for the
+[`funnels`](../catalog/google_analytics/funnels.qmd) catalog entry for the
 `RESERVED_TOTAL` and `window_incomplete` conventions this table shares with
 `funnel_metrics`.
 
@@ -42,11 +42,11 @@ first-party GA4 event.
 
 **Calculation.** Each funnel's task success rate is already computed and
 stored as one row per window in
-[`funnel_metrics`](../catalog/google_analytics.qmd#funnel_metrics): the
+[`funnel_metrics`](../catalog/google_analytics/funnel_metrics.qmd): the
 exit step's `activeUsers` divided by the entry step's, for that funnel run.
 There is no ratio to compute by hand - filter to the funnel and metric, and
 read `value`. Query
-[`funnel_metrics_current`](../catalog/google_analytics.qmd#funnel_metrics_current)
+[`funnel_metrics_current`](../catalog/google_analytics/funnel_metrics_current.qmd)
 rather than `funnel_metrics` directly, so a future funnel version bump can't
 silently blend two definitions together. Filter `breakdown_value =
 'RESERVED_TOTAL'` for the overall rate across all relying parties; substitute

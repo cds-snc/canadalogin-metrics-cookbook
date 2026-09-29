@@ -2,23 +2,19 @@
 project:
   type: website
   output-dir: _book
-  # Website projects render every .qmd by default; the metric subfolders hold
+  # Website projects render every .qmd by default; the cookbook subfolders hold
   # include-only fragments, so exclude them (and the catalog template) here.
+  # Catalog subfolders hold one page per table and do render.
   render:
     - "*.qmd"
     - "cookbook/*.qmd"
     - "catalog/*.qmd"
+    - "catalog/*/*.qmd"
     - "!cookbook/ibm_verify/"
     - "!cookbook/call_centre/"
     - "!cookbook/sre/"
     - "!cookbook/jira/"
     - "!cookbook/google_analytics/"
-    - "!catalog/ibm_verify/"
-    - "!catalog/call_centre/"
-    - "!catalog/sre/"
-    - "!catalog/jira/"
-    - "!catalog/google_analytics/"
-    - "!catalog/rp/"
     - "!catalog/data-catalog-template.qmd"
 
 website:
@@ -37,17 +33,72 @@ website:
           - cookbook/sre.qmd
           - cookbook/jira.qmd
           - cookbook/google_analytics.qmd
+          - cookbook/unique-users.qmd
           - cookbook/notes.qmd
 #          - cookbook/cross-source.qmd
       - section: "Data Catalog"
         href: catalog/index.qmd
         contents:
-          - catalog/ibm_verify.qmd
-          - catalog/call_centre.qmd
-          - catalog/sre.qmd
-          - catalog/jira.qmd
-          - catalog/google_analytics.qmd
-          - catalog/rp.qmd
+          - section: "IBM Verify"
+            href: catalog/ibm_verify.qmd
+            contents:
+              - text: app_login_counts
+                href: catalog/ibm_verify/app_login_counts.qmd
+              - text: auth_total_logins
+                href: catalog/ibm_verify/auth_total_logins.qmd
+              - text: mfa_activity
+                href: catalog/ibm_verify/mfa_activity.qmd
+          - section: "Call Centre"
+            href: catalog/call_centre.qmd
+            contents:
+              - text: weekly_activity_report
+                href: catalog/call_centre/weekly_activity_report.qmd
+              - text: weekly_topic_dump
+                href: catalog/call_centre/weekly_topic_dump.qmd
+          - section: "Platform"
+            href: catalog/sre.qmd
+            contents:
+              - text: mttr_current
+                href: catalog/sre/mttr_current.qmd
+              - text: mttr_history
+                href: catalog/sre/mttr_history.qmd
+              - text: uptime_summary
+                href: catalog/sre/uptime_summary.qmd
+              - text: uptime_timeseries
+                href: catalog/sre/uptime_timeseries.qmd
+          - section: "Jira (PSOM)"
+            href: catalog/jira.qmd
+            contents:
+              - text: psom
+                href: catalog/jira/psom.qmd
+              - text: psom_sla
+                href: catalog/jira/psom_sla.qmd
+              - text: psom_comment
+                href: catalog/jira/psom_comment.qmd
+          - section: "Google Analytics"
+            href: catalog/google_analytics.qmd
+            contents:
+              - text: property_traffic
+                href: catalog/google_analytics/property_traffic.qmd
+              - text: page_traffic
+                href: catalog/google_analytics/page_traffic.qmd
+              - text: error_events
+                href: catalog/google_analytics/error_events.qmd
+              - text: funnels
+                href: catalog/google_analytics/funnels.qmd
+              - text: funnels_current
+                href: catalog/google_analytics/funnels_current.qmd
+              - text: funnel_metrics
+                href: catalog/google_analytics/funnel_metrics.qmd
+              - text: funnel_metrics_current
+                href: catalog/google_analytics/funnel_metrics_current.qmd
+          - section: "Relying Parties"
+            href: catalog/rp.qmd
+            contents:
+              - text: service
+                href: catalog/rp/service.qmd
+              - text: alias
+                href: catalog/rp/alias.qmd
           - catalog/notes.qmd
 
 format:

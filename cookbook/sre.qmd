@@ -7,8 +7,8 @@ Currently incident-response metrics, with other reliability measures to follow.
 
 The relevant tables are:
 
-- [`sre.mttr_current`](../catalog/sre.qmd#mttr_current) - latest state of every incident, one row per incident
-- [`sre.mttr_history`](../catalog/sre.qmd#mttr_history) - dated snapshots of every incident, preserving how each evolved
+- [`sre.mttr_current`](../catalog/sre/mttr_current.qmd) - latest state of every incident, one row per incident
+- [`sre.mttr_history`](../catalog/sre/mttr_history.qmd) - dated snapshots of every incident, preserving how each evolved
 
 These tables come from a hand-maintained spreadsheet; see the catalog
 [Data quality](../catalog/sre.qmd#data-quality) note for caveats. The one that
@@ -31,9 +31,9 @@ at 04:00 ET each day. No manual steps are required.
 
 The relevant tables are:
 
-- [`sre.uptime_summary`](../catalog/sre.qmd#uptime_summary) - one row per site
+- [`sre.uptime_summary`](../catalog/sre/uptime_summary.qmd) - one row per site
   per day; rolling-window uptime percentages and average response times
-- [`sre.uptime_timeseries`](../catalog/sre.qmd#uptime_timeseries) - one row per
+- [`sre.uptime_timeseries`](../catalog/sre/uptime_timeseries.qmd) - one row per
   [upptime](https://github.com/upptime/upptime) bot commit per site; individual ping events including outage detections
 
 Both tables are partitioned by `date=YYYY-MM-DD`. Because `date` is a `varchar`

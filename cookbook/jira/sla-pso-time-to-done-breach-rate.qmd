@@ -16,7 +16,7 @@ excluded.
 - PSO time to done SLA compliance
 - PSO time-to-done SLA failure rate
 
-**Calculation.** From [`jira.psom_sla`](../catalog/jira.qmd#psom_sla), filter
+**Calculation.** From [`jira.psom_sla`](../catalog/jira/psom_sla.qmd), filter
 to the most recent `date` partition, to `sla = 'pso_time_to_done'`, and to rows
 where `breached` is not null (i.e., the clock started). Divide the count of
 rows where `breached` is true by the total count of those rows.

@@ -1,8 +1,11 @@
-## funnel_metrics_current
+---
+title: "google_analytics.funnel_metrics_current"
+description: "Funnel metrics, resolved to the current funnel version for each date."
+---
 
-A view over [`funnel_metrics`](google_analytics.qmd#funnel_metrics) that
+A view over [`funnel_metrics`](funnel_metrics.qmd) that
 resolves the current `funnel_version` automatically, the same way
-[`funnels_current`](google_analytics.qmd#funnels_current) does for `funnels`.
+[`funnels_current`](funnels_current.qmd) does for `funnels`.
 Query this instead of `funnel_metrics` directly unless a specific past version
 is genuinely what's wanted.
 
@@ -13,7 +16,7 @@ window_end)`.
 `Keywords`: Google Analytics, GA4, funnel, task success, funnel version,
 current version
 
-### Definition
+## Definition
 
 ```sql
 CREATE OR REPLACE VIEW funnel_metrics_current AS
@@ -32,21 +35,21 @@ JOIN latest_per_date d
   AND CAST(f.funnel_version AS integer) = d.current_version;
 ```
 
-### Provenance
+## Provenance
 
 * **Updated**: Live view, not scheduled
 * **Steward**: EDCP Data and Research Team
 * **Contact**: [Colin Douglas](mailto:colin.douglas@cds-snc.ca)
 
-### Fields
+## Fields
 
-Same as [`funnel_metrics`](google_analytics.qmd#funnel_metrics). `SELECT f.*`
+Same as [`funnel_metrics`](funnel_metrics.qmd). `SELECT f.*`
 passes every base column through unchanged; the view's own `current_version`
 column (used only to resolve the join) is not exposed.
 
-### Notes
+## Notes
 
-Same query rules as [`funnels_current`](google_analytics.qmd#funnels_current):
+Same query rules as [`funnels_current`](funnels_current.qmd):
 partition key literals still need quotes (`window_days = '7'`, not `= 7`), and
 don't re-aggregate across `funnel_version` since the view has already resolved
 it.

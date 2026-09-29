@@ -22,3 +22,9 @@ $grid-margin-width: 360px !default;
 #TOC > ul > li > a {
   font-weight: 700;
 }
+
+// The front matter `description` exists for listing tables. Each page already
+// opens with a fuller version of it, so hide the copy in the title block.
+#title-block-header .description {
+  display: none;
+}

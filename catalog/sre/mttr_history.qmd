@@ -1,6 +1,9 @@
-## mttr_history
+---
+title: "sre.mttr_history"
+description: "Dated snapshots of every incident, one row per incident per snapshot."
+---
 
-The append-only companion to [`mttr_current`](#mttr_current): same source,
+The append-only companion to [`mttr_current`](mttr_current.qmd): same source,
 columns, and provenance, but instead of holding only the latest state it
 accumulates a dated snapshot of every incident on each upload.
 
@@ -10,9 +13,9 @@ re-triaged. A row is unique on (`incident_id`, `date`).
 
 `Keywords`: MTTR, MTTA, MTTM, incident, incident response, snapshot, history, severity, reliability, SRE, mean time to resolve
 
-### Fields
+## Fields
 
-Every column is identical to [`mttr_current`](#mttr_current), with one addition:
+Every column is identical to [`mttr_current`](mttr_current.qmd), with one addition:
 
 | Field Name | Type | Description |
 |---|---|---|

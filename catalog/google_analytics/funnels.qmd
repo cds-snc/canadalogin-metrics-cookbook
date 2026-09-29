@@ -1,4 +1,7 @@
-## funnels
+---
+title: "google_analytics.funnels"
+description: "Step-by-step counts for each defined GA4 funnel."
+---
 
 Step-by-step counts for each defined GA4 funnel (currently `sign_in` and
 `sign_up`), for a given reporting window.
@@ -9,14 +12,14 @@ funnel's total across all relying parties).
 `Keywords`: Google Analytics, GA4, funnel, funnel step, task success, drop-off,
 abandonment, relying party
 
-### Provenance
+## Provenance
 
 A funnel is defined as YAML, not SQL: one file per funnel in
 [`funnel_src/funnels/`](https://github.com/cds-snc/canadalogin-reporting-data-pipeline/tree/main/infra/modules/google_analytics/funnel_src/funnels)
 in the `canadalogin-reporting-data-pipeline` repo. A dedicated Lambda turns
 each funnel's YAML into a GA4 Data API `runFunnelReport` request (via
 Workload Identity Federation, same auth pattern as
-[`property_traffic`](google_analytics.qmd#property_traffic)) and writes the
+[`property_traffic`](property_traffic.qmd)) and writes the
 result as JSONL. **The YAML on GitHub is the canonical definition of what each
 funnel measures** - which pages or events count as which step, in what order,
 and over what population. This page describes the table shape; it does not
@@ -28,7 +31,7 @@ between funnel versions.
 * **Contact**: [Colin Douglas](mailto:colin.douglas@cds-snc.ca)
 * **Location**: `s3://<transformed-bucket>/google_analytics/funnels/`
 
-### Fields
+## Fields
 
 One row per `funnel_id` per `funnel_version` per `window_days` per
 `window_end` per `funnelstepname` per `breakdown_value`.
@@ -50,17 +53,17 @@ One row per `funnel_id` per `funnel_version` per `window_days` per
 | window_start | string | First date (inclusive) of the reporting window, as text. Derivable from `window_end` and `window_days`, but stored for convenience |
 | window_incomplete | boolean | `true` if this window was trimmed to the funnel's `valid_from`/`valid_to` bounds (see Notes) - **exclude these rows from any trend read as a full window** |
 
-### Notes
+## Notes
 
 **A funnel's step names, order and population can change between versions -
 always check GitHub, not a memory of a prior version.** Every CanadaLogin
 funnel has already had at least one step renamed or re-scoped since it was
 first defined (see the
-[task success rate](../cookbook/google_analytics.qmd#task-success-rate)
+[task success rate](../../cookbook/google_analytics.qmd#task-success-rate)
 metric for a worked example). `funnel_version` exists so old and new
 definitions coexist rather than silently overwriting each other: **always pin
 `funnel_version` in a query**, or use the
-[`funnels_current`](google_analytics.qmd#funnels_current) view, which resolves
+[`funnels_current`](funnels_current.qmd) view, which resolves
 the newest version per date automatically. Summing or averaging across
 versions blends two different definitions of the funnel into one meaningless
 number.

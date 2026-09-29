@@ -76,8 +76,8 @@ A simple average of weekly averages may give too much influence to low-volume we
 ## Internal applications should usually be excluded from external adoption reporting
 
 Which applications count as internal is recorded in
-[`rp.service.is_internal`](../catalog/rp.qmd#service), not in this document.
-Resolve it through [`rp.alias`](../catalog/rp.qmd#alias), which maps the
+[`rp.service.is_internal`](../catalog/rp/service.qmd), not in this document.
+Resolve it through [`rp.alias`](../catalog/rp/alias.qmd), which maps the
 application names IBM Verify and Google Analytics use back to a single service:
 
 ```sql

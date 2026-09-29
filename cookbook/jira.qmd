@@ -7,10 +7,10 @@ data.
 
 The relevant Jira tables are:
 
-- [`jira.psom`](../catalog/jira.qmd#psom) - daily snapshot of all PSOM tickets
-- [`jira.psom_sla`](../catalog/jira.qmd#psom_sla) - the SLA clocks on each
+- [`jira.psom`](../catalog/jira/psom.qmd) - daily snapshot of all PSOM tickets
+- [`jira.psom_sla`](../catalog/jira/psom_sla.qmd) - the SLA clocks on each
   ticket, one row per ticket per SLA
-- [`jira.psom_comment`](../catalog/jira.qmd#psom_comment) - every comment on
+- [`jira.psom_comment`](../catalog/jira/psom_comment.qmd) - every comment on
   each ticket
 
 **Data cadence.** The tables are updated once per day (at ~06:00 ET); before

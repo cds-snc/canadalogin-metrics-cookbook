@@ -104,7 +104,7 @@ or ends on a Monday), so treat boundary weeks with caution when comparing trends
 This rate is computed over authentication *methods*, not sessions. When signing
 in to CanadaLogin, IBM Verify records each method as its own event, so a mistyped
 password is a failed event even when the user then succeeds and completes the
-sign-in (see the [`auth_total_logins`](../catalog/ibm_verify.qmd#auth_total_logins)
+sign-in (see the [`auth_total_logins`](../catalog/ibm_verify/auth_total_logins.qmd)
 caveat). The figure measures how often individual authentication steps succeed,
 not how often a sign-in ultimately completes. The
 [per-application rate](#sso-success-rate-by-application) counts a different IBM

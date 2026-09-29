@@ -1,26 +1,29 @@
-## mttr_current
+---
+title: "sre.mttr_current"
+description: "Latest state of every incident, one row per incident."
+---
 
 The latest known state of every CanadaLogin incident, one row per incident.
 
 Each row is a single incident. The table is overwritten on each upload with the
 most recent values, so it never grows beyond the current incident set. For
-point-in-time history, see [`mttr_history`](#mttr_history).
+point-in-time history, see [`mttr_history`](mttr_history.qmd).
 
 `Keywords`: MTTR, MTTA, MTTM, incident, incident response, postmortem, severity, reliability, SRE, mean time to resolve
 
-### Provenance
+## Provenance
 
 Fetched automatically every Monday at 06:00 ET from the CanadaLogin MTTR Dashboard Google Sheet using the sre-mttr-sheets-fetcher Lambda. 
-Each upload overwrites this table wholesale with the current incident state and appends a dated snapshot to [`mttr_history`](#mttr_history).
+Each upload overwrites this table wholesale with the current incident state and appends a dated snapshot to [`mttr_history`](mttr_history.qmd).
 
 * **Updated**: Weekly, Every Monday 06:00 ET
 * **Steward**: EDCP Data and Research Team
 * **Contact**: [Yinlin Zhang](mailto:yinlin.zhang@cds-snc.ca) (Data and Research team) or [Obie Okongwu](mailto:obinna.okongwu@cds-snc.ca) (CL Platform Team)
 
-### Fields
+## Fields
 
 One row per incident, keyed by `incident_id`. See the schema-level
-[Data quality](#data-quality) note for caveats that apply to the
+[Data quality](../sre.qmd#data-quality) note for caveats that apply to the
 string timestamps, URL columns, free-text categories, and rounded durations.
 
 | Field Name | Type | Description |

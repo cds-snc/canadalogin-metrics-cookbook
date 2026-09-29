@@ -107,5 +107,5 @@ know that:
 
 For the analyst-facing details, see the
 [Cumulative Unique Users](ibm_verify.qmd#cumulative-unique-users) metric and the
-[`auth_total_logins`](../catalog/ibm_verify.qmd#auth_total_logins) catalog
+[`auth_total_logins`](../catalog/ibm_verify/auth_total_logins.qmd) catalog
 entry.
