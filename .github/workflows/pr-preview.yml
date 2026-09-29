@@ -45,7 +45,7 @@ jobs:
         if: github.event.action != 'closed'
         run: |
           Rscript -e 'install.packages(c("testthat", "yaml"))'
-          Rscript -e 'testthat::test_file("tests/test_site_structure.R", stop_on_failure = TRUE)'
+          Rscript -e 'testthat::test_file("tests/test_site_structure.R", load_helpers = FALSE, stop_on_failure = TRUE)'
 
       - name: Render site
         if: github.event.action != 'closed'

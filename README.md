@@ -47,7 +47,7 @@ The site structure test fails if a rendered page is missing from the sidebar,
 or if a sidebar entry points to a page that does not exist:
 
 ```bash
-Rscript -e 'testthat::test_file("tests/test_site_structure.R", stop_on_failure = TRUE)'
+Rscript -e 'testthat::test_file("tests/test_site_structure.R", load_helpers = FALSE, stop_on_failure = TRUE)'
 ```
 
 It runs on every pull request.

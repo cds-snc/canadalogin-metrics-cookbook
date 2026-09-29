@@ -4,9 +4,10 @@
 # sidebar is an explicit list, so a new page that is not added to it renders
 # but cannot be reached by navigation. Needs no Athena connection.
 #
-# Run from the project root:
+# Run from the project root. `load_helpers = FALSE` stops testthat sourcing
+# tests/helper.R, which loads the Athena packages the parity tests need.
 #
-#   Rscript -e 'testthat::test_file("tests/test_site_structure.R", stop_on_failure = TRUE)'
+#   Rscript -e 'testthat::test_file("tests/test_site_structure.R", load_helpers = FALSE, stop_on_failure = TRUE)'
 
 library(testthat)
 library(yaml)
