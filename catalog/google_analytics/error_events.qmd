@@ -1,0 +1,49 @@
+## error_events
+
+Daily count of errors flagged by CanadaLogin to GA4.
+
+`Keywords`: Google Analytics, GA4, errors, error codes, forms
+
+### Provenance
+
+Pulled daily from the GA4 Data API (`runReport`). Only events with `error` or `error_id`
+fields are kept.
+
+* **Updated**: Daily, at 07:00 ET
+* **Steward**: EDCP Data and Research Team
+* **Contact**: [Colin Douglas](mailto:colin.douglas@cds-snc.ca)
+* **Location**: `s3://<transformed-bucket>/google_analytics/error_events/`
+
+### Fields
+
+
+| Field Name | Type | Description |
+|---|---|---|
+| date | string | Reporting day, partition key (e.g., "2026-08-16") |
+| eventname | string | GA4 event name (e.g., `form_step_end`, `form_api_call_end`) |
+| form_id | string | Form that emitted the event (e.g., `passwordrecovery`, `signup`) |
+| step | string | Form step number |
+| error | string | `error` event parameter. |
+| error_id | string | `error_id` event parameter. |
+| eventcount | bigint | Number of events |
+| totalusers | bigint | Number of distinct users. Do not sum. |
+| error_code | string | `error_id`, else `error`. Derived in the ETL |
+
+### Notes
+
+Use `error_code`, not `error` or `error_id`. Some pages report one or the other,
+and a few rare circumstances report both. This is an open defect. Error code is
+calculated as:
+
+- `error_id` if its not `(not set)` and not blank
+- otherwise the first word of `error` if its not `(not set)` and not blank
+- otherwise the row is dropped
+
+Code columns are strings. This means that leading zeros should not be dropped, but
+an open open defect remains where they are coerced to ints *at some point upstream*.
+This means that the error code "000" is sometimes reported as `000` and sometimes as
+`0`.
+
+The `totalusers` field does not sum across rows, do not add them. This is a common
+pitfall and the reason is similar to the reason [we can't sum unique users](../cookbook/notes.qmd#daily-unique-users-are-not-the-same-as-period-unique-users)
+ in IBM Verify.
