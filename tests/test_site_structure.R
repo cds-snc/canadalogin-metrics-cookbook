@@ -65,13 +65,14 @@ drafts <- pages[vapply(
   function(path) isTRUE(front_matter(path)$draft),
   logical(1)
 )]
-table_pages <- grep("^catalog/[^/]+/", pages, value = TRUE)
+source_pages <- grep("^(cookbook|catalog)/[^/]+/", pages, value = TRUE)
 
 # Tests ----------------------------------------------------------------------
 
 test_that("the render list resolves to some pages", {
   expect_gt(length(pages), 0)
-  expect_gt(length(table_pages), 0)
+  expect_gt(length(grep("^cookbook/", source_pages)), 0)
+  expect_gt(length(grep("^catalog/", source_pages)), 0)
 })
 
 test_that("every rendered page is in the sidebar", {
@@ -94,18 +95,18 @@ test_that("draft pages are kept out of the sidebar", {
   expect_equal(intersect(drafts, hrefs), character(0))
 })
 
-test_that("every catalog table page has a title for listings", {
-  missing <- table_pages[!vapply(
-    file.path(root, table_pages),
+test_that("every metric and table page has a title for listings", {
+  missing <- source_pages[!vapply(
+    file.path(root, source_pages),
     function(path) nzchar(front_matter(path)$title %||% ""),
     logical(1)
   )]
   expect_equal(missing, character(0))
 })
 
-test_that("every catalog table page has a description for listings", {
-  missing <- table_pages[!vapply(
-    file.path(root, table_pages),
+test_that("every metric and table page has a description for listings", {
+  missing <- source_pages[!vapply(
+    file.path(root, source_pages),
     function(path) nzchar(front_matter(path)$description %||% ""),
     logical(1)
   )]
