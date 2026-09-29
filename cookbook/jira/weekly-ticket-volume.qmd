@@ -1,7 +1,7 @@
 ### Weekly Ticket Volume
 
-The total number of PSOM tickets captured in each weekly snapshot, showing
-how the backlog size changes over time.
+The total number of PSOM tickets captured in each Monday snapshot, showing how
+the number of tickets in the project changes over time.
 
 *Alternative names*:
 
@@ -9,8 +9,10 @@ how the backlog size changes over time.
 - weekly PSOM ticket count
 - ticket volume trend
 
-**Calculation.** Count the number of rows per `date` partition. Each partition
-is one Monday snapshot, so the result is one total per week.
+**Calculation.** Keep only the Monday `date` partitions and count the rows in
+each. The snapshot ran weekly on Mondays until 2026-09-28 and daily from
+2026-09-29, so filtering to Mondays gives one comparable total per week across
+the whole history.
 
 ::: {.callout-note collapse="true" title="Example queries"}
 
@@ -23,6 +25,7 @@ SELECT
     date,
     COUNT(*) AS ticket_count
 FROM jira.psom
+WHERE day_of_week(CAST(date AS DATE)) = 1
 GROUP BY date
 ORDER BY date DESC;
 ```
@@ -31,6 +34,7 @@ ORDER BY date DESC;
 
 ```r
 tbl(con, in_schema("jira", "psom")) |>
+  filter(wday(as.Date(date), week_start = 1) == 1) |>
   count(date, name = "ticket_count") |>
   arrange(desc(date))
 ```
@@ -38,3 +42,9 @@ tbl(con, in_schema("jira", "psom")) |>
 :::
 
 :::
+
+*Interpretation notes.* This counts the tickets still in the project on each
+Monday, not the tickets opened that week or the open backlog. It includes
+`Done` and `Canceled` tickets until they are archived, and it drops when a
+batch of tickets is archived (from 52 to 25 between 2026-09-14 and 2026-09-21).
+The first snapshot, 2026-06-30, was a Tuesday, so the filter leaves it out.

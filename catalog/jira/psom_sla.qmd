@@ -1,0 +1,68 @@
+## psom_sla
+
+The state of each PSOM ticket's Jira Service Management SLA clocks, one row per
+ticket per SLA per snapshot.
+
+Each row is one SLA (`sla`) on one ticket (`key`) as it stood on one snapshot
+`date`. Every ticket gets a row for every SLA, even if that clock never started.
+Join to [`psom`](#psom) on `key` and `date`. A row is unique on (`key`, `sla`,
+`date`).
+
+`Keywords`: jira, psom, SLA, breach, time to first response, time to done, touchtime, escalation
+
+### Provenance
+
+Written by the `psom-sync` Lambda in the same run as [`psom`](#psom), from the
+ticket's SLA fields.
+
+* **Updated**: Daily, at ~06:00 ET
+* **Steward**: EDCP Data and Research Team
+* **Contact**: [Yinlin Zhang](mailto:yinlin.zhang@cds-snc.ca) (Data and Research team)
+
+### Fields
+
+| Field Name | Type | Description |
+|---|---|---|
+| date | varchar | Partition key: the date the Lambda ran (`YYYY-MM-DD`). |
+| key | varchar | Jira ticket key, e.g. `PSOM-42`. |
+| sla | varchar | Which SLA clock, one of `first_response`, `time_to_done`, `pso_time_to_done`, or `escalated_to_pt`. See the Notes for definitions. |
+| due | varchar | ISO 8601 datetime with UTC offset, e.g. `2026-07-02T09:52:39-0400`. For a running clock, the breach deadline. For a clock that has stopped, when it stopped. Null if the clock never started. |
+| breached | boolean | Did the clock miss its goal? `false` covers both a met goal and a clock still inside its goal. Null if the clock never started. |
+| goal_minutes | bigint | The goal, in working minutes. It varies between tickets. |
+| elapsed_minutes | bigint | Working minutes on the clock as of the fetch. |
+| paused | boolean | Is a running clock paused? Null once the clock has stopped. |
+| fetched_at | varchar | UTC timestamp when the Lambda wrote this row (`YYYY-MM-DD HH:MM:SS`). |
+
+### Notes
+
+**The four SLAs.**
+
+- `first_response`: Jira's "Time to first response".
+- `time_to_done`: Jira's "Time to done", for the whole ticket. It keeps running
+  while the ticket is escalated and pauses while waiting for the customer.
+- `pso_time_to_done`: "Time to Done - PSO", the PSO team's touchtime. It pauses
+  while the ticket is escalated to the authentication team. It only started
+  on tickets created from about 2026-08-06.
+- `escalated_to_pt`: "Escalated to PT", which runs while the ticket is escalated
+  to the authentication team.
+
+**Working time.** Goals and elapsed time count working minutes on the SLA's
+09:00 to 17:00 calendar, not wall-clock minutes, so a 40-hour goal is one
+working week.
+
+**Goals vary by ticket.** The goal on a clock varies by ticket (for
+`time_to_done`, 16, 24, 40 and 72 hours all occur). A breach means the ticket
+missed its own target. To compare speed across tickets, use `elapsed_minutes`
+rather than `breached`.
+
+**Which cycle.** A Jira SLA can restart when a ticket is reopened. Each row
+describes the running cycle if there is one, otherwise the last completed
+cycle. Earlier cycles are not kept.
+
+**Backfilled history (through 2026-09-28).** Snapshots are daily from
+2026-09-29. Before that they were weekly, on Mondays, and were backfilled from
+the `sla_*` columns that `psom` used to carry. The older snapshots only carry
+`first_response` and `time_to_done`, and only `due` and `breached`. There are no
+rows for the other two SLAs, and `goal_minutes`, `elapsed_minutes` and `paused`
+are null. `breached` is null in every row of the 2026-06-30 and 2026-07-06
+snapshots, which predate a pipeline fix. It is populated from 2026-07-07 on.

@@ -1,21 +1,23 @@
-### SLA Time-to-Done Breach Rate
+### SLA PSO Time-to-Done Breach Rate
 
-The proportion of PSOM tickets that missed the "Time to done" SLA, based on the
-latest snapshot.
+The proportion of PSOM tickets that missed the "Time to Done - PSO" SLA, based
+on the latest snapshot.
 
-This metric reflects how well the team is resolving tickets within the agreed
-timeframe. It measures the whole ticket, including time spent escalated to
-another team. Only tickets where the SLA clock started are included; tickets
-with no clock are excluded.
+This metric reflects how well the PSO team is resolving tickets within the
+agreed timeframe, counting only the time the ticket is with that team. Unlike
+the whole-ticket [SLA Time-to-Done Breach Rate](#sla-time-to-done-breach-rate),
+its clock pauses while the ticket is escalated to the authentication team. Only
+tickets where the SLA clock started are included; tickets with no clock are
+excluded.
 
 *Alternative names*:
 
-- time to done SLA breach rate
-- resolution SLA compliance
-- time-to-done SLA failure rate
+- PSO touchtime SLA breach rate
+- PSO time to done SLA compliance
+- PSO time-to-done SLA failure rate
 
 **Calculation.** From [`jira.psom_sla`](../catalog/jira.qmd#psom_sla), filter
-to the most recent `date` partition, to `sla = 'time_to_done'`, and to rows
+to the most recent `date` partition, to `sla = 'pso_time_to_done'`, and to rows
 where `breached` is not null (i.e., the clock started). Divide the count of
 rows where `breached` is true by the total count of those rows.
 
@@ -33,7 +35,7 @@ SELECT
         / NULLIF(COUNT(*), 0) AS breach_rate
 FROM jira.psom_sla
 WHERE date = (SELECT MAX(date) FROM jira.psom_sla)
-  AND sla = 'time_to_done'
+  AND sla = 'pso_time_to_done'
   AND breached IS NOT NULL;
 ```
 
@@ -46,7 +48,7 @@ latest_date <- psom_sla |> summarise(d = max(date, na.rm = TRUE)) |> pull(d)
 psom_sla |>
   filter(
     as.Date(date) == as.Date(latest_date),
-    sla == "time_to_done",
+    sla == "pso_time_to_done",
     !is.na(breached)
   ) |>
   summarise(
@@ -65,11 +67,10 @@ clock never started (null `breached`) are excluded from both numerator and
 denominator. Check `total_sla_tickets` to understand the sample size underlying
 the rate.
 
-The goal is set per ticket (16, 24, 40 and 72 working hours all occur), so a
-breach means the ticket missed its own target, not a shared one. Working hours
-run 09:00 to 17:00, so a 40-hour goal is one working week. To compare how long
-tickets took, use `elapsed_minutes` instead, which is populated from
-2026-09-29.
+This clock only started on tickets created from about 2026-08-06, and the
+older snapshots have no `pso_time_to_done` rows, so the sample is smaller than
+for the other SLAs. The goal is set per ticket and counted in working hours
+(09:00 to 17:00), so a breach means the ticket missed its own target.
 
 A ticket that is still open and inside its goal is recorded as not breached
 (`false`), the same as a ticket that met the SLA. The rate on a live snapshot

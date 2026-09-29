@@ -5,15 +5,20 @@ title: Jira (PSOM)
 Metrics in this section are calculated from PSOM Jira Service Management ticket
 data.
 
-The relevant Jira table is:
+The relevant Jira tables are:
 
-- [`jira.psom`](../catalog/jira.qmd#psom) - weekly snapshot of all PSOM tickets
+- [`jira.psom`](../catalog/jira.qmd#psom) - daily snapshot of all PSOM tickets
+- [`jira.psom_sla`](../catalog/jira.qmd#psom_sla) - the SLA clocks on each
+  ticket, one row per ticket per SLA
+- [`jira.psom_comment`](../catalog/jira.qmd#psom_comment) - every comment on
+  each ticket
 
-**Data cadence.** The `jira.psom` table is updated once per week (every Monday
-at ~06:00 ET). Each run writes a full snapshot of all current tickets to a new
-`date=` partition; previous partitions are preserved as an audit trail. Always
-filter to `date = (SELECT MAX(date) FROM jira.psom)` when querying the latest
-state.
+**Data cadence.** The tables are updated once per day (at ~06:00 ET); before
+2026-09-29 they were updated weekly, on Mondays. Each run writes a full
+snapshot of all tickets currently in the project to a new `date=` partition;
+previous partitions are preserved as an audit trail. Always filter to
+`date = (SELECT MAX(date) FROM <table>)` when querying the latest state. Join
+the tables on `key` and `date`.
 
 ## PSOM Metrics
 
@@ -26,6 +31,8 @@ state.
 {{< include jira/sla-first-response-breach-rate.qmd >}}
 
 {{< include jira/sla-time-to-done-breach-rate.qmd >}}
+
+{{< include jira/sla-pso-time-to-done-breach-rate.qmd >}}
 
 <!-- Tickets by Request Type is held back: request_type is empty for every -->
 <!-- ticket in the current snapshots, so the breakdown collapses into a single -->
