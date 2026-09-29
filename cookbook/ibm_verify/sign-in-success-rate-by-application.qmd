@@ -1,4 +1,7 @@
-### SSO Success Rate by Application
+---
+title: "SSO Success Rate by Application"
+description: "Share of SSO events that succeeded, by application."
+---
 
 The proportion of SSO events that succeeded, broken down by application.
 
@@ -7,13 +10,9 @@ in. It helps isolate problems to a specific application: one with a markedly
 lower success rate than its peers is worth investigating for integration or
 configuration issues.
 
-*Alternative names*:
+## Calculation
 
-- application handoff success rate
-- single sign-on success rate by application
-- per-application sign-in success rate
-
-**Calculation.** Divide the sum of `successful_logins` by the sum of all attempts
+Divide the sum of `successful_logins` by the sum of all attempts
 (`successful_logins + failed_logins`) over the selected reporting period, grouped
 by application.
 
@@ -73,10 +72,18 @@ tbl(con, in_schema("ibm_verify", "app_login_counts")) |>
 
 :::
 
-*Interpretation notes.* Compare applications against each other rather than
+## Interpretation notes
+
+Compare applications against each other rather than
 against an absolute target. This measures the handoff to a relying party after the
 person has already signed in to CanadaLogin. The person enters no password and no
 second factor; the check is whether the session can be used for that application. It
 counts a different IBM Verify event type from the CanadaLogin-wide
-[authentication success rate](#authentication-success-rate), so the two are not
+[authentication success rate](sign-in-success-rate.qmd), so the two are not
 comparable.
+
+## Alternative names
+
+- application handoff success rate
+- single sign-on success rate by application
+- per-application sign-in success rate

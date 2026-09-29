@@ -1,4 +1,7 @@
-### Authentication Events
+---
+title: "Authentication Events"
+description: "Total authentication events, successful and failed."
+---
 
 The total number of authentication events CanadaLogin recorded, including both
 successful and failed attempts.
@@ -7,13 +10,9 @@ An authentication event is what IBM Verify records when someone presents an
 authentication method. A single sign-in raises more than one: the password is one
 event, a second factor is another.
 
-*Alternative names*:
+## Calculation
 
-- authentication event volume
-- total authentication attempts
-- total sign-in attempts
-
-**Calculation.** Sum `failed_logins` and `successful_logins` over the selected
+Sum `failed_logins` and `successful_logins` over the selected
 reporting period.
 
 To track volume over time, bin the same sum by week. Truncating `from_date` to
@@ -89,13 +88,21 @@ tbl(con, in_schema("ibm_verify", "auth_total_logins")) |>
 
 :::
 
-*Interpretation notes.* This counts authentication events. It does not count
+## Interpretation notes
+
+This counts authentication events. It does not count
 sign-ins, and it does not count people. A single sign-in that uses a second factor records more than one
 successful event (see the
-[`auth_total_logins`](../catalog/ibm_verify.qmd#auth_total_logins) caveat), so the
+[`auth_total_logins`](../../catalog/ibm_verify/auth_total_logins.qmd) caveat), so the
 total runs ahead of how often people actually signed in. No table in the catalog
 counts sign-ins directly. Use a unique-user metric when the question is about
 reach. In the weekly view, the first and last
 weeks of the reporting window are usually partial (the window rarely starts or
 ends on a Monday), so a low count in a boundary week may reflect fewer days
 rather than a real dip in volume.
+
+## Alternative names
+
+- authentication event volume
+- total authentication attempts
+- total sign-in attempts

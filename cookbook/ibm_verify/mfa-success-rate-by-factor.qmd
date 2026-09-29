@@ -1,4 +1,7 @@
-### MFA Success Rate by Factor
+---
+title: "MFA Success Rate by Factor"
+description: "MFA success rate for each factor."
+---
 
 The MFA success rate broken down by factor type, so that factors can be compared
 against one another.
@@ -8,16 +11,11 @@ to clear than another. Because the rate is calculated per attempt, a factor that
 users frequently mistype before getting right (common with OTP factors) shows a
 lower rate, which is the friction signal you want when comparing ease of use.
 
-*Alternative names*:
+## Calculation
 
-- MFA success rate by method
-- MFA pass rate by method
-- second-factor success rate by factor
-- MFA completion rate by factor
-
-**Calculation.** Within each `mfa_type`, divide the sum of `count` where
+Within each `mfa_type`, divide the sum of `count` where
 `result = 'success'` by the sum of `count` where `result` is `'success'` or
-`'failure'`. As with the overall [MFA Success Rate](#mfa-success-rate), `sent`
+`'failure'`. As with the overall [MFA Success Rate](mfa-success-rate.qmd), `sent`
 rows are excluded from both the numerator and the denominator because they are
 not outcomes. `mfa_attempts` is the denominator (successes plus failures) and is
 reported alongside the rate so that low-volume factors, whose rates are noisy,
@@ -25,7 +23,7 @@ can be discounted.
 
 Note that `mfa_attempts` here counts `success` and `failure` events only. It is
 *not* the de-duplicated usage volume reported by [All MFA Activity by
-Factor](#all-mfa-activity-by-factor), which counts `sent` events for OTP factors
+Factor](mfa-activity-by-factor.qmd), which counts `sent` events for OTP factors
 instead.
 
 ::: {.callout-note collapse="true" title="Example queries"}
@@ -121,9 +119,18 @@ tbl(con, in_schema("ibm_verify", "mfa_activity")) |>
 
 :::
 
-*Interpretation notes.* `mfa_success_rate` is a proportion between 0 and 1. Always
+## Interpretation notes
+
+`mfa_success_rate` is a proportion between 0 and 1. Always
 read it next to `mfa_attempts`: a factor with only a handful of attempts can post
 an extreme rate that reflects noise rather than ease of use. In the weekly view,
 the first and last weeks of the reporting window are usually partial (the window
 rarely starts or ends on a Monday), so treat boundary weeks with caution when
 comparing trends.
+
+## Alternative names
+
+- MFA success rate by method
+- MFA pass rate by method
+- second-factor success rate by factor
+- MFA completion rate by factor

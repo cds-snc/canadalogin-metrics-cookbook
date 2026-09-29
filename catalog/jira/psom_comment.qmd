@@ -1,15 +1,18 @@
-## psom_comment
+---
+title: "jira.psom_comment"
+description: "Every comment on every PSOM ticket, one row per comment per snapshot."
+---
 
 Every comment on every PSOM ticket, one row per comment per snapshot.
 
 Each row is one comment on one ticket (`key`) as it stood on one snapshot
-`date`. Join to [`psom`](#psom) on `key` and `date`.
+`date`. Join to [`psom`](psom.qmd) on `key` and `date`.
 
 `Keywords`: jira, psom, comments, internal notes, replies, support
 
-### Provenance
+## Provenance
 
-Written by the `psom-sync` Lambda in the same run as [`psom`](#psom), from each
+Written by the `psom-sync` Lambda in the same run as [`psom`](psom.qmd), from each
 ticket's full comment history. Snapshots before 2026-09-29 were backfilled from
 the JSON `comments` column that `psom` used to carry.
 
@@ -17,7 +20,7 @@ the JSON `comments` column that `psom` used to carry.
 * **Steward**: EDCP Data and Research Team
 * **Contact**: [Yinlin Zhang](mailto:yinlin.zhang@cds-snc.ca) (Data and Research team)
 
-### Fields
+## Fields
 
 | Field Name | Type | Description |
 |---|---|---|
@@ -31,12 +34,12 @@ the JSON `comments` column that `psom` used to carry.
 | internal | boolean | Is the comment a JSM internal note, hidden from the customer? `false` means a public reply. |
 | fetched_at | varchar | UTC timestamp when the Lambda wrote this row (`YYYY-MM-DD HH:MM:SS`). |
 
-### Notes
+## Notes
 
 **Every snapshot repeats every comment.** Like `psom`, each partition holds the
 full comment history of every ticket still in the project, so a comment appears
 once per snapshot. Filter to one `date` before counting. Comments on archived
-tickets drop out along with the ticket (see [`psom`](#psom)).
+tickets drop out along with the ticket (see [`psom`](psom.qmd)).
 
 **Backfilled history (through 2026-09-28).** Snapshots are daily from
 2026-09-29. Before that they were weekly, on Mondays. In the backfilled

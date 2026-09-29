@@ -1,22 +1,21 @@
-### SLA PSO Time-to-Done Breach Rate
+---
+title: "SLA PSO Time-to-Done Breach Rate"
+description: "Share of PSOM tickets that missed the PSO time-to-done SLA."
+---
 
 The proportion of PSOM tickets that missed the "Time to Done - PSO" SLA, based
 on the latest snapshot.
 
 This metric reflects how well the PSO team is resolving tickets within the
 agreed timeframe, counting only the time the ticket is with that team. Unlike
-the whole-ticket [SLA Time-to-Done Breach Rate](#sla-time-to-done-breach-rate),
+the whole-ticket [SLA Time-to-Done Breach Rate](sla-time-to-done-breach-rate.qmd),
 its clock pauses while the ticket is escalated to the authentication team. Only
 tickets where the SLA clock started are included; tickets with no clock are
 excluded.
 
-*Alternative names*:
+## Calculation
 
-- PSO touchtime SLA breach rate
-- PSO time to done SLA compliance
-- PSO time-to-done SLA failure rate
-
-**Calculation.** From [`jira.psom_sla`](../catalog/jira.qmd#psom_sla), filter
+From [`jira.psom_sla`](../../catalog/jira/psom_sla.qmd), filter
 to the most recent `date` partition, to `sla = 'pso_time_to_done'`, and to rows
 where `breached` is not null (i.e., the clock started). Divide the count of
 rows where `breached` is true by the total count of those rows.
@@ -62,7 +61,9 @@ psom_sla |>
 
 :::
 
-*Interpretation notes.* The rate is a proportion between 0 and 1. Tickets whose
+## Interpretation notes
+
+The rate is a proportion between 0 and 1. Tickets whose
 clock never started (null `breached`) are excluded from both numerator and
 denominator. Check `total_sla_tickets` to understand the sample size underlying
 the rate.
@@ -77,3 +78,9 @@ A ticket that is still open and inside its goal is recorded as not breached
 is therefore a lower bound: some of those open tickets may still breach before
 they are resolved. It is most meaningful once the snapshot's tickets are
 largely resolved.
+
+## Alternative names
+
+- PSO touchtime SLA breach rate
+- PSO time to done SLA compliance
+- PSO time-to-done SLA failure rate

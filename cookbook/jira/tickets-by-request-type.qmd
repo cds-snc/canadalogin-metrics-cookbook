@@ -1,16 +1,19 @@
-### Tickets by Request Type
+---
+title: "Tickets by Request Type"
+description: "PSOM tickets in the latest snapshot, by JSM request type."
+# Held back: request_type is empty for every ticket so far, because PSOM
+# tickets were created in Jira rather than the customer portal. Remove
+# `draft` once portal-created tickets (which carry a request_type) appear.
+draft: true
+---
 
 The number of PSOM Jira Service Management tickets in the latest snapshot
 grouped by JSM request type, showing which categories of service requests are
 most common.
 
-*Alternative names*:
+## Calculation
 
-- service request type breakdown
-- PSOM tickets by request type
-- request category distribution
-
-**Calculation.** Filter to the most recent `date` partition and count tickets by
+Filter to the most recent `date` partition and count tickets by
 `request_type`. Tickets that are not JSM service requests will have an empty
 `request_type`; these are counted separately as `(non-service-request)`.
 
@@ -46,3 +49,9 @@ psom |>
 :::
 
 :::
+
+## Alternative names
+
+- service request type breakdown
+- PSOM tickets by request type
+- request category distribution

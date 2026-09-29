@@ -1,10 +1,13 @@
-## error_events
+---
+title: "google_analytics.error_events"
+description: "Daily count of errors CanadaLogin flags to GA4."
+---
 
 Daily count of errors flagged by CanadaLogin to GA4.
 
 `Keywords`: Google Analytics, GA4, errors, error codes, forms
 
-### Provenance
+## Provenance
 
 Pulled daily from the GA4 Data API (`runReport`). Only events with `error` or `error_id`
 fields are kept.
@@ -14,7 +17,7 @@ fields are kept.
 * **Contact**: [Colin Douglas](mailto:colin.douglas@cds-snc.ca)
 * **Location**: `s3://<transformed-bucket>/google_analytics/error_events/`
 
-### Fields
+## Fields
 
 
 | Field Name | Type | Description |
@@ -29,7 +32,7 @@ fields are kept.
 | totalusers | bigint | Number of distinct users. Do not sum. |
 | error_code | string | `error_id`, else `error`. Derived in the ETL |
 
-### Notes
+## Notes
 
 Use `error_code`, not `error` or `error_id`. Some pages report one or the other,
 and a few rare circumstances report both. This is an open defect. Error code is
@@ -45,5 +48,5 @@ This means that the error code "000" is sometimes reported as `000` and sometime
 `0`.
 
 The `totalusers` field does not sum across rows, do not add them. This is a common
-pitfall and the reason is similar to the reason [we can't sum unique users](../cookbook/notes.qmd#daily-unique-users-are-not-the-same-as-period-unique-users)
+pitfall and the reason is similar to the reason [we can't sum unique users](../../cookbook/notes.qmd#daily-unique-users-are-not-the-same-as-period-unique-users)
  in IBM Verify.

@@ -1,5 +1,28 @@
 ---
 title: Platform
+listing:
+  - id: mttr-tables
+    contents:
+      - sre/mttr_current.qmd
+      - sre/mttr_history.qmd
+    type: table
+    fields: [title, description]
+    field-display-names:
+      title: Table
+    sort: false
+    sort-ui: false
+    filter-ui: false
+  - id: uptime-tables
+    contents:
+      - sre/uptime_summary.qmd
+      - sre/uptime_timeseries.qmd
+    type: table
+    fields: [title, description]
+    field-display-names:
+      title: Table
+    sort: false
+    sort-ui: false
+    filter-ui: false
 ---
 
 Platform metrics for CanadaLogin, in the `sre` schema. Currently, both tables are
@@ -10,6 +33,11 @@ They share one source and grain (one row per incident);
 they differ only in history: `mttr_current` holds the latest state of each
 incident, while `mttr_history` accumulates a dated snapshot of every incident on
 each upload.
+
+## Incident Tables
+
+::: {#mttr-tables}
+:::
 
 ### Data quality
 
@@ -30,16 +58,11 @@ tables:
   source times, so recomputing them from the displayed (minute-precision) timestamp
   strings can differ by up to a minute.
 
-{{< include sre/mttr_current.qmd >}}
-
-{{< include sre/mttr_history.qmd >}}
-
 ## Uptime Tables
 
 The uptime tables are sourced from the
 [`cds-snc/status-statut`](https://github.com/cds-snc/status-statut) public
 GitHub repository and updated automatically each day. No manual steps required.
 
-{{< include sre/uptime_summary.qmd >}}
-
-{{< include sre/uptime_timeseries.qmd >}}
+::: {#uptime-tables}
+:::

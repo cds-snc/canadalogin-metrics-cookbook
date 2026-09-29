@@ -1,16 +1,14 @@
-### Outage Events
+---
+title: "Outage Events"
+description: "Individual site outages: when a site went down, when it recovered, and the status code."
+---
 
 Individual site outage events detected by the uptime monitor: when a site
 went down, when it recovered, and the HTTP status code at time of detection.
 
-*Alternative names*:
+## Calculation
 
-- downtime events
-- site outages
-- availability incidents
-- uptime incidents
-
-**Calculation.** Filter `sre.uptime_timeseries` to rows where `status = 'down'`.
+Filter `sre.uptime_timeseries` to rows where `status = 'down'`.
 Each such row represents a moment when the upptime bot detected the site was
 unreachable and committed that state to the history file.
 
@@ -89,7 +87,9 @@ tbl(con, in_schema("sre", "uptime_timeseries")) |>
 
 :::
 
-*Interpretation notes.* Each row in `sre.uptime_timeseries` is a single commit
+## Interpretation notes
+
+Each row in `sre.uptime_timeseries` is a single commit
 by the upptime bot. On a normal all-up day there is one row per site (the daily
 ~23:2x UTC snapshot). On an outage day there are additional rows (one when the
 site went down and one when it recovered), so `status = 'down'` rows count
@@ -99,3 +99,10 @@ the `daily_minutes_down` JSON field in `sre.uptime_summary`.
 During the July 28 – September 23, 2026 upstream monitoring outage, zero ping commits
 were executed. The absence of `status = 'down'` rows during that window reflects
 inactive synthetic monitoring rather than confirmed 100% uptime.
+
+## Alternative names
+
+- downtime events
+- site outages
+- availability incidents
+- uptime incidents

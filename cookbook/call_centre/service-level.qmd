@@ -1,4 +1,7 @@
-### Service Level (Answered Within 60s)
+---
+title: "Service Level (Answered Within 60s)"
+description: "Share of calls answered within 60 seconds."
+---
 
 The proportion of calls answered within 60 seconds.
 
@@ -7,15 +10,9 @@ queue is cleared. The source data stores only the weekly proportion
 (`pct_answered_within_60s`), not the underlying within-60s count, so combine
 weeks with a weighted average rather than re-deriving from counts.
 
-*Alternative names*:
+## Calculation
 
-- service level
-- SLA
-- grade of service
-- percent answered within 60 seconds
-- speed of answer
-
-**Calculation.** Calculate a weighted average of `pct_answered_within_60s`,
+Calculate a weighted average of `pct_answered_within_60s`,
 weighted by `calls_answered`.
 
 ::: {.callout-note collapse="true" title="Example queries"}
@@ -54,6 +51,16 @@ tbl(con, in_schema("call_centre", "weekly_activity_report")) |>
 
 :::
 
-*Interpretation notes.* The result is a proportion between 0 and 1. Because only the
+## Interpretation notes
+
+The result is a proportion between 0 and 1. Because only the
 weekly proportion is stored, the weighted average is an approximation of the true
 within-60s rate, but it is far closer than a simple average of weekly values.
+
+## Alternative names
+
+- service level
+- SLA
+- grade of service
+- percent answered within 60 seconds
+- speed of answer

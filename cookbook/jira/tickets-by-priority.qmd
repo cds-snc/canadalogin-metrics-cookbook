@@ -1,14 +1,13 @@
-### Tickets by Priority
+---
+title: "Tickets by Priority"
+description: "PSOM tickets in the latest snapshot, by priority."
+---
 
 The number of PSOM tickets in the latest snapshot grouped by priority level.
 
-*Alternative names*:
+## Calculation
 
-- ticket priority breakdown
-- PSOM tickets by priority
-- priority distribution
-
-**Calculation.** Filter to the most recent `date` partition and count tickets by
+Filter to the most recent `date` partition and count tickets by
 `priority`.
 
 ::: {.callout-note collapse="true" title="Example queries"}
@@ -42,3 +41,9 @@ psom |>
 :::
 
 :::
+
+## Alternative names
+
+- ticket priority breakdown
+- PSOM tickets by priority
+- priority distribution

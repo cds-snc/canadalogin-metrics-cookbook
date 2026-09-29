@@ -1,4 +1,7 @@
-### Average Handle Time
+---
+title: "Average Handle Time"
+description: "Average agent time per call, including after-call wrap-up."
+---
 
 The average total time agents spend per call, including any after-call wrap-up.
 
@@ -6,14 +9,9 @@ The average total time agents spend per call, including any after-call wrap-up.
 wrap-up work after the caller disconnects. Like the other averages, combine weeks
 with a weighted mean.
 
-*Alternative names*:
+## Calculation
 
-- AHT
-- average handling time
-- total handle time per call
-- average talk plus wrap time
-
-**Calculation.** Calculate a weighted average of `avg_handle_time_seconds`,
+Calculate a weighted average of `avg_handle_time_seconds`,
 weighted by `calls_answered`.
 
 ::: {.callout-note collapse="true" title="Example queries"}
@@ -52,5 +50,14 @@ tbl(con, in_schema("call_centre", "weekly_activity_report")) |>
 
 :::
 
-*Interpretation notes.* Average handle time is always at least as large as average call
+## Interpretation notes
+
+Average handle time is always at least as large as average call
 length. A widening gap between the two points to growing after-call work.
+
+## Alternative names
+
+- AHT
+- average handling time
+- total handle time per call
+- average talk plus wrap time

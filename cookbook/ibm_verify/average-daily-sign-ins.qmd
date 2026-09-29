@@ -1,4 +1,7 @@
-### Average Daily SSO Events
+---
+title: "Average Daily SSO Events"
+description: "Average SSO events per day for each application."
+---
 
 The average number of SSO events per day for each application over a selected
 reporting period.
@@ -7,14 +10,9 @@ This metric summarizes daily application usage into a single per-application
 average value. It is useful for understanding typical daily usage during a launch
 period, reporting window, or monitoring period.
 
-*Alternative names*:
+## Calculation
 
-- average SSO events per day
-- typical daily usage volume
-- mean daily SSO event volume
-- average daily application usage
-
-**Calculation.** For each application, calculate the average of `total_logins`
+For each application, calculate the average of `total_logins`
 across all daily records in the selected reporting period.
 
 ::: {.callout-note collapse="true" title="Example queries"}
@@ -69,7 +67,16 @@ tbl(con, in_schema("ibm_verify", "app_login_counts")) |>
 
 :::
 
-*Interpretation notes.* The average is taken over the daily rows present for each
+## Interpretation notes
+
+The average is taken over the daily rows present for each
 application in the window, not over every calendar day. If an application has no
 row on a day with zero activity, that day does not pull the average down, so the
 figure reflects typical activity on active days.
+
+## Alternative names
+
+- average SSO events per day
+- typical daily usage volume
+- mean daily SSO event volume
+- average daily application usage

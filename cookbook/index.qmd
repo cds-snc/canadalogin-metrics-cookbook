@@ -1,4 +1,16 @@
-# About
+---
+title: About
+listing:
+  id: all-metrics
+  contents: "*/*.qmd"
+  type: table
+  fields: [title, description]
+  field-display-names:
+    title: Metric
+  sort: title
+  sort-ui: false
+  filter-ui: true
+---
 
 This cookbook documents commonly used CanadaLogin metrics, including their
 definitions, plain-language alternate names, calculation logic, and example
@@ -22,6 +34,11 @@ Each metric includes:
 
 The companion [Data Catalog](../catalog/index.qmd) describes the underlying tables
 that these metrics are calculated from, field by field.
+
+## All Metrics
+
+::: {#all-metrics}
+:::
 
 ## How to Use
 
@@ -47,7 +64,7 @@ often enforced) when talking about CanadaLogin.
 
 Where applicable, internal applications are excluded from external-facing
 adoption reporting. The exclusion list is not maintained here: it is derived
-from [`rp.service.is_internal`](../catalog/rp.qmd#service) at query time. See the
+from [`rp.service.is_internal`](../catalog/rp/service.qmd) at query time. See the
 internal applications note in [notes.qmd](notes.qmd) for the pattern.
 
 ## Scope

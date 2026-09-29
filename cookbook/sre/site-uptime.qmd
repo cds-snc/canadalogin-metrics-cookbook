@@ -1,4 +1,7 @@
-### Site Uptime
+---
+title: "Site Uptime"
+description: "Rolling-window uptime percentage for each monitored site."
+---
 
 The rolling-window uptime percentage for each monitored CanadaLogin site,
 showing what proportion of five-minute pings succeeded over each time horizon.
@@ -6,14 +9,9 @@ showing what proportion of five-minute pings succeeded over each time horizon.
 Six sites are monitored: the two public-facing login pages (EN/FR), the Manage
 Profile app (staging and production), and the IdP (staging and production).
 
-*Alternative names*:
+## Calculation
 
-- uptime percentage
-- availability percentage
-- site availability
-- service uptime by site
-
-**Calculation.** Filter to the most recent `date` partition and read the
+Filter to the most recent `date` partition and read the
 precomputed rolling-window uptime columns from `sre.uptime_summary`. Each
 `uptime_*` column is already a percentage (0-100), calculated from all
 five-minute pings over the named window.
@@ -108,7 +106,9 @@ tbl(con, in_schema("sre", "uptime_summary")) |>
 
 :::
 
-*Interpretation notes.* The uptime windows are rolling, not calendar-aligned.
+## Interpretation notes
+
+The uptime windows are rolling, not calendar-aligned.
 `uptime_month` on a given `date` covers the 30 days trailing that date's stats
 update (~23:2x UTC), not a fixed calendar month. To aggregate by calendar month,
 group by `substr(date, 1, 7)`.
@@ -116,3 +116,10 @@ group by `substr(date, 1, 7)`.
 Rolling windows (`uptime_week`, `uptime_month`, `uptime_year`, `uptime_alltime`)
 spanning the July 28 – September 23, 2026 gap incorporate unmonitored days
 recorded as 100% uptime, which may slightly elevate rolling availability figures.
+
+## Alternative names
+
+- uptime percentage
+- availability percentage
+- site availability
+- service uptime by site

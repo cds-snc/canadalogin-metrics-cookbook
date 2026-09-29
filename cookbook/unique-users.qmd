@@ -106,6 +106,6 @@ know that:
 - the window must be 90 days or shorter, for the reasons above.
 
 For the analyst-facing details, see the
-[Cumulative Unique Users](ibm_verify.qmd#cumulative-unique-users) metric and the
-[`auth_total_logins`](../catalog/ibm_verify.qmd#auth_total_logins) catalog
+[Cumulative Unique Users](ibm_verify/cumulative-unique-users.qmd) metric and the
+[`auth_total_logins`](../catalog/ibm_verify/auth_total_logins.qmd) catalog
 entry.

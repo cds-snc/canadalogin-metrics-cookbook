@@ -1,18 +1,16 @@
-### Answer Rate
+---
+title: "Answer Rate"
+description: "Share of accepted calls answered by an agent."
+---
 
 The proportion of accepted calls that were answered by an agent.
 
 This metric is the complement of abandonment and any other non-answered outcomes.
 It summarizes how much of incoming demand the call centre actually served.
 
-*Alternative names*:
+## Calculation
 
-- answer ratio
-- proportion of calls answered
-- pickup rate
-- calls answered rate
-
-**Calculation.** Divide the sum of `calls_answered` by the sum of
+Divide the sum of `calls_answered` by the sum of
 `calls_accepted` over the selected reporting period.
 
 ::: {.callout-note collapse="true" title="Example queries"}
@@ -48,6 +46,15 @@ tbl(con, in_schema("call_centre", "weekly_activity_report")) |>
 
 :::
 
-*Interpretation notes.* The rate is a proportion between 0 and 1. A high answer rate
+## Interpretation notes
+
+The rate is a proportion between 0 and 1. A high answer rate
 with rising delay can still indicate strain: calls are answered eventually, but
 callers wait longer to reach an agent.
+
+## Alternative names
+
+- answer ratio
+- proportion of calls answered
+- pickup rate
+- calls answered rate

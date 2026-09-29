@@ -1,5 +1,18 @@
 ---
 title: Jira (PSOM)
+listing:
+  - id: tables
+    contents:
+      - jira/psom.qmd
+      - jira/psom_sla.qmd
+      - jira/psom_comment.qmd
+    type: table
+    fields: [title, description]
+    field-display-names:
+      title: Table
+    sort: false
+    sort-ui: false
+    filter-ui: false
 ---
 
 Tables in the `jira` schema, populated by the daily PSOM Jira Service
@@ -12,8 +25,7 @@ for their comments. A single Glue crawler then updates all three Athena tables.
 Join them on `key` and `date`. Before 2026-09-29 the snapshot ran weekly, on
 Mondays.
 
-{{< include jira/psom.qmd >}}
+## Tables
 
-{{< include jira/psom_sla.qmd >}}
-
-{{< include jira/psom_comment.qmd >}}
+::: {#tables}
+:::

@@ -1,9 +1,12 @@
-### Sign-in MFA Activity by Factor
+---
+title: "Sign-in MFA Activity by Factor"
+description: "MFA attempts across the factors the public can sign in with, with each factor's share."
+---
 
 The volume of MFA attempts across the factors the public can use to sign in,
 with each factor's share of the total.
 
-Where [All MFA Activity by Factor](#all-mfa-activity-by-factor) covers every
+Where [All MFA Activity by Factor](mfa-activity-by-factor.qmd) covers every
 factor type the platform records, this metric keeps only the ones a member of
 the public can present as a second factor when signing in: `sms_otp`,
 `voice_otp`, and, since passkeys became generally available on 2026-07-06,
@@ -12,7 +15,7 @@ view are left out.
 
 IBM Verify files MFA as a subtype of the authentication event rather than as an
 event type of its own, so these counts are a slice of the CanadaLogin-wide
-[authentication events](#authentication-events), not an independent stream.
+[authentication events](sign-ins.qmd), not an independent stream.
 
 Two factors that reach the public are deliberately excluded:
 
@@ -20,15 +23,11 @@ Two factors that reach the public are deliberately excluded:
   be used to sign in, so counting it here would overstate sign-in factor usage.
 - `kq`, `totp`, `qr`, and `ibm_verify_push` are used internally or for testing, not part of the public sign-in flow.
 
-*Alternative names*:
+## Calculation
 
-- sign-in factor mix
-- public sign-in factor share
-- sign-in-capable factor distribution
-
-**Calculation.** Restrict to the sign-in factors (`sms_otp`, `voice_otp`,
+Restrict to the sign-in factors (`sms_otp`, `voice_otp`,
 `fido2`), then, as in [All MFA Activity by
-Factor](#all-mfa-activity-by-factor), de-duplicate before counting: the OTP
+Factor](mfa-activity-by-factor.qmd), de-duplicate before counting: the OTP
 factors (`sms_otp`, `voice_otp`) record both a `sent` event and a subsequent
 `success`/`failure` event for the same challenge, so only the `sent` row is
 counted for these; `fido2` (passkeys) has no `sent` event and is counted through
@@ -104,8 +103,16 @@ tbl(con, in_schema("ibm_verify", "mfa_activity")) |>
 
 :::
 
-*Interpretation notes.* `factor_share` is a proportion between 0 and 1 and sums to 1
+## Interpretation notes
+
+`factor_share` is a proportion between 0 and 1 and sums to 1
 across these factors only, so it is not comparable to the shares in [All MFA
-Activity by Factor](#all-mfa-activity-by-factor), which are taken over every
+Activity by Factor](mfa-activity-by-factor.qmd), which are taken over every
 factor. Passkey (`fido2`) activity appears only from the 2026-07-06 rollout
 onward, so a reporting window that predates that date will show little or none.
+
+## Alternative names
+
+- sign-in factor mix
+- public sign-in factor share
+- sign-in-capable factor distribution

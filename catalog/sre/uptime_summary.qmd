@@ -1,10 +1,13 @@
-## uptime_summary
+---
+title: "sre.uptime_summary"
+description: "Daily rolling-window uptime and response-time figures for each monitored site."
+---
 
 One row per monitored site per day. Each row is a snapshot of rolling-window
 statistics fetched from `history/summary.json` in the
 [`cds-snc/status-statut`](https://github.com/cds-snc/status-statut) GitHub repository at 04:00 ET.
 
-### Provenance
+## Provenance
 
 Fully automated. No manual upload required. The [upptime](https://github.com/upptime/upptime)
 `summary.yml` GitHub Action recalculates all rolling-window metrics from the full
@@ -27,7 +30,7 @@ site into the `date=YYYY-MM-DD` partition corresponding to the preceding day.
 | `canada-login-idp-staging` | `IDP-STAGING` | `https://auth.login-connexion.alpha.canada.ca` |
 | `canada-login-idp-prod` | `IDP-PROD` | `https://auth.login-connexion.canada.ca` |
 
-### Fields
+## Fields
 
 | Field Name | Type | Description |
 |---|---|---|
@@ -49,7 +52,7 @@ site into the `date=YYYY-MM-DD` partition corresponding to the preceding day.
 | `response_alltime_ms` | `bigint` | Average response time across all pings since monitoring began, in milliseconds. |
 | `daily_minutes_down` | `varchar` | JSON string mapping each outage date to total minutes down on that date. |
 
-### Notes
+## Notes
 
 **Timing note.** When the Lambda runs on **June 30**, it fetches rolling-window
 statistics last recalculated at ~23:2x UTC on **June 29**. The resulting row

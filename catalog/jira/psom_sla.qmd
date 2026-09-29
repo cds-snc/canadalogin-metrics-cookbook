@@ -1,25 +1,28 @@
-## psom_sla
+---
+title: "jira.psom_sla"
+description: "SLA clock state for each PSOM ticket, one row per ticket per SLA per snapshot."
+---
 
 The state of each PSOM ticket's Jira Service Management SLA clocks, one row per
 ticket per SLA per snapshot.
 
 Each row is one SLA (`sla`) on one ticket (`key`) as it stood on one snapshot
 `date`. Every ticket gets a row for every SLA, even if that clock never started.
-Join to [`psom`](#psom) on `key` and `date`. A row is unique on (`key`, `sla`,
+Join to [`psom`](psom.qmd) on `key` and `date`. A row is unique on (`key`, `sla`,
 `date`).
 
 `Keywords`: jira, psom, SLA, breach, time to first response, time to done, touchtime, escalation
 
-### Provenance
+## Provenance
 
-Written by the `psom-sync` Lambda in the same run as [`psom`](#psom), from the
+Written by the `psom-sync` Lambda in the same run as [`psom`](psom.qmd), from the
 ticket's SLA fields.
 
 * **Updated**: Daily, at ~06:00 ET
 * **Steward**: EDCP Data and Research Team
 * **Contact**: [Yinlin Zhang](mailto:yinlin.zhang@cds-snc.ca) (Data and Research team)
 
-### Fields
+## Fields
 
 | Field Name | Type | Description |
 |---|---|---|
@@ -33,7 +36,7 @@ ticket's SLA fields.
 | paused | boolean | Is a running clock paused? Null once the clock has stopped. |
 | fetched_at | varchar | UTC timestamp when the Lambda wrote this row (`YYYY-MM-DD HH:MM:SS`). |
 
-### Notes
+## Notes
 
 **The four SLAs.**
 

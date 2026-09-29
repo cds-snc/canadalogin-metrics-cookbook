@@ -1,4 +1,7 @@
-### SLA First-Response Breach Rate
+---
+title: "SLA First-Response Breach Rate"
+description: "Share of PSOM tickets that missed the time-to-first-response SLA."
+---
 
 The proportion of PSOM tickets that missed the "Time to first response" SLA,
 based on the latest snapshot.
@@ -8,13 +11,9 @@ response commitments. Only tickets where the SLA clock started are included;
 tickets with no clock (e.g., non-service-request issue types or tickets created
 before the SLA scheme was configured) are excluded.
 
-*Alternative names*:
+## Calculation
 
-- first response SLA breach rate
-- time to first response SLA compliance
-- first-response SLA failure rate
-
-**Calculation.** From [`jira.psom_sla`](../catalog/jira.qmd#psom_sla), filter
+From [`jira.psom_sla`](../../catalog/jira/psom_sla.qmd), filter
 to the most recent `date` partition, to `sla = 'first_response'`, and to rows
 where `breached` is not null (i.e., the clock started). Divide the count of
 rows where `breached` is true by the total count of those rows.
@@ -60,7 +59,9 @@ psom_sla |>
 
 :::
 
-*Interpretation notes.* The rate is a proportion between 0 and 1. Tickets whose
+## Interpretation notes
+
+The rate is a proportion between 0 and 1. Tickets whose
 clock never started (null `breached`) are excluded from both numerator and
 denominator. Check `total_sla_tickets` to understand the sample size underlying
 the rate.
@@ -72,3 +73,9 @@ the same as a ticket that met the SLA. The rate on a live snapshot is therefore
 a lower bound: some of those open tickets may still breach before they are
 answered. It is most meaningful once the snapshot's tickets are largely
 resolved.
+
+## Alternative names
+
+- first response SLA breach rate
+- time to first response SLA compliance
+- first-response SLA failure rate

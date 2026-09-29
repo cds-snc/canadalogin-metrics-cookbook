@@ -1,4 +1,7 @@
-## weekly_activity_report
+---
+title: "call_centre.weekly_activity_report"
+description: "Weekly call volume and service-level summary for the support queue, one row per week."
+---
 
 Weekly summary of call centre operations for the CanadaLogin support queue.
 
@@ -7,7 +10,7 @@ call outcomes, and call type breakdowns for that week.
 
 `Keywords`: call centre, calls, weekly, volume, wait time, call length, service level
 
-### Provenance
+## Provenance
 
 Sourced from a weekly Excel report that is typically sent to the EDCP Data and Research
 team via email. That spreadsheet is extracted and loaded into the data repository via
@@ -19,7 +22,7 @@ from the source file.
 * **Steward**: EDCP Data and Research Team
 * **Contact**: [Colin Douglas](mailto:colin.douglas@cds-snc.ca)
 
-### Fields
+## Fields
 
 One row per reporting week.
 
@@ -65,12 +68,12 @@ not 0 and 100.
 | total_of_call_types | float | Total number of call-type records for the week (used as denominator for call-type proportions) |
 | total_of_call_types_pct | float | Proportion of total call types (typically 1.0) |
 
-### Notes
+## Notes
 
 `avg_delay_seconds` and `avg_call_length_seconds` are weekly averages sourced
 from the report directly. When combining across weeks, use a weighted average
 with `calls_answered` as the weight rather than a simple average. See the
-[Call Centre metrics](../cookbook/call_centre.qmd) chapter for example SQL.
+[Call Centre metrics](../../cookbook/call_centre.qmd) chapter for example SQL.
 
 `date_range_start` and `date_range_end` are stored as strings. Cast to `DATE`
 in SQL when filtering by date range.

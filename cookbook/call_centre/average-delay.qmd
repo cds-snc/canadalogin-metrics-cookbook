@@ -1,4 +1,7 @@
-### Average Delay
+---
+title: "Average Delay"
+description: "Average wait before a call is answered."
+---
 
 The average delay before calls are answered.
 
@@ -6,15 +9,9 @@ This metric is useful for understanding caller wait times and call centre
 responsiveness. Like average call length, it should be calculated as a weighted
 mean to avoid low-volume weeks distorting the result.
 
-*Alternative names*:
+## Calculation
 
-- average wait time
-- average delay before answer
-- caller wait time
-- time to answer
-- average queue delay
-
-**Calculation.** Calculate a weighted average of weekly average delay, weighted
+Calculate a weighted average of weekly average delay, weighted
 by the number of answered calls.
 
 ::: {.callout-note collapse="true" title="Example queries"}
@@ -82,6 +79,16 @@ tbl(con, in_schema("call_centre", "weekly_activity_report")) |>
 
 :::
 
-*Interpretation notes.* Average delay should be interpreted alongside call volume. A
+## Interpretation notes
+
+Average delay should be interpreted alongside call volume. A
 low-volume week can produce unusual wait times that should not dominate the
 overall result.
+
+## Alternative names
+
+- average wait time
+- average delay before answer
+- caller wait time
+- time to answer
+- average queue delay

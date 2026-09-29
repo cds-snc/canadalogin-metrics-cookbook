@@ -1,19 +1,16 @@
-### Calls Accepted
+---
+title: "Calls Accepted"
+description: "Number of calls the call centre accepted in a reporting period."
+---
 
 The number of calls accepted by the call centre during a reporting period.
 
 This metric is useful for tracking call centre demand and understanding how
 contact volume changes over time.
 
-*Alternative names*:
+## Calculation
 
-- calls received
-- accepted calls
-- weekly call volume
-- call centre demand
-- number of calls handled by the queue
-
-**Calculation.** Use `calls_accepted` by reporting period, or sum across periods
+Use `calls_accepted` by reporting period, or sum across periods
 for a total.
 
 ::: {.callout-note collapse="true" title="Example queries"}
@@ -73,5 +70,15 @@ tbl(con, in_schema("call_centre", "weekly_activity_report")) |>
 
 :::
 
-*Interpretation notes.* Calls accepted may not be identical to calls answered,
+## Interpretation notes
+
+Calls accepted may not be identical to calls answered,
 depending on call centre definitions and routing logic.
+
+## Alternative names
+
+- calls received
+- accepted calls
+- weekly call volume
+- call centre demand
+- number of calls handled by the queue

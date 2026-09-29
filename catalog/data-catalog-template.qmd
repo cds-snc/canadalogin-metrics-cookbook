@@ -1,9 +1,9 @@
 ---
-title: "Template"
+title: "schema.table_name"
+description: "One short line for the listing tables."
+# Remove `draft` when copying this template to a new table page.
 draft: true
 ---
-
-# Table Name
 
 A straightforward one or two sentence line explaining what the dataset is. Dataset is one word.
 

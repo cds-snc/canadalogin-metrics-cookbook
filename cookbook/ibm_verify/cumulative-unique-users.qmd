@@ -1,4 +1,7 @@
-### Cumulative Unique Users
+---
+title: "Cumulative Unique Users"
+description: "Distinct users who signed in this month or this calendar year."
+---
 
 The total number of distinct users who have signed in to CanadaLogin over a
 chosen reporting window: this month or this calendar year.
@@ -8,17 +11,11 @@ CanadaLogin over time. Note that it will not align with the sum of unique users
 across individual apps: a user who signs into App A and App B on the same day
 counts as two unique users at the app level but only one overall.
 
-*Alternative names*:
+## Calculation
 
-- month-to-date unique users
-- year-to-date unique users
-- total overall unique users this month / this year
-- overall unique users MTD / YTD
-- distinct people reached on CanadaLogin
-
-**Calculation.** Take the latest value of the cumulative unique-user column for
+Take the latest value of the cumulative unique-user column for
 the window of interest. The window is chosen by *which column* you read, not by
-a date filter (see [the note on reporting timespans](notes.qmd#metrics-can-be-reported-over-different-timespans)):
+a date filter (see [the note on reporting timespans](../notes.qmd#metrics-can-be-reported-over-different-timespans)):
 
 - `mtd_unique_users` for month-to-date
 - `ytd_unique_users` for year-to-date
@@ -31,7 +28,7 @@ window than its underlying data retention actually covers, so the figure can
 undercount and has been seen decreasing from one day to the next. Treat it as
 an estimate only, and prefer `mtd_unique_users` where the reporting question
 allows. See [Why Unique Users Cannot Be Added
-Up](unique-users.qmd#year-to-date-and-365-day-figures) for detail.
+Up](../unique-users.qmd#year-to-date-and-365-day-figures) for detail.
 :::
 
 A `since_apr22_unique_users` column (cumulative distinct users since launch) was
@@ -94,6 +91,16 @@ tbl(con, in_schema("ibm_verify", "auth_total_logins")) |>
 
 :::
 
-*Interpretation notes.* Each column resets on its own cadence: `mtd_unique_users`
+## Interpretation notes
+
+Each column resets on its own cadence: `mtd_unique_users`
 resets at the start of each month and `ytd_unique_users` at the start of each
 calendar year. Do not sum these columns across rows; they are already cumulative.
+
+## Alternative names
+
+- month-to-date unique users
+- year-to-date unique users
+- total overall unique users this month / this year
+- overall unique users MTD / YTD
+- distinct people reached on CanadaLogin

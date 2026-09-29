@@ -1,46 +1,34 @@
-# About
+---
+title: About
+listing:
+  id: all-tables
+  contents: "*/*.qmd"
+  type: table
+  fields: [title, description]
+  field-display-names:
+    title: Table
+  sort: title
+  sort-ui: false
+  filter-ui: true
+---
 
 The data catalog describes the tables available to analysts. It is distinct from
 the metrics cookbook; the cookbook explains how to *derive* metrics, while the
 catalog describes the *tables* those metrics are calculated from, field by field.
 
-## [Relying Parties](rp.qmd)
+## Sources
 
-Reference tables in the `rp` schema that identify the services using CanadaLogin and their various aliases.
+Each source page covers what its tables share: where the data comes from, when
+it updates, and caveats that apply to all of them.
 
-- [`service`](rp.qmd#service) - one row per relying party, with its names, operator, and launch date
-- [`alias`](rp.qmd#alias) - the names each source system uses for a service, mapped back to one `rp_id`
+- [Relying Parties](rp.qmd) - reference tables in the `rp` schema that identify the services using CanadaLogin and their aliases
+- [IBM Verify](ibm_verify.qmd) - derived tables in the `ibm_verify` schema, pulled from the IBM Verify reporting API
+- [Call Centre](call_centre.qmd) - weekly call centre data from the CanadaLogin support queue reports
+- [Platform](sre.qmd) - incident response and uptime tables in the `sre` schema
+- [Jira (PSOM)](jira.qmd) - daily snapshots of PSOM support tickets in the `jira` schema
+- [Google Analytics](google_analytics.qmd) - tables in the `google_analytics` schema, populated from the CanadaLogin GA4 property
 
-## [IBM Verify](ibm_verify.qmd)
+## All Tables
 
-Derived tables in the `ibm_verify` schema, pulled from the IBM Verify reporting API.
-
-- [`app_login_counts`](ibm_verify.qmd#app_login_counts) - daily sign-in counts by application
-- [`auth_total_logins`](ibm_verify.qmd#auth_total_logins) - daily, CanadaLogin-wide sign-in totals
-- [`mfa_activity`](ibm_verify.qmd#mfa_activity) - multi-factor authentication activity by factor and result
-
-## [Call Centre](call_centre.qmd)
-
-Weekly call centre data extracted from the CanadaLogin support weekly Excel reports.
-
-- [`weekly_activity_report`](call_centre.qmd#weekly_activity_report) - weekly call volume and service-level summary
-- [`weekly_topic_dump`](call_centre.qmd#weekly_topic_dump) - individual call records with topic classifications
-
-## [Platform](sre.qmd)
-
-Site reliability metrics for the CanadaLogin platform, in the `sre` schema. Currently incident-response tables, with other reliability measures to follow.
-
-- [`mttr_current`](sre.qmd#mttr_current) - latest state of every incident, one row per incident
-- [`mttr_history`](sre.qmd#mttr_history) - dated snapshots of every incident, preserving how each evolved
-
-## [Google Analytics](google_analytics.qmd)
-
-Tables in the `google_analytics` schema, populated from the CanadaLogin GA4 property.
-
-- [`property_traffic`](google_analytics.qmd#property_traffic) - property-wide daily traffic, one row per day
-- [`page_traffic`](google_analytics.qmd#page_traffic) - daily traffic by page title, path, and data stream
-- [`funnels`](google_analytics.qmd#funnels) - step-by-step counts for each defined GA4 funnel
-- [`funnels_current`](google_analytics.qmd#funnels_current) - `funnels`, resolved to each date's current funnel version
-- [`funnel_metrics`](google_analytics.qmd#funnel_metrics) - derived metrics computed from funnel rows, such as task success rate
-- [`funnel_metrics_current`](google_analytics.qmd#funnel_metrics_current) - `funnel_metrics`, resolved to each date's current funnel version
-
+::: {#all-tables}
+:::

@@ -1,16 +1,14 @@
-### Mean Time to Resolution
+---
+title: "Mean Time to Resolution"
+description: "Average minutes from incident detection to resolution."
+---
 
 The average time, in minutes, from when an incident is detected to when it is
 fully resolved.
 
-*Alternative names*:
+## Calculation
 
-- MTTR
-- time to resolve
-- incident resolution time
-- mean time to recovery (see the interpretation note on this overloaded term)
-
-**Calculation.** Average `mttr_detected_resolved` (minutes from `detected_at` to
+Average `mttr_detected_resolved` (minutes from `detected_at` to
 `resolved_at`, precomputed in the table) across the incidents whose `detected_at`
 falls in the reporting window, from `sre.mttr_current`. Because the incident
 timestamps are stored as America/Toronto strings rather than native dates, the
@@ -86,7 +84,9 @@ tbl(con, in_schema("sre", "mttr_current")) |>
 
 :::
 
-*Interpretation notes.* The figure is in minutes; divide by 60 for hours. It is a
+## Interpretation notes
+
+The figure is in minutes; divide by 60 for hours. It is a
 **mean**, so a single very long incident can pull it up sharply, especially given
 how few incidents there are in any window. Read it alongside the incident count,
 and consider a median or a Sev1-only cut when one outlier dominates.
@@ -96,3 +96,9 @@ The window is anchored on `detected_at`, so an incident counts in the period it
 free text in the source sheet, so the grouped view reflects whatever values were
 typed (expect the occasional typo or spacing drift).
 
+## Alternative names
+
+- MTTR
+- time to resolve
+- incident resolution time
+- mean time to recovery (see the interpretation note on this overloaded term)

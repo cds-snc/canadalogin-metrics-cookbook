@@ -1,21 +1,20 @@
-### Completed Sign-In Sessions (Estimated)
+---
+title: "Completed Sign-In Sessions (Estimated)"
+description: "Estimated number of sign-ins that got all the way through the flow."
+---
 
 An *estimate* of the number of completed sign-in sessions to CanadaLogin over a
 selected reporting period, where a session is one user getting all the way
 through the sign-in flow regardless of how many authentication methods it took.
 
-*Alternative names*:
+## Calculation
 
-- estimated sign-in sessions
-- estimated login count
-- sign-in sessions
-
-**Calculation.** A completed session has exactly one successful first-factor
+A completed session has exactly one successful first-factor
 event (the password) plus zero or more successful second factors. Both kinds of
 success are lumped together in `successful_logins` on
-[`auth_total_logins`](../catalog/ibm_verify.qmd#auth_total_logins), while the
+[`auth_total_logins`](../../catalog/ibm_verify/auth_total_logins.qmd), while the
 second-factor successes are counted separately on
-[`mfa_activity`](../catalog/ibm_verify.qmd#mfa_activity). Subtracting the second
+[`mfa_activity`](../../catalog/ibm_verify/mfa_activity.qmd). Subtracting the second
 from the first leaves one event per session: the first-factor success. So sum
 `successful_logins` over the window and subtract the sum of `mfa_activity.count`
 where `result = 'success'`, restricted to the factors that can complete a
@@ -89,7 +88,9 @@ successful_events - mfa_successes
 
 :::
 
-*Interpretation notes.* The estimate works because each session contributes
+## Interpretation notes
+
+The estimate works because each session contributes
 exactly one first-factor success no matter how many second factors it used:
 
 | Session type | `successful_logins` | Subtracted MFA successes | Net (= sessions) |
@@ -120,3 +121,9 @@ reported, and never present it as an exact session count. When the question is
 about distinct people rather than sessions, prefer `unique_users` (daily active
 users), which needs no assumptions: a user cannot be a unique user without
 completing a sign-in.
+
+## Alternative names
+
+- estimated sign-in sessions
+- estimated login count
+- sign-in sessions

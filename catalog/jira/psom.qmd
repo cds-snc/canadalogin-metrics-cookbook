@@ -1,4 +1,7 @@
-## psom
+---
+title: "jira.psom"
+description: "Daily snapshot of every PSOM Jira ticket, one row per ticket per snapshot."
+---
 
 Daily snapshot of all PSOM Jira Service Management tickets.
 
@@ -6,7 +9,7 @@ One row per Jira issue per snapshot. Each run writes a full snapshot of the
 tickets currently in the PSOM project to a new `date=` partition. Previous
 partitions are preserved as an audit trail, enabling point-in-time analysis.
 SLA clocks and comments are in their own tables,
-[`psom_sla`](#psom_sla) and [`psom_comment`](#psom_comment), which join to
+[`psom_sla`](psom_sla.qmd) and [`psom_comment`](psom_comment.qmd), which join to
 this one on `key` and `date`.
 
 **Jira source:** `jtickets.atlassian.net`, project `PSOM`, fetched via
@@ -15,7 +18,7 @@ this one on `key` and `date`.
 
 `Keywords`: jira, psom, tickets, service requests, support, form topic
 
-### Provenance
+## Provenance
 
 Queried from PSOM Jira Cloud via API by the `psom-sync` Lambda function.
 
@@ -23,7 +26,7 @@ Queried from PSOM Jira Cloud via API by the `psom-sync` Lambda function.
 * **Steward**: EDCP Data and Research Team
 * **Contact**: [Yinlin Zhang](mailto:yinlin.zhang@cds-snc.ca) (Data and Research team)
 
-### Fields
+## Fields
 
 One row per Jira issue per snapshot (`date` partition).
 
@@ -49,18 +52,18 @@ One row per Jira issue per snapshot (`date` partition).
 | organizations | varchar | Semicolon-separated names of JSM organizations the request is associated with. |
 | form_topic | varchar | The ticket's "Form topic" (a multi-select field), as a `; `-separated list of the chosen options. Options are grouped under Already Using, Onboarding, and Escalated from Call Center. A ticket can carry more than one topic. |
 | solution_provided | varchar | The ticket's "Solution provided" checkbox: `Yes`, `No`, or `Planned for future`. |
-| comment_count | bigint | Total number of comments on the ticket. Equals the ticket's row count in [`psom_comment`](#psom_comment) for the same `date`. |
+| comment_count | bigint | Total number of comments on the ticket. Equals the ticket's row count in [`psom_comment`](psom_comment.qmd) for the same `date`. |
 | fetched_at | varchar | UTC timestamp when the Lambda wrote this row (`YYYY-MM-DD HH:MM:SS`). |
 
-### Notes
+## Notes
 
 All timestamp columns (`created`, `updated`, `status_changed`, `fetched_at`)
 are stored as `varchar`. The ISO 8601 ones carry an offset from UTC, e.g.
 `2026-09-25T10:31:43.801-0400`.
 
 **Schema rework on 2026-09-28.** The `sla_first_response_*` and
-`sla_time_to_done_*` columns moved to [`psom_sla`](#psom_sla), and the JSON
-`comments` column moved to [`psom_comment`](#psom_comment). The older
+`sla_time_to_done_*` columns moved to [`psom_sla`](psom_sla.qmd), and the JSON
+`comments` column moved to [`psom_comment`](psom_comment.qmd). The older
 partitions were rewritten to the new schema, so every partition has the same
 columns. `form_topic` and `solution_provided` were added at the same time. They
 are null in every partition before 2026-09-29, while new rows use an empty

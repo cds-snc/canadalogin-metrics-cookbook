@@ -1,5 +1,22 @@
 ---
 title: Jira (PSOM)
+listing:
+  - id: metrics
+    contents:
+      - jira/tickets-by-status.qmd
+      - jira/weekly-ticket-volume.qmd
+      - jira/tickets-by-priority.qmd
+      - jira/sla-first-response-breach-rate.qmd
+      - jira/sla-time-to-done-breach-rate.qmd
+      - jira/sla-pso-time-to-done-breach-rate.qmd
+    type: table
+    fields: [title, description]
+    field-display-names:
+      title: Metric
+    sort: false
+    sort-ui: false
+    filter-ui: false
+
 ---
 
 Metrics in this section are calculated from PSOM Jira Service Management ticket
@@ -7,10 +24,10 @@ data.
 
 The relevant Jira tables are:
 
-- [`jira.psom`](../catalog/jira.qmd#psom) - daily snapshot of all PSOM tickets
-- [`jira.psom_sla`](../catalog/jira.qmd#psom_sla) - the SLA clocks on each
+- [`jira.psom`](../catalog/jira/psom.qmd) - daily snapshot of all PSOM tickets
+- [`jira.psom_sla`](../catalog/jira/psom_sla.qmd) - the SLA clocks on each
   ticket, one row per ticket per SLA
-- [`jira.psom_comment`](../catalog/jira.qmd#psom_comment) - every comment on
+- [`jira.psom_comment`](../catalog/jira/psom_comment.qmd) - every comment on
   each ticket
 
 **Data cadence.** The tables are updated once per day (at ~06:00 ET); before
@@ -22,23 +39,5 @@ the tables on `key` and `date`.
 
 ## PSOM Metrics
 
-{{< include jira/tickets-by-status.qmd >}}
-
-{{< include jira/weekly-ticket-volume.qmd >}}
-
-{{< include jira/tickets-by-priority.qmd >}}
-
-{{< include jira/sla-first-response-breach-rate.qmd >}}
-
-{{< include jira/sla-time-to-done-breach-rate.qmd >}}
-
-{{< include jira/sla-pso-time-to-done-breach-rate.qmd >}}
-
-<!-- Tickets by Request Type is held back: request_type is empty for every -->
-<!-- ticket in the current snapshots, so the breakdown collapses into a single -->
-<!-- (non-service-request) bucket. This is by design, not a pipeline gap: the -->
-<!-- PSOM tickets so far were created internally through Jira rather than the -->
-<!-- customer-facing portal, so no JSM request type was set. Re-enable this -->
-<!-- include once portal-created tickets (which carry a request_type) appear. -->
-<!-- {{< include jira/tickets-by-request-type.qmd >}} -->
-
+::: {#metrics}
+:::

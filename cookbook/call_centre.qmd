@@ -1,5 +1,36 @@
 ---
 title: Call Centre
+listing:
+  - id: metrics-1
+    contents:
+      - call_centre/calls-accepted.qmd
+      - call_centre/calls-answered.qmd
+      - call_centre/average-call-length.qmd
+      - call_centre/average-delay.qmd
+      - call_centre/abandonment-rate.qmd
+      - call_centre/answer-rate.qmd
+      - call_centre/service-level.qmd
+      - call_centre/average-handle-time.qmd
+      - call_centre/calls-per-active-user.qmd
+    type: table
+    fields: [title, description]
+    field-display-names:
+      title: Metric
+    sort: false
+    sort-ui: false
+    filter-ui: false
+  - id: metrics-2
+    contents:
+      - call_centre/call-topic-share.qmd
+      - call_centre/top-10-call-topics.qmd
+    type: table
+    fields: [title, description]
+    field-display-names:
+      title: Metric
+    sort: false
+    sort-ui: false
+    filter-ui: false
+
 ---
 
 Metrics in this section are calculated from call centre activity and topic data.
@@ -11,8 +42,8 @@ weekly level or aggregated across weeks.
 
 The relevant call centre tables are:
 
-- [`call_centre.weekly_activity_report`](../catalog/call_centre.qmd#weekly_activity_report) - weekly call volume and service-level summary
-- [`call_centre.weekly_topic_dump`](../catalog/call_centre.qmd#weekly_topic_dump) - individual call records with topic classifications
+- [`call_centre.weekly_activity_report`](../catalog/call_centre/weekly_activity_report.qmd) - weekly call volume and service-level summary
+- [`call_centre.weekly_topic_dump`](../catalog/call_centre/weekly_topic_dump.qmd) - individual call records with topic classifications
 
 `date_range_start` and `date_range_end` are stored as text, so date-range filters
 cast them to `DATE` before comparing to date literals.
@@ -22,23 +53,8 @@ cast them to `DATE` before comparing to date literals.
 Metrics in this section describe call centre operations, sourced from
 `call_centre.weekly_activity_report`.
 
-{{< include call_centre/calls-accepted.qmd >}}
-
-{{< include call_centre/calls-answered.qmd >}}
-
-{{< include call_centre/average-call-length.qmd >}}
-
-{{< include call_centre/average-delay.qmd >}}
-
-{{< include call_centre/abandonment-rate.qmd >}}
-
-{{< include call_centre/answer-rate.qmd >}}
-
-{{< include call_centre/service-level.qmd >}}
-
-{{< include call_centre/average-handle-time.qmd >}}
-
-{{< include call_centre/calls-per-active-user.qmd >}}
+::: {#metrics-1}
+:::
 
 ## Topic Metrics
 
@@ -48,6 +64,5 @@ topic rows, these metrics count topic records rather than distinct calls. Clean
 `statobject` before grouping, since it often carries leading, trailing, or
 repeated whitespace.
 
-{{< include call_centre/call-topic-share.qmd >}}
-
-{{< include call_centre/top-10-call-topics.qmd >}}
+::: {#metrics-2}
+:::
