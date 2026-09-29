@@ -82,8 +82,11 @@ website:
             href: cookbook/google_analytics.qmd
             contents:
               - cookbook/google_analytics/task-success-rate.qmd
-          - cookbook/unique-users.qmd
-          - cookbook/notes.qmd
+          - section: "Additional Notes"
+            href: cookbook/notes.qmd
+            contents:
+              - text: "Adding Up Unique Users"
+                href: cookbook/unique-users.qmd
 #          - cookbook/cross-source.qmd
       - section: "Data Catalog"
         href: catalog/index.qmd
