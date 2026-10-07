@@ -23,6 +23,7 @@ this one on `key` and `date`.
 Queried from PSOM Jira Cloud via API by the `psom-sync` Lambda function.
 
 * **Updated**: Daily, at ~06:00 ET
+* **Retention**: 2 years
 * **Steward**: EDCP Data and Research Team
 * **Contact**: [Yinlin Zhang](mailto:yinlin.zhang@cds-snc.ca) (Data and Research team)
 

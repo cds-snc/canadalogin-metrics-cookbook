@@ -17,6 +17,7 @@ ticket's full comment history. Snapshots before 2026-09-29 were backfilled from
 the JSON `comments` column that `psom` used to carry.
 
 * **Updated**: Daily, at ~06:00 ET
+* **Retention**: 2 years
 * **Steward**: EDCP Data and Research Team
 * **Contact**: [Yinlin Zhang](mailto:yinlin.zhang@cds-snc.ca) (Data and Research team)
 

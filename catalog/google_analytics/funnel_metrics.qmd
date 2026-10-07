@@ -27,6 +27,7 @@ cookbook entry for how the one metric type in use today (`step_ratio`) is
 calculated and interpreted.
 
 * **Updated**: Daily, at 06:45 ET, after the 06:30 ET funnel export
+* **Retention**: 7 years
 * **Steward**: EDCP Data and Research Team
 * **Contact**: [Colin Douglas](mailto:colin.douglas@cds-snc.ca)
 * **Location**: `s3://<transformed-bucket>/google_analytics/funnel_metrics/`

@@ -18,6 +18,7 @@ If a data pipeline doc exists for this dataset, provide a link to it as well.
 Briefly describe where the dataset comes from using words. If from a database, indicate the table or view it is derived from, as well as any critical transformations or filters applied. If the dataset is sourced from a public distribution, link the repo or website where the dataset can be found. If the dataset is collected based on an experiment or survey, link the protocol where analysts can find more details.
 
 * **Updated**: Frequency of update, if automated. If manual, indicate "Manually"
+* **Retention**: How long the data is kept before it is deleted
 * **Last Updated**: (if manual) Date/time of last time dataset was updated
 * **Steward**: Who is responsible for the data. This can be a person or an organization.
 * **Contact**: Email address or Slack handle of where queries should be directed

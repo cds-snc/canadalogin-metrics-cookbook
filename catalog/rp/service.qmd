@@ -19,6 +19,7 @@ table is not partitioned and the file is overwritten in place, so this table
 holds current state only and keeps no history.
 
 * **Updated**: Weekdays, at 06:00 ET
+* **Retention**: Until CanadaLogin is retired
 * **Steward**: EDCP Data and Research Team
 * **Contact**: [Colin Douglas](mailto:colin.douglas@cds-snc.ca)
 * **Location**: `s3://canadalogin-reporting-transformed/rp/service/`

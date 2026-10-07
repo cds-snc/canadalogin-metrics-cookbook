@@ -38,6 +38,7 @@ JOIN latest_per_date d
 ## Provenance
 
 * **Updated**: Live view, not scheduled
+* **Retention**: 7 years
 * **Steward**: EDCP Data and Research Team
 * **Contact**: [Colin Douglas](mailto:colin.douglas@cds-snc.ca)
 

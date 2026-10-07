@@ -21,6 +21,7 @@ as [`rp.service`](service.qmd), read every weekday by the same Lambda and writte
 single Parquet file. Not partitioned, overwritten in place, current state only.
 
 * **Updated**: Weekdays, at 06:00 ET
+* **Retention**: Until CanadaLogin is retired
 * **Steward**: EDCP Data and Research Team
 * **Contact**: [Colin Douglas](mailto:colin.douglas@cds-snc.ca)
 * **Location**: `s3://canadalogin-reporting-transformed/rp/alias/`

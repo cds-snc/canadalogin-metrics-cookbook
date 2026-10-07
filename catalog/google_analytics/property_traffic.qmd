@@ -18,6 +18,7 @@ via a Lambda authenticating through Google Cloud Workload Identity Federation
 by a Glue ETL job.
 
 * **Updated**: Daily, at 07:00 ET
+* **Retention**: 7 years
 * **Steward**: EDCP Data and Research Team
 * **Contact**: [Colin Douglas](mailto:colin.douglas@cds-snc.ca)
 * **Location**: `s3://<transformed-bucket>/google_analytics/property_traffic/`

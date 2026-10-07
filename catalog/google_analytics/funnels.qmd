@@ -27,6 +27,7 @@ enumerate step names, because they are versioned in that YAML and can change
 between funnel versions.
 
 * **Updated**: Daily, at 06:30 ET (a nightly sweep; see Notes)
+* **Retention**: 7 years
 * **Steward**: EDCP Data and Research Team
 * **Contact**: [Colin Douglas](mailto:colin.douglas@cds-snc.ca)
 * **Location**: `s3://<transformed-bucket>/google_analytics/funnels/`

@@ -13,6 +13,7 @@ Pulled daily from the GA4 Data API (`runReport`). Only events with `error` or `e
 fields are kept.
 
 * **Updated**: Daily, at 07:00 ET
+* **Retention**: 7 years
 * **Steward**: EDCP Data and Research Team
 * **Contact**: [Colin Douglas](mailto:colin.douglas@cds-snc.ca)
 * **Location**: `s3://<transformed-bucket>/google_analytics/error_events/`

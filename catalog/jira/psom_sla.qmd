@@ -19,6 +19,7 @@ Written by the `psom-sync` Lambda in the same run as [`psom`](psom.qmd), from th
 ticket's SLA fields.
 
 * **Updated**: Daily, at ~06:00 ET
+* **Retention**: 2 years
 * **Steward**: EDCP Data and Research Team
 * **Contact**: [Yinlin Zhang](mailto:yinlin.zhang@cds-snc.ca) (Data and Research team)
 
