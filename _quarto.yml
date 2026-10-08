@@ -82,6 +82,7 @@ website:
             href: cookbook/google_analytics.qmd
             contents:
               - cookbook/google_analytics/task-success-rate.qmd
+              - cookbook/google_analytics/dwell-time.qmd
           - section: "Additional Notes"
             href: cookbook/notes.qmd
             contents:

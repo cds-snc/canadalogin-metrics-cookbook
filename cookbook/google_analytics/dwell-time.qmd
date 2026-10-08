@@ -1,0 +1,213 @@
+---
+title: "Dwell Time"
+description: "How long readers stay on each Signal Check edition and dashboard, as a drop-off curve of page views."
+---
+
+How long readers keep a Signal Check edition or a published dashboard open
+and visible, measured per page from the meta-analytics GA4 property.
+
+Dwell time is a drop-off curve, not a single average. Each page fires one
+event the first time a page view reaches 1, 5, 15, 30, 60, 120, 300, and 600
+seconds of visible time (`read_1s` through `read_600s`). The share of page
+views that reached each mark shows how far readers get. The median reader's
+dwell time is read off that curve.
+
+Only Signal Check editions and the dashboards fire these events. The Metrics
+Cookbook stream does not, nor does any production CanadaLogin page.
+
+## Calculation
+
+Dwell curve: for each page and each milestone, divide the `read_Ns` event
+count by the `page_view` event count over the reporting window. Both come from
+[`meta_page_events`](../../catalog/google_analytics/meta_page_events.qmd).
+
+Median dwell time: the longest milestone that at least half of the page's
+views reached.
+
+Group on `pagepath_redacted`, never `pagepath`, which holds a private token
+for Signal Check pages.
+
+::: {.callout-note collapse="true" title="Example queries"}
+
+::: {.panel-tabset}
+
+## SQL
+
+Dwell curve:
+
+```sql
+WITH events AS (
+    SELECT
+        pagepath_redacted,
+        eventname,
+        SUM(eventcount) AS n
+    FROM google_analytics.meta_page_events
+    WHERE page_kind IN ('signal_check', 'dashboard')
+      AND (eventname = 'page_view' OR REGEXP_LIKE(eventname, '^read_[0-9]+s$'))
+      -- set the reporting window; see the timespans note in cookbook/notes.qmd
+      AND CAST(date AS DATE) BETWEEN DATE '2026-09-01' AND DATE '2026-09-30'
+    GROUP BY pagepath_redacted, eventname
+),
+views AS (
+    SELECT pagepath_redacted, n AS page_views
+    FROM events
+    WHERE eventname = 'page_view'
+)
+SELECT
+    e.pagepath_redacted,
+    CAST(REGEXP_EXTRACT(e.eventname, '[0-9]+') AS INTEGER) AS milestone_seconds,
+    v.page_views,
+    e.n AS page_views_reached,
+    CAST(e.n AS DOUBLE) / v.page_views AS share_reached
+FROM events e
+JOIN views v ON e.pagepath_redacted = v.pagepath_redacted
+WHERE e.eventname <> 'page_view'
+ORDER BY e.pagepath_redacted, milestone_seconds;
+```
+
+Median dwell time:
+
+```sql
+WITH events AS (
+    SELECT
+        pagepath_redacted,
+        eventname,
+        SUM(eventcount) AS n
+    FROM google_analytics.meta_page_events
+    WHERE page_kind IN ('signal_check', 'dashboard')
+      AND (eventname = 'page_view' OR REGEXP_LIKE(eventname, '^read_[0-9]+s$'))
+      -- set the reporting window; see the timespans note in cookbook/notes.qmd
+      AND CAST(date AS DATE) BETWEEN DATE '2026-09-01' AND DATE '2026-09-30'
+    GROUP BY pagepath_redacted, eventname
+),
+views AS (
+    SELECT pagepath_redacted, n AS page_views
+    FROM events
+    WHERE eventname = 'page_view'
+)
+SELECT
+    e.pagepath_redacted,
+    v.page_views,
+    -- NULL when fewer than half of the page's views reached 1 second
+    MAX(CASE
+        WHEN CAST(e.n AS DOUBLE) / v.page_views >= 0.5
+        THEN CAST(REGEXP_EXTRACT(e.eventname, '[0-9]+') AS INTEGER)
+    END) AS median_dwell_seconds
+FROM events e
+JOIN views v ON e.pagepath_redacted = v.pagepath_redacted
+WHERE e.eventname <> 'page_view'
+GROUP BY e.pagepath_redacted, v.page_views
+ORDER BY e.pagepath_redacted;
+```
+
+## R
+
+Dwell curve:
+
+```r
+events <- tbl(con, in_schema("google_analytics", "meta_page_events")) |>
+  filter(
+    page_kind %in% c("signal_check", "dashboard"),
+    eventname == "page_view" | str_detect(eventname, "^read_[0-9]+s$"),
+    # set the reporting window; see the timespans note in cookbook/notes.qmd
+    as.Date(date) >= as.Date("2026-09-01"),
+    as.Date(date) <= as.Date("2026-09-30")
+  ) |>
+  group_by(pagepath_redacted, eventname) |>
+  summarise(n = sum(eventcount, na.rm = TRUE), .groups = "drop")
+
+views <- events |>
+  filter(eventname == "page_view") |>
+  select(pagepath_redacted, page_views = n)
+
+events |>
+  filter(eventname != "page_view") |>
+  inner_join(views, by = "pagepath_redacted") |>
+  transmute(
+    pagepath_redacted,
+    milestone_seconds = as.integer(str_extract(eventname, "[0-9]+")),
+    page_views,
+    page_views_reached = n,
+    share_reached = as.numeric(n) / page_views
+  ) |>
+  arrange(pagepath_redacted, milestone_seconds)
+```
+
+Median dwell time:
+
+```r
+events <- tbl(con, in_schema("google_analytics", "meta_page_events")) |>
+  filter(
+    page_kind %in% c("signal_check", "dashboard"),
+    eventname == "page_view" | str_detect(eventname, "^read_[0-9]+s$"),
+    # set the reporting window; see the timespans note in cookbook/notes.qmd
+    as.Date(date) >= as.Date("2026-09-01"),
+    as.Date(date) <= as.Date("2026-09-30")
+  ) |>
+  group_by(pagepath_redacted, eventname) |>
+  summarise(n = sum(eventcount, na.rm = TRUE), .groups = "drop")
+
+views <- events |>
+  filter(eventname == "page_view") |>
+  select(pagepath_redacted, page_views = n)
+
+events |>
+  filter(eventname != "page_view") |>
+  inner_join(views, by = "pagepath_redacted") |>
+  group_by(pagepath_redacted, page_views) |>
+  summarise(
+    # NA when fewer than half of the page's views reached 1 second
+    median_dwell_seconds = max(
+      if_else(
+        as.numeric(n) / page_views >= 0.5,
+        as.integer(str_extract(eventname, "[0-9]+")),
+        NA_integer_
+      ),
+      na.rm = TRUE
+    ),
+    .groups = "drop"
+  ) |>
+  arrange(pagepath_redacted)
+```
+
+:::
+
+:::
+
+## Interpretation notes
+
+Only visible time counts. The clock pauses while the tab is in the
+background and resumes when the reader comes back, so a tab left open
+overnight does not reach `read_600s` unless someone is looking at it.
+
+The median is a floor, not an exact time. A `median_dwell_seconds` of 60
+means the median reader stayed at least 60 seconds and less than 120. The
+longest milestone is 600 seconds, so a median of 600 means "10 minutes or
+more".
+
+Prefer the curve or the median to an average. Readership is small, often a
+few dozen page views per page per month, and one forgotten tab can move a
+mean a long way. At these counts, check `page_views` before comparing two
+pages. A share built on five page views is too unstable to rank.
+
+The curve counts page views, not people. A reader who reloads the page, or
+comes back on another day, starts the milestones again and counts twice. Use
+`page_views` as the denominator, since `totalusers` in `meta_page_events`
+can't be summed across days.
+
+`read_1s` is approximate. The page checks the clock once a second, so
+`read_1s` means "1 to 2 seconds". Milestones from 15 seconds up are not
+affected.
+
+This metric covers only Signal Check editions and the dashboards. Public
+CanadaLogin pages do not fire `read_Ns` events. For time on those pages, use
+GA4's built-in
+[average engagement time](https://support.google.com/analytics/answer/11109416),
+which is only available in the GA4 interface, not in the data lake.
+
+## Alternative names
+
+- time on page
+- reading time
+- read depth
+- engagement time
