@@ -1088,7 +1088,7 @@
     "href": "catalog/sre/uptime_timeseries.html#provenance",
     "title": "sre.uptime_timeseries",
     "section": "Provenance",
-    "text": "Provenance\nFully automated. No manual upload required. Sourced from the GitHub Commits API for each site’s history file (history/&lt;slug&gt;.yml).\n\nUpdated: Daily, at ~04:00 ET\nSteward: EDCP Data and Research Team\nContact: Yinlin Zhang (Data and Research team)\n\nExpected row count per site per day:\n\n\n\nScenario\nExpected rows\n\n\n\n\nNormal all-up day\n1 (daily ~23:2x UTC snapshot, status = 'up')\n\n\nOutage day\n2+ (down event + recovery event + daily snapshot)",
+    "text": "Provenance\nFully automated. No manual upload required. Sourced from the GitHub Commits API for each site’s history file (history/&lt;slug&gt;.yml).\n\nUpdated: Daily, at ~04:00 ET\nRetention: 7 years\nSteward: EDCP Data and Research Team\nContact: Yinlin Zhang (Data and Research team)\n\nExpected row count per site per day:\n\n\n\nScenario\nExpected rows\n\n\n\n\nNormal all-up day\n1 (daily ~23:2x UTC snapshot, status = 'up')\n\n\nOutage day\n2+ (down event + recovery event + daily snapshot)",
     "crumbs": [
       "Data Catalog",
       "Platform",
@@ -1193,7 +1193,7 @@
     "href": "catalog/rp/alias.html#provenance",
     "title": "rp.alias",
     "section": "Provenance",
-    "text": "Provenance\nMaintained by hand in the same CanadaLogin Relying Parties Google Sheet as rp.service, read every weekday by the same Lambda and written as a single Parquet file. Not partitioned, overwritten in place, current state only.\n\nUpdated: Weekdays, at 06:00 ET\nSteward: EDCP Data and Research Team\nContact: Colin Douglas\nLocation: s3://canadalogin-reporting-transformed/rp/alias/",
+    "text": "Provenance\nMaintained by hand in the same CanadaLogin Relying Parties Google Sheet as rp.service, read every weekday by the same Lambda and written as a single Parquet file. Not partitioned, overwritten in place, current state only.\n\nUpdated: Weekdays, at 06:00 ET\nRetention: Until CanadaLogin is retired\nSteward: EDCP Data and Research Team\nContact: Colin Douglas\nLocation: s3://canadalogin-reporting-transformed/rp/alias/",
     "crumbs": [
       "Data Catalog",
       "Relying Parties",
@@ -1285,7 +1285,7 @@
     "href": "catalog/jira/psom_comment.html#provenance",
     "title": "jira.psom_comment",
     "section": "Provenance",
-    "text": "Provenance\nWritten by the psom-sync Lambda in the same run as psom, from each ticket’s full comment history. Snapshots before 2026-09-29 were backfilled from the JSON comments column that psom used to carry.\n\nUpdated: Daily, at ~06:00 ET\nSteward: EDCP Data and Research Team\nContact: Yinlin Zhang (Data and Research team)",
+    "text": "Provenance\nWritten by the psom-sync Lambda in the same run as psom, from each ticket’s full comment history. Snapshots before 2026-09-29 were backfilled from the JSON comments column that psom used to carry.\n\nUpdated: Daily, at ~06:00 ET\nRetention: 2 years\nSteward: EDCP Data and Research Team\nContact: Yinlin Zhang (Data and Research team)",
     "crumbs": [
       "Data Catalog",
       "Jira (PSOM)",
@@ -1355,7 +1355,7 @@
     "href": "catalog/ibm_verify/mfa_activity.html#provenance",
     "title": "ibm_verify.mfa_activity",
     "section": "Provenance",
-    "text": "Provenance\nQueried directly from the IBM Verify production instance via API.\n\nUpdated: Daily, at 6am America/Toronto\nSteward: EDCP Data and Research Team\nContact: Yinlin Zhang",
+    "text": "Provenance\nQueried directly from the IBM Verify production instance via API.\n\nUpdated: Daily, at 6am America/Toronto\nRetention: Until CanadaLogin is retired\nSteward: EDCP Data and Research Team\nContact: Yinlin Zhang",
     "crumbs": [
       "Data Catalog",
       "IBM Verify",
@@ -1403,7 +1403,7 @@
     "href": "catalog/ibm_verify/app_login_counts.html#provenance",
     "title": "ibm_verify.app_login_counts",
     "section": "Provenance",
-    "text": "Provenance\nQueried directly from the IBM Verify production instance via API.\n\nUpdated: Daily, at 6am America/Toronto\nSteward: EDCP Data and Research Team\nContact: Yinlin Zhang",
+    "text": "Provenance\nQueried directly from the IBM Verify production instance via API.\n\nUpdated: Daily, at 6am America/Toronto\nRetention: Until CanadaLogin is retired\nSteward: EDCP Data and Research Team\nContact: Yinlin Zhang",
     "crumbs": [
       "Data Catalog",
       "IBM Verify",
@@ -1451,7 +1451,7 @@
     "href": "catalog/google_analytics/property_traffic.html#provenance",
     "title": "google_analytics.property_traffic",
     "section": "Provenance",
-    "text": "Provenance\nPulled daily from the GA4 Data API (runReport) for the CanadaLogin property, via a Lambda authenticating through Google Cloud Workload Identity Federation (no stored service account key). Written as JSONL, then cast to typed Parquet by a Glue ETL job.\n\nUpdated: Daily, at 07:00 ET\nSteward: EDCP Data and Research Team\nContact: Colin Douglas\nLocation: s3://&lt;transformed-bucket&gt;/google_analytics/property_traffic/",
+    "text": "Provenance\nPulled daily from the GA4 Data API (runReport) for the CanadaLogin property, via a Lambda authenticating through Google Cloud Workload Identity Federation (no stored service account key). Written as JSONL, then cast to typed Parquet by a Glue ETL job.\n\nUpdated: Daily, at 07:00 ET\nRetention: 7 years\nSteward: EDCP Data and Research Team\nContact: Colin Douglas\nLocation: s3://&lt;transformed-bucket&gt;/google_analytics/property_traffic/",
     "crumbs": [
       "Data Catalog",
       "Google Analytics",
@@ -1511,7 +1511,7 @@
     "href": "catalog/google_analytics/funnels_current.html#provenance",
     "title": "google_analytics.funnels_current",
     "section": "Provenance",
-    "text": "Provenance\n\nUpdated: Live view, not scheduled\nSteward: EDCP Data and Research Team\nContact: Colin Douglas",
+    "text": "Provenance\n\nUpdated: Live view, not scheduled\nRetention: 7 years\nSteward: EDCP Data and Research Team\nContact: Colin Douglas",
     "crumbs": [
       "Data Catalog",
       "Google Analytics",
@@ -1571,7 +1571,7 @@
     "href": "catalog/google_analytics/funnel_metrics_current.html#provenance",
     "title": "google_analytics.funnel_metrics_current",
     "section": "Provenance",
-    "text": "Provenance\n\nUpdated: Live view, not scheduled\nSteward: EDCP Data and Research Team\nContact: Colin Douglas",
+    "text": "Provenance\n\nUpdated: Live view, not scheduled\nRetention: 7 years\nSteward: EDCP Data and Research Team\nContact: Colin Douglas",
     "crumbs": [
       "Data Catalog",
       "Google Analytics",
@@ -1619,7 +1619,7 @@
     "href": "catalog/google_analytics/error_events.html#provenance",
     "title": "google_analytics.error_events",
     "section": "Provenance",
-    "text": "Provenance\nPulled daily from the GA4 Data API (runReport). Only events with error or error_id fields are kept.\n\nUpdated: Daily, at 07:00 ET\nSteward: EDCP Data and Research Team\nContact: Colin Douglas\nLocation: s3://&lt;transformed-bucket&gt;/google_analytics/error_events/",
+    "text": "Provenance\nPulled daily from the GA4 Data API (runReport). Only events with error or error_id fields are kept.\n\nUpdated: Daily, at 07:00 ET\nRetention: 7 years\nSteward: EDCP Data and Research Team\nContact: Colin Douglas\nLocation: s3://&lt;transformed-bucket&gt;/google_analytics/error_events/",
     "crumbs": [
       "Data Catalog",
       "Google Analytics",
@@ -1667,7 +1667,7 @@
     "href": "catalog/call_centre/weekly_topic_dump.html#provenance",
     "title": "call_centre.weekly_topic_dump",
     "section": "Provenance",
-    "text": "Provenance\nSourced from a weekly Excel report that is typically sent to the EDCP Data and Research team via email. That spreadsheet is extracted and loaded into the data repository via the call_centre_etl.py Lambda. The extracted_at field records when each row was last extracted from the source file.\n\nUpdated: Weekly, typically on Tuesdays\nSteward: EDCP Data and Research Team\nContact: Colin Douglas",
+    "text": "Provenance\nSourced from a weekly Excel report that is typically sent to the EDCP Data and Research team via email. That spreadsheet is extracted and loaded into the data repository via the call_centre_etl.py Lambda. The extracted_at field records when each row was last extracted from the source file.\n\nUpdated: Weekly, typically on Tuesdays\nRetention: 7 years\nSteward: EDCP Data and Research Team\nContact: Colin Douglas",
     "crumbs": [
       "Data Catalog",
       "Call Centre",
@@ -1737,7 +1737,7 @@
     "href": "catalog/call_centre/weekly_activity_report.html#provenance",
     "title": "call_centre.weekly_activity_report",
     "section": "Provenance",
-    "text": "Provenance\nSourced from a weekly Excel report that is typically sent to the EDCP Data and Research team via email. That spreadsheet is extracted and loaded into the data repository via the call centre weekly activity report Lambda. The extracted_at field records when each row was last extracted from the source file.\n\nUpdated: Weekly, typically on Tuesdays\nSteward: EDCP Data and Research Team\nContact: Colin Douglas",
+    "text": "Provenance\nSourced from a weekly Excel report that is typically sent to the EDCP Data and Research team via email. That spreadsheet is extracted and loaded into the data repository via the call centre weekly activity report Lambda. The extracted_at field records when each row was last extracted from the source file.\n\nUpdated: Weekly, typically on Tuesdays\nRetention: 7 years\nSteward: EDCP Data and Research Team\nContact: Colin Douglas",
     "crumbs": [
       "Data Catalog",
       "Call Centre",
@@ -1818,7 +1818,7 @@
     "href": "catalog/google_analytics/funnel_metrics.html#provenance",
     "title": "google_analytics.funnel_metrics",
     "section": "Provenance",
-    "text": "Provenance\nLike a funnel’s steps, a funnel’s derived metrics are declared in that funnel’s YAML on GitHub, in a metrics: block - see funnel_src/funnels/ in the canadalogin-reporting-data-pipeline repo. The YAML is the canonical definition of what each metric measures, including which two steps a ratio divides. A separate Lambda reads the already-landed rows from funnels (no new GA4 call) and computes every metric each funnel declares. See the task success rate cookbook entry for how the one metric type in use today (step_ratio) is calculated and interpreted.\n\nUpdated: Daily, at 06:45 ET, after the 06:30 ET funnel export\nSteward: EDCP Data and Research Team\nContact: Colin Douglas\nLocation: s3://&lt;transformed-bucket&gt;/google_analytics/funnel_metrics/",
+    "text": "Provenance\nLike a funnel’s steps, a funnel’s derived metrics are declared in that funnel’s YAML on GitHub, in a metrics: block - see funnel_src/funnels/ in the canadalogin-reporting-data-pipeline repo. The YAML is the canonical definition of what each metric measures, including which two steps a ratio divides. A separate Lambda reads the already-landed rows from funnels (no new GA4 call) and computes every metric each funnel declares. See the task success rate cookbook entry for how the one metric type in use today (step_ratio) is calculated and interpreted.\n\nUpdated: Daily, at 06:45 ET, after the 06:30 ET funnel export\nRetention: 7 years\nSteward: EDCP Data and Research Team\nContact: Colin Douglas\nLocation: s3://&lt;transformed-bucket&gt;/google_analytics/funnel_metrics/",
     "crumbs": [
       "Data Catalog",
       "Google Analytics",
@@ -1866,7 +1866,7 @@
     "href": "catalog/google_analytics/funnels.html#provenance",
     "title": "google_analytics.funnels",
     "section": "Provenance",
-    "text": "Provenance\nA funnel is defined as YAML, not SQL: one file per funnel in funnel_src/funnels/ in the canadalogin-reporting-data-pipeline repo. A dedicated Lambda turns each funnel’s YAML into a GA4 Data API runFunnelReport request (via Workload Identity Federation, same auth pattern as property_traffic) and writes the result as JSONL. The YAML on GitHub is the canonical definition of what each funnel measures - which pages or events count as which step, in what order, and over what population. This page describes the table shape; it does not enumerate step names, because they are versioned in that YAML and can change between funnel versions.\n\nUpdated: Daily, at 06:30 ET (a nightly sweep; see Notes)\nSteward: EDCP Data and Research Team\nContact: Colin Douglas\nLocation: s3://&lt;transformed-bucket&gt;/google_analytics/funnels/",
+    "text": "Provenance\nA funnel is defined as YAML, not SQL: one file per funnel in funnel_src/funnels/ in the canadalogin-reporting-data-pipeline repo. A dedicated Lambda turns each funnel’s YAML into a GA4 Data API runFunnelReport request (via Workload Identity Federation, same auth pattern as property_traffic) and writes the result as JSONL. The YAML on GitHub is the canonical definition of what each funnel measures - which pages or events count as which step, in what order, and over what population. This page describes the table shape; it does not enumerate step names, because they are versioned in that YAML and can change between funnel versions.\n\nUpdated: Daily, at 06:30 ET (a nightly sweep; see Notes)\nRetention: 7 years\nSteward: EDCP Data and Research Team\nContact: Colin Douglas\nLocation: s3://&lt;transformed-bucket&gt;/google_analytics/funnels/",
     "crumbs": [
       "Data Catalog",
       "Google Analytics",
@@ -1914,7 +1914,7 @@
     "href": "catalog/google_analytics/page_traffic.html#provenance",
     "title": "google_analytics.page_traffic",
     "section": "Provenance",
-    "text": "Provenance\nPulled daily from the GA4 Data API (runReport) for the CanadaLogin property, via the same Lambda and pipeline as property_traffic.\n\nUpdated: Daily, at 07:00 ET\nSteward: EDCP Data and Research Team\nContact: Colin Douglas\nLocation: s3://&lt;transformed-bucket&gt;/google_analytics/page_traffic/",
+    "text": "Provenance\nPulled daily from the GA4 Data API (runReport) for the CanadaLogin property, via the same Lambda and pipeline as property_traffic.\n\nUpdated: Daily, at 07:00 ET\nRetention: 7 years\nSteward: EDCP Data and Research Team\nContact: Colin Douglas\nLocation: s3://&lt;transformed-bucket&gt;/google_analytics/page_traffic/",
     "crumbs": [
       "Data Catalog",
       "Google Analytics",
@@ -1995,7 +1995,7 @@
     "href": "catalog/ibm_verify/auth_total_logins.html#provenance",
     "title": "ibm_verify.auth_total_logins",
     "section": "Provenance",
-    "text": "Provenance\nQueried directly from the IBM Verify production instance via API.\n\nUpdated: Daily, at 6am America/Toronto\nSteward: EDCP Data and Research Team\nContact: Yinlin Zhang",
+    "text": "Provenance\nQueried directly from the IBM Verify production instance via API.\n\nUpdated: Daily, at 6am America/Toronto\nRetention: Until CanadaLogin is retired\nSteward: EDCP Data and Research Team\nContact: Yinlin Zhang",
     "crumbs": [
       "Data Catalog",
       "IBM Verify",
@@ -2073,7 +2073,7 @@
     "href": "catalog/jira/psom.html#provenance",
     "title": "jira.psom",
     "section": "Provenance",
-    "text": "Provenance\nQueried from PSOM Jira Cloud via API by the psom-sync Lambda function.\n\nUpdated: Daily, at ~06:00 ET\nSteward: EDCP Data and Research Team\nContact: Yinlin Zhang (Data and Research team)",
+    "text": "Provenance\nQueried from PSOM Jira Cloud via API by the psom-sync Lambda function.\n\nUpdated: Daily, at ~06:00 ET\nRetention: 2 years\nSteward: EDCP Data and Research Team\nContact: Yinlin Zhang (Data and Research team)",
     "crumbs": [
       "Data Catalog",
       "Jira (PSOM)",
@@ -2121,7 +2121,7 @@
     "href": "catalog/jira/psom_sla.html#provenance",
     "title": "jira.psom_sla",
     "section": "Provenance",
-    "text": "Provenance\nWritten by the psom-sync Lambda in the same run as psom, from the ticket’s SLA fields.\n\nUpdated: Daily, at ~06:00 ET\nSteward: EDCP Data and Research Team\nContact: Yinlin Zhang (Data and Research team)",
+    "text": "Provenance\nWritten by the psom-sync Lambda in the same run as psom, from the ticket’s SLA fields.\n\nUpdated: Daily, at ~06:00 ET\nRetention: 2 years\nSteward: EDCP Data and Research Team\nContact: Yinlin Zhang (Data and Research team)",
     "crumbs": [
       "Data Catalog",
       "Jira (PSOM)",
@@ -2213,7 +2213,7 @@
     "href": "catalog/rp/service.html#provenance",
     "title": "rp.service",
     "section": "Provenance",
-    "text": "Provenance\nThe list is maintained by hand in the CanadaLogin Relying Parties Google Sheet. The rp-sync Lambda reads the sheet every weekday and writes a single Parquet file to S3, then triggers a Glue crawler to refresh the table in Athena. The table is not partitioned and the file is overwritten in place, so this table holds current state only and keeps no history.\n\nUpdated: Weekdays, at 06:00 ET\nSteward: EDCP Data and Research Team\nContact: Colin Douglas\nLocation: s3://canadalogin-reporting-transformed/rp/service/",
+    "text": "Provenance\nThe list is maintained by hand in the CanadaLogin Relying Parties Google Sheet. The rp-sync Lambda reads the sheet every weekday and writes a single Parquet file to S3, then triggers a Glue crawler to refresh the table in Athena. The table is not partitioned and the file is overwritten in place, so this table holds current state only and keeps no history.\n\nUpdated: Weekdays, at 06:00 ET\nRetention: Until CanadaLogin is retired\nSteward: EDCP Data and Research Team\nContact: Colin Douglas\nLocation: s3://canadalogin-reporting-transformed/rp/service/",
     "crumbs": [
       "Data Catalog",
       "Relying Parties",
@@ -2261,7 +2261,7 @@
     "href": "catalog/sre/mttr_current.html#provenance",
     "title": "sre.mttr_current",
     "section": "Provenance",
-    "text": "Provenance\nFetched automatically every Monday at 06:00 ET from the CanadaLogin MTTR Dashboard Google Sheet using the sre-mttr-sheets-fetcher Lambda. Each upload overwrites this table wholesale with the current incident state and appends a dated snapshot to mttr_history.\n\nUpdated: Weekly, Every Monday 06:00 ET\nSteward: EDCP Data and Research Team\nContact: Yinlin Zhang (Data and Research team) or Obie Okongwu (CL Platform Team)",
+    "text": "Provenance\nFetched automatically every Monday at 06:00 ET from the CanadaLogin MTTR Dashboard Google Sheet using the sre-mttr-sheets-fetcher Lambda. Each upload overwrites this table wholesale with the current incident state and appends a dated snapshot to mttr_history.\n\nUpdated: Weekly, Every Monday 06:00 ET\nRetention: 7 years\nSteward: EDCP Data and Research Team\nContact: Yinlin Zhang (Data and Research team) or Obie Okongwu (CL Platform Team)",
     "crumbs": [
       "Data Catalog",
       "Platform",
@@ -2297,7 +2297,7 @@
     "href": "catalog/sre/uptime_summary.html#provenance",
     "title": "sre.uptime_summary",
     "section": "Provenance",
-    "text": "Provenance\nFully automated. No manual upload required. The upptime summary.yml GitHub Action recalculates all rolling-window metrics from the full five-minute ping history once per day (~00:00 UTC), rewriting summary.json. The Lambda runs at 04:00 ET and fetches that file, writing one Parquet row per site into the date=YYYY-MM-DD partition corresponding to the preceding day.\n\nUpdated: Daily, at ~04:00 ET\nSteward: EDCP Data and Research Team\nContact: Yinlin Zhang (Data and Research team)\n\nSix monitored sites:\n\n\n\n\n\n\n\n\nslug\nlang\nurl\n\n\n\n\ncanada-login-website-en\nWEB-EN\nhttps://login.canada.ca\n\n\ncanada-login-website-fr\nWEB-FR\nhttps://connexion.canada.ca\n\n\ncanada-login-manage-profile-staging\nMP-STAGING\nhttps://app.login-connexion.alpha.canada.ca\n\n\ncanada-login-manage-profile-prod\nMP-PROD\nhttps://app.login-connexion.canada.ca\n\n\ncanada-login-idp-staging\nIDP-STAGING\nhttps://auth.login-connexion.alpha.canada.ca\n\n\ncanada-login-idp-prod\nIDP-PROD\nhttps://auth.login-connexion.canada.ca",
+    "text": "Provenance\nFully automated. No manual upload required. The upptime summary.yml GitHub Action recalculates all rolling-window metrics from the full five-minute ping history once per day (~00:00 UTC), rewriting summary.json. The Lambda runs at 04:00 ET and fetches that file, writing one Parquet row per site into the date=YYYY-MM-DD partition corresponding to the preceding day.\n\nUpdated: Daily, at ~04:00 ET\nRetention: 7 years\nSteward: EDCP Data and Research Team\nContact: Yinlin Zhang (Data and Research team)\n\nSix monitored sites:\n\n\n\n\n\n\n\n\nslug\nlang\nurl\n\n\n\n\ncanada-login-website-en\nWEB-EN\nhttps://login.canada.ca\n\n\ncanada-login-website-fr\nWEB-FR\nhttps://connexion.canada.ca\n\n\ncanada-login-manage-profile-staging\nMP-STAGING\nhttps://app.login-connexion.alpha.canada.ca\n\n\ncanada-login-manage-profile-prod\nMP-PROD\nhttps://app.login-connexion.canada.ca\n\n\ncanada-login-idp-staging\nIDP-STAGING\nhttps://auth.login-connexion.alpha.canada.ca\n\n\ncanada-login-idp-prod\nIDP-PROD\nhttps://auth.login-connexion.canada.ca",
     "crumbs": [
       "Data Catalog",
       "Platform",

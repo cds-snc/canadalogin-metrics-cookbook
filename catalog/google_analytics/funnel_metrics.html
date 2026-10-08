@@ -772,6 +772,7 @@ ul.task-list li input[type="checkbox"] {
 <p>Like a funnel’s steps, a funnel’s derived metrics are declared in that funnel’s YAML on GitHub, in a <code>metrics:</code> block - see <a href="https://github.com/cds-snc/canadalogin-reporting-data-pipeline/tree/main/infra/modules/google_analytics/funnel_src/funnels"><code>funnel_src/funnels/</code></a> in the <code>canadalogin-reporting-data-pipeline</code> repo. <strong>The YAML is the canonical definition of what each metric measures</strong>, including which two steps a ratio divides. A separate Lambda reads the already-landed rows from <a href="../../catalog/google_analytics/funnels.html"><code>funnels</code></a> (no new GA4 call) and computes every metric each funnel declares. See the <a href="../../cookbook/google_analytics/task-success-rate.html">task success rate</a> cookbook entry for how the one metric type in use today (<code>step_ratio</code>) is calculated and interpreted.</p>
 <ul>
 <li><strong>Updated</strong>: Daily, at 06:45 ET, after the 06:30 ET funnel export</li>
+<li><strong>Retention</strong>: 7 years</li>
 <li><strong>Steward</strong>: EDCP Data and Research Team</li>
 <li><strong>Contact</strong>: <a href="mailto:colin.douglas@cds-snc.ca">Colin Douglas</a></li>
 <li><strong>Location</strong>: <code>s3://&lt;transformed-bucket&gt;/google_analytics/funnel_metrics/</code></li>

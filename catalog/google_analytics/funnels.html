@@ -772,6 +772,7 @@ ul.task-list li input[type="checkbox"] {
 <p>A funnel is defined as YAML, not SQL: one file per funnel in <a href="https://github.com/cds-snc/canadalogin-reporting-data-pipeline/tree/main/infra/modules/google_analytics/funnel_src/funnels"><code>funnel_src/funnels/</code></a> in the <code>canadalogin-reporting-data-pipeline</code> repo. A dedicated Lambda turns each funnel’s YAML into a GA4 Data API <code>runFunnelReport</code> request (via Workload Identity Federation, same auth pattern as <a href="../../catalog/google_analytics/property_traffic.html"><code>property_traffic</code></a>) and writes the result as JSONL. <strong>The YAML on GitHub is the canonical definition of what each funnel measures</strong> - which pages or events count as which step, in what order, and over what population. This page describes the table shape; it does not enumerate step names, because they are versioned in that YAML and can change between funnel versions.</p>
 <ul>
 <li><strong>Updated</strong>: Daily, at 06:30 ET (a nightly sweep; see Notes)</li>
+<li><strong>Retention</strong>: 7 years</li>
 <li><strong>Steward</strong>: EDCP Data and Research Team</li>
 <li><strong>Contact</strong>: <a href="mailto:colin.douglas@cds-snc.ca">Colin Douglas</a></li>
 <li><strong>Location</strong>: <code>s3://&lt;transformed-bucket&gt;/google_analytics/funnels/</code></li>
