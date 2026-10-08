@@ -82,6 +82,7 @@ website:
             href: cookbook/google_analytics.qmd
             contents:
               - cookbook/google_analytics/task-success-rate.qmd
+              - cookbook/google_analytics/dwell-time.qmd
           - section: "Additional Notes"
             href: cookbook/notes.qmd
             contents:
@@ -136,6 +137,10 @@ website:
                 href: catalog/google_analytics/page_traffic.qmd
               - text: error_events
                 href: catalog/google_analytics/error_events.qmd
+              - text: meta_page_traffic
+                href: catalog/google_analytics/meta_page_traffic.qmd
+              - text: meta_page_events
+                href: catalog/google_analytics/meta_page_events.qmd
               - text: funnels
                 href: catalog/google_analytics/funnels.qmd
               - text: funnels_current

@@ -1,0 +1,63 @@
+---
+title: "google_analytics.meta_page_events"
+description: "Daily GA4 events on Signal Check, the dashboards, and the Cookbook, by page and event name."
+---
+
+Daily event counts for the meta-analytics GA4 property, which measures who
+reads Signal Check, the published dashboards, and this Metrics Cookbook. Use
+it to see how far readers get on a page, such as how long they stay.
+
+Each row represents one day of a single event on a single page.
+
+`Keywords`: Google Analytics, GA4, meta-analytics, Signal Check, dashboards, Metrics Cookbook, readership, events, dwell time, time on page, scroll
+
+## Provenance
+
+Pulled daily from the GA4 Data API (`runReport`) for the meta-analytics
+property, by the same Lambda and pipeline as
+[`meta_page_traffic`](meta_page_traffic.qmd). Every event is kept, with no
+filter. The Glue ETL job adds the same `pagepath_redacted` and `page_kind`
+columns as in `meta_page_traffic`.
+
+Data starts on 2026-07-23.
+
+* **Updated**: Daily, at 07:00 ET
+* **Retention**: 7 years
+* **Steward**: EDCP Data and Research Team
+* **Contact**: [Colin Douglas](mailto:colin.douglas@cds-snc.ca)
+* **Location**: `s3://<transformed-bucket>/google_analytics/meta_page_events/`
+
+## Fields
+
+One row per `date` per `streamid` per `pagepath` per `pagetitle` per
+`eventname`.
+
+| Field Name | Type | Description |
+|---|---|---|
+| date | string | The reporting day, as a partition key (for example, "2026-09-22") |
+| streamid | string | Numeric ID of the GA4 data stream that reported the event. Stable if a stream is renamed |
+| streamname | string | Display name of the GA4 data stream, "Signal Check" or "Metrics Cookbook" |
+| pagepath | string | The page's URL path as GA4 reports it. Signal Check paths include a private token. Do not use (see Notes) |
+| pagetitle | string | The page's `<title>` at the time of the event. Signal Check titles include the edition number |
+| eventname | string | GA4 event name, for example `page_view`, `scroll`, `click`, `user_engagement`, or `read_30s` |
+| eventcount | bigint | Number of times this event fired on this page on this day |
+| totalusers | bigint | Number of distinct users who fired this event on this page on this day. Do not sum |
+| pagepath_redacted | string | `pagepath` with the Signal Check token removed. Derived in the ETL. Filter and group on this |
+| page_kind | string | What kind of page this is, one of `signal_check`, `dashboard`, `redirect`, `cookbook`, `preview`, or `other`. Derived in the ETL |
+
+## Notes
+
+**Filter on `pagepath_redacted` and `page_kind`, never on `pagepath`.** The
+rules are the same as in [`meta_page_traffic`](meta_page_traffic.qmd#notes).
+Never put a raw `pagepath` value, or a query result that includes it, in a
+public repo or a published report.
+
+**Pages in Signal Check Publishing emit dwell time events** By default, they fire
+`read_1s`, `read_5s`, `read_15s`, `read_30s`, `read_60s`, `read_120s`,
+`read_300s`, and `read_600s`, each once per page view, counting only the
+time the tab is visible.
+
+**`totalusers` does not sum across rows.** A reader who fired two events, or
+visited on two days, is counted in each row. Comparing `totalusers` between
+events on the same page and day is fine. Adding them up is not. `eventcount`
+is safe to sum.

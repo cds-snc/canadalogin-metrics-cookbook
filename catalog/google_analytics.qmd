@@ -6,6 +6,8 @@ listing:
       - google_analytics/property_traffic.qmd
       - google_analytics/page_traffic.qmd
       - google_analytics/error_events.qmd
+      - google_analytics/meta_page_traffic.qmd
+      - google_analytics/meta_page_events.qmd
       - google_analytics/funnels.qmd
       - google_analytics/funnels_current.qmd
       - google_analytics/funnel_metrics.qmd
@@ -20,7 +22,9 @@ listing:
 ---
 
 Tables in the `google_analytics` schema, populated from the CanadaLogin GA4
-property. Three scheduled Lambdas write into this schema each night, all in
+property. The two `meta_` tables come from a separate meta-analytics property,
+which measures readership of Signal Check, the published dashboards, and this
+Cookbook. Three scheduled Lambdas write into this schema each night, all in
 the `canadalogin-reporting-data-pipeline` repo's `google_analytics` Terraform
 module:
 
@@ -28,8 +32,9 @@ module:
 - **06:45 ET** - the funnel metrics Lambda, deriving [`funnel_metrics`](google_analytics/funnel_metrics.qmd)
   from the funnels the export just landed
 - **07:00 ET** - the daily export, writing [`property_traffic`](google_analytics/property_traffic.qmd),
-  [`page_traffic`](google_analytics/page_traffic.qmd), and [`error_events`](google_analytics/error_events.qmd), then
-  starting the crawler
+  [`page_traffic`](google_analytics/page_traffic.qmd), [`error_events`](google_analytics/error_events.qmd),
+  [`meta_page_traffic`](google_analytics/meta_page_traffic.qmd), and
+  [`meta_page_events`](google_analytics/meta_page_events.qmd), then starting the crawler
 
 [`funnels_current`](google_analytics/funnels_current.qmd) and
 [`funnel_metrics_current`](google_analytics/funnel_metrics_current.qmd) are views over `funnels`

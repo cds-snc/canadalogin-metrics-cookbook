@@ -4,6 +4,7 @@ listing:
   - id: metrics
     contents:
       - google_analytics/task-success-rate.qmd
+      - google_analytics/dwell-time.qmd
     type: table
     fields: [title, description]
     field-display-names:

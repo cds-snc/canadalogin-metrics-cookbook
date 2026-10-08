@@ -1,0 +1,82 @@
+---
+title: "google_analytics.meta_page_traffic"
+description: "Daily readership of Signal Check, the dashboards, and the Cookbook, by page and session source."
+---
+
+Daily traffic for the meta-analytics GA4 property, which measures who reads
+Signal Check, the published dashboards, and this Metrics Cookbook.
+
+Each row represents one day of traffic to a single page, from sessions that
+started from one source, medium, and campaign.
+
+`Keywords`: Google Analytics, GA4, meta-analytics, Signal Check, dashboards, Metrics Cookbook, readership, page views, session source, utm_source
+
+## Provenance
+
+Pulled daily from the GA4 Data API (`runReport`) for the meta-analytics
+property, by the same Lambda and pipeline as
+[`page_traffic`](page_traffic.qmd). The Glue ETL job adds two derived
+columns, `pagepath_redacted` and `page_kind`. They exist only in this table
+and [`meta_page_events`](meta_page_events.qmd).
+
+The property has two web streams. The Signal Check stream covers the Signal
+Check editions and the published dashboards, which carry the same tag. The
+Metrics Cookbook stream covers this site, including its PR previews.
+
+Data starts on 2026-07-23.
+
+* **Updated**: Daily, at 07:00 ET
+* **Retention**: 7 years
+* **Steward**: EDCP Data and Research Team
+* **Contact**: [Colin Douglas](mailto:colin.douglas@cds-snc.ca)
+* **Location**: `s3://<transformed-bucket>/google_analytics/meta_page_traffic/`
+
+## Fields
+
+One row per `date` per `streamid` per `pagepath` per `pagetitle` per
+`sessionsource`, `sessionmedium`, and `sessioncampaignname`.
+
+| Field Name | Type | Description |
+|---|---|---|
+| date | string | The reporting day, as a partition key (for example, "2026-09-22") |
+| streamid | string | Numeric ID of the GA4 data stream that reported the page. Stable if a stream is renamed |
+| streamname | string | Display name of the GA4 data stream, "Signal Check" or "Metrics Cookbook" |
+| pagepath | string | The page's URL path as GA4 reports it. Signal Check paths include a private token. Do not use (see Notes) |
+| pagetitle | string | The page's `<title>` at the time of the visit. Signal Check titles include the edition number |
+| sessionsource | string | Where the session started, for example `slack`, `teams`, `email`, `report_link`, `latest-link`, `github.com`, `google`, or `(direct)` |
+| sessionmedium | string | Session medium. `(not set)` for tagged links, since they carry a source only. Otherwise `(none)` for direct visits, `referral`, or `organic` |
+| sessioncampaignname | string | Session campaign. `(not set)` for tagged links, otherwise `(direct)`, `(referral)`, or `(organic)` |
+| sessions | bigint | Number of sessions from this source that included this page on this day |
+| screenpageviews | bigint | Number of times this page was viewed on this day, in those sessions |
+| totalusers | bigint | Number of distinct users in those sessions. Do not sum |
+| newusers | bigint | Number of first-time users in those sessions. Do not sum |
+| pagepath_redacted | string | `pagepath` with the Signal Check token removed. Derived in the ETL. Filter and group on this |
+| page_kind | string | What kind of page this is, one of `signal_check`, `dashboard`, `redirect`, `cookbook`, `preview`, or `other`. Derived in the ETL |
+
+## Notes
+
+**Filter and group on `pagepath_redacted`, never on `pagepath`.** Signal
+Check pages are served at a path that includes a private token, so the
+links can't be guessed. `pagepath_redacted` drops it.
+
+**Use `page_kind` to pick pages.** It is derived from `pagepath_redacted`,
+and the first matching rule wins:
+
+- `signal_check`: a Signal Check edition (`/r/YYYYMMDD_signal-check.html`)
+- `redirect`: a redirect page that forwards to the latest edition. These
+  are listed by name in the pipeline's ETL job
+- `preview`: a Cookbook PR preview (`/canadalogin-metrics-cookbook/pr-preview/`).
+  These are the team's own review views, not readership
+- `cookbook`: any other Cookbook page
+- `dashboard`: any other `.html` page under the publishing site's `/r/`.
+  This is a catch-all, so a new dashboard needs no code change. A new
+  one-off page there would also count as a dashboard
+- `other`: anything else, including `(unrecognized)` paths
+
+
+**`totalusers` and `newusers` do not sum across rows.** A reader who came
+from two sources, or saw two pages, is counted in both rows. This table can't
+give an exact count of unique readers of an edition. `sessions` and
+`screenpageviews` are safe to sum. The reason is the same as why
+[we can't sum unique users](../../cookbook/notes.qmd#daily-unique-users-are-not-the-same-as-period-unique-users)
+in IBM Verify.
