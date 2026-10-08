@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.10.18">
+<meta name="generator" content="quarto-1.10.19">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -81,9 +81,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-b85bc7c33db8c58e0ec93c3465666fed.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-b626d73c4c936ccc3cb08be7d45d1df6.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../../site_libs/bootstrap/bootstrap-8b76eb07b549522d1afae2dc4e9871db.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
@@ -766,10 +766,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#sign-in" id="toc-sign-in" class="nav-link active" data-scroll-target="#sign-in">Sign in</a></li>
+  <li><a href="#calculation" id="toc-calculation" class="nav-link active" data-scroll-target="#calculation">Calculation</a></li>
+  <li><a href="#interpretation-notes" id="toc-interpretation-notes" class="nav-link" data-scroll-target="#interpretation-notes">Interpretation notes</a>
+  <ul>
+  <li><a href="#task-notes" id="toc-task-notes" class="nav-link" data-scroll-target="#task-notes">Task notes</a>
+  <ul class="collapse">
+  <li><a href="#all-tasks" id="toc-all-tasks" class="nav-link" data-scroll-target="#all-tasks">All tasks</a></li>
+  <li><a href="#sign-in" id="toc-sign-in" class="nav-link" data-scroll-target="#sign-in">Sign in</a></li>
   <li><a href="#sign-up" id="toc-sign-up" class="nav-link" data-scroll-target="#sign-up">Sign up</a></li>
-  <li><a href="#calculation" id="toc-calculation" class="nav-link" data-scroll-target="#calculation">Calculation</a></li>
-  <li><a href="#interpretation-notes" id="toc-interpretation-notes" class="nav-link" data-scroll-target="#interpretation-notes">Interpretation notes</a></li>
+  <li><a href="#recover-password" id="toc-recover-password" class="nav-link" data-scroll-target="#recover-password">Recover password</a></li>
+  <li><a href="#recover-2-step-verification" id="toc-recover-2-step-verification" class="nav-link" data-scroll-target="#recover-2-step-verification">Recover 2-step verification</a></li>
+  <li><a href="#migration" id="toc-migration" class="nav-link" data-scroll-target="#migration">Migration</a></li>
+  </ul></li>
+  </ul></li>
   <li><a href="#alternative-names" id="toc-alternative-names" class="nav-link" data-scroll-target="#alternative-names">Alternative names</a></li>
   </ul>
 </nav>
@@ -801,21 +810,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>The proportion of users who started a given task in CanadaLogin and reached that task’s defined finishing point, measured from Google Analytics 4 funnel data.</p>
-<p>This is a family of metrics, not a single number: each funnel declares its own task success rate as a <code>step_ratio</code> in its YAML definition on GitHub - one funnel step counted as the entry, another counted as the exit, both measured as GA4 <code>activeUsers</code> over the same reporting window. <strong>The entry and exit steps for each funnel are described below as of this writing, but the YAML is the canonical, versioned source</strong> - see <a href="https://github.com/cds-snc/canadalogin-reporting-data-pipeline/tree/main/infra/modules/google_analytics/funnel_src/funnels"><code>funnel_src/funnels/</code></a> in the <code>canadalogin-reporting-data-pipeline</code> repo. Check the YAML before trusting a step name quoted here.</p>
-<section id="sign-in" class="level2">
-<h2 class="anchored" data-anchor-id="sign-in">Sign in</h2>
-<p>Funnel definition: <a href="https://github.com/cds-snc/canadalogin-reporting-data-pipeline/blob/main/infra/modules/google_analytics/funnel_src/funnels/sign_in.yaml"><code>sign_in.yaml</code></a>.</p>
-<p>Entry is the first taggable step of the sign-in flow (the “enter your email” screen); exit is reaching MFA selection, the last step Google Analytics can see. <strong>This is not a full sign-in completion rate.</strong> A successful sign-in redirects off-site to IBM Verify and back to the relying party with no page in between, so GA4 has no event to mark true completion - reaching MFA is the closest proxy available. See the <a href="../../catalog/google_analytics/funnels.html"><code>funnels</code></a> catalog entry for the <code>RESERVED_TOTAL</code> and <code>window_incomplete</code> conventions this table shares with <code>funnel_metrics</code>.</p>
-</section>
-<section id="sign-up" class="level2">
-<h2 class="anchored" data-anchor-id="sign-up">Sign up</h2>
-<p>Funnel definition: <a href="https://github.com/cds-snc/canadalogin-reporting-data-pipeline/blob/main/infra/modules/google_analytics/funnel_src/funnels/sign_up.yaml"><code>sign_up.yaml</code></a>.</p>
-<p>Entry is the first step of the sign-up flow, after accepting Terms and Conditions; exit is the account-creation confirmation screen. Unlike sign-in, this <strong>is</strong> a true completion signal - the confirmation page is a real, first-party GA4 event.</p>
-</section>
+<p>The proportion of users who started a given task in CanadaLogin and reached that task’s defined end point, measured from Google Analytics 4 funnel data.</p>
+<p>This is a family of metrics, not a single number. Each funnel declares its own task success rate as a <code>step_ratio</code> in its YAML definition on GitHub. <strong>The entry and exit steps for each funnel are described below as of this writing, but the YAML is the canonical, versioned source</strong> - see <a href="https://github.com/cds-snc/canadalogin-reporting-data-pipeline/tree/main/infra/modules/google_analytics/funnel_src/funnels"><code>funnel_src/funnels/</code></a> in the <code>canadalogin-reporting-data-pipeline</code> repo.</p>
+<p>Only sign-up, password recovery and the two migration tasks end on a screen that confirms the task is done. Sign-in cannot, and the 2-step recovery exit is a later cleanup screen. See the <a href="#task-notes">task notes</a> before comparing tasks or reading any one rate as a completion rate.</p>
 <section id="calculation" class="level2">
 <h2 class="anchored" data-anchor-id="calculation">Calculation</h2>
-<p>Each funnel’s task success rate is already computed and stored as one row per window in <a href="../../catalog/google_analytics/funnel_metrics.html"><code>funnel_metrics</code></a>: the exit step’s <code>activeUsers</code> divided by the entry step’s, for that funnel run. There is no ratio to compute by hand - filter to the funnel and metric, and read <code>value</code>. Query <a href="../../catalog/google_analytics/funnel_metrics_current.html"><code>funnel_metrics_current</code></a> rather than <code>funnel_metrics</code> directly, so a future funnel version bump can’t silently blend two definitions together. Filter <code>breakdown_value = 'RESERVED_TOTAL'</code> for the overall rate across all relying parties; substitute a specific relying party name for a per-RP figure.</p>
+<p>Each funnel’s task success rate is already computed and stored as one row per window in <a href="../../catalog/google_analytics/funnel_metrics.html"><code>funnel_metrics</code></a>: the exit step’s <code>activeUsers</code> divided by the entry step’s, for that funnel run. There is no ratio to compute by hand - filter to the funnel and metric, and read <code>value</code>. Query <a href="../../catalog/google_analytics/funnel_metrics_current.html"><code>funnel_metrics_current</code></a> rather than <code>funnel_metrics</code> directly, so a future funnel version bump can’t silently blend two definitions together. Filter <code>breakdown_value = 'RESERVED_TOTAL'</code> for the overall rate across all relying parties; substitute a specific relying party name for a per-RP figure. The <a href="../../catalog/google_analytics/funnels.html"><code>funnels</code></a> catalog entry explains the <code>RESERVED_TOTAL</code> and <code>window_incomplete</code> conventions.</p>
+<p>For one task, set <code>funnel_id</code> to the value given in that task’s <a href="#task-notes">notes</a>.</p>
 <div class="callout callout-style-default callout-note callout-titled" title="Example queries">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -832,7 +833,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href="">SQL</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href="">R</a></li></ul>
 <div class="tab-content">
 <div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
-<p>Sign in:</p>
+<p>One task:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    window_end,</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">value</span> <span class="kw">AS</span> task_success_rate</span>
@@ -845,22 +846,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- set the reporting window; see the timespans note in cookbook/notes.qmd</span></span>
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">AND</span> <span class="fu">CAST</span>(window_end <span class="kw">AS</span> <span class="dt">DATE</span>) <span class="kw">BETWEEN</span> <span class="dt">DATE</span> <span class="st">'2026-07-14'</span> <span class="kw">AND</span> <span class="dt">DATE</span> <span class="st">'2026-08-03'</span></span>
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> window_end;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Sign up:</p>
+<p>Every task:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    window_end,</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">value</span> <span class="kw">AS</span> task_success_rate</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> google_analytics.funnel_metrics_current</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> funnel_id <span class="op">=</span> <span class="st">'sign_up'</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">AND</span> metric_id <span class="op">=</span> <span class="st">'task_success'</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    funnel_id,</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    window_end,</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">value</span> <span class="kw">AS</span> task_success_rate</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> google_analytics.funnel_metrics_current</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> metric_id <span class="op">=</span> <span class="st">'task_success'</span></span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">AND</span> window_days <span class="op">=</span> <span class="st">'7'</span></span>
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">AND</span> breakdown_value <span class="op">=</span> <span class="st">'RESERVED_TOTAL'</span></span>
 <span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">AND</span> <span class="kw">NOT</span> window_incomplete</span>
 <span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- set the reporting window; see the timespans note in cookbook/notes.qmd</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">AND</span> <span class="fu">CAST</span>(window_end <span class="kw">AS</span> <span class="dt">DATE</span>) <span class="kw">BETWEEN</span> <span class="dt">DATE</span> <span class="st">'2026-07-14'</span> <span class="kw">AND</span> <span class="dt">DATE</span> <span class="st">'2026-08-03'</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> window_end;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">AND</span> <span class="fu">CAST</span>(window_end <span class="kw">AS</span> <span class="dt">DATE</span>) <span class="kw">BETWEEN</span> <span class="dt">DATE</span> <span class="st">'2026-08-03'</span> <span class="kw">AND</span> <span class="dt">DATE</span> <span class="st">'2026-08-31'</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> funnel_id, window_end;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
-<p>Sign in:</p>
+<p>One task:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tbl</span>(con, <span class="fu">in_schema</span>(<span class="st">"google_analytics"</span>, <span class="st">"funnel_metrics_current"</span>)) <span class="sc">|&gt;</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    funnel_id <span class="sc">==</span> <span class="st">"sign_in"</span>,</span>
@@ -874,20 +875,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
 <span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(window_end, <span class="at">task_success_rate =</span> value) <span class="sc">|&gt;</span></span>
 <span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(window_end)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Sign up:</p>
+<p>Every task:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tbl</span>(con, <span class="fu">in_schema</span>(<span class="st">"google_analytics"</span>, <span class="st">"funnel_metrics_current"</span>)) <span class="sc">|&gt;</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    funnel_id <span class="sc">==</span> <span class="st">"sign_up"</span>,</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    metric_id <span class="sc">==</span> <span class="st">"task_success"</span>,</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    window_days <span class="sc">==</span> <span class="st">"7"</span>,</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    breakdown_value <span class="sc">==</span> <span class="st">"RESERVED_TOTAL"</span>,</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="sc">!</span>window_incomplete,</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># set the reporting window; see the timespans note in cookbook/notes.qmd</span></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as.Date</span>(window_end) <span class="sc">&gt;=</span> <span class="fu">as.Date</span>(<span class="st">"2026-07-14"</span>),</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as.Date</span>(window_end) <span class="sc">&lt;=</span> <span class="fu">as.Date</span>(<span class="st">"2026-08-03"</span>)</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(window_end, <span class="at">task_success_rate =</span> value) <span class="sc">|&gt;</span></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(window_end)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    metric_id <span class="sc">==</span> <span class="st">"task_success"</span>,</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    window_days <span class="sc">==</span> <span class="st">"7"</span>,</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    breakdown_value <span class="sc">==</span> <span class="st">"RESERVED_TOTAL"</span>,</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="sc">!</span>window_incomplete,</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># set the reporting window; see the timespans note in cookbook/notes.qmd</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as.Date</span>(window_end) <span class="sc">&gt;=</span> <span class="fu">as.Date</span>(<span class="st">"2026-08-03"</span>),</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as.Date</span>(window_end) <span class="sc">&lt;=</span> <span class="fu">as.Date</span>(<span class="st">"2026-08-31"</span>)</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(funnel_id, window_end, <span class="at">task_success_rate =</span> value) <span class="sc">|&gt;</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(funnel_id, window_end)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
@@ -901,10 +901,79 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <ul>
 <li><code>'1'</code> is the same metric on a single day. It is the noisiest of the three, but it is the only one that shows the exact date something changed.</li>
 <li><code>'7'</code> is the usual default. Every window holds one of each weekday, so day-of-week effects wash out.</li>
-<li><code>'28'</code> is a rolling four-week window. It is the steadiest of the three and the one to use for monthly reporting, but a step change takes 28 days to show up in it fully, so it is a poor way to check whether a fix worked.</li>
+<li><code>'28'</code> is a rolling four-week window. It is the steadiest of the three and the one to use for monthly reporting.</li>
 </ul>
-<p>All three are partition-key strings, not numbers, in this schema. Windows within one <code>window_days</code> overlap, so consecutive rows are not independent readings: one unusual day moves 7 weekly rows and 28 monthly ones. A <code>value</code> of <code>NULL</code> means nobody reached the entry step that window (an undefined rate, not a true zero) - such rows are rare but real, and an average that treats them as <code>0.0</code> will read too pessimistic.</p>
-<p>These two funnels are not directly comparable to each other: sign-in’s rate stops at MFA for the structural reason described above, so it reads lower than a true completion rate would, while sign-up’s rate is a real completion figure. Comparing the two numbers as if they measured the same kind of finish line will overstate the sign-in/sign-up gap.</p>
+<p>Windows overlap, so consecutive rows are not independent. One unusual day shows up in 7 weekly rows and 28 monthly ones. A <code>NULL</code> rate means nobody reached the entry step in that window. These rows are rare. Drop them rather than counting them as <code>0.0</code>, or an average will read too low.</p>
+<section id="task-notes" class="level3">
+<h3 class="anchored" data-anchor-id="task-notes">Task notes</h3>
+<section id="all-tasks" class="level4">
+<h4 class="anchored" data-anchor-id="all-tasks">All tasks</h4>
+<ul>
+<li><strong>Users, not attempts.</strong> Every step counts distinct <code>activeUsers</code> in the window. A user who fails, retries and succeeds counts once, as a success. A user who fails three times and gives up counts once, as a failure. The rate is a share of people, not of attempts.</li>
+<li><strong>Sign ups and sign ins without a valid destination RP are excluded.</strong> It is technically possible for someone to go through the sign up or sign in flow without entering via a valid RP service, via a link that specifies the CL manage app as the destination relying party. Actual users will always enter via a valid RP, so we can be confident that traffic with the Manage CanadaLogin RP id parameter represents internal employee traffic, rather than actul users. All funnels that are not manage app tasks therefore exclude traffic with the Manage App RP id parameter. Manage CanadaLogin app, which is internal. See <a href="../../cookbook/notes.html#internal-applications-should-usually-be-excluded-from-external-adoption-reporting">Internal applications</a>.</li>
+<li><strong>A series can change definition part way through.</strong> <code>funnel_metrics_current</code> returns the newest version for each date, and a new version is not always backfilled. Check <code>funnel_version</code> across the rows before reading a trend.</li>
+</ul>
+</section>
+<section id="sign-in" class="level4">
+<h4 class="anchored" data-anchor-id="sign-in">Sign in</h4>
+<ul>
+<li><strong>Funnel ID</strong>: <code>sign_in</code></li>
+<li><strong>Definition</strong>: <a href="https://github.com/cds-snc/canadalogin-reporting-data-pipeline/blob/main/infra/modules/google_analytics/funnel_src/funnels/sign_in.yaml"><code>sign_in.yaml</code></a></li>
+<li><strong>Entry</strong>: <code>enter_email</code>, the “Enter your email” screen</li>
+<li><strong>Exit</strong>: <code>mfa_submit</code>, pressing submit on the second-factor form</li>
+</ul>
+<p><strong>This rate measures submitting a second factor, but not necessarily success.</strong> The exit is pressing the submit button on the second-factor form. It is possible to submit an incorrect OTP code and count as a success in the task but fail to actually sign in. This is a <a href="https://github.com/cds-snc/canadalogin-reporting-gadrift/issues/3">limitation</a> of what Google Analytics measures. This means the rate is marginally overstated, compared to a true sign-in success rate.</p>
+<p>For an authentication success rate measured by IBM Verify itself, see <a href="../../cookbook/ibm_verify/sign-in-success-rate.html">Authentication Success Rate</a>. It counts attempts rather than users and covers every sign-in, not only those that started in a tagged browser session, so the two numbers will not match.</p>
+</section>
+<section id="sign-up" class="level4">
+<h4 class="anchored" data-anchor-id="sign-up">Sign up</h4>
+<ul>
+<li><strong>Funnel ID</strong>: <code>sign_up</code></li>
+<li><strong>Definition</strong>: <a href="https://github.com/cds-snc/canadalogin-reporting-data-pipeline/blob/main/infra/modules/google_analytics/funnel_src/funnels/sign_up.yaml"><code>sign_up.yaml</code></a></li>
+<li><strong>Entry</strong>: <code>terms</code>, the Terms and Conditions screen</li>
+<li><strong>Exit</strong>: <code>complete</code>, the “Your CanadaLogin is complete” screen</li>
+</ul>
+</section>
+<section id="recover-password" class="level4">
+<h4 class="anchored" data-anchor-id="recover-password">Recover password</h4>
+<ul>
+<li><strong>Funnel ID</strong>: <code>recover_password</code></li>
+<li><strong>Definition</strong>: <a href="https://github.com/cds-snc/canadalogin-reporting-data-pipeline/blob/main/infra/modules/google_analytics/funnel_src/funnels/recover_password.yaml"><code>recover_password.yaml</code></a></li>
+<li><strong>Entry</strong>: <code>reset_password</code>, the “Reset your password” screen</li>
+<li><strong>Exit</strong>: <code>complete</code>, the “Your password has been reset” screen</li>
+</ul>
+<p><strong>Many people who start are checking whether they have an account.</strong> They enter their email, enter the OTP code sent to them, and get error 26 (“This email is not associated with an account”). The funnel counts them as failures. Resolving this issue is a <a href="https://github.com/cds-snc/canadalogin-reporting-data-pipeline/issues/80">work in progress</a>.</p>
+</section>
+<section id="recover-2-step-verification" class="level4">
+<h4 class="anchored" data-anchor-id="recover-2-step-verification">Recover 2-step verification</h4>
+<ul>
+<li><p><strong>Funnel ID</strong>: <code>recover_2sv</code></p></li>
+<li><p><strong>Definition</strong>: <a href="https://github.com/cds-snc/canadalogin-reporting-data-pipeline/blob/main/infra/modules/google_analytics/funnel_src/funnels/recover_2sv.yaml"><code>recover_2sv.yaml</code></a></p></li>
+<li><p><strong>Entry</strong>: <code>initiate_recovery</code>, the “Initiate email verification” screen</p></li>
+<li><p><strong>Exit</strong>: <code>confirmation</code>, the “Delete sign-in methods you’re not using anymore” screen</p></li>
+<li><p><strong>Exit is a cleanup screen, not a confirmation.</strong> The last step is “Delete sign-in methods you’re not using anymore”, offered after a new method is set up.</p></li>
+</ul>
+</section>
+<section id="migration" class="level4">
+<h4 class="anchored" data-anchor-id="migration">Migration</h4>
+<p>Existing account:</p>
+<ul>
+<li><strong>Funnel ID</strong>: <code>migration_existing_to_cl</code></li>
+<li><strong>Definition</strong>: <a href="https://github.com/cds-snc/canadalogin-reporting-data-pipeline/blob/main/infra/modules/google_analytics/funnel_src/funnels/migration_existing_to_cl.yaml"><code>migration_existing_to_cl.yaml</code></a></li>
+<li><strong>Entry</strong>: <code>migration_not_skipped</code>, answering the legacy sign-in prompt without skipping</li>
+<li><strong>Exit</strong>: <code>migration_complete</code>, the “Migration - Confirmation” screen</li>
+</ul>
+<p>New account:</p>
+<ul>
+<li><p><strong>Funnel ID</strong>: <code>migration_new_to_cl</code></p></li>
+<li><p><strong>Definition</strong>: <a href="https://github.com/cds-snc/canadalogin-reporting-data-pipeline/blob/main/infra/modules/google_analytics/funnel_src/funnels/migration_new_to_cl.yaml"><code>migration_new_to_cl.yaml</code></a></p></li>
+<li><p><strong>Entry</strong>: <code>migration_not_skipped</code>, answering the legacy sign-in prompt without skipping</p></li>
+<li><p><strong>Exit</strong>: <code>migration_complete</code>, the “Migration - Confirmation” screen</p></li>
+<li><p><strong>The denominator is not the first step.</strong> In both funnels, <code>task_success</code> divides by <code>migration_not_skipped</code>, users who answered the legacy sign-in prompt without skipping it. The rate is the share of people who chose to link a legacy method and finished.</p></li>
+<li><p><strong>The prompt step has a time limit</strong> in <code>migration_existing_to_cl</code>. The legacy method prompt must follow the 2-step verification step within 30 minutes.</p></li>
+</ul>
+</section>
+</section>
 </section>
 <section id="alternative-names" class="level2">
 <h2 class="anchored" data-anchor-id="alternative-names">Alternative names</h2>
