@@ -16,6 +16,7 @@ MFA factor type, and result.
 Queried directly from the IBM Verify production instance via API.
 
 * **Updated**: Daily, at 6am America/Toronto
+* **Retention**: Until CanadaLogin is retired
 * **Steward**: EDCP Data and Research Team
 * **Contact**: [Yinlin Zhang](mailto:yinlin.zhang@cds-snc.ca)
 

@@ -17,6 +17,7 @@ Fetched automatically every Monday at 06:00 ET from the CanadaLogin MTTR Dashboa
 Each upload overwrites this table wholesale with the current incident state and appends a dated snapshot to [`mttr_history`](mttr_history.qmd).
 
 * **Updated**: Weekly, Every Monday 06:00 ET
+* **Retention**: 7 years
 * **Steward**: EDCP Data and Research Team
 * **Contact**: [Yinlin Zhang](mailto:yinlin.zhang@cds-snc.ca) (Data and Research team) or [Obie Okongwu](mailto:obinna.okongwu@cds-snc.ca) (CL Platform Team)
 

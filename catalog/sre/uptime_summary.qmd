@@ -16,6 +16,7 @@ The Lambda runs at 04:00 ET and fetches that file, writing one Parquet row per
 site into the `date=YYYY-MM-DD` partition corresponding to the preceding day.
 
 * **Updated**: Daily, at ~04:00 ET
+* **Retention**: 7 years
 * **Steward**: EDCP Data and Research Team
 * **Contact**: [Yinlin Zhang](mailto:yinlin.zhang@cds-snc.ca) (Data and Research team)
 

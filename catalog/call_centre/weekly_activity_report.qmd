@@ -19,6 +19,7 @@ Lambda. The `extracted_at` field records when each row was last extracted
 from the source file.
 
 * **Updated**: Weekly, typically on Tuesdays
+* **Retention**: 7 years
 * **Steward**: EDCP Data and Research Team
 * **Contact**: [Colin Douglas](mailto:colin.douglas@cds-snc.ca)
 

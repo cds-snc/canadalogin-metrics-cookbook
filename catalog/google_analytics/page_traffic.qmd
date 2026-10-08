@@ -17,6 +17,7 @@ via the same Lambda and pipeline as
 [`property_traffic`](property_traffic.qmd).
 
 * **Updated**: Daily, at 07:00 ET
+* **Retention**: 7 years
 * **Steward**: EDCP Data and Research Team
 * **Contact**: [Colin Douglas](mailto:colin.douglas@cds-snc.ca)
 * **Location**: `s3://<transformed-bucket>/google_analytics/page_traffic/`
