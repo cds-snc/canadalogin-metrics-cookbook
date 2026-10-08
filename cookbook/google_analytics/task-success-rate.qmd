@@ -3,39 +3,18 @@ title: "Task Success Rate"
 description: "Share of users who started a task and reached its finishing point, from GA4 funnels."
 ---
 
-The proportion of users who started a given task in CanadaLogin and reached that task's 
-defined finishing point, measured from Google Analytics 4 funnel data.
+The proportion of users who started a given task in CanadaLogin and reached that task's
+defined end point, measured from Google Analytics 4 funnel data.
 
-This is a family of metrics, not a single number: each funnel declares its own task 
-success rate as a `step_ratio` in its YAML definition on GitHub - one funnel step 
-counted as the entry, another counted as the exit, both measured as GA4 `activeUsers` 
-over the same reporting window. **The entry and exit steps for each funnel are 
-described below as of this writing, but the YAML is the canonical, versioned source** - see
-[`funnel_src/funnels/`](https://github.com/cds-snc/canadalogin-reporting-data-pipeline/tree/main/infra/modules/google_analytics/funnel_src/funnels) in the `canadalogin-reporting-data-pipeline` repo. 
-Check the YAML before trusting a step name quoted here.
+This is a family of metrics, not a single number. Each funnel declares its own task
+success rate as a `step_ratio` in its YAML definition on GitHub. **The entry and exit 
+steps for each funnel are described below as of this writing, but the YAML is the 
+canonical, versioned source** - see [`funnel_src/funnels/`](https://github.com/cds-snc/canadalogin-reporting-data-pipeline/tree/main/infra/modules/google_analytics/funnel_src/funnels) in the `canadalogin-reporting-data-pipeline` repo.
 
-## Sign in
-
-Funnel definition: [`sign_in.yaml`](https://github.com/cds-snc/canadalogin-reporting-data-pipeline/blob/main/infra/modules/google_analytics/funnel_src/funnels/sign_in.yaml).
-
-Entry is the first taggable step of the sign-in flow (the "enter your email"
-screen); exit is reaching MFA selection, the last step Google Analytics can
-see. **This is not a full sign-in completion rate.** A successful sign-in
-redirects off-site to IBM Verify and back to the relying party with no page in
-between, so GA4 has no event to mark true completion - reaching MFA is the
-closest proxy available. See the
-[`funnels`](../../catalog/google_analytics/funnels.qmd) catalog entry for the
-`RESERVED_TOTAL` and `window_incomplete` conventions this table shares with
-`funnel_metrics`.
-
-## Sign up
-
-Funnel definition: [`sign_up.yaml`](https://github.com/cds-snc/canadalogin-reporting-data-pipeline/blob/main/infra/modules/google_analytics/funnel_src/funnels/sign_up.yaml).
-
-Entry is the first step of the sign-up flow, after accepting Terms and
-Conditions; exit is the account-creation confirmation screen. Unlike sign-in,
-this **is** a true completion signal - the confirmation page is a real,
-first-party GA4 event.
+Only sign-up, password recovery and the two migration tasks end on a screen
+that confirms the task is done. Sign-in cannot, and the 2-step recovery exit is
+a later cleanup screen. See the [task notes](#task-notes) before comparing
+tasks or reading any one rate as a completion rate.
 
 ## Calculation
 
@@ -49,7 +28,12 @@ read `value`. Query
 rather than `funnel_metrics` directly, so a future funnel version bump can't
 silently blend two definitions together. Filter `breakdown_value =
 'RESERVED_TOTAL'` for the overall rate across all relying parties; substitute
-a specific relying party name for a per-RP figure.
+a specific relying party name for a per-RP figure. The
+[`funnels`](../../catalog/google_analytics/funnels.qmd) catalog entry explains
+the `RESERVED_TOTAL` and `window_incomplete` conventions.
+
+For one task, set `funnel_id` to the value given in that task's
+[notes](#task-notes).
 
 ::: {.callout-note collapse="true" title="Example queries"}
 
@@ -57,7 +41,7 @@ a specific relying party name for a per-RP figure.
 
 ## SQL
 
-Sign in:
+One task:
 
 ```sql
 SELECT
@@ -74,26 +58,26 @@ WHERE funnel_id = 'sign_in'
 ORDER BY window_end;
 ```
 
-Sign up:
+Every task:
 
 ```sql
 SELECT
+    funnel_id,
     window_end,
     value AS task_success_rate
 FROM google_analytics.funnel_metrics_current
-WHERE funnel_id = 'sign_up'
-  AND metric_id = 'task_success'
+WHERE metric_id = 'task_success'
   AND window_days = '7'
   AND breakdown_value = 'RESERVED_TOTAL'
   AND NOT window_incomplete
   -- set the reporting window; see the timespans note in cookbook/notes.qmd
-  AND CAST(window_end AS DATE) BETWEEN DATE '2026-07-14' AND DATE '2026-08-03'
-ORDER BY window_end;
+  AND CAST(window_end AS DATE) BETWEEN DATE '2026-08-03' AND DATE '2026-08-31'
+ORDER BY funnel_id, window_end;
 ```
 
 ## R
 
-Sign in:
+One task:
 
 ```r
 tbl(con, in_schema("google_analytics", "funnel_metrics_current")) |>
@@ -111,22 +95,21 @@ tbl(con, in_schema("google_analytics", "funnel_metrics_current")) |>
   arrange(window_end)
 ```
 
-Sign up:
+Every task:
 
 ```r
 tbl(con, in_schema("google_analytics", "funnel_metrics_current")) |>
   filter(
-    funnel_id == "sign_up",
     metric_id == "task_success",
     window_days == "7",
     breakdown_value == "RESERVED_TOTAL",
     !window_incomplete,
     # set the reporting window; see the timespans note in cookbook/notes.qmd
-    as.Date(window_end) >= as.Date("2026-07-14"),
-    as.Date(window_end) <= as.Date("2026-08-03")
+    as.Date(window_end) >= as.Date("2026-08-03"),
+    as.Date(window_end) <= as.Date("2026-08-31")
   ) |>
-  select(window_end, task_success_rate = value) |>
-  arrange(window_end)
+  select(funnel_id, window_end, task_success_rate = value) |>
+  arrange(funnel_id, window_end)
 ```
 
 :::
@@ -144,21 +127,104 @@ lengths exist, and switching between them is a one-line change:
 - `'7'` is the usual default. Every window holds one of each weekday, so
   day-of-week effects wash out.
 - `'28'` is a rolling four-week window. It is the steadiest of the three and
-  the one to use for monthly reporting, but a step change takes 28 days to
-  show up in it fully, so it is a poor way to check whether a fix worked.
+  the one to use for monthly reporting.
 
-All three are partition-key strings, not numbers, in this schema. Windows within
-one `window_days` overlap, so consecutive rows are not independent readings: one
-unusual day moves 7 weekly rows and 28 monthly ones. A `value` of `NULL` means
-nobody reached the entry step that window (an undefined rate, not a true zero) -
-such rows are rare but real, and an average that treats them as `0.0` will read
-too pessimistic.
+Windows overlap, so consecutive rows are not independent. One unusual day
+shows up in 7 weekly rows and 28 monthly ones. A `NULL` rate means nobody
+reached the entry step in that window. These rows are rare. Drop them rather
+than counting them as `0.0`, or an average will read too low.
 
-These two funnels are not directly comparable to each other: sign-in's rate
-stops at MFA for the structural reason described above, so it reads lower than
-a true completion rate would, while sign-up's rate is a real completion
-figure. Comparing the two numbers as if they measured the same kind of finish
-line will overstate the sign-in/sign-up gap.
+### Task notes
+
+#### All tasks
+
+- **Users, not attempts.** Every step counts distinct `activeUsers` in the
+  window. A user who fails, retries and succeeds counts once, as a success. A
+  user who fails three times and gives up counts once, as a failure. The rate
+  is a share of people, not of attempts.
+- **Sign ups and sign ins without a valid destination RP are excluded.** It is technically possible for someone to go through the sign up or sign in flow without entering via a valid RP service, via a link that specifies the CL manage app as the destination relying party. Actual users will always enter via a valid RP, so we can be confident that traffic with the Manage CanadaLogin RP id parameter represents internal employee traffic, rather than actul users. All funnels that are not manage app tasks therefore exclude traffic with the Manage App RP id parameter.
+  Manage CanadaLogin app, which is internal. See
+  [Internal applications](../notes.qmd#internal-applications-should-usually-be-excluded-from-external-adoption-reporting).
+- **A series can change definition part way through.**
+  `funnel_metrics_current` returns the newest version for each date, and a new
+  version is not always backfilled. Check `funnel_version` across the rows
+  before reading a trend.
+
+#### Sign in
+
+* **Funnel ID**: `sign_in`
+* **Definition**: [`sign_in.yaml`](https://github.com/cds-snc/canadalogin-reporting-data-pipeline/blob/main/infra/modules/google_analytics/funnel_src/funnels/sign_in.yaml)
+* **Entry**: `enter_email`, the "Enter your email" screen
+* **Exit**: `mfa_submit`, pressing submit on the second-factor form
+
+**This rate measures submitting a second factor, but not necessarily success.** The exit
+is pressing the submit button on the second-factor form. It is possible to submit an
+incorrect OTP code and count as a success in the task but fail to actually sign in. This
+is a [limitation](https://github.com/cds-snc/canadalogin-reporting-gadrift/issues/3) of 
+what Google Analytics measures. This means the rate is marginally overstated, compared 
+to a true sign-in success rate.
+
+For an authentication success rate measured by IBM Verify itself, see
+[Authentication Success Rate](../ibm_verify/sign-in-success-rate.qmd). It
+counts attempts rather than users and covers every sign-in, not only those that
+started in a tagged browser session, so the two numbers will not match.
+
+#### Sign up
+
+* **Funnel ID**: `sign_up`
+* **Definition**: [`sign_up.yaml`](https://github.com/cds-snc/canadalogin-reporting-data-pipeline/blob/main/infra/modules/google_analytics/funnel_src/funnels/sign_up.yaml)
+* **Entry**: `terms`, the Terms and Conditions screen
+* **Exit**: `complete`, the "Your CanadaLogin is complete" screen
+
+#### Recover password
+
+* **Funnel ID**: `recover_password`
+* **Definition**: [`recover_password.yaml`](https://github.com/cds-snc/canadalogin-reporting-data-pipeline/blob/main/infra/modules/google_analytics/funnel_src/funnels/recover_password.yaml)
+* **Entry**: `reset_password`, the "Reset your password" screen
+* **Exit**: `complete`, the "Your password has been reset" screen
+
+**Many people who start are checking whether they have an account.** They enter their 
+email, enter the OTP code sent to them, and get error 26 ("This email is not associated
+with an account"). The funnel counts them as failures. Resolving this issue is a 
+[work in progress](https://github.com/cds-snc/canadalogin-reporting-data-pipeline/issues/80).
+
+#### Recover 2-step verification
+
+* **Funnel ID**: `recover_2sv`
+* **Definition**: [`recover_2sv.yaml`](https://github.com/cds-snc/canadalogin-reporting-data-pipeline/blob/main/infra/modules/google_analytics/funnel_src/funnels/recover_2sv.yaml)
+* **Entry**: `initiate_recovery`, the "Initiate email verification" screen
+* **Exit**: `confirmation`, the "Delete sign-in methods you're not using
+  anymore" screen
+
+- **Exit is a cleanup screen, not a confirmation.** The last step is "Delete
+  sign-in methods you're not using anymore", offered after a new method is set
+  up.
+
+#### Migration
+
+Existing account:
+
+* **Funnel ID**: `migration_existing_to_cl`
+* **Definition**: [`migration_existing_to_cl.yaml`](https://github.com/cds-snc/canadalogin-reporting-data-pipeline/blob/main/infra/modules/google_analytics/funnel_src/funnels/migration_existing_to_cl.yaml)
+* **Entry**: `migration_not_skipped`, answering the legacy sign-in prompt
+  without skipping
+* **Exit**: `migration_complete`, the "Migration - Confirmation" screen
+
+New account:
+
+* **Funnel ID**: `migration_new_to_cl`
+* **Definition**: [`migration_new_to_cl.yaml`](https://github.com/cds-snc/canadalogin-reporting-data-pipeline/blob/main/infra/modules/google_analytics/funnel_src/funnels/migration_new_to_cl.yaml)
+* **Entry**: `migration_not_skipped`, answering the legacy sign-in prompt
+  without skipping
+* **Exit**: `migration_complete`, the "Migration - Confirmation" screen
+
+- **The denominator is not the first step.** In both funnels, `task_success`
+  divides by `migration_not_skipped`, users who answered the legacy sign-in
+  prompt without skipping it. The rate is the share of people who chose to
+  link a legacy method and finished. 
+- **The prompt step has a time limit** in `migration_existing_to_cl`. The
+  legacy method prompt must follow the 2-step verification step within 30
+  minutes.
 
 ## Alternative names
 
