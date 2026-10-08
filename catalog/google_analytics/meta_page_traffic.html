@@ -6,9 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="description" content="Daily SSO event counts by application.">
+<meta name="description" content="Daily readership of Signal Check, the dashboards, and the Cookbook, by page and session source.">
 
-<title>ibm_verify.app_login_counts – CanadaLogin Metrics Cookbook</title>
+<title>google_analytics.meta_page_traffic – CanadaLogin Metrics Cookbook</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -37,8 +37,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="../../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../../">
-<link href="../../catalog/ibm_verify/auth_total_logins.html" rel="next">
-<link href="../../catalog/ibm_verify.html" rel="prev">
+<link href="../../catalog/google_analytics/meta_page_events.html" rel="next">
+<link href="../../catalog/google_analytics/error_events.html" rel="prev">
 <link href="../../img/cds-snc.png" rel="icon" type="image/png">
 <script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
@@ -136,7 +136,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../catalog/index.html">Data Catalog</a></li><li class="breadcrumb-item"><a href="../../catalog/ibm_verify.html">IBM Verify</a></li><li class="breadcrumb-item"><a href="../../catalog/ibm_verify/app_login_counts.html">app_login_counts</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../catalog/index.html">Data Catalog</a></li><li class="breadcrumb-item"><a href="../../catalog/google_analytics.html">Google Analytics</a></li><li class="breadcrumb-item"><a href="../../catalog/google_analytics/meta_page_traffic.html">meta_page_traffic</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -531,14 +531,14 @@ ul.task-list li input[type="checkbox"] {
       <div class="sidebar-item-container"> 
             <a href="../../catalog/ibm_verify.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">IBM Verify</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-12" role="navigation" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-12" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-12" class="collapse list-unstyled sidebar-section depth2 show">  
+      <ul id="quarto-sidebar-section-12" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../catalog/ibm_verify/app_login_counts.html" class="sidebar-item-text sidebar-link active">
+  <a href="../../catalog/ibm_verify/app_login_counts.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">app_login_counts</span></a>
   </div>
 </li>
@@ -647,11 +647,11 @@ ul.task-list li input[type="checkbox"] {
       <div class="sidebar-item-container"> 
             <a href="../../catalog/google_analytics.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Google Analytics</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-16" role="navigation" aria-expanded="false" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-16" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-16" class="collapse list-unstyled sidebar-section depth2 ">  
+      <ul id="quarto-sidebar-section-16" class="collapse list-unstyled sidebar-section depth2 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../catalog/google_analytics/property_traffic.html" class="sidebar-item-text sidebar-link">
@@ -672,7 +672,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../catalog/google_analytics/meta_page_traffic.html" class="sidebar-item-text sidebar-link">
+  <a href="../../catalog/google_analytics/meta_page_traffic.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">meta_page_traffic</span></a>
   </div>
 </li>
@@ -758,14 +758,14 @@ ul.task-list li input[type="checkbox"] {
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../catalog/index.html">Data Catalog</a></li><li class="breadcrumb-item"><a href="../../catalog/ibm_verify.html">IBM Verify</a></li><li class="breadcrumb-item"><a href="../../catalog/ibm_verify/app_login_counts.html">app_login_counts</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../catalog/index.html">Data Catalog</a></li><li class="breadcrumb-item"><a href="../../catalog/google_analytics.html">Google Analytics</a></li><li class="breadcrumb-item"><a href="../../catalog/google_analytics/meta_page_traffic.html">meta_page_traffic</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">ibm_verify.app_login_counts</h1>
+<h1 class="title">google_analytics.meta_page_traffic</h1>
 </div>
 
 <div>
   <div class="description">
-    Daily SSO event counts by application.
+    Daily readership of Signal Check, the dashboards, and the Cookbook, by page and session source.
   </div>
 </div>
 
@@ -782,23 +782,25 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>Daily SSO event counts for each CanadaLogin-integrated application.</p>
-<p>Each row represents one application on one day, summarizing that application’s usage and unique-user reach for the day. This table records what IBM Verify calls the <code>sso</code> event type, filed under application usage and raised when someone who is already signed in reaches an application.</p>
-<p><a href="../../catalog/ibm_verify/auth_total_logins.html"><code>auth_total_logins</code></a> records a different event type (<code>authentication</code>). Figures from the two tables are therefore not comparable and must never be added together or presented side by side.</p>
-<p><code>Keywords</code>: SSO events, application usage, sign-ins, logins, applications, unique users, adoption, daily counts</p>
+<p>Daily traffic for the meta-analytics GA4 property, which measures who reads Signal Check, the published dashboards, and this Metrics Cookbook.</p>
+<p>Each row represents one day of traffic to a single page, from sessions that started from one source, medium, and campaign.</p>
+<p><code>Keywords</code>: Google Analytics, GA4, meta-analytics, Signal Check, dashboards, Metrics Cookbook, readership, page views, session source, utm_source</p>
 <section id="provenance" class="level2">
 <h2 class="anchored" data-anchor-id="provenance">Provenance</h2>
-<p>Queried directly from the IBM Verify production instance via API.</p>
+<p>Pulled daily from the GA4 Data API (<code>runReport</code>) for the meta-analytics property, by the same Lambda and pipeline as <a href="../../catalog/google_analytics/page_traffic.html"><code>page_traffic</code></a>. The Glue ETL job adds two derived columns, <code>pagepath_redacted</code> and <code>page_kind</code>. They exist only in this table and <a href="../../catalog/google_analytics/meta_page_events.html"><code>meta_page_events</code></a>.</p>
+<p>The property has two web streams. The Signal Check stream covers the Signal Check editions and the published dashboards, which carry the same tag. The Metrics Cookbook stream covers this site, including its PR previews.</p>
+<p>Data starts on 2026-07-23.</p>
 <ul>
-<li><strong>Updated</strong>: Daily, at 6am America/Toronto</li>
-<li><strong>Retention</strong>: Until CanadaLogin is retired</li>
+<li><strong>Updated</strong>: Daily, at 07:00 ET</li>
+<li><strong>Retention</strong>: 7 years</li>
 <li><strong>Steward</strong>: EDCP Data and Research Team</li>
-<li><strong>Contact</strong>: <a href="mailto:yinlin.zhang@cds-snc.ca">Yinlin Zhang</a></li>
+<li><strong>Contact</strong>: <a href="mailto:colin.douglas@cds-snc.ca">Colin Douglas</a></li>
+<li><strong>Location</strong>: <code>s3://&lt;transformed-bucket&gt;/google_analytics/meta_page_traffic/</code></li>
 </ul>
 </section>
 <section id="fields" class="level2">
 <h2 class="anchored" data-anchor-id="fields">Fields</h2>
-<p>One row per <code>application_name</code> per day.</p>
+<p>One row per <code>date</code> per <code>streamid</code> per <code>pagepath</code> per <code>pagetitle</code> per <code>sessionsource</code>, <code>sessionmedium</code>, and <code>sessioncampaignname</code>.</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 33%">
@@ -814,87 +816,91 @@ ul.task-list li input[type="checkbox"] {
 </thead>
 <tbody>
 <tr class="odd">
-<td>application_name</td>
-<td>string</td>
-<td>Name of the integrated application (for example, “IRIS - PRC - Prod”)</td>
-</tr>
-<tr class="even">
-<td>from_date</td>
-<td>timestamp</td>
-<td>Start of the reporting day (midnight)</td>
-</tr>
-<tr class="odd">
-<td>to_date</td>
-<td>timestamp</td>
-<td>End of the reporting day (23:59:59)</td>
-</tr>
-<tr class="even">
-<td>total_logins</td>
-<td>integer</td>
-<td>Total SSO events recorded for the application that day. Counts events, not people</td>
-</tr>
-<tr class="odd">
-<td>unique_users</td>
-<td>integer</td>
-<td>Number of distinct users who reached the application that day</td>
-</tr>
-<tr class="even">
-<td>failed_logins</td>
-<td>integer</td>
-<td>Number of failed SSO events that day</td>
-</tr>
-<tr class="odd">
-<td>successful_logins</td>
-<td>integer</td>
-<td>Number of successful SSO events that day</td>
-</tr>
-<tr class="even">
-<td>mtd_unique_users</td>
-<td>integer</td>
-<td>Cumulative distinct users for the application month-to-date. Resets at the start of each month</td>
-</tr>
-<tr class="odd">
-<td>ytd_unique_users</td>
-<td>integer</td>
-<td>Cumulative distinct users for the application year-to-date. Resets at the start of each calendar year</td>
-</tr>
-<tr class="even">
-<td>rolling_365d_unique_users</td>
-<td>integer</td>
-<td>Distinct users who reached this application in the trailing 365 days ending on that row’s date</td>
-</tr>
-<tr class="odd">
-<td>fetched_at</td>
-<td>timestamp</td>
-<td>When the aggregation last fetched this row</td>
-</tr>
-<tr class="even">
 <td>date</td>
 <td>string</td>
-<td>The reporting day as a text date (for example, “2026-04-23”). Mirrors <code>from_date</code></td>
+<td>The reporting day, as a partition key (for example, “2026-09-22”)</td>
+</tr>
+<tr class="even">
+<td>streamid</td>
+<td>string</td>
+<td>Numeric ID of the GA4 data stream that reported the page. Stable if a stream is renamed</td>
+</tr>
+<tr class="odd">
+<td>streamname</td>
+<td>string</td>
+<td>Display name of the GA4 data stream, “Signal Check” or “Metrics Cookbook”</td>
+</tr>
+<tr class="even">
+<td>pagepath</td>
+<td>string</td>
+<td>The page’s URL path as GA4 reports it. Signal Check paths include a private token. Do not use (see Notes)</td>
+</tr>
+<tr class="odd">
+<td>pagetitle</td>
+<td>string</td>
+<td>The page’s <code>&lt;title&gt;</code> at the time of the visit. Signal Check titles include the edition number</td>
+</tr>
+<tr class="even">
+<td>sessionsource</td>
+<td>string</td>
+<td>Where the session started, for example <code>slack</code>, <code>teams</code>, <code>email</code>, <code>report_link</code>, <code>latest-link</code>, <code>github.com</code>, <code>google</code>, or <code>(direct)</code></td>
+</tr>
+<tr class="odd">
+<td>sessionmedium</td>
+<td>string</td>
+<td>Session medium. <code>(not set)</code> for tagged links, since they carry a source only. Otherwise <code>(none)</code> for direct visits, <code>referral</code>, or <code>organic</code></td>
+</tr>
+<tr class="even">
+<td>sessioncampaignname</td>
+<td>string</td>
+<td>Session campaign. <code>(not set)</code> for tagged links, otherwise <code>(direct)</code>, <code>(referral)</code>, or <code>(organic)</code></td>
+</tr>
+<tr class="odd">
+<td>sessions</td>
+<td>bigint</td>
+<td>Number of sessions from this source that included this page on this day</td>
+</tr>
+<tr class="even">
+<td>screenpageviews</td>
+<td>bigint</td>
+<td>Number of times this page was viewed on this day, in those sessions</td>
+</tr>
+<tr class="odd">
+<td>totalusers</td>
+<td>bigint</td>
+<td>Number of distinct users in those sessions. Do not sum</td>
+</tr>
+<tr class="even">
+<td>newusers</td>
+<td>bigint</td>
+<td>Number of first-time users in those sessions. Do not sum</td>
+</tr>
+<tr class="odd">
+<td>pagepath_redacted</td>
+<td>string</td>
+<td><code>pagepath</code> with the Signal Check token removed. Derived in the ETL. Filter and group on this</td>
+</tr>
+<tr class="even">
+<td>page_kind</td>
+<td>string</td>
+<td>What kind of page this is, one of <code>signal_check</code>, <code>dashboard</code>, <code>redirect</code>, <code>cookbook</code>, <code>preview</code>, or <code>other</code>. Derived in the ETL</td>
 </tr>
 </tbody>
 </table>
 </section>
 <section id="notes" class="level2">
 <h2 class="anchored" data-anchor-id="notes">Notes</h2>
-<p><code>total_logins</code>, <code>unique_users</code>, <code>failed_logins</code>, and <code>successful_logins</code> are daily values. <code>mtd_unique_users</code>, <code>ytd_unique_users</code>, and <code>rolling_365d_unique_users</code> are cumulative counts of distinct users and should not be summed across rows; take the latest value within the window instead.</p>
-<p><code>rolling_365d_unique_users</code> is null before 2026-06-13, its implementation date.</p>
-<div class="callout callout-style-default callout-warning callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Warning
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p><code>ytd_unique_users</code> and <code>rolling_365d_unique_users</code> may be unreliable. Both are computed by IBM Verify over a longer window than its underlying data retention actually covers, so the figures can undercount, and <code>ytd_unique_users</code> has been seen decreasing from one day to the next. Treat both as estimates only. See <a href="../../cookbook/unique-users.html#year-to-date-and-365-day-figures">Why Unique Users Cannot Be Added Up</a> for detail.</p>
-</div>
-</div>
-<p>A <code>since_apr22_unique_users</code> field (cumulative distinct users since the April 22, 2026 public launch) was previously provided here. It has been removed from the pipeline because the source API retains only the most recent 366.5 days of data, so a since-launch cumulative count cannot be maintained once launch is more than a year in the past. See the retention note on the <a href="../../catalog/ibm_verify.html#data-retention">IBM Verify catalog overview</a>.</p>
-<p>Unlike <a href="../../catalog/ibm_verify/auth_total_logins.html"><code>auth_total_logins</code></a>, these counts are <em>not</em> inflated by second factors. The per-authentication-method event inflation described there only happens when a person signs in to CanadaLogin itself. Reaching an integrated application uses the session they already hold: CanadaLogin issues the application a freshly minted assertion or token, the person enters no password or second factor, and one handoff records one SSO event. <code>total_logins</code> and <code>successful_logins</code> still count events rather than people, because one person can reach an application repeatedly. Use <code>unique_users</code> when the question is about how many distinct people used the application.</p>
+<p><strong>Filter and group on <code>pagepath_redacted</code>, never on <code>pagepath</code>.</strong> Signal Check pages are served at a path that includes a private token, so the links can’t be guessed. <code>pagepath_redacted</code> drops it.</p>
+<p><strong>Use <code>page_kind</code> to pick pages.</strong> It is derived from <code>pagepath_redacted</code>, and the first matching rule wins:</p>
+<ul>
+<li><code>signal_check</code>: a Signal Check edition (<code>/r/YYYYMMDD_signal-check.html</code>)</li>
+<li><code>redirect</code>: a redirect page that forwards to the latest edition. These are listed by name in the pipeline’s ETL job</li>
+<li><code>preview</code>: a Cookbook PR preview (<code>/canadalogin-metrics-cookbook/pr-preview/</code>). These are the team’s own review views, not readership</li>
+<li><code>cookbook</code>: any other Cookbook page</li>
+<li><code>dashboard</code>: any other <code>.html</code> page under the publishing site’s <code>/r/</code>. This is a catch-all, so a new dashboard needs no code change. A new one-off page there would also count as a dashboard</li>
+<li><code>other</code>: anything else, including <code>(unrecognized)</code> paths</li>
+</ul>
+<p><strong><code>totalusers</code> and <code>newusers</code> do not sum across rows.</strong> A reader who came from two sources, or saw two pages, is counted in both rows. This table can’t give an exact count of unique readers of an edition. <code>sessions</code> and <code>screenpageviews</code> are safe to sum. The reason is the same as why <a href="../../cookbook/notes.html#daily-unique-users-are-not-the-same-as-period-unique-users">we can’t sum unique users</a> in IBM Verify.</p>
 
 
 </section>
@@ -1302,13 +1308,13 @@ Warning
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../../catalog/ibm_verify.html" class="pagination-link" aria-label="IBM Verify">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">IBM Verify</span>
+      <a href="../../catalog/google_analytics/error_events.html" class="pagination-link" aria-label="error_events">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">error_events</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../../catalog/ibm_verify/auth_total_logins.html" class="pagination-link" aria-label="auth_total_logins">
-        <span class="nav-page-text">auth_total_logins</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../../catalog/google_analytics/meta_page_events.html" class="pagination-link" aria-label="meta_page_events">
+        <span class="nav-page-text">meta_page_events</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

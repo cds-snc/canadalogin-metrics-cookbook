@@ -28,6 +28,7 @@
       "/cookbook/ibm_verify/completed-sign-in-sessions.html",
       "/cookbook/ibm_verify/cumulative-unique-users.html",
       "/cookbook/ibm_verify/cumulative-unique-users-by-application.html",
+      "/cookbook/google_analytics/dwell-time.html",
       "/cookbook/ibm_verify/mfa-authentications.html",
       "/cookbook/ibm_verify/mfa-success-rate.html",
       "/cookbook/ibm_verify/mfa-success-rate-by-factor.html",
@@ -52,80 +53,10 @@
     ]
   },
   {
-    "listing": "/catalog/sre.html",
+    "listing": "/cookbook/google_analytics.html",
     "items": [
-      "/catalog/sre/mttr_current.html",
-      "/catalog/sre/mttr_history.html",
-      "/catalog/sre/uptime_summary.html",
-      "/catalog/sre/uptime_timeseries.html"
-    ]
-  },
-  {
-    "listing": "/catalog/jira.html",
-    "items": [
-      "/catalog/jira/psom.html",
-      "/catalog/jira/psom_sla.html",
-      "/catalog/jira/psom_comment.html"
-    ]
-  },
-  {
-    "listing": "/catalog/call_centre.html",
-    "items": [
-      "/catalog/call_centre/weekly_activity_report.html",
-      "/catalog/call_centre/weekly_topic_dump.html"
-    ]
-  },
-  {
-    "listing": "/catalog/google_analytics.html",
-    "items": [
-      "/catalog/google_analytics/property_traffic.html",
-      "/catalog/google_analytics/page_traffic.html",
-      "/catalog/google_analytics/error_events.html",
-      "/catalog/google_analytics/funnels.html",
-      "/catalog/google_analytics/funnels_current.html",
-      "/catalog/google_analytics/funnel_metrics.html",
-      "/catalog/google_analytics/funnel_metrics_current.html"
-    ]
-  },
-  {
-    "listing": "/catalog/ibm_verify.html",
-    "items": [
-      "/catalog/ibm_verify/app_login_counts.html",
-      "/catalog/ibm_verify/auth_total_logins.html",
-      "/catalog/ibm_verify/mfa_activity.html"
-    ]
-  },
-  {
-    "listing": "/catalog/index.html",
-    "items": [
-      "/catalog/call_centre/weekly_activity_report.html",
-      "/catalog/call_centre/weekly_topic_dump.html",
-      "/catalog/google_analytics/error_events.html",
-      "/catalog/google_analytics/funnel_metrics.html",
-      "/catalog/google_analytics/funnel_metrics_current.html",
-      "/catalog/google_analytics/funnels.html",
-      "/catalog/google_analytics/funnels_current.html",
-      "/catalog/google_analytics/page_traffic.html",
-      "/catalog/google_analytics/property_traffic.html",
-      "/catalog/ibm_verify/app_login_counts.html",
-      "/catalog/ibm_verify/auth_total_logins.html",
-      "/catalog/ibm_verify/mfa_activity.html",
-      "/catalog/jira/psom.html",
-      "/catalog/jira/psom_comment.html",
-      "/catalog/jira/psom_sla.html",
-      "/catalog/rp/alias.html",
-      "/catalog/rp/service.html",
-      "/catalog/sre/mttr_current.html",
-      "/catalog/sre/mttr_history.html",
-      "/catalog/sre/uptime_summary.html",
-      "/catalog/sre/uptime_timeseries.html"
-    ]
-  },
-  {
-    "listing": "/catalog/rp.html",
-    "items": [
-      "/catalog/rp/service.html",
-      "/catalog/rp/alias.html"
+      "/cookbook/google_analytics/task-success-rate.html",
+      "/cookbook/google_analytics/dwell-time.html"
     ]
   },
   {
@@ -145,9 +76,84 @@
     ]
   },
   {
-    "listing": "/cookbook/google_analytics.html",
+    "listing": "/catalog/rp.html",
     "items": [
-      "/cookbook/google_analytics/task-success-rate.html"
+      "/catalog/rp/service.html",
+      "/catalog/rp/alias.html"
+    ]
+  },
+  {
+    "listing": "/catalog/index.html",
+    "items": [
+      "/catalog/call_centre/weekly_activity_report.html",
+      "/catalog/call_centre/weekly_topic_dump.html",
+      "/catalog/google_analytics/error_events.html",
+      "/catalog/google_analytics/funnel_metrics.html",
+      "/catalog/google_analytics/funnel_metrics_current.html",
+      "/catalog/google_analytics/funnels.html",
+      "/catalog/google_analytics/funnels_current.html",
+      "/catalog/google_analytics/meta_page_events.html",
+      "/catalog/google_analytics/meta_page_traffic.html",
+      "/catalog/google_analytics/page_traffic.html",
+      "/catalog/google_analytics/property_traffic.html",
+      "/catalog/ibm_verify/app_login_counts.html",
+      "/catalog/ibm_verify/auth_total_logins.html",
+      "/catalog/ibm_verify/mfa_activity.html",
+      "/catalog/jira/psom.html",
+      "/catalog/jira/psom_comment.html",
+      "/catalog/jira/psom_sla.html",
+      "/catalog/rp/alias.html",
+      "/catalog/rp/service.html",
+      "/catalog/sre/mttr_current.html",
+      "/catalog/sre/mttr_history.html",
+      "/catalog/sre/uptime_summary.html",
+      "/catalog/sre/uptime_timeseries.html"
+    ]
+  },
+  {
+    "listing": "/catalog/ibm_verify.html",
+    "items": [
+      "/catalog/ibm_verify/app_login_counts.html",
+      "/catalog/ibm_verify/auth_total_logins.html",
+      "/catalog/ibm_verify/mfa_activity.html"
+    ]
+  },
+  {
+    "listing": "/catalog/google_analytics.html",
+    "items": [
+      "/catalog/google_analytics/property_traffic.html",
+      "/catalog/google_analytics/page_traffic.html",
+      "/catalog/google_analytics/error_events.html",
+      "/catalog/google_analytics/meta_page_traffic.html",
+      "/catalog/google_analytics/meta_page_events.html",
+      "/catalog/google_analytics/funnels.html",
+      "/catalog/google_analytics/funnels_current.html",
+      "/catalog/google_analytics/funnel_metrics.html",
+      "/catalog/google_analytics/funnel_metrics_current.html"
+    ]
+  },
+  {
+    "listing": "/catalog/call_centre.html",
+    "items": [
+      "/catalog/call_centre/weekly_activity_report.html",
+      "/catalog/call_centre/weekly_topic_dump.html"
+    ]
+  },
+  {
+    "listing": "/catalog/jira.html",
+    "items": [
+      "/catalog/jira/psom.html",
+      "/catalog/jira/psom_sla.html",
+      "/catalog/jira/psom_comment.html"
+    ]
+  },
+  {
+    "listing": "/catalog/sre.html",
+    "items": [
+      "/catalog/sre/mttr_current.html",
+      "/catalog/sre/mttr_history.html",
+      "/catalog/sre/uptime_summary.html",
+      "/catalog/sre/uptime_timeseries.html"
     ]
   },
   {
