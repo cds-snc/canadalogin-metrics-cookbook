@@ -6,9 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="description" content="Daily SSO event counts by application.">
+<meta name="description" content="How long readers stay on each Signal Check edition and dashboard, as a drop-off curve of page views.">
 
-<title>ibm_verify.app_login_counts – CanadaLogin Metrics Cookbook</title>
+<title>Dwell Time – CanadaLogin Metrics Cookbook</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -27,6 +27,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -37,8 +72,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="../../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../../">
-<link href="../../catalog/ibm_verify/auth_total_logins.html" rel="next">
-<link href="../../catalog/ibm_verify.html" rel="prev">
+<link href="../../cookbook/notes.html" rel="next">
+<link href="../../cookbook/google_analytics/task-success-rate.html" rel="prev">
 <link href="../../img/cds-snc.png" rel="icon" type="image/png">
 <script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
@@ -136,7 +171,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../catalog/index.html">Data Catalog</a></li><li class="breadcrumb-item"><a href="../../catalog/ibm_verify.html">IBM Verify</a></li><li class="breadcrumb-item"><a href="../../catalog/ibm_verify/app_login_counts.html">app_login_counts</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../cookbook/index.html">Metrics Cookbook</a></li><li class="breadcrumb-item"><a href="../../cookbook/google_analytics.html">Google Analytics</a></li><li class="breadcrumb-item"><a href="../../cookbook/google_analytics/dwell-time.html">Dwell Time</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -480,11 +515,11 @@ ul.task-list li input[type="checkbox"] {
       <div class="sidebar-item-container"> 
             <a href="../../cookbook/google_analytics.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Google Analytics</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" role="navigation" aria-expanded="false" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth2 ">  
+      <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth2 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../cookbook/google_analytics/task-success-rate.html" class="sidebar-item-text sidebar-link">
@@ -493,7 +528,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../cookbook/google_analytics/dwell-time.html" class="sidebar-item-text sidebar-link">
+  <a href="../../cookbook/google_analytics/dwell-time.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Dwell Time</span></a>
   </div>
 </li>
@@ -531,14 +566,14 @@ ul.task-list li input[type="checkbox"] {
       <div class="sidebar-item-container"> 
             <a href="../../catalog/ibm_verify.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">IBM Verify</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-12" role="navigation" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-12" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-12" class="collapse list-unstyled sidebar-section depth2 show">  
+      <ul id="quarto-sidebar-section-12" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../catalog/ibm_verify/app_login_counts.html" class="sidebar-item-text sidebar-link active">
+  <a href="../../catalog/ibm_verify/app_login_counts.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">app_login_counts</span></a>
   </div>
 </li>
@@ -749,23 +784,23 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#provenance" id="toc-provenance" class="nav-link active" data-scroll-target="#provenance">Provenance</a></li>
-  <li><a href="#fields" id="toc-fields" class="nav-link" data-scroll-target="#fields">Fields</a></li>
-  <li><a href="#notes" id="toc-notes" class="nav-link" data-scroll-target="#notes">Notes</a></li>
+  <li><a href="#calculation" id="toc-calculation" class="nav-link active" data-scroll-target="#calculation">Calculation</a></li>
+  <li><a href="#interpretation-notes" id="toc-interpretation-notes" class="nav-link" data-scroll-target="#interpretation-notes">Interpretation notes</a></li>
+  <li><a href="#alternative-names" id="toc-alternative-names" class="nav-link" data-scroll-target="#alternative-names">Alternative names</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../catalog/index.html">Data Catalog</a></li><li class="breadcrumb-item"><a href="../../catalog/ibm_verify.html">IBM Verify</a></li><li class="breadcrumb-item"><a href="../../catalog/ibm_verify/app_login_counts.html">app_login_counts</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../cookbook/index.html">Metrics Cookbook</a></li><li class="breadcrumb-item"><a href="../../cookbook/google_analytics.html">Google Analytics</a></li><li class="breadcrumb-item"><a href="../../cookbook/google_analytics/dwell-time.html">Dwell Time</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">ibm_verify.app_login_counts</h1>
+<h1 class="title">Dwell Time</h1>
 </div>
 
 <div>
   <div class="description">
-    Daily SSO event counts by application.
+    How long readers stay on each Signal Check edition and dashboard, as a drop-off curve of page views.
   </div>
 </div>
 
@@ -782,119 +817,175 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>Daily SSO event counts for each CanadaLogin-integrated application.</p>
-<p>Each row represents one application on one day, summarizing that application’s usage and unique-user reach for the day. This table records what IBM Verify calls the <code>sso</code> event type, filed under application usage and raised when someone who is already signed in reaches an application.</p>
-<p><a href="../../catalog/ibm_verify/auth_total_logins.html"><code>auth_total_logins</code></a> records a different event type (<code>authentication</code>). Figures from the two tables are therefore not comparable and must never be added together or presented side by side.</p>
-<p><code>Keywords</code>: SSO events, application usage, sign-ins, logins, applications, unique users, adoption, daily counts</p>
-<section id="provenance" class="level2">
-<h2 class="anchored" data-anchor-id="provenance">Provenance</h2>
-<p>Queried directly from the IBM Verify production instance via API.</p>
-<ul>
-<li><strong>Updated</strong>: Daily, at 6am America/Toronto</li>
-<li><strong>Retention</strong>: Until CanadaLogin is retired</li>
-<li><strong>Steward</strong>: EDCP Data and Research Team</li>
-<li><strong>Contact</strong>: <a href="mailto:yinlin.zhang@cds-snc.ca">Yinlin Zhang</a></li>
-</ul>
-</section>
-<section id="fields" class="level2">
-<h2 class="anchored" data-anchor-id="fields">Fields</h2>
-<p>One row per <code>application_name</code> per day.</p>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 33%">
-<col style="width: 33%">
-<col style="width: 33%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Field Name</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>application_name</td>
-<td>string</td>
-<td>Name of the integrated application (for example, “IRIS - PRC - Prod”)</td>
-</tr>
-<tr class="even">
-<td>from_date</td>
-<td>timestamp</td>
-<td>Start of the reporting day (midnight)</td>
-</tr>
-<tr class="odd">
-<td>to_date</td>
-<td>timestamp</td>
-<td>End of the reporting day (23:59:59)</td>
-</tr>
-<tr class="even">
-<td>total_logins</td>
-<td>integer</td>
-<td>Total SSO events recorded for the application that day. Counts events, not people</td>
-</tr>
-<tr class="odd">
-<td>unique_users</td>
-<td>integer</td>
-<td>Number of distinct users who reached the application that day</td>
-</tr>
-<tr class="even">
-<td>failed_logins</td>
-<td>integer</td>
-<td>Number of failed SSO events that day</td>
-</tr>
-<tr class="odd">
-<td>successful_logins</td>
-<td>integer</td>
-<td>Number of successful SSO events that day</td>
-</tr>
-<tr class="even">
-<td>mtd_unique_users</td>
-<td>integer</td>
-<td>Cumulative distinct users for the application month-to-date. Resets at the start of each month</td>
-</tr>
-<tr class="odd">
-<td>ytd_unique_users</td>
-<td>integer</td>
-<td>Cumulative distinct users for the application year-to-date. Resets at the start of each calendar year</td>
-</tr>
-<tr class="even">
-<td>rolling_365d_unique_users</td>
-<td>integer</td>
-<td>Distinct users who reached this application in the trailing 365 days ending on that row’s date</td>
-</tr>
-<tr class="odd">
-<td>fetched_at</td>
-<td>timestamp</td>
-<td>When the aggregation last fetched this row</td>
-</tr>
-<tr class="even">
-<td>date</td>
-<td>string</td>
-<td>The reporting day as a text date (for example, “2026-04-23”). Mirrors <code>from_date</code></td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="notes" class="level2">
-<h2 class="anchored" data-anchor-id="notes">Notes</h2>
-<p><code>total_logins</code>, <code>unique_users</code>, <code>failed_logins</code>, and <code>successful_logins</code> are daily values. <code>mtd_unique_users</code>, <code>ytd_unique_users</code>, and <code>rolling_365d_unique_users</code> are cumulative counts of distinct users and should not be summed across rows; take the latest value within the window instead.</p>
-<p><code>rolling_365d_unique_users</code> is null before 2026-06-13, its implementation date.</p>
-<div class="callout callout-style-default callout-warning callout-titled">
-<div class="callout-header d-flex align-content-center">
+<p>How long readers keep a Signal Check edition or a published dashboard open and visible, measured per page from the meta-analytics GA4 property.</p>
+<p>Dwell time is a drop-off curve, not a single average. Each page fires one event the first time a page view reaches 1, 5, 15, 30, 60, 120, 300, and 600 seconds of visible time (<code>read_1s</code> through <code>read_600s</code>). The share of page views that reached each mark shows how far readers get. The median reader’s dwell time is read off that curve.</p>
+<p>Only Signal Check editions and the dashboards fire these events. The Metrics Cookbook stream does not, nor does any production CanadaLogin page.</p>
+<section id="calculation" class="level2">
+<h2 class="anchored" data-anchor-id="calculation">Calculation</h2>
+<p>Dwell curve: for each page and each milestone, divide the <code>read_Ns</code> event count by the <code>page_view</code> event count over the reporting window. Both come from <a href="../../catalog/google_analytics/meta_page_events.html"><code>meta_page_events</code></a>.</p>
+<p>Median dwell time: the longest milestone that at least half of the page’s views reached.</p>
+<p>Group on <code>pagepath_redacted</code>, never <code>pagepath</code>, which holds a private token for Signal Check pages.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Example queries">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Warning
+<span class="screen-reader-only">Note</span>Example queries
 </div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p><code>ytd_unique_users</code> and <code>rolling_365d_unique_users</code> may be unreliable. Both are computed by IBM Verify over a longer window than its underlying data retention actually covers, so the figures can undercount, and <code>ytd_unique_users</code> has been seen decreasing from one day to the next. Treat both as estimates only. See <a href="../../cookbook/unique-users.html#year-to-date-and-365-day-figures">Why Unique Users Cannot Be Added Up</a> for detail.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href="">SQL</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href="">R</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<p>Dwell curve:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">WITH</span> <span class="kw">events</span> <span class="kw">AS</span> (</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">SELECT</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>        pagepath_redacted,</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>        eventname,</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>        <span class="fu">SUM</span>(eventcount) <span class="kw">AS</span> n</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">FROM</span> google_analytics.meta_page_events</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">WHERE</span> page_kind <span class="kw">IN</span> (<span class="st">'signal_check'</span>, <span class="st">'dashboard'</span>)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>      <span class="kw">AND</span> (eventname <span class="op">=</span> <span class="st">'page_view'</span> <span class="kw">OR</span> <span class="fu">REGEXP_LIKE</span>(eventname, <span class="st">'^read_[0-9]+s$'</span>))</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>      <span class="co">-- set the reporting window; see the timespans note in cookbook/notes.qmd</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>      <span class="kw">AND</span> <span class="fu">CAST</span>(<span class="dt">date</span> <span class="kw">AS</span> <span class="dt">DATE</span>) <span class="kw">BETWEEN</span> <span class="dt">DATE</span> <span class="st">'2026-09-01'</span> <span class="kw">AND</span> <span class="dt">DATE</span> <span class="st">'2026-09-30'</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">GROUP</span> <span class="kw">BY</span> pagepath_redacted, eventname</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>),</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>views <span class="kw">AS</span> (</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">SELECT</span> pagepath_redacted, n <span class="kw">AS</span> page_views</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">FROM</span> <span class="kw">events</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">WHERE</span> eventname <span class="op">=</span> <span class="st">'page_view'</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>    e.pagepath_redacted,</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">CAST</span>(REGEXP_EXTRACT(e.eventname, <span class="st">'[0-9]+'</span>) <span class="kw">AS</span> <span class="dt">INTEGER</span>) <span class="kw">AS</span> milestone_seconds,</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    v.page_views,</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>    e.n <span class="kw">AS</span> page_views_reached,</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>    <span class="fu">CAST</span>(e.n <span class="kw">AS</span> <span class="dt">DOUBLE</span>) <span class="op">/</span> v.page_views <span class="kw">AS</span> share_reached</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> <span class="kw">events</span> e</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="kw">JOIN</span> views v <span class="kw">ON</span> e.pagepath_redacted <span class="op">=</span> v.pagepath_redacted</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> e.eventname <span class="op">&lt;&gt;</span> <span class="st">'page_view'</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> e.pagepath_redacted, milestone_seconds;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Median dwell time:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">WITH</span> <span class="kw">events</span> <span class="kw">AS</span> (</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">SELECT</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>        pagepath_redacted,</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>        eventname,</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>        <span class="fu">SUM</span>(eventcount) <span class="kw">AS</span> n</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">FROM</span> google_analytics.meta_page_events</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">WHERE</span> page_kind <span class="kw">IN</span> (<span class="st">'signal_check'</span>, <span class="st">'dashboard'</span>)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>      <span class="kw">AND</span> (eventname <span class="op">=</span> <span class="st">'page_view'</span> <span class="kw">OR</span> <span class="fu">REGEXP_LIKE</span>(eventname, <span class="st">'^read_[0-9]+s$'</span>))</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>      <span class="co">-- set the reporting window; see the timespans note in cookbook/notes.qmd</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>      <span class="kw">AND</span> <span class="fu">CAST</span>(<span class="dt">date</span> <span class="kw">AS</span> <span class="dt">DATE</span>) <span class="kw">BETWEEN</span> <span class="dt">DATE</span> <span class="st">'2026-09-01'</span> <span class="kw">AND</span> <span class="dt">DATE</span> <span class="st">'2026-09-30'</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">GROUP</span> <span class="kw">BY</span> pagepath_redacted, eventname</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>),</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>views <span class="kw">AS</span> (</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">SELECT</span> pagepath_redacted, n <span class="kw">AS</span> page_views</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">FROM</span> <span class="kw">events</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">WHERE</span> eventname <span class="op">=</span> <span class="st">'page_view'</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    e.pagepath_redacted,</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>    v.page_views,</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- NULL when fewer than half of the page's views reached 1 second</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">MAX</span>(<span class="cf">CASE</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>        <span class="cf">WHEN</span> <span class="fu">CAST</span>(e.n <span class="kw">AS</span> <span class="dt">DOUBLE</span>) <span class="op">/</span> v.page_views <span class="op">&gt;=</span> <span class="fl">0.5</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>        <span class="cf">THEN</span> <span class="fu">CAST</span>(REGEXP_EXTRACT(e.eventname, <span class="st">'[0-9]+'</span>) <span class="kw">AS</span> <span class="dt">INTEGER</span>)</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">END</span>) <span class="kw">AS</span> median_dwell_seconds</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> <span class="kw">events</span> e</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a><span class="kw">JOIN</span> views v <span class="kw">ON</span> e.pagepath_redacted <span class="op">=</span> v.pagepath_redacted</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> e.eventname <span class="op">&lt;&gt;</span> <span class="st">'page_view'</span></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> e.pagepath_redacted, v.page_views</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> e.pagepath_redacted;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<p>Dwell curve:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>events <span class="ot">&lt;-</span> <span class="fu">tbl</span>(con, <span class="fu">in_schema</span>(<span class="st">"google_analytics"</span>, <span class="st">"meta_page_events"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    page_kind <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"signal_check"</span>, <span class="st">"dashboard"</span>),</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    eventname <span class="sc">==</span> <span class="st">"page_view"</span> <span class="sc">|</span> <span class="fu">str_detect</span>(eventname, <span class="st">"^read_[0-9]+s$"</span>),</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># set the reporting window; see the timespans note in cookbook/notes.qmd</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as.Date</span>(date) <span class="sc">&gt;=</span> <span class="fu">as.Date</span>(<span class="st">"2026-09-01"</span>),</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as.Date</span>(date) <span class="sc">&lt;=</span> <span class="fu">as.Date</span>(<span class="st">"2026-09-30"</span>)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(pagepath_redacted, eventname) <span class="sc">|&gt;</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">sum</span>(eventcount, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">.groups =</span> <span class="st">"drop"</span>)</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>views <span class="ot">&lt;-</span> events <span class="sc">|&gt;</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(eventname <span class="sc">==</span> <span class="st">"page_view"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(pagepath_redacted, <span class="at">page_views =</span> n)</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>events <span class="sc">|&gt;</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(eventname <span class="sc">!=</span> <span class="st">"page_view"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(views, <span class="at">by =</span> <span class="st">"pagepath_redacted"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">transmute</span>(</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>    pagepath_redacted,</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">milestone_seconds =</span> <span class="fu">as.integer</span>(<span class="fu">str_extract</span>(eventname, <span class="st">"[0-9]+"</span>)),</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>    page_views,</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">page_views_reached =</span> n,</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">share_reached =</span> <span class="fu">as.numeric</span>(n) <span class="sc">/</span> page_views</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(pagepath_redacted, milestone_seconds)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Median dwell time:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>events <span class="ot">&lt;-</span> <span class="fu">tbl</span>(con, <span class="fu">in_schema</span>(<span class="st">"google_analytics"</span>, <span class="st">"meta_page_events"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    page_kind <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"signal_check"</span>, <span class="st">"dashboard"</span>),</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    eventname <span class="sc">==</span> <span class="st">"page_view"</span> <span class="sc">|</span> <span class="fu">str_detect</span>(eventname, <span class="st">"^read_[0-9]+s$"</span>),</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># set the reporting window; see the timespans note in cookbook/notes.qmd</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as.Date</span>(date) <span class="sc">&gt;=</span> <span class="fu">as.Date</span>(<span class="st">"2026-09-01"</span>),</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as.Date</span>(date) <span class="sc">&lt;=</span> <span class="fu">as.Date</span>(<span class="st">"2026-09-30"</span>)</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(pagepath_redacted, eventname) <span class="sc">|&gt;</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">sum</span>(eventcount, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">.groups =</span> <span class="st">"drop"</span>)</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>views <span class="ot">&lt;-</span> events <span class="sc">|&gt;</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(eventname <span class="sc">==</span> <span class="st">"page_view"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(pagepath_redacted, <span class="at">page_views =</span> n)</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>events <span class="sc">|&gt;</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(eventname <span class="sc">!=</span> <span class="st">"page_view"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(views, <span class="at">by =</span> <span class="st">"pagepath_redacted"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(pagepath_redacted, page_views) <span class="sc">|&gt;</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>    <span class="co"># NA when fewer than half of the page's views reached 1 second</span></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">median_dwell_seconds =</span> <span class="fu">max</span>(</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>      <span class="fu">if_else</span>(</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>        <span class="fu">as.numeric</span>(n) <span class="sc">/</span> page_views <span class="sc">&gt;=</span> <span class="fl">0.5</span>,</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>        <span class="fu">as.integer</span>(<span class="fu">str_extract</span>(eventname, <span class="st">"[0-9]+"</span>)),</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>        <span class="cn">NA_integer_</span></span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>      ),</span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>      <span class="at">na.rm =</span> <span class="cn">TRUE</span></span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(pagepath_redacted)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
-<p>A <code>since_apr22_unique_users</code> field (cumulative distinct users since the April 22, 2026 public launch) was previously provided here. It has been removed from the pipeline because the source API retains only the most recent 366.5 days of data, so a since-launch cumulative count cannot be maintained once launch is more than a year in the past. See the retention note on the <a href="../../catalog/ibm_verify.html#data-retention">IBM Verify catalog overview</a>.</p>
-<p>Unlike <a href="../../catalog/ibm_verify/auth_total_logins.html"><code>auth_total_logins</code></a>, these counts are <em>not</em> inflated by second factors. The per-authentication-method event inflation described there only happens when a person signs in to CanadaLogin itself. Reaching an integrated application uses the session they already hold: CanadaLogin issues the application a freshly minted assertion or token, the person enters no password or second factor, and one handoff records one SSO event. <code>total_logins</code> and <code>successful_logins</code> still count events rather than people, because one person can reach an application repeatedly. Use <code>unique_users</code> when the question is about how many distinct people used the application.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="interpretation-notes" class="level2">
+<h2 class="anchored" data-anchor-id="interpretation-notes">Interpretation notes</h2>
+<p>Only visible time counts. The clock pauses while the tab is in the background and resumes when the reader comes back, so a tab left open overnight does not reach <code>read_600s</code> unless someone is looking at it.</p>
+<p>The median is a floor, not an exact time. A <code>median_dwell_seconds</code> of 60 means the median reader stayed at least 60 seconds and less than 120. The longest milestone is 600 seconds, so a median of 600 means “10 minutes or more”.</p>
+<p>Prefer the curve or the median to an average. Readership is small, often a few dozen page views per page per month, and one forgotten tab can move a mean a long way. At these counts, check <code>page_views</code> before comparing two pages. A share built on five page views is too unstable to rank.</p>
+<p>The curve counts page views, not people. A reader who reloads the page, or comes back on another day, starts the milestones again and counts twice. Use <code>page_views</code> as the denominator, since <code>totalusers</code> in <code>meta_page_events</code> can’t be summed across days.</p>
+<p><code>read_1s</code> is approximate. The page checks the clock once a second, so <code>read_1s</code> means “1 to 2 seconds”. Milestones from 15 seconds up are not affected.</p>
+<p>This metric covers only Signal Check editions and the dashboards. Public CanadaLogin pages do not fire <code>read_Ns</code> events. For time on those pages, use GA4’s built-in <a href="https://support.google.com/analytics/answer/11109416">average engagement time</a>, which is only available in the GA4 interface, not in the data lake.</p>
+</section>
+<section id="alternative-names" class="level2">
+<h2 class="anchored" data-anchor-id="alternative-names">Alternative names</h2>
+<ul>
+<li>time on page</li>
+<li>reading time</li>
+<li>read depth</li>
+<li>engagement time</li>
+</ul>
 
 
 </section>
@@ -1302,13 +1393,13 @@ Warning
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../../catalog/ibm_verify.html" class="pagination-link" aria-label="IBM Verify">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">IBM Verify</span>
+      <a href="../../cookbook/google_analytics/task-success-rate.html" class="pagination-link" aria-label="Task Success Rate">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Task Success Rate</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../../catalog/ibm_verify/auth_total_logins.html" class="pagination-link" aria-label="auth_total_logins">
-        <span class="nav-page-text">auth_total_logins</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../../cookbook/notes.html" class="pagination-link" aria-label="Additional Notes">
+        <span class="nav-page-text">Additional Notes</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
