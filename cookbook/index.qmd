@@ -21,6 +21,7 @@ The cookbook is organized by data source:
 - IBM Verify
 - Call Centre
 - Platform
+- Jira (PSOM)
 - Google Analytics
 - Cross-source / interpretive metrics (planned)
 
@@ -73,11 +74,5 @@ This cookbook covers *calculated* metrics. Metrics already present in a table
 without any calculation do not need to be included, although they can be if
 they need clarification.
 
-The initial version focuses on:
-
-- IBM Verify application sign-in metrics
-- call centre activity metrics
-- call centre topic metrics
-
-Cross-source metrics comparing sign-in activity and call volume are planned for
-a future revision.
+It covers every source listed above. Cross-source metrics comparing sign-in
+activity and call volume are planned.

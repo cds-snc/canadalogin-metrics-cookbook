@@ -1,0 +1,86 @@
+---
+title: "Escalations to PSO"
+description: "Calls the call centre escalated to Partner Success and Operations."
+---
+
+The number of calls the call centre escalated to Partner Success and Operations
+(PSO). The call centre calls these callbacks: the call passes to a higher level
+of support, which calls the person back.
+
+## Calculation
+
+Count the distinct calls (`call_no`) in `call_centre.weekly_topic_dump` with a
+`transactiontype` of "Callback", over a span of call dates. Every topic row of
+an escalated call carries the flag. The examples group by calendar month, but
+any span of call dates works.
+
+Start no earlier than 2026-06-29, when escalation to PSO began. Callbacks before
+then were not handled the same way.
+
+::: {.callout-note collapse="true" title="Example queries"}
+
+::: {.panel-tabset}
+
+## SQL
+
+```sql
+SELECT
+    date_trunc('month', call_date) AS month,
+    COUNT(DISTINCT call_no) AS escalations
+FROM call_centre.weekly_topic_dump
+-- transactiontype is padded with trailing spaces
+WHERE trim(transactiontype) = 'Callback'
+  -- set the reporting window; escalation to PSO began on 2026-06-29
+  AND call_date BETWEEN DATE '2026-07-01' AND DATE '2026-09-30'
+GROUP BY date_trunc('month', call_date)
+ORDER BY month;
+```
+
+## R
+
+```r
+tbl(con, in_schema("call_centre", "weekly_topic_dump")) |>
+  filter(
+    # transactiontype is padded with trailing spaces
+    str_trim(transactiontype) == "Callback",
+    # set the reporting window; escalation to PSO began on 2026-06-29
+    call_date >= as.Date("2026-07-01"),
+    call_date <= as.Date("2026-09-30")
+  ) |>
+  group_by(month = floor_date(call_date, "month")) |>
+  summarise(escalations = n_distinct(call_no)) |>
+  arrange(month)
+```
+
+:::
+
+:::
+
+## Interpretation notes
+
+**Escalations are rare.** One or two calls can double a month's count, so
+compare over long spans and read the count next to the
+[escalation rate](escalation-rate.qmd).
+
+**PSOM tickets are a cross-check, not the source.** Each escalation becomes a
+ticket on the PSOM Jira board ([`jira.psom`](../../catalog/jira/psom.qmd)),
+created the next working day. Match them with
+`form_topic LIKE '%Escalated from Call Center%' OR lower(summary) LIKE '%canadalogin callback%'`,
+reading each ticket from its own latest snapshot. The summary match catches
+PSOM-140 and PSOM-147, two callback tickets with a blank form topic. The two
+sources agree call for call, but a ticket count can still differ from this one:
+a count on form topic alone misses the blank-topic tickets, and a count by
+ticket creation date includes escalations whose calls are not yet in the call
+centre data.
+
+The `callback` column in
+[`weekly_activity_report`](../../catalog/call_centre/weekly_activity_report.qmd)
+holds the same count by Sunday-to-Saturday week. It has no call dates, so it
+cannot give calendar months.
+
+## Alternative names
+
+- callbacks
+- call centre escalations
+- escalated calls
+- escalations to Partner Success and Operations
