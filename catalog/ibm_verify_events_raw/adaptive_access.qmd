@@ -53,7 +53,7 @@ One row per evaluation.
 
 ## Notes
 
-**About 10% of evaluations have no risk level.** Almost all of them have
+**Some evaluations have no risk level.** Almost all of them have
 `policy_action = "ACTION_REDIRECT"`. The summary table counts them in
 `total_invocations` but in no level.
 

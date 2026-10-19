@@ -52,8 +52,7 @@ One row per event.
 **Sign-up email checks have no user.** `Email OTP` events with
 `performedby_type = "api"` come from "GC Sign in API Client" and never carry a
 `subject`. They appear to be the email check during sign-up, before the account
-exists. In September 2026 they were 68,000 of 72,350 Email OTP "sent" events.
-The summary table counts them in `email_otp`, which is why `email_otp` is not a
+exists, and they are most Email OTP "sent" events. The summary table counts them in `email_otp`, which is why `email_otp` is not a
 sign-in factor.
 
 **OTP factors log a "sent" event too.** See

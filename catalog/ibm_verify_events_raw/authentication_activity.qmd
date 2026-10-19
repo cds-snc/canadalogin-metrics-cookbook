@@ -44,16 +44,14 @@ One row per event.
 
 ## Notes
 
-**When an account first appears.** In September 2026, 37,577 accounts had their
-first event here. For 36,914 it was a successful `user_password`, and for 663 a
-successful `token-exchange`. This suggests the sign-up flow signs a new account
-in as soon as the password is set, with no MFA required. That is observed
-behaviour, not yet confirmed with the sign-up flow's owners. The 663
-`token-exchange` accounts may be migrated accounts; that has not been checked.
+**When an account first appears.** A new account's first event is almost always
+a successful `user_password`. This suggests the sign-up flow signs a new account
+in as soon as the password is set, with no MFA required. A few start with a
+successful `token-exchange` instead, possibly migrated accounts. Both readings
+are observed, not confirmed with the sign-up flow's owners.
 
 **Failed password attempts on unknown usernames have no user.** They log
-`subject = "UNKNOWN"` and `realm = "UNKNOWN"`. They appear almost every day
-since 2026-05-12, peaking at 3,462 on 2026-06-25.
+`subject = "UNKNOWN"` and `realm = "UNKNOWN"`.
 
 **Example.** Distinct users with an authentication event on an ET day:
 
@@ -69,5 +67,5 @@ tbl(con, in_schema("ibm_verify_events_raw", "authentication_activity")) |>
   summarise(unique_users = n_distinct(subject))
 ```
 
-This returns 2,362, one less than `events_auth_total_logins.unique_users` for
-that day, which counts `"UNKNOWN"`.
+This is one less than `events_auth_total_logins.unique_users` on days with an
+`"UNKNOWN"` event, because the summary table counts it.

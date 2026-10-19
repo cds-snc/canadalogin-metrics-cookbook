@@ -45,8 +45,8 @@ One row per event.
 
 ## Notes
 
-**Failed events rarely have a user.** In September 2026, 17,650 of 17,674
-failures had `userid = "UNKNOWN"`.
+**Failed events rarely have a user.** Almost all failures have
+`userid = "UNKNOWN"`.
 
 **Flow Application is CanadaLogin's own.** Almost every new account reaches it
 right after sign-up, which suggests it is the sign-up flow. It is an internal

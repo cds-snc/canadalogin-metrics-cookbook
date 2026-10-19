@@ -52,15 +52,14 @@ One row per `application_id` per day.
 daily values. The `mtd_` and `ytd_` columns are cumulative: take the latest
 value in the window, never sum them.
 
-**One row per ID.** On 2026-10-19 every application name had exactly one ID. If
-a name ever gets two, summing `unique_users` across them double-counts people who
-used both.
+**One row per ID.** If an application name has more than one ID, summing
+`unique_users` across them double-counts people who used both.
 
 **Join to relying parties after, not before, aggregating.** Several application
 names can map to one service. See [Joining through the lookup](../rp.qmd#joining-through-the-lookup).
 
-**Failed events rarely have a user.** In September 2026, 17,650 of 17,674 failed
-SSO events had the user ID `"UNKNOWN"`, which counts as one user that day.
+**Failed events rarely have a user.** Almost all failed SSO events have the user
+ID `"UNKNOWN"`, which counts as one user.
 
 **Not inflated by second factors.** Reaching an application uses the session the
 person already holds, so one handoff is one SSO event. `total_logins` still

@@ -48,10 +48,9 @@ One row per day.
 never sum them.
 
 **`unique_users` includes failed attempts.** It counts anyone with an
-authentication event, even if every attempt failed. On 2026-09-15, 2,363 users
-had an event and 2,345 had a success. The literal user ID `"UNKNOWN"`, logged
-for a password attempt on a username that does not exist, counts as one user on
-most days. Both behaviours match IBM's own figures.
+authentication event, even if every attempt failed. The literal user ID
+`"UNKNOWN"`, logged for a password attempt on a username that does not exist,
+counts as one user. Both match IBM's own figures.
 
 **Events overcount sign-ins.** Each authentication method is its own event. A
 password plus a second factor is two successful events, and a mistyped password

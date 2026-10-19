@@ -42,5 +42,5 @@ One row per `application_id` per partition.
 not since launch. For an application's launch date, use `launch_date` in
 [`rp.service`](../rp/service.qmd).
 
-**Times are UTC, partitions are ET.** An event at 23:53 ET on 2026-10-18 shows as
-`2026-10-19 03:53:30 UTC` in the 2026-10-18 snapshot.
+**Times are UTC, partitions are ET.** An event late in the ET evening shows the
+next UTC day in `last_seen_at`.

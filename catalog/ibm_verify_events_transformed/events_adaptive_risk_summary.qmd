@@ -44,6 +44,6 @@ One row per day.
 
 ## Notes
 
-**The four levels do not add up to `total_invocations`.** About 10% of
-evaluations have no risk level, almost all with the policy action
+**The four levels do not add up to `total_invocations`.** Some evaluations have
+no risk level, almost all with the policy action
 `ACTION_REDIRECT`. They count in the total only.
