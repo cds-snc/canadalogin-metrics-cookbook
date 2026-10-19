@@ -25,14 +25,17 @@ listing:
     filter-ui: false
 ---
 
-Platform metrics for CanadaLogin, in the `sre` schema. Currently, both tables are
-derived from the CanadaLogin Platform team's `CanadaLogin_MTTR_Dashboard` Google
-Sheet (maintained by hand in the CDS Google Drive) and fetched by the
-`sre-mttr-sheets-fetcher` Lambda using Google Sheets API 6am ET every Monday. 
-They share one source and grain (one row per incident);
-they differ only in history: `mttr_current` holds the latest state of each
-incident, while `mttr_history` accumulates a dated snapshot of every incident on
-each upload.
+Platform metrics for CanadaLogin, in the `sre` schema. It holds two groups of
+tables: incident tables, which record outages and how long they took to resolve,
+and uptime tables, which record whether each monitored site was up and how fast
+it responded.
+
+The incident tables come from the CanadaLogin Platform team's
+`CanadaLogin_MTTR_Dashboard` Google Sheet, maintained by hand in the CDS Google
+Drive. The `sre-mttr-sheets-fetcher` Lambda reads it through the Google Sheets
+API every Monday at 06:00 ET. Both tables have one row per incident and differ
+only in history: `mttr_current` holds the latest state of each incident, while
+`mttr_history` adds a dated snapshot of every incident on each upload.
 
 ## Incident Tables
 

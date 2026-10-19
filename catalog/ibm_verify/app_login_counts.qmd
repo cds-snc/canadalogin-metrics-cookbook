@@ -25,7 +25,7 @@ must never be added together or presented side by side.
 
 Queried directly from the IBM Verify production instance via API.
 
-* **Updated**: Daily, at 6am America/Toronto
+* **Updated**: Daily, at 06:00 ET
 * **Retention**: While CanadaLogin exists
 * **Steward**: EDCP Data and Research Team
 * **Contact**: [Yinlin Zhang](mailto:yinlin.zhang@cds-snc.ca)
