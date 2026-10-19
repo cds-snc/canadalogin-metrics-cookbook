@@ -21,8 +21,11 @@ Dwell curve: for each page and each milestone, divide the `read_Ns` event
 count by the `page_view` event count over the reporting window. Both come from
 [`meta_page_events`](../../catalog/google_analytics/meta_page_events.qmd).
 
-Median dwell time: the longest milestone that at least half of the page's
-views reached.
+Median dwell time: the time at which half of the page's views were still open.
+Take the last milestone at least half the views reached and the next one, and
+interpolate on a log scale to where the share crosses 50%. It is 0 when fewer
+than half reached 1 second, and infinite when half were still open at 600
+seconds.
 
 Group on `pagepath_redacted`, never `pagepath`, which holds a private token
 for Signal Check pages.
@@ -84,20 +87,46 @@ views AS (
     SELECT pagepath_redacted, n AS page_views
     FROM events
     WHERE eventname = 'page_view'
+),
+-- every milestone, so one nobody reached reads as zero, not missing
+curve AS (
+    SELECT
+        v.pagepath_redacted,
+        v.page_views,
+        m.seconds,
+        CAST(COALESCE(e.n, 0) AS DOUBLE) / v.page_views AS share,
+        LEAD(m.seconds) OVER (PARTITION BY v.pagepath_redacted ORDER BY m.seconds) AS next_seconds,
+        LEAD(CAST(COALESCE(e.n, 0) AS DOUBLE) / v.page_views)
+            OVER (PARTITION BY v.pagepath_redacted ORDER BY m.seconds) AS next_share
+    FROM views v
+    CROSS JOIN UNNEST(ARRAY[1, 5, 15, 30, 60, 120, 300, 600]) AS m (seconds)
+    LEFT JOIN events e
+        ON e.pagepath_redacted = v.pagepath_redacted
+       AND e.eventname = 'read_' || CAST(m.seconds AS VARCHAR) || 's'
+),
+crossing AS (
+    SELECT
+        *,
+        ROW_NUMBER() OVER (PARTITION BY pagepath_redacted ORDER BY seconds DESC) AS rn
+    FROM curve
+    WHERE share >= 0.5
 )
 SELECT
-    e.pagepath_redacted,
+    v.pagepath_redacted,
     v.page_views,
-    -- NULL when fewer than half of the page's views reached 1 second
-    MAX(CASE
-        WHEN CAST(e.n AS DOUBLE) / v.page_views >= 0.5
-        THEN CAST(REGEXP_EXTRACT(e.eventname, '[0-9]+') AS INTEGER)
-    END) AS median_dwell_seconds
-FROM events e
-JOIN views v ON e.pagepath_redacted = v.pagepath_redacted
-WHERE e.eventname <> 'page_view'
-GROUP BY e.pagepath_redacted, v.page_views
-ORDER BY e.pagepath_redacted;
+    CASE
+        -- fewer than half of the page views reached 1 second
+        WHEN c.seconds IS NULL THEN 0
+        -- half were still open at the last milestone
+        WHEN c.next_seconds IS NULL THEN infinity()
+        ELSE exp(ln(c.seconds) + (c.share - 0.5) / (c.share - c.next_share)
+                 * (ln(c.next_seconds) - ln(c.seconds)))
+    END AS median_dwell_seconds
+FROM views v
+LEFT JOIN crossing c
+    ON c.pagepath_redacted = v.pagepath_redacted
+   AND c.rn = 1
+ORDER BY v.pagepath_redacted;
 ```
 
 ## R
@@ -136,6 +165,19 @@ events |>
 Median dwell time:
 
 ```r
+milestones <- c(1, 5, 15, 30, 60, 120, 300, 600)
+
+# The time half the page views were still open, interpolated on a log scale
+# between the milestones either side of 50%. `seconds` must be sorted.
+median_read <- function(seconds, share) {
+  above <- which(share >= 0.5)
+  if (length(above) == 0L) return(0)
+  i <- max(above)
+  if (i == length(seconds)) return(Inf)
+  step <- (share[i] - 0.5) / (share[i] - share[i + 1L])
+  exp(log(seconds[i]) + step * (log(seconds[i + 1L]) - log(seconds[i])))
+}
+
 events <- tbl(con, in_schema("google_analytics", "meta_page_events")) |>
   filter(
     page_kind %in% c("signal_check", "dashboard"),
@@ -145,28 +187,30 @@ events <- tbl(con, in_schema("google_analytics", "meta_page_events")) |>
     as.Date(date) <= as.Date("2026-09-30")
   ) |>
   group_by(pagepath_redacted, eventname) |>
-  summarise(n = sum(eventcount, na.rm = TRUE), .groups = "drop")
+  summarise(n = sum(eventcount, na.rm = TRUE), .groups = "drop") |>
+  collect() |>
+  mutate(n = as.numeric(n))
 
 views <- events |>
   filter(eventname == "page_view") |>
   select(pagepath_redacted, page_views = n)
 
-events |>
+reached <- events |>
   filter(eventname != "page_view") |>
-  inner_join(views, by = "pagepath_redacted") |>
+  transmute(
+    pagepath_redacted,
+    seconds = as.numeric(str_extract(eventname, "[0-9]+")),
+    n
+  )
+
+views |>
+  # every milestone, so one nobody reached reads as zero, not missing
+  cross_join(tibble(seconds = milestones)) |>
+  left_join(reached, by = c("pagepath_redacted", "seconds")) |>
+  mutate(share = coalesce(n, 0) / page_views) |>
+  arrange(pagepath_redacted, seconds) |>
   group_by(pagepath_redacted, page_views) |>
-  summarise(
-    # NA when fewer than half of the page's views reached 1 second
-    median_dwell_seconds = max(
-      if_else(
-        as.numeric(n) / page_views >= 0.5,
-        as.integer(str_extract(eventname, "[0-9]+")),
-        NA_integer_
-      ),
-      na.rm = TRUE
-    ),
-    .groups = "drop"
-  ) |>
+  summarise(median_dwell_seconds = median_read(seconds, share), .groups = "drop") |>
   arrange(pagepath_redacted)
 ```
 
@@ -180,10 +224,13 @@ Only visible time counts. The clock pauses while the tab is in the
 background and resumes when the reader comes back, so a tab left open
 overnight does not reach `read_600s` unless someone is looking at it.
 
-The median is a floor, not an exact time. A `median_dwell_seconds` of 60
-means the median reader stayed at least 60 seconds and less than 120. The
-longest milestone is 600 seconds, so a median of 600 means "10 minutes or
-more".
+The median is an estimate between two measured milestones. A
+`median_dwell_seconds` of 45 means half the views passed 30 seconds and fewer
+than half passed 60; the interpolation places the crossing in between. An
+infinite median means half the views were still open at 10 minutes, so report
+it as "over 10 minutes". Signal Checks before #9 report the floor milestone
+instead, the longest milestone at least half the views reached, so their
+medians read lower.
 
 Prefer the curve or the median to an average. Readership is small, often a
 few dozen page views per page per month, and one forgotten tab can move a
