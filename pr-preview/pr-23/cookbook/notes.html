@@ -85,9 +85,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-8b76eb07b549522d1afae2dc4e9871db.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-4ea69f0bb438d4cd2a1c451ff2c5348b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-8b76eb07b549522d1afae2dc4e9871db.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-7de235e3fdb1f329c0b221c428aa6f51.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-4c439c898bba901b790a010c341a49de.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-7de235e3fdb1f329c0b221c428aa6f51.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -917,21 +917,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Year-to-date: <code>ytd_unique_users</code></li>
 </ul>
 <p>Never sum these cumulative columns across rows.</p>
-<div class="callout callout-style-default callout-warning callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Warning
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p><code>ytd_unique_users</code> (and the <code>rolling_365d_unique_users</code> field used elsewhere) may be unreliable. IBM Verify computes both over a longer window than its underlying data retention actually covers, so the figures can undercount and <code>ytd_unique_users</code> has been seen decreasing from one day to the next. Treat both as estimates only. See <a href="../cookbook/unique-users.html#year-to-date-and-365-day-figures">Why Unique Users Cannot Be Added Up</a> for detail.</p>
-</div>
-</div>
-<p>There is no cumulative since-launch column. The <code>since_apr22_unique_users</code> field that previously provided it has been removed: the cumulative count is computed by the IBM Verify API, which sees only the most recent 366.5 days of source data, so a since-launch total silently truncates once launch is more than a year in the past. The <code>mtd_</code> and <code>ytd_</code> windows are unaffected because they fall inside that horizon.</p>
-<p>This limit does not affect the additive metrics above. Those are aggregated from the daily rows we store on our side, which are retained beyond a year, so a date-bounded since-launch window over an additive metric stays correct however far back it reaches.</p>
+<p>There is no since-launch unique-user column. Additive metrics, such as authentication events, SSO events, and MFA attempts, can be summed over any window back to launch.</p>
 </section>
 <section id="weighted-averages-should-be-used-for-call-centre-averages" class="level2">
 <h2 class="anchored" data-anchor-id="weighted-averages-should-be-used-for-call-centre-averages">Weighted averages should be used for call centre averages</h2>
