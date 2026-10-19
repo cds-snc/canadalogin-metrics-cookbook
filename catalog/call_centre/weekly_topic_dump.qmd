@@ -40,7 +40,7 @@ multiple rows if more than one topic was recorded.
 | origin | string | Province or region the caller is calling from |
 | statobject | string | The call topic as recorded in the source system. May contain leading/trailing whitespace or inconsistent spacing |
 | cstat | string | Full topic classification path, including category and topic (for example, "Main Document description::What is CanadaLogin?") |
-| transactiontype | string | Type of transaction recorded for the topic, for example "Search", "Callback" |
+| transactiontype | string | Type of transaction recorded for the topic: "Search", "Callback", or "Comment". Padded with trailing spaces, so trim before comparing. "Callback" marks every topic row of a call escalated to PSO |
 | programcontact | string | Program contact information provided to the caller, if any. Often missing |
 | source | float | Unused |
 

@@ -61,6 +61,8 @@ website:
               - cookbook/call_centre/service-level.qmd
               - cookbook/call_centre/average-handle-time.qmd
               - cookbook/call_centre/calls-per-active-user.qmd
+              - cookbook/call_centre/call-escalations.qmd
+              - cookbook/call_centre/escalation-rate.qmd
               - cookbook/call_centre/call-topic-share.qmd
               - cookbook/call_centre/top-10-call-topics.qmd
           - section: "Platform"
