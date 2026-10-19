@@ -87,9 +87,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-8b76eb07b549522d1afae2dc4e9871db.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-4ea69f0bb438d4cd2a1c451ff2c5348b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-8b76eb07b549522d1afae2dc4e9871db.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-7de235e3fdb1f329c0b221c428aa6f51.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-4c439c898bba901b790a010c341a49de.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-7de235e3fdb1f329c0b221c428aa6f51.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -1027,7 +1027,7 @@ window.Quarto = {
 <tr class="even">
 <td>Authentication event</td>
 <td>What IBM Verify records while that happens. Runs ahead of sign-ins</td>
-<td><code>auth_total_logins</code></td>
+<td><code>events_auth_total_logins</code></td>
 </tr>
 <tr class="odd">
 <td>Session</td>
@@ -1037,17 +1037,18 @@ window.Quarto = {
 <tr class="even">
 <td>SSO event</td>
 <td>The session being used to reach a partner service</td>
-<td><code>app_login_counts</code></td>
+<td><code>events_app_login_counts</code></td>
 </tr>
 </tbody>
 </table>
 <p>“Sign-in” is prose only. No table counts it, so it is never an output column name or an axis label, and names a metric only where that metric is labelled an estimate.</p>
 <p>The relevant IBM Verify tables are:</p>
 <ul>
-<li><a href="../catalog/ibm_verify/auth_total_logins.html"><code>ibm_verify.auth_total_logins</code></a> - daily, CanadaLogin-wide authentication-event totals</li>
-<li><a href="../catalog/ibm_verify/app_login_counts.html"><code>ibm_verify.app_login_counts</code></a> - daily SSO event counts broken down by application</li>
-<li><a href="../catalog/ibm_verify/mfa_activity.html"><code>ibm_verify.mfa_activity</code></a> - multi-factor authentication activity by factor and result</li>
+<li><a href="../catalog/ibm_verify_events_transformed/events_auth_total_logins.html"><code>ibm_verify_events_transformed.events_auth_total_logins</code></a> - daily, CanadaLogin-wide authentication-event totals</li>
+<li><a href="../catalog/ibm_verify_events_transformed/events_app_login_counts.html"><code>ibm_verify_events_transformed.events_app_login_counts</code></a> - daily SSO event counts broken down by application</li>
+<li><a href="../catalog/ibm_verify_events_transformed/events_mfa_activity.html"><code>ibm_verify_events_transformed.events_mfa_activity</code></a> - multi-factor authentication activity by factor and result</li>
 </ul>
+<p>Their <code>from_date</code> is a string, so every query below casts it. See <a href="../catalog/ibm_verify_events_transformed.html#dates-are-strings">Dates are strings</a>.</p>
 <p><strong>Internal applications.</strong> Internal applications are typically excluded from public-facing adoption metrics. Which ones are internal comes from <a href="../catalog/rp/service.html"><code>rp.service.is_internal</code></a>, resolved to IBM Verify’s application names through <a href="../catalog/rp/alias.html"><code>rp.alias</code></a>:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> al.alias</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span>   rp.alias al</span>
@@ -1056,7 +1057,7 @@ window.Quarto = {
 <p>Use the subquery rather than a pasted list, so the classification stays in one place. See the internal applications note in <a href="../cookbook/notes.html">notes.qmd</a>.</p>
 <section id="canadalogin-metrics" class="level2">
 <h2 class="anchored" data-anchor-id="canadalogin-metrics">CanadaLogin Metrics</h2>
-<p>Metrics in this section describe CanadaLogin overall, across all applications, sourced mainly from <code>ibm_verify.auth_total_logins</code> (the estimated sessions metric also draws on <code>ibm_verify.mfa_activity</code>).</p>
+<p>Metrics in this section describe CanadaLogin overall, across all applications, sourced mainly from <code>ibm_verify_events_transformed.events_auth_total_logins</code> (the estimated sessions metric also draws on <code>ibm_verify_events_transformed.events_mfa_activity</code>).</p>
 <div id="listing-metrics-1" class="quarto-listing quarto-listing-container-table">
 <table class="quarto-listing-table table">
 <thead>
@@ -1074,7 +1075,7 @@ Description
 </thead>
 <tbody class="list">
 
-<tr data-index="0" data-listing-file-modified-sort="1792436518665" data-listing-reading-time-sort="2" data-listing-word-count-sort="394" data-listing-title-sort="Authentication Events" data-listing-filename-sort="sign-ins.qmd">
+<tr data-index="0" data-listing-file-modified-sort="1792437691372" data-listing-reading-time-sort="3" data-listing-word-count-sort="402" data-listing-title-sort="Authentication Events" data-listing-filename-sort="sign-ins.qmd">
 <td>
 <a href="../cookbook/ibm_verify/sign-ins.html" class="title listing-title">Authentication Events</a>
 </td>
@@ -1084,7 +1085,7 @@ Description
 
 </tr>
 
-<tr data-index="1" data-listing-file-modified-sort="1792436518665" data-listing-reading-time-sort="3" data-listing-word-count-sort="519" data-listing-title-sort="Authentication Success Rate" data-listing-filename-sort="sign-in-success-rate.qmd">
+<tr data-index="1" data-listing-file-modified-sort="1792437691372" data-listing-reading-time-sort="3" data-listing-word-count-sort="527" data-listing-title-sort="Authentication Success Rate" data-listing-filename-sort="sign-in-success-rate.qmd">
 <td>
 <a href="../cookbook/ibm_verify/sign-in-success-rate.html" class="title listing-title">Authentication Success Rate</a>
 </td>
@@ -1094,7 +1095,7 @@ Description
 
 </tr>
 
-<tr data-index="2" data-listing-file-modified-sort="1792436518665" data-listing-reading-time-sort="4" data-listing-word-count-sort="677" data-listing-title-sort="Completed Sign-In Sessions (Estimated)" data-listing-filename-sort="completed-sign-in-sessions.qmd">
+<tr data-index="2" data-listing-file-modified-sort="1792437691372" data-listing-reading-time-sort="4" data-listing-word-count-sort="681" data-listing-title-sort="Completed Sign-In Sessions (Estimated)" data-listing-filename-sort="completed-sign-in-sessions.qmd">
 <td>
 <a href="../cookbook/ibm_verify/completed-sign-in-sessions.html" class="title listing-title">Completed Sign-In Sessions (Estimated)</a>
 </td>
@@ -1104,7 +1105,7 @@ Description
 
 </tr>
 
-<tr data-index="3" data-listing-file-modified-sort="1792436518665" data-listing-reading-time-sort="5" data-listing-word-count-sort="853" data-listing-title-sort="Sign-Ins per Active User (Estimated)" data-listing-filename-sort="sign-ins-per-active-user.qmd">
+<tr data-index="3" data-listing-file-modified-sort="1792437691372" data-listing-reading-time-sort="5" data-listing-word-count-sort="867" data-listing-title-sort="Sign-Ins per Active User (Estimated)" data-listing-filename-sort="sign-ins-per-active-user.qmd">
 <td>
 <a href="../cookbook/ibm_verify/sign-ins-per-active-user.html" class="title listing-title">Sign-Ins per Active User (Estimated)</a>
 </td>
@@ -1114,7 +1115,7 @@ Description
 
 </tr>
 
-<tr data-index="4" data-listing-file-modified-sort="1792436518665" data-listing-reading-time-sort="2" data-listing-word-count-sort="334" data-listing-title-sort="Cumulative Unique Users" data-listing-filename-sort="cumulative-unique-users.qmd">
+<tr data-index="4" data-listing-file-modified-sort="1792437691372" data-listing-reading-time-sort="2" data-listing-word-count-sort="263" data-listing-title-sort="Cumulative Unique Users" data-listing-filename-sort="cumulative-unique-users.qmd">
 <td>
 <a href="../cookbook/ibm_verify/cumulative-unique-users.html" class="title listing-title">Cumulative Unique Users</a>
 </td>
@@ -1131,7 +1132,7 @@ Description
 </section>
 <section id="application-metrics" class="level2">
 <h2 class="anchored" data-anchor-id="application-metrics">Application Metrics</h2>
-<p>Metrics in this section describe how much each application is used, sourced from <code>ibm_verify.app_login_counts</code>. IBM Verify records this as SSO events, filed under <em>application usage</em>: someone who is already signed in reaching a service. The person enters no password and no second factor, which is why these counts are not inflated the way the CanadaLogin-wide authentication events are.</p>
+<p>Metrics in this section describe how much each application is used, sourced from <code>ibm_verify_events_transformed.events_app_login_counts</code>. IBM Verify records this as SSO events, filed under <em>application usage</em>: someone who is already signed in reaching a service. The person enters no password and no second factor, which is why these counts are not inflated the way the CanadaLogin-wide authentication events are.</p>
 <div id="listing-metrics-2" class="quarto-listing quarto-listing-container-table">
 <table class="quarto-listing-table table">
 <thead>
@@ -1149,7 +1150,7 @@ Description
 </thead>
 <tbody class="list">
 
-<tr data-index="0" data-listing-file-modified-sort="1792436518665" data-listing-reading-time-sort="2" data-listing-word-count-sort="385" data-listing-title-sort="SSO Events by Application" data-listing-filename-sort="sign-ins-by-application.qmd">
+<tr data-index="0" data-listing-file-modified-sort="1792437691372" data-listing-reading-time-sort="2" data-listing-word-count-sort="387" data-listing-title-sort="SSO Events by Application" data-listing-filename-sort="sign-ins-by-application.qmd">
 <td>
 <a href="../cookbook/ibm_verify/sign-ins-by-application.html" class="title listing-title">SSO Events by Application</a>
 </td>
@@ -1159,7 +1160,7 @@ Description
 
 </tr>
 
-<tr data-index="1" data-listing-file-modified-sort="1792436518665" data-listing-reading-time-sort="2" data-listing-word-count-sort="373" data-listing-title-sort="SSO Success Rate by Application" data-listing-filename-sort="sign-in-success-rate-by-application.qmd">
+<tr data-index="1" data-listing-file-modified-sort="1792437691372" data-listing-reading-time-sort="2" data-listing-word-count-sort="375" data-listing-title-sort="SSO Success Rate by Application" data-listing-filename-sort="sign-in-success-rate-by-application.qmd">
 <td>
 <a href="../cookbook/ibm_verify/sign-in-success-rate-by-application.html" class="title listing-title">SSO Success Rate by Application</a>
 </td>
@@ -1169,7 +1170,7 @@ Description
 
 </tr>
 
-<tr data-index="2" data-listing-file-modified-sort="1792436518665" data-listing-reading-time-sort="3" data-listing-word-count-sort="442" data-listing-title-sort="Peak Daily Unique Users" data-listing-filename-sort="peak-daily-unique-users.qmd">
+<tr data-index="2" data-listing-file-modified-sort="1792437691372" data-listing-reading-time-sort="3" data-listing-word-count-sort="444" data-listing-title-sort="Peak Daily Unique Users" data-listing-filename-sort="peak-daily-unique-users.qmd">
 <td>
 <a href="../cookbook/ibm_verify/peak-daily-unique-users.html" class="title listing-title">Peak Daily Unique Users</a>
 </td>
@@ -1179,7 +1180,7 @@ Description
 
 </tr>
 
-<tr data-index="3" data-listing-file-modified-sort="1792436518665" data-listing-reading-time-sort="5" data-listing-word-count-sort="857" data-listing-title-sort="Cumulative Unique Users by Application" data-listing-filename-sort="cumulative-unique-users-by-application.qmd">
+<tr data-index="3" data-listing-file-modified-sort="1792437691372" data-listing-reading-time-sort="4" data-listing-word-count-sort="792" data-listing-title-sort="Cumulative Unique Users by Application" data-listing-filename-sort="cumulative-unique-users-by-application.qmd">
 <td>
 <a href="../cookbook/ibm_verify/cumulative-unique-users-by-application.html" class="title listing-title">Cumulative Unique Users by Application</a>
 </td>
@@ -1189,7 +1190,7 @@ Description
 
 </tr>
 
-<tr data-index="4" data-listing-file-modified-sort="1792436518665" data-listing-reading-time-sort="3" data-listing-word-count-sort="550" data-listing-title-sort="Applications per Credential" data-listing-filename-sort="applications-per-credential.qmd">
+<tr data-index="4" data-listing-file-modified-sort="1792437691372" data-listing-reading-time-sort="3" data-listing-word-count-sort="493" data-listing-title-sort="Applications per Credential" data-listing-filename-sort="applications-per-credential.qmd">
 <td>
 <a href="../cookbook/ibm_verify/applications-per-credential.html" class="title listing-title">Applications per Credential</a>
 </td>
@@ -1199,7 +1200,7 @@ Description
 
 </tr>
 
-<tr data-index="5" data-listing-file-modified-sort="1792436518665" data-listing-reading-time-sort="2" data-listing-word-count-sort="325" data-listing-title-sort="Average Daily SSO Events" data-listing-filename-sort="average-daily-sign-ins.qmd">
+<tr data-index="5" data-listing-file-modified-sort="1792437691372" data-listing-reading-time-sort="2" data-listing-word-count-sort="327" data-listing-title-sort="Average Daily SSO Events" data-listing-filename-sort="average-daily-sign-ins.qmd">
 <td>
 <a href="../cookbook/ibm_verify/average-daily-sign-ins.html" class="title listing-title">Average Daily SSO Events</a>
 </td>
@@ -1216,7 +1217,7 @@ Description
 </section>
 <section id="multi-factor-authentication-metrics" class="level2">
 <h2 class="anchored" data-anchor-id="multi-factor-authentication-metrics">Multi-factor Authentication Metrics</h2>
-<p>Metrics in this section describe multi-factor authentication (MFA) activity, sourced from <code>ibm_verify.mfa_activity</code>. That table has one row per day per MFA factor (<code>mfa_type</code>) per outcome (<code>result</code>), with the number of attempts in <code>count</code>.</p>
+<p>Metrics in this section describe multi-factor authentication (MFA) activity, sourced from <code>ibm_verify_events_transformed.events_mfa_activity</code>. That table has one row per day per MFA factor (<code>mfa_type</code>) per outcome (<code>result</code>), with the number of attempts in <code>count</code>.</p>
 <p>IBM Verify files MFA as a subtype of the authentication event rather than as an event type of its own, so these counts are a slice of the CanadaLogin-wide authentication events, not a separate stream.</p>
 <div id="listing-metrics-3" class="quarto-listing quarto-listing-container-table">
 <table class="quarto-listing-table table">
@@ -1235,7 +1236,7 @@ Description
 </thead>
 <tbody class="list">
 
-<tr data-index="0" data-listing-file-modified-sort="1792436518665" data-listing-reading-time-sort="2" data-listing-word-count-sort="330" data-listing-title-sort="MFA Authentications" data-listing-filename-sort="mfa-authentications.qmd">
+<tr data-index="0" data-listing-file-modified-sort="1792437691372" data-listing-reading-time-sort="2" data-listing-word-count-sort="332" data-listing-title-sort="MFA Authentications" data-listing-filename-sort="mfa-authentications.qmd">
 <td>
 <a href="../cookbook/ibm_verify/mfa-authentications.html" class="title listing-title">MFA Authentications</a>
 </td>
@@ -1245,7 +1246,7 @@ Description
 
 </tr>
 
-<tr data-index="1" data-listing-file-modified-sort="1792436518665" data-listing-reading-time-sort="4" data-listing-word-count-sort="601" data-listing-title-sort="MFA Success Rate" data-listing-filename-sort="mfa-success-rate.qmd">
+<tr data-index="1" data-listing-file-modified-sort="1792437691372" data-listing-reading-time-sort="4" data-listing-word-count-sort="609" data-listing-title-sort="MFA Success Rate" data-listing-filename-sort="mfa-success-rate.qmd">
 <td>
 <a href="../cookbook/ibm_verify/mfa-success-rate.html" class="title listing-title">MFA Success Rate</a>
 </td>
@@ -1255,7 +1256,7 @@ Description
 
 </tr>
 
-<tr data-index="2" data-listing-file-modified-sort="1792436518665" data-listing-reading-time-sort="4" data-listing-word-count-sort="656" data-listing-title-sort="MFA Success Rate by Factor" data-listing-filename-sort="mfa-success-rate-by-factor.qmd">
+<tr data-index="2" data-listing-file-modified-sort="1792437691372" data-listing-reading-time-sort="4" data-listing-word-count-sort="664" data-listing-title-sort="MFA Success Rate by Factor" data-listing-filename-sort="mfa-success-rate-by-factor.qmd">
 <td>
 <a href="../cookbook/ibm_verify/mfa-success-rate-by-factor.html" class="title listing-title">MFA Success Rate by Factor</a>
 </td>
@@ -1265,7 +1266,7 @@ Description
 
 </tr>
 
-<tr data-index="3" data-listing-file-modified-sort="1792436518665" data-listing-reading-time-sort="3" data-listing-word-count-sort="482" data-listing-title-sort="All MFA Activity by Factor" data-listing-filename-sort="mfa-activity-by-factor.qmd">
+<tr data-index="3" data-listing-file-modified-sort="1792437691372" data-listing-reading-time-sort="3" data-listing-word-count-sort="484" data-listing-title-sort="All MFA Activity by Factor" data-listing-filename-sort="mfa-activity-by-factor.qmd">
 <td>
 <a href="../cookbook/ibm_verify/mfa-activity-by-factor.html" class="title listing-title">All MFA Activity by Factor</a>
 </td>
@@ -1275,7 +1276,7 @@ Description
 
 </tr>
 
-<tr data-index="4" data-listing-file-modified-sort="1792436518665" data-listing-reading-time-sort="4" data-listing-word-count-sort="658" data-listing-title-sort="Sign-in MFA Activity by Factor" data-listing-filename-sort="sign-in-mfa-activity-by-factor.qmd">
+<tr data-index="4" data-listing-file-modified-sort="1792437691372" data-listing-reading-time-sort="4" data-listing-word-count-sort="660" data-listing-title-sort="Sign-in MFA Activity by Factor" data-listing-filename-sort="sign-in-mfa-activity-by-factor.qmd">
 <td>
 <a href="../cookbook/ibm_verify/sign-in-mfa-activity-by-factor.html" class="title listing-title">Sign-in MFA Activity by Factor</a>
 </td>
