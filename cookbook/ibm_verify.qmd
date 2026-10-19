@@ -8,6 +8,7 @@ listing:
       - ibm_verify/completed-sign-in-sessions.qmd
       - ibm_verify/sign-ins-per-active-user.qmd
       - ibm_verify/cumulative-unique-users.qmd
+      - ibm_verify/new-accounts-and-idle-rate.qmd
     type: table
     fields: [title, description]
     field-display-names:

@@ -33,6 +33,7 @@ website:
                   - cookbook/ibm_verify/completed-sign-in-sessions.qmd
                   - cookbook/ibm_verify/sign-ins-per-active-user.qmd
                   - cookbook/ibm_verify/cumulative-unique-users.qmd
+                  - cookbook/ibm_verify/new-accounts-and-idle-rate.qmd
               - section: "Applications"
                 contents:
                   - cookbook/ibm_verify/sign-ins-by-application.qmd
