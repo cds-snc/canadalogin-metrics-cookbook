@@ -26,7 +26,7 @@ public launch. How you select a window depends on the kind of metric.
 
 **Additive metrics** (sign-ins, MFA attempts, success rates, averages) are
 computed by aggregating daily rows, so the window is just the date bounds in the
-`WHERE from_date BETWEEN DATE '<start>' AND DATE '<end>'` clause. The same query
+`WHERE CAST(from_date AS DATE) BETWEEN DATE '<start>' AND DATE '<end>'` clause. The same query
 covers any window; only the start date changes:
 
 - Month-to-date: first of the current month (for example, `2026-06-01`)
@@ -64,8 +64,7 @@ horizon.
 This limit does not affect the additive metrics above. Those are aggregated from
 the daily rows we store on our side, which are retained beyond a year, so a
 date-bounded since-launch window over an additive metric stays correct however
-far back it reaches. See the [data retention
-note](../catalog/ibm_verify.qmd#data-retention) in the catalog.
+far back it reaches.
 
 ## Weighted averages should be used for call centre averages
 

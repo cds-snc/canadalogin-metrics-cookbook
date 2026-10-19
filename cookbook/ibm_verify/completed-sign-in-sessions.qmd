@@ -12,9 +12,9 @@ through the sign-in flow regardless of how many authentication methods it took.
 A completed session has exactly one successful first-factor
 event (the password) plus zero or more successful second factors. Both kinds of
 success are lumped together in `successful_logins` on
-[`auth_total_logins`](../../catalog/ibm_verify/auth_total_logins.qmd), while the
+[`events_auth_total_logins`](../../catalog/ibm_verify_events_transformed/events_auth_total_logins.qmd), while the
 second-factor successes are counted separately on
-[`mfa_activity`](../../catalog/ibm_verify/mfa_activity.qmd). Subtracting the second
+[`events_mfa_activity`](../../catalog/ibm_verify_events_transformed/events_mfa_activity.qmd). Subtracting the second
 from the first leaves one event per session: the first-factor success. So sum
 `successful_logins` over the window and subtract the sum of `mfa_activity.count`
 where `result = 'success'`, restricted to the factors that can complete a
@@ -29,16 +29,16 @@ sign-in.
 ```sql
 WITH first_factor AS (
     SELECT SUM(successful_logins) AS successful_events
-    FROM ibm_verify.auth_total_logins
+    FROM ibm_verify_events_transformed.events_auth_total_logins
     -- set the reporting window; see the timespans note in cookbook/notes.qmd
-    WHERE from_date BETWEEN DATE '2026-01-01' AND DATE '2026-05-28'
+    WHERE CAST(from_date AS DATE) BETWEEN DATE '2026-01-01' AND DATE '2026-05-28'
 ),
 
 second_factor AS (
     SELECT SUM(count) AS mfa_successes
-    FROM ibm_verify.mfa_activity
+    FROM ibm_verify_events_transformed.events_mfa_activity
     -- set the reporting window; see the timespans note in cookbook/notes.qmd
-    WHERE from_date BETWEEN DATE '2026-01-01' AND DATE '2026-05-28'
+    WHERE CAST(from_date AS DATE) BETWEEN DATE '2026-01-01' AND DATE '2026-05-28'
       -- outcome events only; a "sent" OTP is an issuance, not a success
       AND result = 'success'
       -- email_otp validates an email address at sign-up and never enters
@@ -58,20 +58,20 @@ CROSS JOIN second_factor;
 ```r
 sign_in_types <- c("sms_otp", "voice_otp", "fido2")
 
-successful_events <- tbl(con, in_schema("ibm_verify", "auth_total_logins")) |>
+successful_events <- tbl(con, in_schema("ibm_verify_events_transformed", "events_auth_total_logins")) |>
   # set the reporting window; see the timespans note in cookbook/notes.qmd
   filter(
-    from_date >= as.Date("2026-01-01"),
-    from_date <= as.Date("2026-05-28")
+    as.Date(from_date) >= as.Date("2026-01-01"),
+    as.Date(from_date) <= as.Date("2026-05-28")
   ) |>
   summarise(successful_events = sum(as.double(successful_logins), na.rm = TRUE)) |>
   pull(successful_events)
 
-mfa_successes <- tbl(con, in_schema("ibm_verify", "mfa_activity")) |>
+mfa_successes <- tbl(con, in_schema("ibm_verify_events_transformed", "events_mfa_activity")) |>
   # set the reporting window; see the timespans note in cookbook/notes.qmd
   filter(
-    from_date >= as.Date("2026-01-01"),
-    from_date <= as.Date("2026-05-28"),
+    as.Date(from_date) >= as.Date("2026-01-01"),
+    as.Date(from_date) <= as.Date("2026-05-28"),
     # outcome events only; a "sent" OTP is an issuance, not a success
     result == "success",
     # email_otp validates an email address at sign-up and never enters
@@ -109,7 +109,7 @@ The estimate rests on two assumptions:
 
 1. **Passwordless and FIDO-first logins are undercounted.** A session whose only
    factor is FIDO2 is one event in `successful_logins` and also a `fido2` success
-   in `mfa_activity`, so it nets to zero. The figure is therefore a slight
+   in `events_mfa_activity`, so it nets to zero. The figure is therefore a slight
    underestimate.
 2. **The two tables are assumed to count sign-in second-factor successes the
    same way.**

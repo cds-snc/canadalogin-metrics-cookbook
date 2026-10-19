@@ -31,10 +31,6 @@ allows. See [Why Unique Users Cannot Be Added
 Up](../unique-users.qmd#year-to-date-and-365-day-figures) for detail.
 :::
 
-A `since_apr22_unique_users` column (cumulative distinct users since launch) was
-previously available but has been removed; see the [data retention
-note](../../catalog/ibm_verify.qmd#data-retention).
-
 ::: {.callout-note collapse="true" title="Example queries"}
 
 ::: {.panel-tabset}
@@ -46,7 +42,7 @@ Month-to-date:
 ```sql
 SELECT
     mtd_unique_users
-FROM ibm_verify.auth_total_logins
+FROM ibm_verify_events_transformed.events_auth_total_logins
 ORDER BY from_date DESC
 LIMIT 1;
 ```
@@ -56,7 +52,7 @@ Year-to-date:
 ```sql
 SELECT
     ytd_unique_users
-FROM ibm_verify.auth_total_logins
+FROM ibm_verify_events_transformed.events_auth_total_logins
 ORDER BY from_date DESC
 LIMIT 1;
 ```
@@ -66,7 +62,7 @@ LIMIT 1;
 Month-to-date:
 
 ```r
-tbl(con, in_schema("ibm_verify", "auth_total_logins")) |>
+tbl(con, in_schema("ibm_verify_events_transformed", "events_auth_total_logins")) |>
   slice_max(
     from_date,
     n = 1,
@@ -78,7 +74,7 @@ tbl(con, in_schema("ibm_verify", "auth_total_logins")) |>
 Year-to-date:
 
 ```r
-tbl(con, in_schema("ibm_verify", "auth_total_logins")) |>
+tbl(con, in_schema("ibm_verify_events_transformed", "events_auth_total_logins")) |>
   slice_max(
     from_date,
     n = 1,

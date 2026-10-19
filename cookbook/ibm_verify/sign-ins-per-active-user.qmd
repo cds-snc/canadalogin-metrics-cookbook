@@ -28,21 +28,21 @@ signed-in users.
 ```sql
 WITH first_factor AS (
     SELECT
-        date_trunc('month', from_date) AS month,
+        date_trunc('month', CAST(from_date AS DATE)) AS month,
         SUM(successful_logins) AS successful_events
-    FROM ibm_verify.auth_total_logins
+    FROM ibm_verify_events_transformed.events_auth_total_logins
     -- set the reporting window; whole calendar months only
-    WHERE from_date BETWEEN DATE '2026-05-01' AND DATE '2026-08-31'
+    WHERE CAST(from_date AS DATE) BETWEEN DATE '2026-05-01' AND DATE '2026-08-31'
     GROUP BY 1
 ),
 
 second_factor AS (
     SELECT
-        date_trunc('month', from_date) AS month,
+        date_trunc('month', CAST(from_date AS DATE)) AS month,
         SUM(count) AS mfa_successes
-    FROM ibm_verify.mfa_activity
+    FROM ibm_verify_events_transformed.events_mfa_activity
     -- set the reporting window; whole calendar months only
-    WHERE from_date BETWEEN DATE '2026-05-01' AND DATE '2026-08-31'
+    WHERE CAST(from_date AS DATE) BETWEEN DATE '2026-05-01' AND DATE '2026-08-31'
       -- outcome events only; a "sent" OTP is an issuance, not a success
       AND result = 'success'
       -- email_otp validates an email address at sign-up and never enters
@@ -55,15 +55,15 @@ active_users AS (
     SELECT month, mtd_unique_users AS monthly_active_users
     FROM (
         SELECT
-            date_trunc('month', from_date) AS month,
+            date_trunc('month', CAST(from_date AS DATE)) AS month,
             mtd_unique_users,
             ROW_NUMBER() OVER (
-                PARTITION BY date_trunc('month', from_date)
+                PARTITION BY date_trunc('month', CAST(from_date AS DATE))
                 ORDER BY from_date DESC
             ) AS day_rank
-        FROM ibm_verify.auth_total_logins
+        FROM ibm_verify_events_transformed.events_auth_total_logins
         -- set the reporting window; whole calendar months only
-        WHERE from_date BETWEEN DATE '2026-05-01' AND DATE '2026-08-31'
+        WHERE CAST(from_date AS DATE) BETWEEN DATE '2026-05-01' AND DATE '2026-08-31'
     )
     -- mtd_unique_users accumulates through the month, so the last day holds
     -- the month's distinct signed-in users
@@ -90,36 +90,36 @@ ORDER BY first_factor.month;
 ```r
 sign_in_types <- c("sms_otp", "voice_otp", "fido2")
 
-first_factor <- tbl(con, in_schema("ibm_verify", "auth_total_logins")) |>
+first_factor <- tbl(con, in_schema("ibm_verify_events_transformed", "events_auth_total_logins")) |>
   # set the reporting window; whole calendar months only
   filter(
-    from_date >= as.Date("2026-05-01"),
-    from_date <= as.Date("2026-08-31")
+    as.Date(from_date) >= as.Date("2026-05-01"),
+    as.Date(from_date) <= as.Date("2026-08-31")
   ) |>
-  group_by(month = floor_date(from_date, "month")) |>
+  group_by(month = floor_date(as.Date(from_date), "month")) |>
   summarise(successful_events = sum(as.double(successful_logins), na.rm = TRUE))
 
-second_factor <- tbl(con, in_schema("ibm_verify", "mfa_activity")) |>
+second_factor <- tbl(con, in_schema("ibm_verify_events_transformed", "events_mfa_activity")) |>
   # set the reporting window; whole calendar months only
   filter(
-    from_date >= as.Date("2026-05-01"),
-    from_date <= as.Date("2026-08-31"),
+    as.Date(from_date) >= as.Date("2026-05-01"),
+    as.Date(from_date) <= as.Date("2026-08-31"),
     # outcome events only; a "sent" OTP is an issuance, not a success
     result == "success",
     # email_otp validates an email address at sign-up and never enters
     # successful_logins, so subtracting it would over-correct
     mfa_type %in% sign_in_types
   ) |>
-  group_by(month = floor_date(from_date, "month")) |>
+  group_by(month = floor_date(as.Date(from_date), "month")) |>
   summarise(mfa_successes = sum(as.double(count), na.rm = TRUE))
 
-active_users <- tbl(con, in_schema("ibm_verify", "auth_total_logins")) |>
+active_users <- tbl(con, in_schema("ibm_verify_events_transformed", "events_auth_total_logins")) |>
   # set the reporting window; whole calendar months only
   filter(
-    from_date >= as.Date("2026-05-01"),
-    from_date <= as.Date("2026-08-31")
+    as.Date(from_date) >= as.Date("2026-05-01"),
+    as.Date(from_date) <= as.Date("2026-08-31")
   ) |>
-  group_by(month = floor_date(from_date, "month")) |>
+  group_by(month = floor_date(as.Date(from_date), "month")) |>
   # mtd_unique_users accumulates through the month, so the last day holds
   # the month's distinct signed-in users
   filter(from_date == max(from_date, na.rm = TRUE)) |>

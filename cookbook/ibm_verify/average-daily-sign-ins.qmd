@@ -25,9 +25,9 @@ across all daily records in the selected reporting period.
 SELECT
     application_name,
     AVG(total_logins) AS average_daily_sso_events
-FROM ibm_verify.app_login_counts
+FROM ibm_verify_events_transformed.events_app_login_counts
 -- set the reporting window; see the timespans note in cookbook/notes.qmd
-WHERE from_date BETWEEN DATE '2026-04-22' AND DATE '2026-05-31'
+WHERE CAST(from_date AS DATE) BETWEEN DATE '2026-04-22' AND DATE '2026-05-31'
 -- to exclude internal applications from adoption reporting, uncomment:
 -- AND application_name NOT IN (
 --     SELECT al.alias
@@ -42,11 +42,11 @@ ORDER BY average_daily_sso_events DESC;
 ## R
 
 ```r
-tbl(con, in_schema("ibm_verify", "app_login_counts")) |>
+tbl(con, in_schema("ibm_verify_events_transformed", "events_app_login_counts")) |>
   # set the reporting window; see the timespans note in cookbook/notes.qmd
   filter(
-    from_date >= as.Date("2026-04-22"),
-    from_date <= as.Date("2026-05-31")
+    as.Date(from_date) >= as.Date("2026-04-22"),
+    as.Date(from_date) <= as.Date("2026-05-31")
   ) |>
   # to exclude internal applications from adoption reporting, uncomment:
   # anti_join(
