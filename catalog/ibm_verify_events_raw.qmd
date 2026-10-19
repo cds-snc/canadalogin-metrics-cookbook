@@ -1,0 +1,74 @@
+---
+title: IBM Verify Events
+listing:
+  - id: tables
+    contents:
+      - ibm_verify_events_raw/authentication_activity.qmd
+      - ibm_verify_events_raw/application_usage.qmd
+      - ibm_verify_events_raw/mfa_activity.qmd
+      - ibm_verify_events_raw/adaptive_access.qmd
+    type: table
+    fields: [title, description]
+    field-display-names:
+      title: Table
+    sort: false
+    sort-ui: false
+    filter-ui: false
+---
+
+::: {.callout-warning}
+**Use [IBM Verify Counts](ibm_verify_events_transformed.qmd) instead.**
+These tables hold one row per event and are kept for 3 years. At full volume
+they will grow by hundreds of millions of rows a month. Query them only when no
+summary table answers the question, and always filter on the partitions.
+:::
+
+The IBM Verify event stream, in the `ibm_verify_events_raw` schema. An hourly
+Glue job pulls events from IBM Verify through a proxy in the CanadaLogin platform
+account. The proxy hashes every personal identifier before the data leaves that
+account. See the [streaming
+job](https://github.com/cds-snc/canadalogin-reporting-data-pipeline/blob/main/infra/modules/ibm_verify_events_streaming/glue_src/ibm_verify_events_streaming_etl.py)
+and its [privacy
+design](https://github.com/cds-snc/canadalogin-reporting-data-pipeline/blob/main/docs/ibm-verify-events-streaming/ibm_verify_events_streaming_security_privacy.md),
+both in an internal repo.
+
+Data starts at launch, 2026-04-22, except `adaptive_access`, which starts on
+2026-09-09.
+
+## Tables
+
+::: {#tables}
+:::
+
+## Users
+
+The user ID is `subject` in `authentication_activity` and `mfa_activity`, and
+`userid` in `application_usage` and `adaptive_access`. Both hold the same
+HMAC-SHA256 digest of the IBM Verify user ID, so they join across tables and
+stay stable over time. Count users as distinct values of it.
+
+Exclude null, `""`, and the literal `"UNKNOWN"`. IBM Verify logs `"UNKNOWN"` when
+it cannot tie an event to an account, such as a password attempt on a username
+that does not exist. The summary tables keep it and count it as one user, to
+match IBM's own figures.
+
+`username`, `origin` (the client IP address), and `mfadevice` are hashed the same
+way. Countries and regions are not hashed.
+
+## Time and partitions
+
+`time` is a UTC string, for example `2026-09-15 00:00:05 UTC`. The partition
+columns `year`, `month`, and `day` are strings for the UTC day.
+
+Always filter on the partitions, which lets Athena skip every other day.
+Filtering only on `time` reads the whole table.
+
+Reports use ET days, which end at 04:00 or 05:00 UTC. Read the following UTC day
+too, then convert:
+
+```sql
+date(with_timezone(CAST(substr(time, 1, 19) AS timestamp), 'UTC') AT TIME ZONE 'America/Toronto')
+```
+
+Distinct-user counts do not add up across days. See [Why Unique Users Cannot Be
+Added Up](../cookbook/unique-users.qmd).

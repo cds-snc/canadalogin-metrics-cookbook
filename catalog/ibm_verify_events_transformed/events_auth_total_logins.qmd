@@ -1,0 +1,59 @@
+---
+title: "ibm_verify_events_transformed.events_auth_total_logins"
+description: "Daily CanadaLogin-wide authentication event totals."
+---
+
+Daily, CanadaLogin-wide authentication event totals across all applications.
+
+Each row is one day. It counts what IBM Verify calls the `authentication` event
+type, raised each time someone presents an authentication method.
+
+[`events_app_login_counts`](events_app_login_counts.qmd) counts a different event
+type (`sso`). Never add the two tables' figures together or show them side by side.
+
+`Keywords`: authentication events, sign-ins, logins, totals, CanadaLogin overall, unique users, daily
+
+## Provenance
+
+Built from [`authentication_activity`](../ibm_verify_events_raw/authentication_activity.qmd)
+by `compute_auth_total_logins()` in the [daily metrics
+job](https://github.com/cds-snc/canadalogin-reporting-data-pipeline/blob/main/infra/modules/ibm_verify_events_streaming/glue_src/ibm_verify_events_metrics_daily.py).
+
+* **Updated**: Daily, at 04:00 ET, for the previous ET day
+* **Retention**: While CanadaLogin exists
+* **Steward**: EDCP Data and Research Team
+* **Contact**: [Yinlin Zhang](mailto:yinlin.zhang@cds-snc.ca)
+* **Location**: `s3://<transformed-bucket>/ibm_verify_metrics/events_auth_total_logins/`
+
+## Fields
+
+One row per day.
+
+| Field Name | Type | Description |
+|---|---|---|
+| from_date | string | The reporting day in ET, for example "2026-09-15". Cast before comparing to a date |
+| to_date | string | Same as `from_date` |
+| unique_users | bigint | Distinct users with any authentication event that day, successful or not |
+| failed_logins | bigint | Failed authentication events that day |
+| successful_logins | bigint | Successful authentication events that day |
+| mtd_unique_users | bigint | Distinct users month-to-date. Resets on the 1st |
+| ytd_unique_users | bigint | Distinct users year-to-date. Resets on January 1 |
+| fetched_at | string | When the job wrote the row, in ISO 8601 UTC |
+| date | string | Partition key. Same as `from_date` |
+
+## Notes
+
+`unique_users`, `failed_logins`, and `successful_logins` are daily values. The
+`mtd_` and `ytd_` columns are cumulative: take the latest value in the window,
+never sum them.
+
+**`unique_users` includes failed attempts.** It counts anyone with an
+authentication event, even if every attempt failed. The literal user ID
+`"UNKNOWN"`, logged for a password attempt on a username that does not exist,
+counts as one user. Both match IBM's own figures.
+
+**Events overcount sign-ins.** Each authentication method is its own event. A
+password plus a second factor is two successful events, and a mistyped password
+adds a failed one. Use `unique_users` for engagement. Reaching an application
+adds nothing here; that is an SSO event in
+[`events_app_login_counts`](events_app_login_counts.qmd).

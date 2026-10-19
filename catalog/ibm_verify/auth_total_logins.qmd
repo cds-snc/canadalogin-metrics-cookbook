@@ -1,7 +1,12 @@
 ---
 title: "ibm_verify.auth_total_logins"
-description: "Daily CanadaLogin-wide authentication event totals."
+description: "Deprecated. Daily CanadaLogin-wide authentication event totals."
 ---
+
+::: {.callout-warning}
+**Deprecated.** Use [`events_auth_total_logins`](../ibm_verify_events_transformed/events_auth_total_logins.qmd)
+instead. See [IBM Verify (deprecated)](../ibm_verify.qmd).
+:::
 
 Daily, CanadaLogin-wide authentication event totals across all applications.
 
@@ -21,7 +26,7 @@ side. There is also no per-application breakdown here.
 Queried directly from the IBM Verify production instance via API.
 
 * **Updated**: Daily, at 6am America/Toronto
-* **Retention**: Until CanadaLogin is retired
+* **Retention**: While CanadaLogin exists
 * **Steward**: EDCP Data and Research Team
 * **Contact**: [Yinlin Zhang](mailto:yinlin.zhang@cds-snc.ca)
 
@@ -60,13 +65,6 @@ See [Why Unique Users Cannot Be Added
 Up](../../cookbook/unique-users.qmd#year-to-date-and-365-day-figures) for
 detail.
 :::
-
-A `since_apr22_unique_users` field (cumulative distinct users since the
-April 22, 2026 launch) was previously provided here. It has been removed from the
-pipeline because the source API retains only the most recent 366.5 days of data,
-so a since-launch cumulative count cannot be maintained once launch is more than
-a year in the past. See the retention note on the
-[IBM Verify catalog overview](../ibm_verify.qmd#data-retention).
 
 When a user signs in to CanadaLogin itself, IBM Verify records each
 authentication method as a separate event. Entering a username and password

@@ -1,0 +1,66 @@
+---
+title: "ibm_verify_events_transformed.events_app_login_counts"
+description: "Daily SSO event counts by application."
+---
+
+Daily SSO event counts for each CanadaLogin-integrated application.
+
+Each row is one application on one day. It counts what IBM Verify calls the
+`sso` event type, raised when someone who is already signed in reaches an
+application.
+
+[`events_auth_total_logins`](events_auth_total_logins.qmd) counts a different
+event type (`authentication`). Never add the two tables' figures together or
+show them side by side.
+
+`Keywords`: SSO events, application usage, sign-ins, logins, applications, unique users, adoption, daily counts
+
+## Provenance
+
+Built from [`application_usage`](../ibm_verify_events_raw/application_usage.qmd)
+by `compute_app_login_counts()` in the [daily metrics
+job](https://github.com/cds-snc/canadalogin-reporting-data-pipeline/blob/main/infra/modules/ibm_verify_events_streaming/glue_src/ibm_verify_events_metrics_daily.py).
+
+* **Updated**: Daily, at 04:00 ET, for the previous ET day
+* **Retention**: While CanadaLogin exists
+* **Steward**: EDCP Data and Research Team
+* **Contact**: [Yinlin Zhang](mailto:yinlin.zhang@cds-snc.ca)
+* **Location**: `s3://<transformed-bucket>/ibm_verify_metrics/events_app_login_counts/`
+
+## Fields
+
+One row per `application_id` per day.
+
+| Field Name | Type | Description |
+|---|---|---|
+| application_id | string | IBM Verify's numeric ID for the application |
+| application_name | string | The latest name seen for the application that day (for example, "IRIS - PRC - Prod"). Join to [`rp.alias`](../rp/alias.qmd) on this |
+| from_date | string | The reporting day in ET, for example "2026-09-15". Cast before comparing to a date |
+| to_date | string | Same as `from_date` |
+| total_logins | bigint | SSO events for the application that day. Counts events, not people |
+| unique_users | bigint | Distinct users with an SSO event for the application that day, successful or not |
+| failed_logins | bigint | Failed SSO events that day |
+| successful_logins | bigint | Successful SSO events that day |
+| mtd_unique_users | bigint | Distinct users of the application month-to-date. Resets on the 1st |
+| ytd_unique_users | bigint | Distinct users of the application year-to-date. Resets on January 1 |
+| fetched_at | string | When the job wrote the row, in ISO 8601 UTC |
+| date | string | Partition key. Same as `from_date` |
+
+## Notes
+
+`total_logins`, `unique_users`, `failed_logins`, and `successful_logins` are
+daily values. The `mtd_` and `ytd_` columns are cumulative: take the latest
+value in the window, never sum them.
+
+**One row per ID.** If an application name has more than one ID, summing
+`unique_users` across them double-counts people who used both.
+
+**Join to relying parties after, not before, aggregating.** Several application
+names can map to one service. See [Joining through the lookup](../rp.qmd#joining-through-the-lookup).
+
+**Failed events rarely have a user.** Almost all failed SSO events have the user
+ID `"UNKNOWN"`, which counts as one user.
+
+**Not inflated by second factors.** Reaching an application uses the session the
+person already holds, so one handoff is one SSO event. `total_logins` still
+counts events, because one person can reach an application many times.

@@ -1,5 +1,5 @@
 ---
-title: IBM Verify
+title: IBM Verify (deprecated)
 listing:
   - id: tables
     contents:
@@ -15,11 +15,22 @@ listing:
     filter-ui: false
 ---
 
-Derived tables in the `ibm_verify` schema, populated from the IBM Verify
-reporting API. Each table is a daily aggregate derived from the raw event stream
-in `ibm_verify_raw.ibm_verify`. The field-level meaning of those raw events is
-documented separately in the IBM Verify event data dictionary, organized by
-event type (Authentication Event, MFA Authentication Event, SSO, and so on).
+::: {.callout-warning}
+**Deprecated. Do not use these tables in new work.** Use [IBM Verify
+Counts](ibm_verify_events_transformed.qmd), built from the IBM Verify event
+stream. These tables will stop updating when the reporting API pull is
+decommissioned.
+:::
+
+Daily aggregates in the `ibm_verify` schema, pulled from the IBM Verify reporting
+API.
+
+| Deprecated table | Replacement |
+|---|---|
+| [`auth_total_logins`](ibm_verify/auth_total_logins.qmd) | [`events_auth_total_logins`](ibm_verify_events_transformed/events_auth_total_logins.qmd) |
+| [`app_login_counts`](ibm_verify/app_login_counts.qmd) | [`events_app_login_counts`](ibm_verify_events_transformed/events_app_login_counts.qmd) |
+| [`mfa_activity`](ibm_verify/mfa_activity.qmd) | [`events_mfa_activity`](ibm_verify_events_transformed/events_mfa_activity.qmd) |
+| `risk_adaptive_access_total` | [`events_adaptive_risk_summary`](ibm_verify_events_transformed/events_adaptive_risk_summary.qmd) |
 
 ## Tables
 
@@ -28,18 +39,6 @@ event type (Authentication Event, MFA Authentication Event, SSO, and so on).
 
 ## Data retention
 
-The dataset behind the IBM Verify reporting API retains only the most recent
-366.5 days of data. This does **not** limit the tables here. The daily aggregate
-rows are stored on our side and kept beyond a year, so any metric we calculate by
-aggregating those stored daily rows (authentication events, SSO events, MFA
-attempts, and other additive measures) is unaffected, no matter how far back the window reaches.
-
-The limit bites only on summaries that the **API itself** computes, because the
-API can only see the last 366.5 days when it does so. The cumulative unique-user
-columns are the affected case: a count must be computed by the API rather than
-summed from daily rows (summing daily unique users would count user-days, not
-distinct people). The `mtd_` and `ytd_` windows fit inside the retention horizon,
-but a "since the April 22, 2026 launch" total silently truncates once launch is
-more than a year in the past (roughly late April 2027). The
-`since_apr22_unique_users` fields that previously carried it have therefore been
-removed from the pipeline.
+The API keeps only 90 days of per-user data, so the year-to-date and 365-day
+unique-user figures it computes can undercount. Daily rows stored on our side are
+unaffected.

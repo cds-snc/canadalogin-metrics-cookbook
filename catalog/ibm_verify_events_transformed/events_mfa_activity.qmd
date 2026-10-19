@@ -1,0 +1,54 @@
+---
+title: "ibm_verify_events_transformed.events_mfa_activity"
+description: "Daily multi-factor authentication activity by factor and result."
+---
+
+Daily multi-factor authentication (MFA) activity, broken down by factor and
+outcome.
+
+Each row is the count of MFA events for one day, factor, and result.
+
+`Keywords`: MFA, multi-factor, second factor, OTP, FIDO2, authentication, security
+
+## Provenance
+
+Built from [`mfa_activity`](../ibm_verify_events_raw/mfa_activity.qmd) by
+`compute_mfa_activity()` in the [daily metrics
+job](https://github.com/cds-snc/canadalogin-reporting-data-pipeline/blob/main/infra/modules/ibm_verify_events_streaming/glue_src/ibm_verify_events_metrics_daily.py).
+The job maps the raw factor names (for example "SMS OTP") to the `mfa_type`
+values below.
+
+* **Updated**: Daily, at 04:00 ET, for the previous ET day
+* **Retention**: While CanadaLogin exists
+* **Steward**: EDCP Data and Research Team
+* **Contact**: [Yinlin Zhang](mailto:yinlin.zhang@cds-snc.ca)
+* **Location**: `s3://<transformed-bucket>/ibm_verify_metrics/events_mfa_activity/`
+
+## Fields
+
+One row per day per `mfa_type` per `result`.
+
+| Field Name | Type | Description |
+|---|---|---|
+| from_date | string | The reporting day in ET, for example "2026-09-15". Cast before comparing to a date |
+| to_date | string | Same as `from_date` |
+| mfa_type | string | The factor used. One of "sms_otp", "email_otp", "voice_otp", "fido2", "totp", "qr", "kq", or "ibm_verify_push" |
+| result | string | "sent", "success", or "failure" |
+| count | bigint | Number of MFA events for this day, factor, and result |
+| fetched_at | string | When the job wrote the row, in ISO 8601 UTC |
+| date | string | Partition key. Same as `from_date` |
+
+## Notes
+
+**OTP factors log a "sent" event too.** `sms_otp`, `email_otp`, and `voice_otp`
+log "sent" when the code goes out, then "success" or "failure" for each attempt.
+A mistyped code followed by the right one gives one "sent", one "failure", and
+one "success". `fido2` logs only "success" or "failure".
+
+- For success rates, divide "success" by "success" plus "failure", and exclude "sent".
+- For usage, count "sent" for OTP factors and "success" plus "failure" for the others. Summing "sent" alone drops `fido2`.
+
+**Most `email_otp` is sign-up, not sign-in.** The email check during sign-up
+logs an `email_otp` with no user, because the account does not exist yet. These
+are most `email_otp` "sent" events. See
+[`mfa_activity`](../ibm_verify_events_raw/mfa_activity.qmd) in the raw stream.

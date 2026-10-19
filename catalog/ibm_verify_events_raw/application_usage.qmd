@@ -1,0 +1,72 @@
+---
+title: "ibm_verify_events_raw.application_usage"
+description: "One row per IBM Verify SSO event, when someone reaches an application."
+---
+
+Every IBM Verify `sso` event: one row each time someone who is signed in reaches
+an integrated application. Prefer the daily summary,
+[`events_app_login_counts`](../ibm_verify_events_transformed/events_app_login_counts.qmd).
+
+`Keywords`: SSO events, application usage, applications, relying parties, idle accounts, raw events
+
+## Provenance
+
+Pulled hourly from IBM Verify by the [streaming
+job](https://github.com/cds-snc/canadalogin-reporting-data-pipeline/blob/main/infra/modules/ibm_verify_events_streaming/glue_src/ibm_verify_events_streaming_etl.py).
+See [IBM Verify Events](../ibm_verify_events_raw.qmd) for what is hashed and
+how to filter by day.
+
+* **Updated**: Hourly
+* **Retention**: 3 years
+* **Steward**: EDCP Data and Research Team
+* **Contact**: [Yinlin Zhang](mailto:yinlin.zhang@cds-snc.ca)
+* **Location**: `s3://<raw-bucket>/ibm_verify_events_raw/application_usage/`
+
+## Fields
+
+One row per event.
+
+| Field Name | Type | Description |
+|---|---|---|
+| time | string | When the event happened, in UTC (for example, "2026-09-15 00:00:05 UTC") |
+| userid | string | Hashed user ID. Can be `"UNKNOWN"` |
+| username | string | Hashed username |
+| applicationid | string | IBM Verify's numeric ID for the application |
+| applicationname | string | Application name (for example, "IRIS - PRC - Prod"). Join to [`rp.alias`](../rp/alias.qmd) on this |
+| result | string | "success" or "failure" |
+| realm | string | IBM Verify directory. "cloudIdentityRealm", or "UNKNOWN" when the account is not found |
+| origin | string | Hashed client IP address |
+| geoip__country_iso_code | string | Country from the IP address, as ISO 3166-1 alpha-3 (for example, "CAN") |
+| geoip__country_name | string | Country name from the IP address |
+| geoip__region_name | string | Province, territory, or state from the IP address |
+| year | string | Partition key. UTC year, for example "2026" |
+| month | string | Partition key. UTC month, for example "09" |
+| day | string | Partition key. UTC day of the month, for example "15" |
+
+## Notes
+
+**Failed events rarely have a user.** Almost all failures have
+`userid = "UNKNOWN"`.
+
+**Flow Application is CanadaLogin's own.** Almost every new account reaches it
+right after sign-up, which suggests it is the sign-up flow. It is an internal
+application in [`rp.service`](../rp/service.qmd), so exclude internal
+applications when the question is about partner services.
+
+**Join to relying parties after, not before, aggregating.** See [Joining through
+the lookup](../rp.qmd#joining-through-the-lookup).
+
+**Example.** Distinct users who reached each application on an ET day:
+
+```r
+tbl(con, in_schema("ibm_verify_events_raw", "application_usage")) |>
+  # partitions are UTC days, so read the next one too for the ET evening
+  filter(year == "2026", month == "09", day %in% c("15", "16")) |>
+  mutate(et_day = sql("date(with_timezone(CAST(substr(time, 1, 19) AS timestamp), 'UTC') AT TIME ZONE 'America/Toronto')")) |>
+  filter(
+    et_day == as.Date("2026-09-15"), result == "success",
+    !is.na(userid), !userid %in% c("", "UNKNOWN")
+  ) |>
+  group_by(applicationname) |>
+  summarise(unique_users = n_distinct(userid))
+```

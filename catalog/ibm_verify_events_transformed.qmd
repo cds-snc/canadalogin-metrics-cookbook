@@ -1,0 +1,49 @@
+---
+title: IBM Verify Counts
+listing:
+  - id: tables
+    contents:
+      - ibm_verify_events_transformed/events_auth_total_logins.qmd
+      - ibm_verify_events_transformed/events_app_login_counts.qmd
+      - ibm_verify_events_transformed/events_mfa_activity.qmd
+      - ibm_verify_events_transformed/events_adaptive_risk_summary.qmd
+      - ibm_verify_events_transformed/events_application_mapping.qmd
+    type: table
+    fields: [title, description]
+    field-display-names:
+      title: Table
+    sort: false
+    sort-ui: false
+    filter-ui: false
+---
+
+Daily summary tables in the `ibm_verify_events_transformed` schema. Use these
+for IBM Verify reporting.
+
+A nightly Glue job builds them from the [raw event stream](ibm_verify_events_raw.qmd).
+It runs at 04:00 ET and writes the previous ET day. Each table is built by one
+`compute_*()` function in
+[`ibm_verify_events_metrics_daily.py`](https://github.com/cds-snc/canadalogin-reporting-data-pipeline/blob/main/infra/modules/ibm_verify_events_streaming/glue_src/ibm_verify_events_metrics_daily.py).
+That code is the definition of every column. The repo is internal, so the link
+needs cds-snc access.
+
+Data starts on 2026-04-22, the public launch.
+
+## Tables
+
+::: {#tables}
+:::
+
+## Dates are strings
+
+`from_date` and `to_date` are `YYYY-MM-DD` strings, not timestamps. Comparing
+them to a date fails with `TYPE_MISMATCH`, so cast first:
+
+```sql
+WHERE CAST(from_date AS DATE) BETWEEN DATE '2026-09-01' AND DATE '2026-09-30'
+```
+
+In R, wrap both sides in `as.Date()`:
+`filter(as.Date(from_date) >= as.Date("2026-09-01"))`. A bare string on the
+right fails the same way, because RAthena turns ISO-date strings into `DATE`
+literals.

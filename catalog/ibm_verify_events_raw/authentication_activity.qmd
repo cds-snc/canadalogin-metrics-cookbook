@@ -1,0 +1,71 @@
+---
+title: "ibm_verify_events_raw.authentication_activity"
+description: "One row per IBM Verify authentication event."
+---
+
+Every IBM Verify `authentication` event: one row each time someone presents an
+authentication method. Prefer the daily summary,
+[`events_auth_total_logins`](../ibm_verify_events_transformed/events_auth_total_logins.qmd).
+
+`Keywords`: authentication events, sign-ins, logins, password, new accounts, first sign-in, raw events
+
+## Provenance
+
+Pulled hourly from IBM Verify by the [streaming
+job](https://github.com/cds-snc/canadalogin-reporting-data-pipeline/blob/main/infra/modules/ibm_verify_events_streaming/glue_src/ibm_verify_events_streaming_etl.py).
+See [IBM Verify Events](../ibm_verify_events_raw.qmd) for what is hashed and
+how to filter by day.
+
+* **Updated**: Hourly
+* **Retention**: 3 years
+* **Steward**: EDCP Data and Research Team
+* **Contact**: [Yinlin Zhang](mailto:yinlin.zhang@cds-snc.ca)
+* **Location**: `s3://<raw-bucket>/ibm_verify_events_raw/authentication_activity/`
+
+## Fields
+
+One row per event.
+
+| Field Name | Type | Description |
+|---|---|---|
+| time | string | When the event happened, in UTC (for example, "2026-09-15 00:00:05 UTC") |
+| subject | string | Hashed user ID. Can be `""` or `"UNKNOWN"` |
+| username | string | Hashed username |
+| subtype | string | Authentication method. One of "user_password", "mfa", "token-exchange", "passwordless", or "federation" |
+| result | string | "success" or "failure" |
+| realm | string | IBM Verify directory. "cloudIdentityRealm", or "UNKNOWN" when the account is not found |
+| origin | string | Hashed client IP address |
+| geoip__country_iso_code | string | Country from the IP address, as ISO 3166-1 alpha-3 (for example, "CAN") |
+| geoip__country_name | string | Country name from the IP address |
+| geoip__region_name | string | Province, territory, or state from the IP address |
+| year | string | Partition key. UTC year, for example "2026" |
+| month | string | Partition key. UTC month, for example "09" |
+| day | string | Partition key. UTC day of the month, for example "15" |
+
+## Notes
+
+**When an account first appears.** A new account's first event is almost always
+a successful `user_password`. This suggests the sign-up flow signs a new account
+in as soon as the password is set, with no MFA required. A few start with a
+successful `token-exchange` instead, possibly migrated accounts. Both readings
+are observed, not confirmed with the sign-up flow's owners.
+
+**Failed password attempts on unknown usernames have no user.** They log
+`subject = "UNKNOWN"` and `realm = "UNKNOWN"`.
+
+**Example.** Distinct users with an authentication event on an ET day:
+
+```r
+tbl(con, in_schema("ibm_verify_events_raw", "authentication_activity")) |>
+  # partitions are UTC days, so read the next one too for the ET evening
+  filter(year == "2026", month == "09", day %in% c("15", "16")) |>
+  mutate(et_day = sql("date(with_timezone(CAST(substr(time, 1, 19) AS timestamp), 'UTC') AT TIME ZONE 'America/Toronto')")) |>
+  filter(
+    et_day == as.Date("2026-09-15"),
+    !is.na(subject), !subject %in% c("", "UNKNOWN")
+  ) |>
+  summarise(unique_users = n_distinct(subject))
+```
+
+This is one less than `events_auth_total_logins.unique_users` on days with an
+`"UNKNOWN"` event, because the summary table counts it.

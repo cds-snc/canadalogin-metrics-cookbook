@@ -92,15 +92,30 @@ website:
       - section: "Data Catalog"
         href: catalog/index.qmd
         contents:
-          - section: "IBM Verify"
-            href: catalog/ibm_verify.qmd
+          - section: "IBM Verify Counts"
+            href: catalog/ibm_verify_events_transformed.qmd
             contents:
-              - text: app_login_counts
-                href: catalog/ibm_verify/app_login_counts.qmd
-              - text: auth_total_logins
-                href: catalog/ibm_verify/auth_total_logins.qmd
+              - text: events_auth_total_logins
+                href: catalog/ibm_verify_events_transformed/events_auth_total_logins.qmd
+              - text: events_app_login_counts
+                href: catalog/ibm_verify_events_transformed/events_app_login_counts.qmd
+              - text: events_mfa_activity
+                href: catalog/ibm_verify_events_transformed/events_mfa_activity.qmd
+              - text: events_adaptive_risk_summary
+                href: catalog/ibm_verify_events_transformed/events_adaptive_risk_summary.qmd
+              - text: events_application_mapping
+                href: catalog/ibm_verify_events_transformed/events_application_mapping.qmd
+          - section: "IBM Verify Events"
+            href: catalog/ibm_verify_events_raw.qmd
+            contents:
+              - text: authentication_activity
+                href: catalog/ibm_verify_events_raw/authentication_activity.qmd
+              - text: application_usage
+                href: catalog/ibm_verify_events_raw/application_usage.qmd
               - text: mfa_activity
-                href: catalog/ibm_verify/mfa_activity.qmd
+                href: catalog/ibm_verify_events_raw/mfa_activity.qmd
+              - text: adaptive_access
+                href: catalog/ibm_verify_events_raw/adaptive_access.qmd
           - section: "Call Centre"
             href: catalog/call_centre.qmd
             contents:
@@ -156,6 +171,15 @@ website:
                 href: catalog/rp/service.qmd
               - text: alias
                 href: catalog/rp/alias.qmd
+          - section: "IBM Verify (deprecated)"
+            href: catalog/ibm_verify.qmd
+            contents:
+              - text: app_login_counts
+                href: catalog/ibm_verify/app_login_counts.qmd
+              - text: auth_total_logins
+                href: catalog/ibm_verify/auth_total_logins.qmd
+              - text: mfa_activity
+                href: catalog/ibm_verify/mfa_activity.qmd
           - catalog/notes.qmd
 
 format:

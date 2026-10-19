@@ -22,11 +22,13 @@ Each source page covers what its tables share: where the data comes from, when
 it updates, and caveats that apply to all of them.
 
 - [Relying Parties](rp.qmd) - reference tables in the `rp` schema that identify the services using CanadaLogin and their aliases
-- [IBM Verify](ibm_verify.qmd) - derived tables in the `ibm_verify` schema, pulled from the IBM Verify reporting API
+- [IBM Verify Counts](ibm_verify_events_transformed.qmd) - daily summary tables in the `ibm_verify_events_transformed` schema, built from the IBM Verify event stream
+- [IBM Verify Events](ibm_verify_events_raw.qmd) - the IBM Verify event stream in the `ibm_verify_events_raw` schema, one row per event
 - [Call Centre](call_centre.qmd) - weekly call centre data from the CanadaLogin support queue reports
 - [Platform](sre.qmd) - incident response and uptime tables in the `sre` schema
 - [Jira (PSOM)](jira.qmd) - daily snapshots of PSOM support tickets in the `jira` schema
 - [Google Analytics](google_analytics.qmd) - tables in the `google_analytics` schema, populated from the CanadaLogin GA4 property
+- [IBM Verify (deprecated)](ibm_verify.qmd) - the old `ibm_verify` tables, pulled from the IBM Verify reporting API
 
 ## All Tables
 

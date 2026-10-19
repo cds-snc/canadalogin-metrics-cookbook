@@ -1,0 +1,75 @@
+---
+title: "ibm_verify_events_raw.mfa_activity"
+description: "One row per IBM Verify multi-factor authentication event."
+---
+
+Every IBM Verify MFA event: a code sent, or a second factor passed or failed.
+Prefer the daily summary,
+[`events_mfa_activity`](../ibm_verify_events_transformed/events_mfa_activity.qmd).
+That table has one count per factor and result. This one has the user, the
+device, and who triggered the event.
+
+`Keywords`: MFA, multi-factor, second factor, OTP, FIDO2, sign-up, email check, raw events
+
+## Provenance
+
+Pulled hourly from IBM Verify by the [streaming
+job](https://github.com/cds-snc/canadalogin-reporting-data-pipeline/blob/main/infra/modules/ibm_verify_events_streaming/glue_src/ibm_verify_events_streaming_etl.py).
+See [IBM Verify Events](../ibm_verify_events_raw.qmd) for what is hashed and
+how to filter by day.
+
+* **Updated**: Hourly
+* **Retention**: 3 years
+* **Steward**: EDCP Data and Research Team
+* **Contact**: [Yinlin Zhang](mailto:yinlin.zhang@cds-snc.ca)
+* **Location**: `s3://<raw-bucket>/ibm_verify_events_raw/mfa_activity/`
+
+## Fields
+
+One row per event.
+
+| Field Name | Type | Description |
+|---|---|---|
+| time | string | When the event happened, in UTC (for example, "2026-09-15 00:00:05 UTC") |
+| subject | string | Hashed user ID. `""` for sign-up email checks (see Notes) |
+| username | string | Hashed username, or "UNKNOWN" |
+| mfamethod | string | The factor. One of "SMS OTP", "Email OTP", "Voice OTP", or "FIDO2". The summary table renames these, for example to "sms_otp" |
+| result | string | "sent", "success", or "failure" |
+| mfadevice | string | Hashed phone number, email address, or FIDO2 device |
+| performedby_type | string | What triggered the event, as IBM Verify labels it. "intraservice", "api" (an API client), "user", or null |
+| performedby_clientname | string | The API client's name, for "api" events (for example, "GC Sign in API Client"). Otherwise empty |
+| realm | string | IBM Verify directory. "cloudIdentityRealm", or "UNKNOWN" |
+| origin | string | Hashed client IP address |
+| geoip__country_iso_code | string | Country from the IP address, as ISO 3166-1 alpha-3 (for example, "CAN") |
+| geoip__country_name | string | Country name from the IP address |
+| geoip__region_name | string | Province, territory, or state from the IP address |
+| year | string | Partition key. UTC year, for example "2026" |
+| month | string | Partition key. UTC month, for example "09" |
+| day | string | Partition key. UTC day of the month, for example "15" |
+
+## Notes
+
+**Sign-up email checks have no user.** `Email OTP` events with
+`performedby_type = "api"` come from "GC Sign in API Client" and never carry a
+`subject`. They appear to be the email check during sign-up, before the account
+exists, and they are most Email OTP "sent" events. The summary table counts them in `email_otp`, which is why `email_otp` is not a
+sign-in factor.
+
+**OTP factors log a "sent" event too.** See
+[`events_mfa_activity`](../ibm_verify_events_transformed/events_mfa_activity.qmd#notes)
+for how to count usage and success rates.
+
+**Example.** Distinct users who passed each factor on an ET day:
+
+```r
+tbl(con, in_schema("ibm_verify_events_raw", "mfa_activity")) |>
+  # partitions are UTC days, so read the next one too for the ET evening
+  filter(year == "2026", month == "09", day %in% c("15", "16")) |>
+  mutate(et_day = sql("date(with_timezone(CAST(substr(time, 1, 19) AS timestamp), 'UTC') AT TIME ZONE 'America/Toronto')")) |>
+  filter(
+    et_day == as.Date("2026-09-15"), result == "success",
+    !is.na(subject), !subject %in% c("", "UNKNOWN")
+  ) |>
+  group_by(mfamethod) |>
+  summarise(unique_users = n_distinct(subject))
+```
