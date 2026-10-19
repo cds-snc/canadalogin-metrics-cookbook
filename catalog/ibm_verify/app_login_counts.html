@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="description" content="Daily SSO event counts by application.">
+<meta name="description" content="Deprecated. Daily SSO event counts by application.">
 
 <title>ibm_verify.app_login_counts – CanadaLogin Metrics Cookbook</title>
 <style>
@@ -136,7 +136,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../catalog/index.html">Data Catalog</a></li><li class="breadcrumb-item"><a href="../../catalog/ibm_verify.html">IBM Verify</a></li><li class="breadcrumb-item"><a href="../../catalog/ibm_verify/app_login_counts.html">app_login_counts</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../catalog/index.html">Data Catalog</a></li><li class="breadcrumb-item"><a href="../../catalog/ibm_verify.html">IBM Verify (deprecated)</a></li><li class="breadcrumb-item"><a href="../../catalog/ibm_verify/app_login_counts.html">app_login_counts</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -529,29 +529,76 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-11" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../../catalog/ibm_verify.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">IBM Verify</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-12" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <a href="../../catalog/ibm_verify_events_transformed.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">IBM Verify Counts</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-12" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-12" class="collapse list-unstyled sidebar-section depth2 show">  
+      <ul id="quarto-sidebar-section-12" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../catalog/ibm_verify/app_login_counts.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">app_login_counts</span></a>
+  <a href="../../catalog/ibm_verify_events_transformed/events_auth_total_logins.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">events_auth_total_logins</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../catalog/ibm_verify/auth_total_logins.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">auth_total_logins</span></a>
+  <a href="../../catalog/ibm_verify_events_transformed/events_app_login_counts.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">events_app_login_counts</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../catalog/ibm_verify/mfa_activity.html" class="sidebar-item-text sidebar-link">
+  <a href="../../catalog/ibm_verify_events_transformed/events_mfa_activity.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">events_mfa_activity</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../catalog/ibm_verify_events_transformed/events_adaptive_risk_summary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">events_adaptive_risk_summary</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../catalog/ibm_verify_events_transformed/events_application_mapping.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">events_application_mapping</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../catalog/ibm_verify_events_raw.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">IBM Verify Events</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-13" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-13" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../catalog/ibm_verify_events_raw/authentication_activity.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">authentication_activity</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../catalog/ibm_verify_events_raw/application_usage.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">application_usage</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../catalog/ibm_verify_events_raw/mfa_activity.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">mfa_activity</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../catalog/ibm_verify_events_raw/adaptive_access.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">adaptive_access</span></a>
   </div>
 </li>
       </ul>
@@ -560,11 +607,11 @@ ul.task-list li input[type="checkbox"] {
       <div class="sidebar-item-container"> 
             <a href="../../catalog/call_centre.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Call Centre</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-13" role="navigation" aria-expanded="false" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-14" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-13" class="collapse list-unstyled sidebar-section depth2 ">  
+      <ul id="quarto-sidebar-section-14" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../catalog/call_centre/weekly_activity_report.html" class="sidebar-item-text sidebar-link">
@@ -583,11 +630,11 @@ ul.task-list li input[type="checkbox"] {
       <div class="sidebar-item-container"> 
             <a href="../../catalog/sre.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Platform</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-14" role="navigation" aria-expanded="false" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-15" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-14" class="collapse list-unstyled sidebar-section depth2 ">  
+      <ul id="quarto-sidebar-section-15" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../catalog/sre/mttr_current.html" class="sidebar-item-text sidebar-link">
@@ -618,11 +665,11 @@ ul.task-list li input[type="checkbox"] {
       <div class="sidebar-item-container"> 
             <a href="../../catalog/jira.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Jira (PSOM)</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-15" role="navigation" aria-expanded="false" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-16" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-15" class="collapse list-unstyled sidebar-section depth2 ">  
+      <ul id="quarto-sidebar-section-16" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../catalog/jira/psom.html" class="sidebar-item-text sidebar-link">
@@ -647,11 +694,11 @@ ul.task-list li input[type="checkbox"] {
       <div class="sidebar-item-container"> 
             <a href="../../catalog/google_analytics.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Google Analytics</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-16" role="navigation" aria-expanded="false" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-17" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-16" class="collapse list-unstyled sidebar-section depth2 ">  
+      <ul id="quarto-sidebar-section-17" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../catalog/google_analytics/property_traffic.html" class="sidebar-item-text sidebar-link">
@@ -712,11 +759,11 @@ ul.task-list li input[type="checkbox"] {
       <div class="sidebar-item-container"> 
             <a href="../../catalog/rp.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Relying Parties</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-17" role="navigation" aria-expanded="false" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-18" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-17" class="collapse list-unstyled sidebar-section depth2 ">  
+      <ul id="quarto-sidebar-section-18" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../catalog/rp/service.html" class="sidebar-item-text sidebar-link">
@@ -727,6 +774,35 @@ ul.task-list li input[type="checkbox"] {
   <div class="sidebar-item-container"> 
   <a href="../../catalog/rp/alias.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">alias</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../catalog/ibm_verify.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">IBM Verify (deprecated)</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-19" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-19" class="collapse list-unstyled sidebar-section depth2 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../catalog/ibm_verify/app_login_counts.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">app_login_counts</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../catalog/ibm_verify/auth_total_logins.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">auth_total_logins</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../catalog/ibm_verify/mfa_activity.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">mfa_activity</span></a>
   </div>
 </li>
       </ul>
@@ -758,14 +834,14 @@ ul.task-list li input[type="checkbox"] {
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../catalog/index.html">Data Catalog</a></li><li class="breadcrumb-item"><a href="../../catalog/ibm_verify.html">IBM Verify</a></li><li class="breadcrumb-item"><a href="../../catalog/ibm_verify/app_login_counts.html">app_login_counts</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../catalog/index.html">Data Catalog</a></li><li class="breadcrumb-item"><a href="../../catalog/ibm_verify.html">IBM Verify (deprecated)</a></li><li class="breadcrumb-item"><a href="../../catalog/ibm_verify/app_login_counts.html">app_login_counts</a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title">ibm_verify.app_login_counts</h1>
 </div>
 
 <div>
   <div class="description">
-    Daily SSO event counts by application.
+    Deprecated. Daily SSO event counts by application.
   </div>
 </div>
 
@@ -782,6 +858,19 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Deprecated.</strong> Use <a href="../../catalog/ibm_verify_events_transformed/events_app_login_counts.html"><code>events_app_login_counts</code></a> instead. See <a href="../../catalog/ibm_verify.html">IBM Verify (deprecated)</a>.</p>
+</div>
+</div>
 <p>Daily SSO event counts for each CanadaLogin-integrated application.</p>
 <p>Each row represents one application on one day, summarizing that application’s usage and unique-user reach for the day. This table records what IBM Verify calls the <code>sso</code> event type, filed under application usage and raised when someone who is already signed in reaches an application.</p>
 <p><a href="../../catalog/ibm_verify/auth_total_logins.html"><code>auth_total_logins</code></a> records a different event type (<code>authentication</code>). Figures from the two tables are therefore not comparable and must never be added together or presented side by side.</p>
@@ -791,7 +880,7 @@ ul.task-list li input[type="checkbox"] {
 <p>Queried directly from the IBM Verify production instance via API.</p>
 <ul>
 <li><strong>Updated</strong>: Daily, at 6am America/Toronto</li>
-<li><strong>Retention</strong>: Until CanadaLogin is retired</li>
+<li><strong>Retention</strong>: While CanadaLogin exists</li>
 <li><strong>Steward</strong>: EDCP Data and Research Team</li>
 <li><strong>Contact</strong>: <a href="mailto:yinlin.zhang@cds-snc.ca">Yinlin Zhang</a></li>
 </ul>
@@ -893,7 +982,6 @@ Warning
 <p><code>ytd_unique_users</code> and <code>rolling_365d_unique_users</code> may be unreliable. Both are computed by IBM Verify over a longer window than its underlying data retention actually covers, so the figures can undercount, and <code>ytd_unique_users</code> has been seen decreasing from one day to the next. Treat both as estimates only. See <a href="../../cookbook/unique-users.html#year-to-date-and-365-day-figures">Why Unique Users Cannot Be Added Up</a> for detail.</p>
 </div>
 </div>
-<p>A <code>since_apr22_unique_users</code> field (cumulative distinct users since the April 22, 2026 public launch) was previously provided here. It has been removed from the pipeline because the source API retains only the most recent 366.5 days of data, so a since-launch cumulative count cannot be maintained once launch is more than a year in the past. See the retention note on the <a href="../../catalog/ibm_verify.html#data-retention">IBM Verify catalog overview</a>.</p>
 <p>Unlike <a href="../../catalog/ibm_verify/auth_total_logins.html"><code>auth_total_logins</code></a>, these counts are <em>not</em> inflated by second factors. The per-authentication-method event inflation described there only happens when a person signs in to CanadaLogin itself. Reaching an integrated application uses the session they already hold: CanadaLogin issues the application a freshly minted assertion or token, the person enters no password or second factor, and one handoff records one SSO event. <code>total_logins</code> and <code>successful_logins</code> still count events rather than people, because one person can reach an application repeatedly. Use <code>unique_users</code> when the question is about how many distinct people used the application.</p>
 
 
@@ -1302,8 +1390,8 @@ Warning
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../../catalog/ibm_verify.html" class="pagination-link" aria-label="IBM Verify">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">IBM Verify</span>
+      <a href="../../catalog/ibm_verify.html" class="pagination-link" aria-label="IBM Verify (deprecated)">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">IBM Verify (deprecated)</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">

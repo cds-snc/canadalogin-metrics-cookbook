@@ -99,6 +99,15 @@
       "/catalog/ibm_verify/app_login_counts.html",
       "/catalog/ibm_verify/auth_total_logins.html",
       "/catalog/ibm_verify/mfa_activity.html",
+      "/catalog/ibm_verify_events_raw/adaptive_access.html",
+      "/catalog/ibm_verify_events_raw/application_usage.html",
+      "/catalog/ibm_verify_events_raw/authentication_activity.html",
+      "/catalog/ibm_verify_events_raw/mfa_activity.html",
+      "/catalog/ibm_verify_events_transformed/events_adaptive_risk_summary.html",
+      "/catalog/ibm_verify_events_transformed/events_app_login_counts.html",
+      "/catalog/ibm_verify_events_transformed/events_application_mapping.html",
+      "/catalog/ibm_verify_events_transformed/events_auth_total_logins.html",
+      "/catalog/ibm_verify_events_transformed/events_mfa_activity.html",
       "/catalog/jira/psom.html",
       "/catalog/jira/psom_comment.html",
       "/catalog/jira/psom_sla.html",
@@ -111,11 +120,20 @@
     ]
   },
   {
-    "listing": "/catalog/ibm_verify.html",
+    "listing": "/catalog/ibm_verify_events_transformed.html",
     "items": [
-      "/catalog/ibm_verify/app_login_counts.html",
-      "/catalog/ibm_verify/auth_total_logins.html",
-      "/catalog/ibm_verify/mfa_activity.html"
+      "/catalog/ibm_verify_events_transformed/events_auth_total_logins.html",
+      "/catalog/ibm_verify_events_transformed/events_app_login_counts.html",
+      "/catalog/ibm_verify_events_transformed/events_mfa_activity.html",
+      "/catalog/ibm_verify_events_transformed/events_adaptive_risk_summary.html",
+      "/catalog/ibm_verify_events_transformed/events_application_mapping.html"
+    ]
+  },
+  {
+    "listing": "/catalog/call_centre.html",
+    "items": [
+      "/catalog/call_centre/weekly_activity_report.html",
+      "/catalog/call_centre/weekly_topic_dump.html"
     ]
   },
   {
@@ -133,10 +151,20 @@
     ]
   },
   {
-    "listing": "/catalog/call_centre.html",
+    "listing": "/catalog/ibm_verify.html",
     "items": [
-      "/catalog/call_centre/weekly_activity_report.html",
-      "/catalog/call_centre/weekly_topic_dump.html"
+      "/catalog/ibm_verify/app_login_counts.html",
+      "/catalog/ibm_verify/auth_total_logins.html",
+      "/catalog/ibm_verify/mfa_activity.html"
+    ]
+  },
+  {
+    "listing": "/catalog/ibm_verify_events_raw.html",
+    "items": [
+      "/catalog/ibm_verify_events_raw/authentication_activity.html",
+      "/catalog/ibm_verify_events_raw/application_usage.html",
+      "/catalog/ibm_verify_events_raw/mfa_activity.html",
+      "/catalog/ibm_verify_events_raw/adaptive_access.html"
     ]
   },
   {
