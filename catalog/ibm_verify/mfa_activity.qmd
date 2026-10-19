@@ -1,7 +1,12 @@
 ---
 title: "ibm_verify.mfa_activity"
-description: "Daily multi-factor authentication activity by factor and result."
+description: "Deprecated. Daily multi-factor authentication activity by factor and result."
 ---
+
+::: {.callout-warning}
+**Deprecated.** Use [`events_mfa_activity`](../ibm_verify_events_transformed/events_mfa_activity.qmd)
+instead. See [IBM Verify (deprecated)](../ibm_verify.qmd).
+:::
 
 Daily multi-factor authentication (MFA) activity, broken down by factor type and
 outcome.
@@ -16,7 +21,7 @@ MFA factor type, and result.
 Queried directly from the IBM Verify production instance via API.
 
 * **Updated**: Daily, at 6am America/Toronto
-* **Retention**: Until CanadaLogin is retired
+* **Retention**: While CanadaLogin exists
 * **Steward**: EDCP Data and Research Team
 * **Contact**: [Yinlin Zhang](mailto:yinlin.zhang@cds-snc.ca)
 

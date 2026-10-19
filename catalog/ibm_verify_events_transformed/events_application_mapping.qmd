@@ -1,0 +1,46 @@
+---
+title: "ibm_verify_events_transformed.events_application_mapping"
+description: "Each application's IBM Verify ID, current name, and first and last event this year."
+---
+
+A lookup from IBM Verify application ID to application name, with when each
+application was first and last used this year.
+
+Each partition is a full snapshot: one row for every application with an event
+between January 1 and that day. Read the latest partition.
+
+`Keywords`: applications, application ID, application name, lookup, first seen, last seen, onboarding
+
+## Provenance
+
+Built from [`application_usage`](../ibm_verify_events_raw/application_usage.qmd)
+by `compute_application_mapping()` in the [daily metrics
+job](https://github.com/cds-snc/canadalogin-reporting-data-pipeline/blob/main/infra/modules/ibm_verify_events_streaming/glue_src/ibm_verify_events_metrics_daily.py).
+
+* **Updated**: Daily, at 04:00 ET, for the previous ET day
+* **Retention**: While CanadaLogin exists
+* **Steward**: EDCP Data and Research Team
+* **Contact**: [Yinlin Zhang](mailto:yinlin.zhang@cds-snc.ca)
+* **Location**: `s3://<transformed-bucket>/ibm_verify_metrics/events_application_mapping/`
+
+## Fields
+
+One row per `application_id` per partition.
+
+| Field Name | Type | Description |
+|---|---|---|
+| application_id | string | IBM Verify's numeric ID for the application |
+| application_name | string | The latest name seen for the application |
+| first_seen_at | string | Time of the application's first event since January 1, in UTC (for example, "2026-04-22 12:53:14 UTC") |
+| last_seen_at | string | Time of the application's latest event up to the snapshot day, in UTC |
+| fetched_at | string | When the job wrote the row, in ISO 8601 UTC |
+| date | string | Partition key. The ET day the snapshot covers up to |
+
+## Notes
+
+**`first_seen_at` resets each year.** It is the first event since January 1,
+not since launch. For an application's launch date, use `launch_date` in
+[`rp.service`](../rp/service.qmd).
+
+**Times are UTC, partitions are ET.** An event at 23:53 ET on 2026-10-18 shows as
+`2026-10-19 03:53:30 UTC` in the 2026-10-18 snapshot.

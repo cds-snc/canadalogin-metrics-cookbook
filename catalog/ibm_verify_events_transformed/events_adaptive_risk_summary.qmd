@@ -1,0 +1,49 @@
+---
+title: "ibm_verify_events_transformed.events_adaptive_risk_summary"
+description: "Daily adaptive access evaluations by risk level."
+---
+
+Daily counts of IBM Verify adaptive access evaluations, by the risk level IBM
+Verify assigned.
+
+Each row is one day. The figures match the top-stats bar on IBM Verify's
+"Adaptive access" dashboard.
+
+`Keywords`: adaptive access, risk, risk level, security, fraud, bots, policy
+
+## Provenance
+
+Built from [`adaptive_access`](../ibm_verify_events_raw/adaptive_access.qmd) by
+`compute_adaptive_risk_summary()` in the [daily metrics
+job](https://github.com/cds-snc/canadalogin-reporting-data-pipeline/blob/main/infra/modules/ibm_verify_events_streaming/glue_src/ibm_verify_events_metrics_daily.py).
+
+Adaptive access went live on 2026-09-09. Rows from 2026-04-22 to 2026-09-08 are
+all zero.
+
+* **Updated**: Daily, at 04:00 ET, for the previous ET day
+* **Retention**: While CanadaLogin exists
+* **Steward**: EDCP Data and Research Team
+* **Contact**: [Yinlin Zhang](mailto:yinlin.zhang@cds-snc.ca)
+* **Location**: `s3://<transformed-bucket>/ibm_verify_metrics/events_adaptive_risk_summary/`
+
+## Fields
+
+One row per day.
+
+| Field Name | Type | Description |
+|---|---|---|
+| from_date | string | The reporting day in ET, for example "2026-09-15". Cast before comparing to a date |
+| to_date | string | Same as `from_date` |
+| total_invocations | bigint | Every adaptive access evaluation that day, including those with no risk level |
+| very_high_count | bigint | Evaluations rated "VERY_HIGH" |
+| high_count | bigint | Evaluations rated "HIGH" |
+| medium_count | bigint | Evaluations rated "MEDIUM" |
+| low_count | bigint | Evaluations rated "LOW" |
+| fetched_at | string | When the job wrote the row, in ISO 8601 UTC |
+| date | string | Partition key. Same as `from_date` |
+
+## Notes
+
+**The four levels do not add up to `total_invocations`.** About 10% of
+evaluations have no risk level, almost all with the policy action
+`ACTION_REDIRECT`. They count in the total only.

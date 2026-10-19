@@ -42,10 +42,10 @@ Resolve a source-system name to a relying party by joining on `alias`, then join
 ```sql
 SELECT s.service_name_en,
        sum(a.successful_logins) AS successful_logins
-FROM ibm_verify.app_login_counts a
+FROM ibm_verify_events_transformed.events_app_login_counts a
 JOIN rp.alias al ON a.application_name = al.alias
 JOIN rp.service s ON al.rp_id = s.rp_id
-WHERE a.from_date BETWEEN DATE '2026-07-01' AND DATE '2026-07-31'
+WHERE CAST(a.from_date AS DATE) BETWEEN DATE '2026-07-01' AND DATE '2026-07-31'
 GROUP BY s.service_name_en
 ```
 
