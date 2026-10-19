@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>IBM Verify – CanadaLogin Metrics Cookbook</title>
+<title>IBM Verify Counts – CanadaLogin Metrics Cookbook</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -87,9 +87,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-8b76eb07b549522d1afae2dc4e9871db.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-4ea69f0bb438d4cd2a1c451ff2c5348b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-8b76eb07b549522d1afae2dc4e9871db.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-1bbe4c65595f280097d62c091d488233.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-b1855a045d55befcd55077adede4d79d.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-1bbe4c65595f280097d62c091d488233.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -230,7 +230,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../catalog/index.html">Data Catalog</a></li><li class="breadcrumb-item"><a href="../catalog/ibm_verify_events_transformed.html">IBM Verify</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../catalog/index.html">Data Catalog</a></li><li class="breadcrumb-item"><a href="../catalog/ibm_verify_events_transformed.html">IBM Verify Counts</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -624,7 +624,7 @@ window.Quarto = {
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../catalog/ibm_verify_events_transformed.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">IBM Verify</span></a>
+ <span class="menu-text">IBM Verify Counts</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-12" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -665,7 +665,7 @@ window.Quarto = {
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../catalog/ibm_verify_events_raw.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">IBM Verify raw events</span></a>
+ <span class="menu-text">IBM Verify Events</span></a>
           <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-13" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -927,9 +927,9 @@ window.Quarto = {
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../catalog/index.html">Data Catalog</a></li><li class="breadcrumb-item"><a href="../catalog/ibm_verify_events_transformed.html">IBM Verify</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../catalog/index.html">Data Catalog</a></li><li class="breadcrumb-item"><a href="../catalog/ibm_verify_events_transformed.html">IBM Verify Counts</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">IBM Verify</h1>
+<h1 class="title">IBM Verify Counts</h1>
 </div>
 
 
@@ -946,7 +946,7 @@ window.Quarto = {
 </header>
 
 
-<p>Daily summary tables in the <code>ibm_verify_events_transformed</code> schema. Use these for IBM Verify reporting. They replace the <a href="../catalog/ibm_verify.html">deprecated <code>ibm_verify</code> tables</a>, which were pulled from the IBM Verify reporting API.</p>
+<p>Daily summary tables in the <code>ibm_verify_events_transformed</code> schema. Use these for IBM Verify reporting.</p>
 <p>A nightly Glue job builds them from the <a href="../catalog/ibm_verify_events_raw.html">raw event stream</a>. It runs at 04:00 ET and writes the previous ET day. Each table is built by one <code>compute_*()</code> function in <a href="https://github.com/cds-snc/canadalogin-reporting-data-pipeline/blob/main/infra/modules/ibm_verify_events_streaming/glue_src/ibm_verify_events_metrics_daily.py"><code>ibm_verify_events_metrics_daily.py</code></a>. That code is the definition of every column. The repo is internal, so the link needs cds-snc access.</p>
 <p>Data starts on 2026-04-22, the public launch.</p>
 <section id="tables" class="level2">
@@ -968,7 +968,7 @@ Description
 </thead>
 <tbody class="list">
 
-<tr data-index="0" data-listing-file-modified-sort="1792435163794" data-listing-reading-time-sort="2" data-listing-word-count-sort="391" data-listing-title-sort="ibm_verify_events_transformed.events_auth_total_logins" data-listing-filename-sort="events_auth_total_logins.qmd">
+<tr data-index="0" data-listing-file-modified-sort="1792435887843" data-listing-reading-time-sort="2" data-listing-word-count-sort="327" data-listing-title-sort="ibm_verify_events_transformed.events_auth_total_logins" data-listing-filename-sort="events_auth_total_logins.qmd">
 <td>
 <a href="../catalog/ibm_verify_events_transformed/events_auth_total_logins.html" class="title listing-title">ibm_verify_events_transformed.events_auth_total_logins</a>
 </td>
@@ -978,7 +978,7 @@ Description
 
 </tr>
 
-<tr data-index="1" data-listing-file-modified-sort="1792435163794" data-listing-reading-time-sort="3" data-listing-word-count-sort="441" data-listing-title-sort="ibm_verify_events_transformed.events_app_login_counts" data-listing-filename-sort="events_app_login_counts.qmd">
+<tr data-index="1" data-listing-file-modified-sort="1792435887843" data-listing-reading-time-sort="3" data-listing-word-count-sort="407" data-listing-title-sort="ibm_verify_events_transformed.events_app_login_counts" data-listing-filename-sort="events_app_login_counts.qmd">
 <td>
 <a href="../catalog/ibm_verify_events_transformed/events_app_login_counts.html" class="title listing-title">ibm_verify_events_transformed.events_app_login_counts</a>
 </td>
@@ -988,7 +988,7 @@ Description
 
 </tr>
 
-<tr data-index="2" data-listing-file-modified-sort="1792435163794" data-listing-reading-time-sort="2" data-listing-word-count-sort="320" data-listing-title-sort="ibm_verify_events_transformed.events_mfa_activity" data-listing-filename-sort="events_mfa_activity.qmd">
+<tr data-index="2" data-listing-file-modified-sort="1792435887843" data-listing-reading-time-sort="2" data-listing-word-count-sort="306" data-listing-title-sort="ibm_verify_events_transformed.events_mfa_activity" data-listing-filename-sort="events_mfa_activity.qmd">
 <td>
 <a href="../catalog/ibm_verify_events_transformed/events_mfa_activity.html" class="title listing-title">ibm_verify_events_transformed.events_mfa_activity</a>
 </td>
@@ -998,7 +998,7 @@ Description
 
 </tr>
 
-<tr data-index="3" data-listing-file-modified-sort="1792435163794" data-listing-reading-time-sort="2" data-listing-word-count-sort="262" data-listing-title-sort="ibm_verify_events_transformed.events_adaptive_risk_summary" data-listing-filename-sort="events_adaptive_risk_summary.qmd">
+<tr data-index="3" data-listing-file-modified-sort="1792435887843" data-listing-reading-time-sort="2" data-listing-word-count-sort="222" data-listing-title-sort="ibm_verify_events_transformed.events_adaptive_risk_summary" data-listing-filename-sort="events_adaptive_risk_summary.qmd">
 <td>
 <a href="../catalog/ibm_verify_events_transformed/events_adaptive_risk_summary.html" class="title listing-title">ibm_verify_events_transformed.events_adaptive_risk_summary</a>
 </td>
@@ -1008,7 +1008,7 @@ Description
 
 </tr>
 
-<tr data-index="4" data-listing-file-modified-sort="1792435163794" data-listing-reading-time-sort="2" data-listing-word-count-sort="242" data-listing-title-sort="ibm_verify_events_transformed.events_application_mapping" data-listing-filename-sort="events_application_mapping.qmd">
+<tr data-index="4" data-listing-file-modified-sort="1792435887843" data-listing-reading-time-sort="2" data-listing-word-count-sort="233" data-listing-title-sort="ibm_verify_events_transformed.events_application_mapping" data-listing-filename-sort="events_application_mapping.qmd">
 <td>
 <a href="../catalog/ibm_verify_events_transformed/events_application_mapping.html" class="title listing-title">ibm_verify_events_transformed.events_application_mapping</a>
 </td>

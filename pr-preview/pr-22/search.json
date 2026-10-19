@@ -1179,7 +1179,7 @@
     "href": "catalog/rp/service.html#provenance",
     "title": "rp.service",
     "section": "Provenance",
-    "text": "Provenance\nThe list is maintained by hand in the CanadaLogin Relying Parties Google Sheet. The rp-sync Lambda reads the sheet every weekday and writes a single Parquet file to S3, then triggers a Glue crawler to refresh the table in Athena. The table is not partitioned and the file is overwritten in place, so this table holds current state only and keeps no history.\n\nUpdated: Weekdays, at 06:00 ET\nRetention: Until CanadaLogin is retired\nSteward: EDCP Data and Research Team\nContact: Colin Douglas\nLocation: s3://canadalogin-reporting-transformed/rp/service/",
+    "text": "Provenance\nThe list is maintained by hand in the CanadaLogin Relying Parties Google Sheet. The rp-sync Lambda reads the sheet every weekday and writes a single Parquet file to S3, then triggers a Glue crawler to refresh the table in Athena. The table is not partitioned and the file is overwritten in place, so this table holds current state only and keeps no history.\n\nUpdated: Weekdays, at 06:00 ET\nRetention: While CanadaLogin exists\nSteward: EDCP Data and Research Team\nContact: Colin Douglas\nLocation: s3://canadalogin-reporting-transformed/rp/service/",
     "crumbs": [
       "Data Catalog",
       "Relying Parties",
@@ -1365,7 +1365,7 @@
     "href": "catalog/index.html#sources",
     "title": "About",
     "section": "Sources",
-    "text": "Sources\nEach source page covers what its tables share: where the data comes from, when it updates, and caveats that apply to all of them.\n\nRelying Parties - reference tables in the rp schema that identify the services using CanadaLogin and their aliases\nIBM Verify - daily summary tables in the ibm_verify_events_transformed schema, built from the IBM Verify event stream\nIBM Verify raw events - the IBM Verify event stream in the ibm_verify_events_raw schema, one row per event\nCall Centre - weekly call centre data from the CanadaLogin support queue reports\nPlatform - incident response and uptime tables in the sre schema\nJira (PSOM) - daily snapshots of PSOM support tickets in the jira schema\nGoogle Analytics - tables in the google_analytics schema, populated from the CanadaLogin GA4 property\nIBM Verify (deprecated) - the old ibm_verify tables, pulled from the IBM Verify reporting API",
+    "text": "Sources\nEach source page covers what its tables share: where the data comes from, when it updates, and caveats that apply to all of them.\n\nRelying Parties - reference tables in the rp schema that identify the services using CanadaLogin and their aliases\nIBM Verify Counts - daily summary tables in the ibm_verify_events_transformed schema, built from the IBM Verify event stream\nIBM Verify Events - the IBM Verify event stream in the ibm_verify_events_raw schema, one row per event\nCall Centre - weekly call centre data from the CanadaLogin support queue reports\nPlatform - incident response and uptime tables in the sre schema\nJira (PSOM) - daily snapshots of PSOM support tickets in the jira schema\nGoogle Analytics - tables in the google_analytics schema, populated from the CanadaLogin GA4 property\nIBM Verify (deprecated) - the old ibm_verify tables, pulled from the IBM Verify reporting API",
     "crumbs": [
       "Data Catalog"
     ]
@@ -1385,10 +1385,10 @@
     "href": "catalog/ibm_verify_events_transformed/events_auth_total_logins.html",
     "title": "ibm_verify_events_transformed.events_auth_total_logins",
     "section": "",
-    "text": "Daily, CanadaLogin-wide authentication event totals across all applications. Replaces ibm_verify.auth_total_logins.\nEach row is one day. It counts what IBM Verify calls the authentication event type, raised each time someone presents an authentication method.\nevents_app_login_counts counts a different event type (sso). Never add the two tables’ figures together or show them side by side.\nKeywords: authentication events, sign-ins, logins, totals, CanadaLogin overall, unique users, daily",
+    "text": "Daily, CanadaLogin-wide authentication event totals across all applications.\nEach row is one day. It counts what IBM Verify calls the authentication event type, raised each time someone presents an authentication method.\nevents_app_login_counts counts a different event type (sso). Never add the two tables’ figures together or show them side by side.\nKeywords: authentication events, sign-ins, logins, totals, CanadaLogin overall, unique users, daily",
     "crumbs": [
       "Data Catalog",
-      "IBM Verify",
+      "IBM Verify Counts",
       "events_auth_total_logins"
     ]
   },
@@ -1397,10 +1397,10 @@
     "href": "catalog/ibm_verify_events_transformed/events_auth_total_logins.html#provenance",
     "title": "ibm_verify_events_transformed.events_auth_total_logins",
     "section": "Provenance",
-    "text": "Provenance\nBuilt from authentication_activity by compute_auth_total_logins() in the daily metrics job.\n\nUpdated: Daily, at 04:00 ET, for the previous ET day\nRetention: Until CanadaLogin is retired\nSteward: EDCP Data and Research Team\nContact: Yinlin Zhang\nLocation: s3://&lt;transformed-bucket&gt;/ibm_verify_metrics/events_auth_total_logins/",
+    "text": "Provenance\nBuilt from authentication_activity by compute_auth_total_logins() in the daily metrics job.\n\nUpdated: Daily, at 04:00 ET, for the previous ET day\nRetention: While CanadaLogin exists\nSteward: EDCP Data and Research Team\nContact: Yinlin Zhang\nLocation: s3://&lt;transformed-bucket&gt;/ibm_verify_metrics/events_auth_total_logins/",
     "crumbs": [
       "Data Catalog",
-      "IBM Verify",
+      "IBM Verify Counts",
       "events_auth_total_logins"
     ]
   },
@@ -1412,7 +1412,7 @@
     "text": "Fields\nOne row per day.\n\n\n\n\n\n\n\n\nField Name\nType\nDescription\n\n\n\n\nfrom_date\nstring\nThe reporting day in ET, for example “2026-09-15”. Cast before comparing to a date\n\n\nto_date\nstring\nSame as from_date\n\n\nunique_users\nbigint\nDistinct users with any authentication event that day, successful or not\n\n\nfailed_logins\nbigint\nFailed authentication events that day\n\n\nsuccessful_logins\nbigint\nSuccessful authentication events that day\n\n\nmtd_unique_users\nbigint\nDistinct users month-to-date. Resets on the 1st\n\n\nytd_unique_users\nbigint\nDistinct users year-to-date. Resets on January 1\n\n\nfetched_at\nstring\nWhen the job wrote the row, in ISO 8601 UTC\n\n\ndate\nstring\nPartition key. Same as from_date",
     "crumbs": [
       "Data Catalog",
-      "IBM Verify",
+      "IBM Verify Counts",
       "events_auth_total_logins"
     ]
   },
@@ -1421,10 +1421,10 @@
     "href": "catalog/ibm_verify_events_transformed/events_auth_total_logins.html#notes",
     "title": "ibm_verify_events_transformed.events_auth_total_logins",
     "section": "Notes",
-    "text": "Notes\nunique_users, failed_logins, and successful_logins are daily values. The mtd_ and ytd_ columns are cumulative: take the latest value in the window, never sum them.\nunique_users includes failed attempts. It counts anyone with an authentication event, even if every attempt failed. On 2026-09-15, 2,363 users had an event and 2,345 had a success. The literal user ID \"UNKNOWN\", logged for a password attempt on a username that does not exist, counts as one user on most days. Both behaviours match IBM’s own figures.\nEvents overcount sign-ins. Each authentication method is its own event. A password plus a second factor is two successful events, and a mistyped password adds a failed one. Use unique_users for engagement. Reaching an application adds nothing here; that is an SSO event in events_app_login_counts.\nCompared with the old table. Over September 2026:\n\nsuccessful_logins ran 1.1% higher and failed_logins 1.0% higher, because the stream records a few events the API drops.\nDaily unique_users matched exactly, except on 2026-06-28 and four bot-wave days in September.\nytd_unique_users never decreases, unlike the old column, and starts at launch, so it has no pre-launch test accounts.\nThere is no rolling_365d_unique_users or last_updated_at.",
+    "text": "Notes\nunique_users, failed_logins, and successful_logins are daily values. The mtd_ and ytd_ columns are cumulative: take the latest value in the window, never sum them.\nunique_users includes failed attempts. It counts anyone with an authentication event, even if every attempt failed. On 2026-09-15, 2,363 users had an event and 2,345 had a success. The literal user ID \"UNKNOWN\", logged for a password attempt on a username that does not exist, counts as one user on most days. Both behaviours match IBM’s own figures.\nEvents overcount sign-ins. Each authentication method is its own event. A password plus a second factor is two successful events, and a mistyped password adds a failed one. Use unique_users for engagement. Reaching an application adds nothing here; that is an SSO event in events_app_login_counts.",
     "crumbs": [
       "Data Catalog",
-      "IBM Verify",
+      "IBM Verify Counts",
       "events_auth_total_logins"
     ]
   },
@@ -1433,10 +1433,10 @@
     "href": "catalog/ibm_verify_events_transformed/events_app_login_counts.html",
     "title": "ibm_verify_events_transformed.events_app_login_counts",
     "section": "",
-    "text": "Daily SSO event counts for each CanadaLogin-integrated application. Replaces ibm_verify.app_login_counts.\nEach row is one application on one day. It counts what IBM Verify calls the sso event type, raised when someone who is already signed in reaches an application.\nevents_auth_total_logins counts a different event type (authentication). Never add the two tables’ figures together or show them side by side.\nKeywords: SSO events, application usage, sign-ins, logins, applications, unique users, adoption, daily counts",
+    "text": "Daily SSO event counts for each CanadaLogin-integrated application.\nEach row is one application on one day. It counts what IBM Verify calls the sso event type, raised when someone who is already signed in reaches an application.\nevents_auth_total_logins counts a different event type (authentication). Never add the two tables’ figures together or show them side by side.\nKeywords: SSO events, application usage, sign-ins, logins, applications, unique users, adoption, daily counts",
     "crumbs": [
       "Data Catalog",
-      "IBM Verify",
+      "IBM Verify Counts",
       "events_app_login_counts"
     ]
   },
@@ -1445,10 +1445,10 @@
     "href": "catalog/ibm_verify_events_transformed/events_app_login_counts.html#provenance",
     "title": "ibm_verify_events_transformed.events_app_login_counts",
     "section": "Provenance",
-    "text": "Provenance\nBuilt from application_usage by compute_app_login_counts() in the daily metrics job.\n\nUpdated: Daily, at 04:00 ET, for the previous ET day\nRetention: Until CanadaLogin is retired\nSteward: EDCP Data and Research Team\nContact: Yinlin Zhang\nLocation: s3://&lt;transformed-bucket&gt;/ibm_verify_metrics/events_app_login_counts/",
+    "text": "Provenance\nBuilt from application_usage by compute_app_login_counts() in the daily metrics job.\n\nUpdated: Daily, at 04:00 ET, for the previous ET day\nRetention: While CanadaLogin exists\nSteward: EDCP Data and Research Team\nContact: Yinlin Zhang\nLocation: s3://&lt;transformed-bucket&gt;/ibm_verify_metrics/events_app_login_counts/",
     "crumbs": [
       "Data Catalog",
-      "IBM Verify",
+      "IBM Verify Counts",
       "events_app_login_counts"
     ]
   },
@@ -1460,7 +1460,7 @@
     "text": "Fields\nOne row per application_id per day.\n\n\n\nField Name\nType\nDescription\n\n\n\n\napplication_id\nstring\nIBM Verify’s numeric ID for the application\n\n\napplication_name\nstring\nThe latest name seen for the application that day (for example, “IRIS - PRC - Prod”). Join to rp.alias on this\n\n\nfrom_date\nstring\nThe reporting day in ET, for example “2026-09-15”. Cast before comparing to a date\n\n\nto_date\nstring\nSame as from_date\n\n\ntotal_logins\nbigint\nSSO events for the application that day. Counts events, not people\n\n\nunique_users\nbigint\nDistinct users with an SSO event for the application that day, successful or not\n\n\nfailed_logins\nbigint\nFailed SSO events that day\n\n\nsuccessful_logins\nbigint\nSuccessful SSO events that day\n\n\nmtd_unique_users\nbigint\nDistinct users of the application month-to-date. Resets on the 1st\n\n\nytd_unique_users\nbigint\nDistinct users of the application year-to-date. Resets on January 1\n\n\nfetched_at\nstring\nWhen the job wrote the row, in ISO 8601 UTC\n\n\ndate\nstring\nPartition key. Same as from_date",
     "crumbs": [
       "Data Catalog",
-      "IBM Verify",
+      "IBM Verify Counts",
       "events_app_login_counts"
     ]
   },
@@ -1469,44 +1469,44 @@
     "href": "catalog/ibm_verify_events_transformed/events_app_login_counts.html#notes",
     "title": "ibm_verify_events_transformed.events_app_login_counts",
     "section": "Notes",
-    "text": "Notes\ntotal_logins, unique_users, failed_logins, and successful_logins are daily values. The mtd_ and ytd_ columns are cumulative: take the latest value in the window, never sum them.\nOne row per ID, not per name. The old table had one row per application_name. On 2026-10-19 every name had exactly one ID. If a name ever gets two, summing unique_users across them double-counts people who used both.\nJoin to relying parties after, not before, aggregating. Several application names can map to one service. See Joining through the lookup.\nFailed events rarely have a user. In September 2026, 17,650 of 17,674 failed SSO events had the user ID \"UNKNOWN\", which counts as one user that day.\nNot inflated by second factors. Reaching an application uses the session the person already holds, so one handoff is one SSO event. total_logins still counts events, because one person can reach an application many times.\nCompared with the old table. Over September 2026, event counts matched exactly. unique_users matched except for Flow Application on bot-wave days. There is no rolling_365d_unique_users.",
+    "text": "Notes\ntotal_logins, unique_users, failed_logins, and successful_logins are daily values. The mtd_ and ytd_ columns are cumulative: take the latest value in the window, never sum them.\nOne row per ID. On 2026-10-19 every application name had exactly one ID. If a name ever gets two, summing unique_users across them double-counts people who used both.\nJoin to relying parties after, not before, aggregating. Several application names can map to one service. See Joining through the lookup.\nFailed events rarely have a user. In September 2026, 17,650 of 17,674 failed SSO events had the user ID \"UNKNOWN\", which counts as one user that day.\nNot inflated by second factors. Reaching an application uses the session the person already holds, so one handoff is one SSO event. total_logins still counts events, because one person can reach an application many times.",
     "crumbs": [
       "Data Catalog",
-      "IBM Verify",
+      "IBM Verify Counts",
       "events_app_login_counts"
     ]
   },
   {
     "objectID": "catalog/ibm_verify_events_transformed.html",
     "href": "catalog/ibm_verify_events_transformed.html",
-    "title": "IBM Verify",
+    "title": "IBM Verify Counts",
     "section": "",
-    "text": "Daily summary tables in the ibm_verify_events_transformed schema. Use these for IBM Verify reporting. They replace the deprecated ibm_verify tables, which were pulled from the IBM Verify reporting API.\nA nightly Glue job builds them from the raw event stream. It runs at 04:00 ET and writes the previous ET day. Each table is built by one compute_*() function in ibm_verify_events_metrics_daily.py. That code is the definition of every column. The repo is internal, so the link needs cds-snc access.\nData starts on 2026-04-22, the public launch.",
+    "text": "Daily summary tables in the ibm_verify_events_transformed schema. Use these for IBM Verify reporting.\nA nightly Glue job builds them from the raw event stream. It runs at 04:00 ET and writes the previous ET day. Each table is built by one compute_*() function in ibm_verify_events_metrics_daily.py. That code is the definition of every column. The repo is internal, so the link needs cds-snc access.\nData starts on 2026-04-22, the public launch.",
     "crumbs": [
       "Data Catalog",
-      "IBM Verify"
+      "IBM Verify Counts"
     ]
   },
   {
     "objectID": "catalog/ibm_verify_events_transformed.html#tables",
     "href": "catalog/ibm_verify_events_transformed.html#tables",
-    "title": "IBM Verify",
+    "title": "IBM Verify Counts",
     "section": "Tables",
     "text": "Tables\n\n\n\n\n\n\nTable\n\n\n\nDescription\n\n\n\n\n\n\n\n\nibm_verify_events_transformed.events_auth_total_logins\n\n\nDaily CanadaLogin-wide authentication event totals.\n\n\n\n\n\n\nibm_verify_events_transformed.events_app_login_counts\n\n\nDaily SSO event counts by application.\n\n\n\n\n\n\nibm_verify_events_transformed.events_mfa_activity\n\n\nDaily multi-factor authentication activity by factor and result.\n\n\n\n\n\n\nibm_verify_events_transformed.events_adaptive_risk_summary\n\n\nDaily adaptive access evaluations by risk level.\n\n\n\n\n\n\nibm_verify_events_transformed.events_application_mapping\n\n\nEach application’s IBM Verify ID, current name, and first and last event this year.\n\n\n\n\n\n\nNo matching items",
     "crumbs": [
       "Data Catalog",
-      "IBM Verify"
+      "IBM Verify Counts"
     ]
   },
   {
     "objectID": "catalog/ibm_verify_events_transformed.html#dates-are-strings",
     "href": "catalog/ibm_verify_events_transformed.html#dates-are-strings",
-    "title": "IBM Verify",
+    "title": "IBM Verify Counts",
     "section": "Dates are strings",
     "text": "Dates are strings\nfrom_date and to_date are YYYY-MM-DD strings, not timestamps. Comparing them to a date fails with TYPE_MISMATCH, so cast first:\nWHERE CAST(from_date AS DATE) BETWEEN DATE '2026-09-01' AND DATE '2026-09-30'\nIn R, wrap both sides in as.Date(): filter(as.Date(from_date) &gt;= as.Date(\"2026-09-01\")). A bare string on the right fails the same way, because RAthena turns ISO-date strings into DATE literals.",
     "crumbs": [
       "Data Catalog",
-      "IBM Verify"
+      "IBM Verify Counts"
     ]
   },
   {
@@ -1517,7 +1517,7 @@
     "text": "Every IBM Verify authentication event: one row each time someone presents an authentication method. Prefer the daily summary, events_auth_total_logins.\nKeywords: authentication events, sign-ins, logins, password, new accounts, first sign-in, raw events",
     "crumbs": [
       "Data Catalog",
-      "IBM Verify raw events",
+      "IBM Verify Events",
       "authentication_activity"
     ]
   },
@@ -1526,10 +1526,10 @@
     "href": "catalog/ibm_verify_events_raw/authentication_activity.html#provenance",
     "title": "ibm_verify_events_raw.authentication_activity",
     "section": "Provenance",
-    "text": "Provenance\nPulled hourly from IBM Verify by the streaming job. See IBM Verify raw events for what is hashed and how to filter by day.\n\nUpdated: Hourly\nRetention: 3 years\nSteward: EDCP Data and Research Team\nContact: Yinlin Zhang\nLocation: s3://&lt;raw-bucket&gt;/ibm_verify_events_raw/authentication_activity/",
+    "text": "Provenance\nPulled hourly from IBM Verify by the streaming job. See IBM Verify Events for what is hashed and how to filter by day.\n\nUpdated: Hourly\nRetention: 3 years\nSteward: EDCP Data and Research Team\nContact: Yinlin Zhang\nLocation: s3://&lt;raw-bucket&gt;/ibm_verify_events_raw/authentication_activity/",
     "crumbs": [
       "Data Catalog",
-      "IBM Verify raw events",
+      "IBM Verify Events",
       "authentication_activity"
     ]
   },
@@ -1541,7 +1541,7 @@
     "text": "Fields\nOne row per event.\n\n\n\n\n\n\n\n\nField Name\nType\nDescription\n\n\n\n\ntime\nstring\nWhen the event happened, in UTC (for example, “2026-09-15 00:00:05 UTC”)\n\n\nsubject\nstring\nHashed user ID. Can be \"\" or \"UNKNOWN\"\n\n\nusername\nstring\nHashed username\n\n\nsubtype\nstring\nAuthentication method. One of “user_password”, “mfa”, “token-exchange”, “passwordless”, or “federation”\n\n\nresult\nstring\n“success” or “failure”\n\n\nrealm\nstring\nIBM Verify directory. “cloudIdentityRealm”, or “UNKNOWN” when the account is not found\n\n\norigin\nstring\nHashed client IP address\n\n\ngeoip__country_iso_code\nstring\nCountry from the IP address, as ISO 3166-1 alpha-3 (for example, “CAN”)\n\n\ngeoip__country_name\nstring\nCountry name from the IP address\n\n\ngeoip__region_name\nstring\nProvince, territory, or state from the IP address\n\n\nyear\nstring\nPartition key. UTC year, for example “2026”\n\n\nmonth\nstring\nPartition key. UTC month, for example “09”\n\n\nday\nstring\nPartition key. UTC day of the month, for example “15”",
     "crumbs": [
       "Data Catalog",
-      "IBM Verify raw events",
+      "IBM Verify Events",
       "authentication_activity"
     ]
   },
@@ -1553,7 +1553,7 @@
     "text": "Notes\nWhen an account first appears. In September 2026, 37,577 accounts had their first event here. For 36,914 it was a successful user_password, and for 663 a successful token-exchange. This suggests the sign-up flow signs a new account in as soon as the password is set, with no MFA required. That is observed behaviour, not yet confirmed with the sign-up flow’s owners. The 663 token-exchange accounts may be migrated accounts; that has not been checked.\nFailed password attempts on unknown usernames have no user. They log subject = \"UNKNOWN\" and realm = \"UNKNOWN\". They appear almost every day since 2026-05-12, peaking at 3,462 on 2026-06-25.\nExample. Distinct users with an authentication event on an ET day:\ntbl(con, in_schema(\"ibm_verify_events_raw\", \"authentication_activity\")) |&gt;\n  # partitions are UTC days, so read the next one too for the ET evening\n  filter(year == \"2026\", month == \"09\", day %in% c(\"15\", \"16\")) |&gt;\n  mutate(et_day = sql(\"date(with_timezone(CAST(substr(time, 1, 19) AS timestamp), 'UTC') AT TIME ZONE 'America/Toronto')\")) |&gt;\n  filter(\n    et_day == as.Date(\"2026-09-15\"),\n    !is.na(subject), !subject %in% c(\"\", \"UNKNOWN\")\n  ) |&gt;\n  summarise(unique_users = n_distinct(subject))\nThis returns 2,362, one less than events_auth_total_logins.unique_users for that day, which counts \"UNKNOWN\".",
     "crumbs": [
       "Data Catalog",
-      "IBM Verify raw events",
+      "IBM Verify Events",
       "authentication_activity"
     ]
   },
@@ -1565,7 +1565,7 @@
     "text": "Every IBM Verify adaptive access evaluation: the risk level IBM Verify assigned to an access attempt, and what its policy did about it. Prefer the daily summary, events_adaptive_risk_summary.\nKeywords: adaptive access, risk, risk level, policy, device, browser, location, bots, raw events",
     "crumbs": [
       "Data Catalog",
-      "IBM Verify raw events",
+      "IBM Verify Events",
       "adaptive_access"
     ]
   },
@@ -1574,10 +1574,10 @@
     "href": "catalog/ibm_verify_events_raw/adaptive_access.html#provenance",
     "title": "ibm_verify_events_raw.adaptive_access",
     "section": "Provenance",
-    "text": "Provenance\nPulled hourly from IBM Verify by the streaming job. See IBM Verify raw events for what is hashed and how to filter by day.\nData starts on 2026-09-09, when adaptive access went live.\n\nUpdated: Hourly\nRetention: 3 years\nSteward: EDCP Data and Research Team\nContact: Yinlin Zhang\nLocation: s3://&lt;raw-bucket&gt;/ibm_verify_events_raw/adaptive_access/",
+    "text": "Provenance\nPulled hourly from IBM Verify by the streaming job. See IBM Verify Events for what is hashed and how to filter by day.\nData starts on 2026-09-09, when adaptive access went live.\n\nUpdated: Hourly\nRetention: 3 years\nSteward: EDCP Data and Research Team\nContact: Yinlin Zhang\nLocation: s3://&lt;raw-bucket&gt;/ibm_verify_events_raw/adaptive_access/",
     "crumbs": [
       "Data Catalog",
-      "IBM Verify raw events",
+      "IBM Verify Events",
       "adaptive_access"
     ]
   },
@@ -1589,7 +1589,7 @@
     "text": "Fields\nOne row per evaluation.\n\n\n\n\n\n\n\n\nField Name\nType\nDescription\n\n\n\n\ntime\nstring\nWhen the evaluation happened, in UTC (for example, “2026-09-15 00:00:05 UTC”)\n\n\nuserid\nstring\nHashed user ID\n\n\nusername\nstring\nHashed username\n\n\napplicationid\nstring\nIBM Verify’s numeric ID for the application being reached\n\n\napplicationname\nstring\nApplication name (for example, “IRIS - PRC - Prod”)\n\n\nrisk_level\nstring\n“LOW”, “MEDIUM”, “HIGH”, “VERY_HIGH”, or empty\n\n\ndecision_reason\nstring\nIBM Verify’s reason for the rating (for example, “Access from a known and trusted device”). Empty when there is no risk level\n\n\npolicy_action\nstring\nWhat the policy did. Mostly “ACTION_CONTINUE”, “ACTION_MFA_PER_SESSION”, “ACTION_MFA_ALWAYS”, or “ACTION_REDIRECT”\n\n\npolicy_id\nstring\nIBM Verify’s ID for the access policy\n\n\npolicy_name\nstring\nAccess policy name (for example, “GCS_AccessPolicies_Default_Migration”)\n\n\nbrowser\nstring\nBrowser (for example, “Firefox”)\n\n\nos\nstring\nOperating system (for example, “Windows NT”)\n\n\ncity\nstring\nCity from the IP address\n\n\nregion\nstring\nProvince, territory, or state from the IP address\n\n\ncountry\nstring\nCountry from the IP address, as ISO 3166-1 alpha-3 (for example, “CAN”)\n\n\nrealm\nstring\nIBM Verify directory, “cloudIdentityRealm”\n\n\norigin\nstring\nHashed client IP address\n\n\nyear\nstring\nPartition key. UTC year, for example “2026”\n\n\nmonth\nstring\nPartition key. UTC month, for example “09”\n\n\nday\nstring\nPartition key. UTC day of the month, for example “15”",
     "crumbs": [
       "Data Catalog",
-      "IBM Verify raw events",
+      "IBM Verify Events",
       "adaptive_access"
     ]
   },
@@ -1601,7 +1601,7 @@
     "text": "Notes\nAbout 10% of evaluations have no risk level. Almost all of them have policy_action = \"ACTION_REDIRECT\". The summary table counts them in total_invocations but in no level.\nLocation columns are named differently here. They are city, region, and country, not the geoip__ columns of the other three tables.\nExample. Evaluations and distinct users by risk level on an ET day:\ntbl(con, in_schema(\"ibm_verify_events_raw\", \"adaptive_access\")) |&gt;\n  # partitions are UTC days, so read the next one too for the ET evening\n  filter(year == \"2026\", month == \"09\", day %in% c(\"15\", \"16\")) |&gt;\n  mutate(et_day = sql(\"date(with_timezone(CAST(substr(time, 1, 19) AS timestamp), 'UTC') AT TIME ZONE 'America/Toronto')\")) |&gt;\n  filter(\n    et_day == as.Date(\"2026-09-15\"),\n    !is.na(userid), !userid %in% c(\"\", \"UNKNOWN\")\n  ) |&gt;\n  group_by(risk_level) |&gt;\n  summarise(evaluations = n(), unique_users = n_distinct(userid))",
     "crumbs": [
       "Data Catalog",
-      "IBM Verify raw events",
+      "IBM Verify Events",
       "adaptive_access"
     ]
   },
@@ -1622,7 +1622,7 @@
     "href": "catalog/ibm_verify/mfa_activity.html#provenance",
     "title": "ibm_verify.mfa_activity",
     "section": "Provenance",
-    "text": "Provenance\nQueried directly from the IBM Verify production instance via API.\n\nUpdated: Daily, at 6am America/Toronto\nRetention: Until CanadaLogin is retired\nSteward: EDCP Data and Research Team\nContact: Yinlin Zhang",
+    "text": "Provenance\nQueried directly from the IBM Verify production instance via API.\n\nUpdated: Daily, at 6am America/Toronto\nRetention: While CanadaLogin exists\nSteward: EDCP Data and Research Team\nContact: Yinlin Zhang",
     "crumbs": [
       "Data Catalog",
       "IBM Verify (deprecated)",
@@ -1670,7 +1670,7 @@
     "href": "catalog/ibm_verify/app_login_counts.html#provenance",
     "title": "ibm_verify.app_login_counts",
     "section": "Provenance",
-    "text": "Provenance\nQueried directly from the IBM Verify production instance via API.\n\nUpdated: Daily, at 6am America/Toronto\nRetention: Until CanadaLogin is retired\nSteward: EDCP Data and Research Team\nContact: Yinlin Zhang",
+    "text": "Provenance\nQueried directly from the IBM Verify production instance via API.\n\nUpdated: Daily, at 6am America/Toronto\nRetention: While CanadaLogin exists\nSteward: EDCP Data and Research Team\nContact: Yinlin Zhang",
     "crumbs": [
       "Data Catalog",
       "IBM Verify (deprecated)",
@@ -2313,7 +2313,7 @@
     "href": "catalog/ibm_verify.html",
     "title": "IBM Verify (deprecated)",
     "section": "",
-    "text": "Warning\n\n\n\nDeprecated. Do not use these tables in new work. Use the IBM Verify daily summary tables, built from the IBM Verify event stream. These tables will stop updating when the reporting API pull is decommissioned.\nDaily aggregates in the ibm_verify schema, pulled from the IBM Verify reporting API.",
+    "text": "Warning\n\n\n\nDeprecated. Do not use these tables in new work. Use IBM Verify Counts, built from the IBM Verify event stream. These tables will stop updating when the reporting API pull is decommissioned.\nDaily aggregates in the ibm_verify schema, pulled from the IBM Verify reporting API.",
     "crumbs": [
       "Data Catalog",
       "IBM Verify (deprecated)"
@@ -2358,7 +2358,7 @@
     "href": "catalog/ibm_verify/auth_total_logins.html#provenance",
     "title": "ibm_verify.auth_total_logins",
     "section": "Provenance",
-    "text": "Provenance\nQueried directly from the IBM Verify production instance via API.\n\nUpdated: Daily, at 6am America/Toronto\nRetention: Until CanadaLogin is retired\nSteward: EDCP Data and Research Team\nContact: Yinlin Zhang",
+    "text": "Provenance\nQueried directly from the IBM Verify production instance via API.\n\nUpdated: Daily, at 6am America/Toronto\nRetention: While CanadaLogin exists\nSteward: EDCP Data and Research Team\nContact: Yinlin Zhang",
     "crumbs": [
       "Data Catalog",
       "IBM Verify (deprecated)",
@@ -2392,45 +2392,45 @@
   {
     "objectID": "catalog/ibm_verify_events_raw.html",
     "href": "catalog/ibm_verify_events_raw.html",
-    "title": "IBM Verify raw events",
+    "title": "IBM Verify Events",
     "section": "",
-    "text": "Warning\n\n\n\nUse the daily summary tables instead. These tables hold one row per event and are kept for 3 years. At full volume they will grow by hundreds of millions of rows a month. Query them only when no summary table answers the question, and always filter on the partitions.\nThe IBM Verify event stream, in the ibm_verify_events_raw schema. An hourly Glue job pulls events from IBM Verify through a proxy in the CanadaLogin platform account. The proxy hashes every personal identifier before the data leaves that account. See the streaming job and its privacy design, both in an internal repo.\nData starts at launch, 2026-04-22, except adaptive_access, which starts on 2026-09-09.",
+    "text": "Warning\n\n\n\nUse IBM Verify Counts instead. These tables hold one row per event and are kept for 3 years. At full volume they will grow by hundreds of millions of rows a month. Query them only when no summary table answers the question, and always filter on the partitions.\nThe IBM Verify event stream, in the ibm_verify_events_raw schema. An hourly Glue job pulls events from IBM Verify through a proxy in the CanadaLogin platform account. The proxy hashes every personal identifier before the data leaves that account. See the streaming job and its privacy design, both in an internal repo.\nData starts at launch, 2026-04-22, except adaptive_access, which starts on 2026-09-09.",
     "crumbs": [
       "Data Catalog",
-      "IBM Verify raw events"
+      "IBM Verify Events"
     ]
   },
   {
     "objectID": "catalog/ibm_verify_events_raw.html#tables",
     "href": "catalog/ibm_verify_events_raw.html#tables",
-    "title": "IBM Verify raw events",
+    "title": "IBM Verify Events",
     "section": "Tables",
     "text": "Tables\n\n\n\n\n\n\nTable\n\n\n\nDescription\n\n\n\n\n\n\n\n\nibm_verify_events_raw.authentication_activity\n\n\nOne row per IBM Verify authentication event.\n\n\n\n\n\n\nibm_verify_events_raw.application_usage\n\n\nOne row per IBM Verify SSO event, when someone reaches an application.\n\n\n\n\n\n\nibm_verify_events_raw.mfa_activity\n\n\nOne row per IBM Verify multi-factor authentication event.\n\n\n\n\n\n\nibm_verify_events_raw.adaptive_access\n\n\nOne row per IBM Verify adaptive access evaluation.\n\n\n\n\n\n\nNo matching items",
     "crumbs": [
       "Data Catalog",
-      "IBM Verify raw events"
+      "IBM Verify Events"
     ]
   },
   {
     "objectID": "catalog/ibm_verify_events_raw.html#users",
     "href": "catalog/ibm_verify_events_raw.html#users",
-    "title": "IBM Verify raw events",
+    "title": "IBM Verify Events",
     "section": "Users",
     "text": "Users\nThe user ID is subject in authentication_activity and mfa_activity, and userid in application_usage and adaptive_access. Both hold the same HMAC-SHA256 digest of the IBM Verify user ID, so they join across tables and stay stable over time. Count users as distinct values of it.\nExclude null, \"\", and the literal \"UNKNOWN\". IBM Verify logs \"UNKNOWN\" when it cannot tie an event to an account, such as a password attempt on a username that does not exist. The summary tables keep it and count it as one user, to match IBM’s own figures.\nusername, origin (the client IP address), and mfadevice are hashed the same way. Countries and regions are not hashed.",
     "crumbs": [
       "Data Catalog",
-      "IBM Verify raw events"
+      "IBM Verify Events"
     ]
   },
   {
     "objectID": "catalog/ibm_verify_events_raw.html#time-and-partitions",
     "href": "catalog/ibm_verify_events_raw.html#time-and-partitions",
-    "title": "IBM Verify raw events",
+    "title": "IBM Verify Events",
     "section": "Time and partitions",
     "text": "Time and partitions\ntime is a UTC string, for example 2026-09-15 00:00:05 UTC. The partition columns year, month, and day are strings for the UTC day.\nAlways filter on the partitions, which lets Athena skip every other day. Filtering only on time reads the whole table.\nReports use ET days, which end at 04:00 or 05:00 UTC. Read the following UTC day too, then convert:\ndate(with_timezone(CAST(substr(time, 1, 19) AS timestamp), 'UTC') AT TIME ZONE 'America/Toronto')\nDistinct-user counts do not add up across days. See Why Unique Users Cannot Be Added Up.",
     "crumbs": [
       "Data Catalog",
-      "IBM Verify raw events"
+      "IBM Verify Events"
     ]
   },
   {
@@ -2441,7 +2441,7 @@
     "text": "Every IBM Verify sso event: one row each time someone who is signed in reaches an integrated application. Prefer the daily summary, events_app_login_counts.\nKeywords: SSO events, application usage, applications, relying parties, idle accounts, raw events",
     "crumbs": [
       "Data Catalog",
-      "IBM Verify raw events",
+      "IBM Verify Events",
       "application_usage"
     ]
   },
@@ -2450,10 +2450,10 @@
     "href": "catalog/ibm_verify_events_raw/application_usage.html#provenance",
     "title": "ibm_verify_events_raw.application_usage",
     "section": "Provenance",
-    "text": "Provenance\nPulled hourly from IBM Verify by the streaming job. See IBM Verify raw events for what is hashed and how to filter by day.\n\nUpdated: Hourly\nRetention: 3 years\nSteward: EDCP Data and Research Team\nContact: Yinlin Zhang\nLocation: s3://&lt;raw-bucket&gt;/ibm_verify_events_raw/application_usage/",
+    "text": "Provenance\nPulled hourly from IBM Verify by the streaming job. See IBM Verify Events for what is hashed and how to filter by day.\n\nUpdated: Hourly\nRetention: 3 years\nSteward: EDCP Data and Research Team\nContact: Yinlin Zhang\nLocation: s3://&lt;raw-bucket&gt;/ibm_verify_events_raw/application_usage/",
     "crumbs": [
       "Data Catalog",
-      "IBM Verify raw events",
+      "IBM Verify Events",
       "application_usage"
     ]
   },
@@ -2465,7 +2465,7 @@
     "text": "Fields\nOne row per event.\n\n\n\nField Name\nType\nDescription\n\n\n\n\ntime\nstring\nWhen the event happened, in UTC (for example, “2026-09-15 00:00:05 UTC”)\n\n\nuserid\nstring\nHashed user ID. Can be \"UNKNOWN\"\n\n\nusername\nstring\nHashed username\n\n\napplicationid\nstring\nIBM Verify’s numeric ID for the application\n\n\napplicationname\nstring\nApplication name (for example, “IRIS - PRC - Prod”). Join to rp.alias on this\n\n\nresult\nstring\n“success” or “failure”\n\n\nrealm\nstring\nIBM Verify directory. “cloudIdentityRealm”, or “UNKNOWN” when the account is not found\n\n\norigin\nstring\nHashed client IP address\n\n\ngeoip__country_iso_code\nstring\nCountry from the IP address, as ISO 3166-1 alpha-3 (for example, “CAN”)\n\n\ngeoip__country_name\nstring\nCountry name from the IP address\n\n\ngeoip__region_name\nstring\nProvince, territory, or state from the IP address\n\n\nyear\nstring\nPartition key. UTC year, for example “2026”\n\n\nmonth\nstring\nPartition key. UTC month, for example “09”\n\n\nday\nstring\nPartition key. UTC day of the month, for example “15”",
     "crumbs": [
       "Data Catalog",
-      "IBM Verify raw events",
+      "IBM Verify Events",
       "application_usage"
     ]
   },
@@ -2477,7 +2477,7 @@
     "text": "Notes\nFailed events rarely have a user. In September 2026, 17,650 of 17,674 failures had userid = \"UNKNOWN\".\nFlow Application is CanadaLogin’s own. Almost every new account reaches it right after sign-up, which suggests it is the sign-up flow. It is an internal application in rp.service, so exclude internal applications when the question is about partner services.\nJoin to relying parties after, not before, aggregating. See Joining through the lookup.\nExample. Distinct users who reached each application on an ET day:\ntbl(con, in_schema(\"ibm_verify_events_raw\", \"application_usage\")) |&gt;\n  # partitions are UTC days, so read the next one too for the ET evening\n  filter(year == \"2026\", month == \"09\", day %in% c(\"15\", \"16\")) |&gt;\n  mutate(et_day = sql(\"date(with_timezone(CAST(substr(time, 1, 19) AS timestamp), 'UTC') AT TIME ZONE 'America/Toronto')\")) |&gt;\n  filter(\n    et_day == as.Date(\"2026-09-15\"), result == \"success\",\n    !is.na(userid), !userid %in% c(\"\", \"UNKNOWN\")\n  ) |&gt;\n  group_by(applicationname) |&gt;\n  summarise(unique_users = n_distinct(userid))",
     "crumbs": [
       "Data Catalog",
-      "IBM Verify raw events",
+      "IBM Verify Events",
       "application_usage"
     ]
   },
@@ -2489,7 +2489,7 @@
     "text": "Every IBM Verify MFA event: a code sent, or a second factor passed or failed. Prefer the daily summary, events_mfa_activity. That table has one count per factor and result. This one has the user, the device, and who triggered the event.\nKeywords: MFA, multi-factor, second factor, OTP, FIDO2, sign-up, email check, raw events",
     "crumbs": [
       "Data Catalog",
-      "IBM Verify raw events",
+      "IBM Verify Events",
       "mfa_activity"
     ]
   },
@@ -2498,10 +2498,10 @@
     "href": "catalog/ibm_verify_events_raw/mfa_activity.html#provenance",
     "title": "ibm_verify_events_raw.mfa_activity",
     "section": "Provenance",
-    "text": "Provenance\nPulled hourly from IBM Verify by the streaming job. See IBM Verify raw events for what is hashed and how to filter by day.\n\nUpdated: Hourly\nRetention: 3 years\nSteward: EDCP Data and Research Team\nContact: Yinlin Zhang\nLocation: s3://&lt;raw-bucket&gt;/ibm_verify_events_raw/mfa_activity/",
+    "text": "Provenance\nPulled hourly from IBM Verify by the streaming job. See IBM Verify Events for what is hashed and how to filter by day.\n\nUpdated: Hourly\nRetention: 3 years\nSteward: EDCP Data and Research Team\nContact: Yinlin Zhang\nLocation: s3://&lt;raw-bucket&gt;/ibm_verify_events_raw/mfa_activity/",
     "crumbs": [
       "Data Catalog",
-      "IBM Verify raw events",
+      "IBM Verify Events",
       "mfa_activity"
     ]
   },
@@ -2513,7 +2513,7 @@
     "text": "Fields\nOne row per event.\n\n\n\n\n\n\n\n\nField Name\nType\nDescription\n\n\n\n\ntime\nstring\nWhen the event happened, in UTC (for example, “2026-09-15 00:00:05 UTC”)\n\n\nsubject\nstring\nHashed user ID. \"\" for sign-up email checks (see Notes)\n\n\nusername\nstring\nHashed username, or “UNKNOWN”\n\n\nmfamethod\nstring\nThe factor. One of “SMS OTP”, “Email OTP”, “Voice OTP”, or “FIDO2”. The summary table renames these, for example to “sms_otp”\n\n\nresult\nstring\n“sent”, “success”, or “failure”\n\n\nmfadevice\nstring\nHashed phone number, email address, or FIDO2 device\n\n\nperformedby_type\nstring\nWhat triggered the event, as IBM Verify labels it. “intraservice”, “api” (an API client), “user”, or null\n\n\nperformedby_clientname\nstring\nThe API client’s name, for “api” events (for example, “GC Sign in API Client”). Otherwise empty\n\n\nrealm\nstring\nIBM Verify directory. “cloudIdentityRealm”, or “UNKNOWN”\n\n\norigin\nstring\nHashed client IP address\n\n\ngeoip__country_iso_code\nstring\nCountry from the IP address, as ISO 3166-1 alpha-3 (for example, “CAN”)\n\n\ngeoip__country_name\nstring\nCountry name from the IP address\n\n\ngeoip__region_name\nstring\nProvince, territory, or state from the IP address\n\n\nyear\nstring\nPartition key. UTC year, for example “2026”\n\n\nmonth\nstring\nPartition key. UTC month, for example “09”\n\n\nday\nstring\nPartition key. UTC day of the month, for example “15”",
     "crumbs": [
       "Data Catalog",
-      "IBM Verify raw events",
+      "IBM Verify Events",
       "mfa_activity"
     ]
   },
@@ -2525,7 +2525,7 @@
     "text": "Notes\nSign-up email checks have no user. Email OTP events with performedby_type = \"api\" come from “GC Sign in API Client” and never carry a subject. They appear to be the email check during sign-up, before the account exists. In September 2026 they were 68,000 of 72,350 Email OTP “sent” events. The summary table counts them in email_otp, which is why email_otp is not a sign-in factor.\nOTP factors log a “sent” event too. See events_mfa_activity for how to count usage and success rates.\nExample. Distinct users who passed each factor on an ET day:\ntbl(con, in_schema(\"ibm_verify_events_raw\", \"mfa_activity\")) |&gt;\n  # partitions are UTC days, so read the next one too for the ET evening\n  filter(year == \"2026\", month == \"09\", day %in% c(\"15\", \"16\")) |&gt;\n  mutate(et_day = sql(\"date(with_timezone(CAST(substr(time, 1, 19) AS timestamp), 'UTC') AT TIME ZONE 'America/Toronto')\")) |&gt;\n  filter(\n    et_day == as.Date(\"2026-09-15\"), result == \"success\",\n    !is.na(subject), !subject %in% c(\"\", \"UNKNOWN\")\n  ) |&gt;\n  group_by(mfamethod) |&gt;\n  summarise(unique_users = n_distinct(subject))",
     "crumbs": [
       "Data Catalog",
-      "IBM Verify raw events",
+      "IBM Verify Events",
       "mfa_activity"
     ]
   },
@@ -2534,10 +2534,10 @@
     "href": "catalog/ibm_verify_events_transformed/events_adaptive_risk_summary.html",
     "title": "ibm_verify_events_transformed.events_adaptive_risk_summary",
     "section": "",
-    "text": "Daily counts of IBM Verify adaptive access evaluations, by the risk level IBM Verify assigned. Replaces ibm_verify.risk_adaptive_access_total.\nEach row is one day. The figures match the top-stats bar on IBM Verify’s “Adaptive access” dashboard.\nKeywords: adaptive access, risk, risk level, security, fraud, bots, policy",
+    "text": "Daily counts of IBM Verify adaptive access evaluations, by the risk level IBM Verify assigned.\nEach row is one day. The figures match the top-stats bar on IBM Verify’s “Adaptive access” dashboard.\nKeywords: adaptive access, risk, risk level, security, fraud, bots, policy",
     "crumbs": [
       "Data Catalog",
-      "IBM Verify",
+      "IBM Verify Counts",
       "events_adaptive_risk_summary"
     ]
   },
@@ -2546,10 +2546,10 @@
     "href": "catalog/ibm_verify_events_transformed/events_adaptive_risk_summary.html#provenance",
     "title": "ibm_verify_events_transformed.events_adaptive_risk_summary",
     "section": "Provenance",
-    "text": "Provenance\nBuilt from adaptive_access by compute_adaptive_risk_summary() in the daily metrics job.\nAdaptive access went live on 2026-09-09. Rows from 2026-04-22 to 2026-09-08 are all zero.\n\nUpdated: Daily, at 04:00 ET, for the previous ET day\nRetention: Until CanadaLogin is retired\nSteward: EDCP Data and Research Team\nContact: Yinlin Zhang\nLocation: s3://&lt;transformed-bucket&gt;/ibm_verify_metrics/events_adaptive_risk_summary/",
+    "text": "Provenance\nBuilt from adaptive_access by compute_adaptive_risk_summary() in the daily metrics job.\nAdaptive access went live on 2026-09-09. Rows from 2026-04-22 to 2026-09-08 are all zero.\n\nUpdated: Daily, at 04:00 ET, for the previous ET day\nRetention: While CanadaLogin exists\nSteward: EDCP Data and Research Team\nContact: Yinlin Zhang\nLocation: s3://&lt;transformed-bucket&gt;/ibm_verify_metrics/events_adaptive_risk_summary/",
     "crumbs": [
       "Data Catalog",
-      "IBM Verify",
+      "IBM Verify Counts",
       "events_adaptive_risk_summary"
     ]
   },
@@ -2561,7 +2561,7 @@
     "text": "Fields\nOne row per day.\n\n\n\n\n\n\n\n\nField Name\nType\nDescription\n\n\n\n\nfrom_date\nstring\nThe reporting day in ET, for example “2026-09-15”. Cast before comparing to a date\n\n\nto_date\nstring\nSame as from_date\n\n\ntotal_invocations\nbigint\nEvery adaptive access evaluation that day, including those with no risk level\n\n\nvery_high_count\nbigint\nEvaluations rated “VERY_HIGH”\n\n\nhigh_count\nbigint\nEvaluations rated “HIGH”\n\n\nmedium_count\nbigint\nEvaluations rated “MEDIUM”\n\n\nlow_count\nbigint\nEvaluations rated “LOW”\n\n\nfetched_at\nstring\nWhen the job wrote the row, in ISO 8601 UTC\n\n\ndate\nstring\nPartition key. Same as from_date",
     "crumbs": [
       "Data Catalog",
-      "IBM Verify",
+      "IBM Verify Counts",
       "events_adaptive_risk_summary"
     ]
   },
@@ -2570,10 +2570,10 @@
     "href": "catalog/ibm_verify_events_transformed/events_adaptive_risk_summary.html#notes",
     "title": "ibm_verify_events_transformed.events_adaptive_risk_summary",
     "section": "Notes",
-    "text": "Notes\nThe four levels do not add up to total_invocations. About 10% of evaluations have no risk level, almost all with the policy action ACTION_REDIRECT. They count in the total only.\nCompared with the old table. Over September 2026, the four level counts matched exactly. total_invocations ran 10.7% higher, because the old total was the sum of the four levels. The level columns were renamed: very_high is now very_high_count, and so on.",
+    "text": "Notes\nThe four levels do not add up to total_invocations. About 10% of evaluations have no risk level, almost all with the policy action ACTION_REDIRECT. They count in the total only.",
     "crumbs": [
       "Data Catalog",
-      "IBM Verify",
+      "IBM Verify Counts",
       "events_adaptive_risk_summary"
     ]
   },
@@ -2582,10 +2582,10 @@
     "href": "catalog/ibm_verify_events_transformed/events_application_mapping.html",
     "title": "ibm_verify_events_transformed.events_application_mapping",
     "section": "",
-    "text": "A lookup from IBM Verify application ID to application name, with when each application was first and last used this year. It has no equivalent in the old ibm_verify tables.\nEach partition is a full snapshot: one row for every application with an event between January 1 and that day. Read the latest partition.\nKeywords: applications, application ID, application name, lookup, first seen, last seen, onboarding",
+    "text": "A lookup from IBM Verify application ID to application name, with when each application was first and last used this year.\nEach partition is a full snapshot: one row for every application with an event between January 1 and that day. Read the latest partition.\nKeywords: applications, application ID, application name, lookup, first seen, last seen, onboarding",
     "crumbs": [
       "Data Catalog",
-      "IBM Verify",
+      "IBM Verify Counts",
       "events_application_mapping"
     ]
   },
@@ -2594,10 +2594,10 @@
     "href": "catalog/ibm_verify_events_transformed/events_application_mapping.html#provenance",
     "title": "ibm_verify_events_transformed.events_application_mapping",
     "section": "Provenance",
-    "text": "Provenance\nBuilt from application_usage by compute_application_mapping() in the daily metrics job.\n\nUpdated: Daily, at 04:00 ET, for the previous ET day\nRetention: Until CanadaLogin is retired\nSteward: EDCP Data and Research Team\nContact: Yinlin Zhang\nLocation: s3://&lt;transformed-bucket&gt;/ibm_verify_metrics/events_application_mapping/",
+    "text": "Provenance\nBuilt from application_usage by compute_application_mapping() in the daily metrics job.\n\nUpdated: Daily, at 04:00 ET, for the previous ET day\nRetention: While CanadaLogin exists\nSteward: EDCP Data and Research Team\nContact: Yinlin Zhang\nLocation: s3://&lt;transformed-bucket&gt;/ibm_verify_metrics/events_application_mapping/",
     "crumbs": [
       "Data Catalog",
-      "IBM Verify",
+      "IBM Verify Counts",
       "events_application_mapping"
     ]
   },
@@ -2609,7 +2609,7 @@
     "text": "Fields\nOne row per application_id per partition.\n\n\n\n\n\n\n\n\nField Name\nType\nDescription\n\n\n\n\napplication_id\nstring\nIBM Verify’s numeric ID for the application\n\n\napplication_name\nstring\nThe latest name seen for the application\n\n\nfirst_seen_at\nstring\nTime of the application’s first event since January 1, in UTC (for example, “2026-04-22 12:53:14 UTC”)\n\n\nlast_seen_at\nstring\nTime of the application’s latest event up to the snapshot day, in UTC\n\n\nfetched_at\nstring\nWhen the job wrote the row, in ISO 8601 UTC\n\n\ndate\nstring\nPartition key. The ET day the snapshot covers up to",
     "crumbs": [
       "Data Catalog",
-      "IBM Verify",
+      "IBM Verify Counts",
       "events_application_mapping"
     ]
   },
@@ -2621,7 +2621,7 @@
     "text": "Notes\nfirst_seen_at resets each year. It is the first event since January 1, not since launch. For an application’s launch date, use launch_date in rp.service.\nTimes are UTC, partitions are ET. An event at 23:53 ET on 2026-10-18 shows as 2026-10-19 03:53:30 UTC in the 2026-10-18 snapshot.",
     "crumbs": [
       "Data Catalog",
-      "IBM Verify",
+      "IBM Verify Counts",
       "events_application_mapping"
     ]
   },
@@ -2630,10 +2630,10 @@
     "href": "catalog/ibm_verify_events_transformed/events_mfa_activity.html",
     "title": "ibm_verify_events_transformed.events_mfa_activity",
     "section": "",
-    "text": "Daily multi-factor authentication (MFA) activity, broken down by factor and outcome. Replaces ibm_verify.mfa_activity.\nEach row is the count of MFA events for one day, factor, and result.\nKeywords: MFA, multi-factor, second factor, OTP, FIDO2, authentication, security",
+    "text": "Daily multi-factor authentication (MFA) activity, broken down by factor and outcome.\nEach row is the count of MFA events for one day, factor, and result.\nKeywords: MFA, multi-factor, second factor, OTP, FIDO2, authentication, security",
     "crumbs": [
       "Data Catalog",
-      "IBM Verify",
+      "IBM Verify Counts",
       "events_mfa_activity"
     ]
   },
@@ -2642,10 +2642,10 @@
     "href": "catalog/ibm_verify_events_transformed/events_mfa_activity.html#provenance",
     "title": "ibm_verify_events_transformed.events_mfa_activity",
     "section": "Provenance",
-    "text": "Provenance\nBuilt from mfa_activity by compute_mfa_activity() in the daily metrics job. The job maps the raw factor names (for example “SMS OTP”) to the old table’s mfa_type values.\n\nUpdated: Daily, at 04:00 ET, for the previous ET day\nRetention: Until CanadaLogin is retired\nSteward: EDCP Data and Research Team\nContact: Yinlin Zhang\nLocation: s3://&lt;transformed-bucket&gt;/ibm_verify_metrics/events_mfa_activity/",
+    "text": "Provenance\nBuilt from mfa_activity by compute_mfa_activity() in the daily metrics job. The job maps the raw factor names (for example “SMS OTP”) to the mfa_type values below.\n\nUpdated: Daily, at 04:00 ET, for the previous ET day\nRetention: While CanadaLogin exists\nSteward: EDCP Data and Research Team\nContact: Yinlin Zhang\nLocation: s3://&lt;transformed-bucket&gt;/ibm_verify_metrics/events_mfa_activity/",
     "crumbs": [
       "Data Catalog",
-      "IBM Verify",
+      "IBM Verify Counts",
       "events_mfa_activity"
     ]
   },
@@ -2657,7 +2657,7 @@
     "text": "Fields\nOne row per day per mfa_type per result.\n\n\n\n\n\n\n\n\nField Name\nType\nDescription\n\n\n\n\nfrom_date\nstring\nThe reporting day in ET, for example “2026-09-15”. Cast before comparing to a date\n\n\nto_date\nstring\nSame as from_date\n\n\nmfa_type\nstring\nThe factor used. “sms_otp”, “email_otp”, “voice_otp”, or “fido2” so far. The job also maps “totp”, “qr”, “kq”, and “ibm_verify_push”, none seen yet\n\n\nresult\nstring\n“sent”, “success”, or “failure”\n\n\ncount\nbigint\nNumber of MFA events for this day, factor, and result\n\n\nfetched_at\nstring\nWhen the job wrote the row, in ISO 8601 UTC\n\n\ndate\nstring\nPartition key. Same as from_date",
     "crumbs": [
       "Data Catalog",
-      "IBM Verify",
+      "IBM Verify Counts",
       "events_mfa_activity"
     ]
   },
@@ -2666,10 +2666,10 @@
     "href": "catalog/ibm_verify_events_transformed/events_mfa_activity.html#notes",
     "title": "ibm_verify_events_transformed.events_mfa_activity",
     "section": "Notes",
-    "text": "Notes\nOTP factors log a “sent” event too. sms_otp, email_otp, and voice_otp log “sent” when the code goes out, then “success” or “failure” for each attempt. A mistyped code followed by the right one gives one “sent”, one “failure”, and one “success”. fido2 logs only “success” or “failure”.\n\nFor success rates, divide “success” by “success” plus “failure”, and exclude “sent”.\nFor usage, count “sent” for OTP factors and “success” plus “failure” for the others. Summing “sent” alone drops fido2.\n\nMost email_otp is sign-up, not sign-in. The email check during sign-up logs an email_otp with no user, because the account does not exist yet. In September 2026 that was 68,000 of 72,350 “sent” events. See mfa_activity in the raw stream.\nCompared with the old table. Over September 2026, every count matched exactly.",
+    "text": "Notes\nOTP factors log a “sent” event too. sms_otp, email_otp, and voice_otp log “sent” when the code goes out, then “success” or “failure” for each attempt. A mistyped code followed by the right one gives one “sent”, one “failure”, and one “success”. fido2 logs only “success” or “failure”.\n\nFor success rates, divide “success” by “success” plus “failure”, and exclude “sent”.\nFor usage, count “sent” for OTP factors and “success” plus “failure” for the others. Summing “sent” alone drops fido2.\n\nMost email_otp is sign-up, not sign-in. The email check during sign-up logs an email_otp with no user, because the account does not exist yet. In September 2026 that was 68,000 of 72,350 “sent” events. See mfa_activity in the raw stream.",
     "crumbs": [
       "Data Catalog",
-      "IBM Verify",
+      "IBM Verify Counts",
       "events_mfa_activity"
     ]
   },
@@ -2804,7 +2804,7 @@
     "href": "catalog/rp/alias.html#provenance",
     "title": "rp.alias",
     "section": "Provenance",
-    "text": "Provenance\nMaintained by hand in the same CanadaLogin Relying Parties Google Sheet as rp.service, read every weekday by the same Lambda and written as a single Parquet file. Not partitioned, overwritten in place, current state only.\n\nUpdated: Weekdays, at 06:00 ET\nRetention: Until CanadaLogin is retired\nSteward: EDCP Data and Research Team\nContact: Colin Douglas\nLocation: s3://canadalogin-reporting-transformed/rp/alias/",
+    "text": "Provenance\nMaintained by hand in the same CanadaLogin Relying Parties Google Sheet as rp.service, read every weekday by the same Lambda and written as a single Parquet file. Not partitioned, overwritten in place, current state only.\n\nUpdated: Weekdays, at 06:00 ET\nRetention: While CanadaLogin exists\nSteward: EDCP Data and Research Team\nContact: Colin Douglas\nLocation: s3://canadalogin-reporting-transformed/rp/alias/",
     "crumbs": [
       "Data Catalog",
       "Relying Parties",
