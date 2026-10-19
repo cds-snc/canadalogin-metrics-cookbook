@@ -51,9 +51,9 @@ ul.task-list li input[type="checkbox"] {
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-1bbe4c65595f280097d62c091d488233.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark-b1855a045d55befcd55077adede4d79d.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-1bbe4c65595f280097d62c091d488233.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-8b76eb07b549522d1afae2dc4e9871db.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-4ea69f0bb438d4cd2a1c451ff2c5348b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-8b76eb07b549522d1afae2dc4e9871db.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -951,9 +951,9 @@ ul.task-list li input[type="checkbox"] {
 <section id="notes" class="level2">
 <h2 class="anchored" data-anchor-id="notes">Notes</h2>
 <p><code>total_logins</code>, <code>unique_users</code>, <code>failed_logins</code>, and <code>successful_logins</code> are daily values. The <code>mtd_</code> and <code>ytd_</code> columns are cumulative: take the latest value in the window, never sum them.</p>
-<p><strong>One row per ID.</strong> On 2026-10-19 every application name had exactly one ID. If a name ever gets two, summing <code>unique_users</code> across them double-counts people who used both.</p>
+<p><strong>One row per ID.</strong> If an application name has more than one ID, summing <code>unique_users</code> across them double-counts people who used both.</p>
 <p><strong>Join to relying parties after, not before, aggregating.</strong> Several application names can map to one service. See <a href="../../catalog/rp.html#joining-through-the-lookup">Joining through the lookup</a>.</p>
-<p><strong>Failed events rarely have a user.</strong> In September 2026, 17,650 of 17,674 failed SSO events had the user ID <code>"UNKNOWN"</code>, which counts as one user that day.</p>
+<p><strong>Failed events rarely have a user.</strong> Almost all failed SSO events have the user ID <code>"UNKNOWN"</code>, which counts as one user.</p>
 <p><strong>Not inflated by second factors.</strong> Reaching an application uses the session the person already holds, so one handoff is one SSO event. <code>total_logins</code> still counts events, because one person can reach an application many times.</p>
 
 

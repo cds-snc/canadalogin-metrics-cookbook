@@ -51,9 +51,9 @@ ul.task-list li input[type="checkbox"] {
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-1bbe4c65595f280097d62c091d488233.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark-b1855a045d55befcd55077adede4d79d.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-1bbe4c65595f280097d62c091d488233.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-8b76eb07b549522d1afae2dc4e9871db.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-4ea69f0bb438d4cd2a1c451ff2c5348b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-8b76eb07b549522d1afae2dc4e9871db.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -902,7 +902,7 @@ ul.task-list li input[type="checkbox"] {
 <tr class="odd">
 <td>mfa_type</td>
 <td>string</td>
-<td>The factor used. “sms_otp”, “email_otp”, “voice_otp”, or “fido2” so far. The job also maps “totp”, “qr”, “kq”, and “ibm_verify_push”, none seen yet</td>
+<td>The factor used. One of “sms_otp”, “email_otp”, “voice_otp”, “fido2”, “totp”, “qr”, “kq”, or “ibm_verify_push”</td>
 </tr>
 <tr class="even">
 <td>result</td>
@@ -934,7 +934,7 @@ ul.task-list li input[type="checkbox"] {
 <li>For success rates, divide “success” by “success” plus “failure”, and exclude “sent”.</li>
 <li>For usage, count “sent” for OTP factors and “success” plus “failure” for the others. Summing “sent” alone drops <code>fido2</code>.</li>
 </ul>
-<p><strong>Most <code>email_otp</code> is sign-up, not sign-in.</strong> The email check during sign-up logs an <code>email_otp</code> with no user, because the account does not exist yet. In September 2026 that was 68,000 of 72,350 “sent” events. See <a href="../../catalog/ibm_verify_events_raw/mfa_activity.html"><code>mfa_activity</code></a> in the raw stream.</p>
+<p><strong>Most <code>email_otp</code> is sign-up, not sign-in.</strong> The email check during sign-up logs an <code>email_otp</code> with no user, because the account does not exist yet. These are most <code>email_otp</code> “sent” events. See <a href="../../catalog/ibm_verify_events_raw/mfa_activity.html"><code>mfa_activity</code></a> in the raw stream.</p>
 
 
 </section>

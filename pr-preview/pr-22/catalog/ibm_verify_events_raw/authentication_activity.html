@@ -86,9 +86,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-1bbe4c65595f280097d62c091d488233.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark-b1855a045d55befcd55077adede4d79d.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-1bbe4c65595f280097d62c091d488233.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-8b76eb07b549522d1afae2dc4e9871db.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-4ea69f0bb438d4cd2a1c451ff2c5348b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-8b76eb07b549522d1afae2dc4e9871db.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -993,8 +993,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="notes" class="level2">
 <h2 class="anchored" data-anchor-id="notes">Notes</h2>
-<p><strong>When an account first appears.</strong> In September 2026, 37,577 accounts had their first event here. For 36,914 it was a successful <code>user_password</code>, and for 663 a successful <code>token-exchange</code>. This suggests the sign-up flow signs a new account in as soon as the password is set, with no MFA required. That is observed behaviour, not yet confirmed with the sign-up flow’s owners. The 663 <code>token-exchange</code> accounts may be migrated accounts; that has not been checked.</p>
-<p><strong>Failed password attempts on unknown usernames have no user.</strong> They log <code>subject = "UNKNOWN"</code> and <code>realm = "UNKNOWN"</code>. They appear almost every day since 2026-05-12, peaking at 3,462 on 2026-06-25.</p>
+<p><strong>When an account first appears.</strong> A new account’s first event is almost always a successful <code>user_password</code>. This suggests the sign-up flow signs a new account in as soon as the password is set, with no MFA required. A few start with a successful <code>token-exchange</code> instead, possibly migrated accounts. Both readings are observed, not confirmed with the sign-up flow’s owners.</p>
+<p><strong>Failed password attempts on unknown usernames have no user.</strong> They log <code>subject = "UNKNOWN"</code> and <code>realm = "UNKNOWN"</code>.</p>
 <p><strong>Example.</strong> Distinct users with an authentication event on an ET day:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tbl</span>(con, <span class="fu">in_schema</span>(<span class="st">"ibm_verify_events_raw"</span>, <span class="st">"authentication_activity"</span>)) <span class="sc">|&gt;</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># partitions are UTC days, so read the next one too for the ET evening</span></span>
@@ -1005,7 +1005,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="sc">!</span><span class="fu">is.na</span>(subject), <span class="sc">!</span>subject <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">""</span>, <span class="st">"UNKNOWN"</span>)</span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">unique_users =</span> <span class="fu">n_distinct</span>(subject))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>This returns 2,362, one less than <code>events_auth_total_logins.unique_users</code> for that day, which counts <code>"UNKNOWN"</code>.</p>
+<p>This is one less than <code>events_auth_total_logins.unique_users</code> on days with an <code>"UNKNOWN"</code> event, because the summary table counts it.</p>
 
 
 </section>
