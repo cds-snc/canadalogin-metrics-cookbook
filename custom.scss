@@ -3,6 +3,9 @@
 // Wider TOC column so long headings don't wrap. Default is 250px.
 $grid-margin-width: 360px !default;
 
+// Wider sidebar so the longest nav entries fit on one line. Default is 250px.
+$grid-sidebar-width: 400px !default;
+
 /*-- scss:rules --*/
 
 // Bold only the top-level sidebar entries; nested links sit in an inner ul.

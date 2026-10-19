@@ -32,9 +32,9 @@ Overall:
 SELECT
     CAST(SUM(count) FILTER (WHERE result = 'success') AS DOUBLE)
         / NULLIF(SUM(count), 0) AS mfa_success_rate
-FROM ibm_verify.mfa_activity
+FROM ibm_verify_events_transformed.events_mfa_activity
 -- set the reporting window; see the timespans note in cookbook/notes.qmd
-WHERE from_date BETWEEN DATE '2026-01-01' AND DATE '2026-05-28'
+WHERE CAST(from_date AS DATE) BETWEEN DATE '2026-01-01' AND DATE '2026-05-28'
   -- exclude "sent" rows; success rate is calculated from outcome events only.
   -- including "sent" would inflate the denominator and deflate the rate.
   AND result IN ('success', 'failure');
@@ -44,17 +44,17 @@ By week:
 
 ```sql
 SELECT
-    date_trunc('week', from_date) AS week_start,
+    date_trunc('week', CAST(from_date AS DATE)) AS week_start,
     CAST(SUM(count) FILTER (WHERE result = 'success') AS DOUBLE)
         / NULLIF(SUM(count), 0) AS mfa_success_rate
-FROM ibm_verify.mfa_activity
+FROM ibm_verify_events_transformed.events_mfa_activity
 -- set the reporting window; see the timespans note in cookbook/notes.qmd
-WHERE from_date BETWEEN DATE '2026-01-01' AND DATE '2026-05-28'
+WHERE CAST(from_date AS DATE) BETWEEN DATE '2026-01-01' AND DATE '2026-05-28'
   -- exclude "sent" rows; success rate is calculated from outcome events only.
   -- including "sent" would inflate the denominator and deflate the rate.
   AND result IN ('success', 'failure')
 -- date_trunc('week', ...) anchors each bin to its Monday
-GROUP BY date_trunc('week', from_date)
+GROUP BY date_trunc('week', CAST(from_date AS DATE))
 ORDER BY week_start;
 ```
 
@@ -63,11 +63,11 @@ ORDER BY week_start;
 Overall:
 
 ```r
-tbl(con, in_schema("ibm_verify", "mfa_activity")) |>
+tbl(con, in_schema("ibm_verify_events_transformed", "events_mfa_activity")) |>
   # set the reporting window; see the timespans note in cookbook/notes.qmd
   filter(
-    from_date >= as.Date("2026-01-01"),
-    from_date <= as.Date("2026-05-28"),
+    as.Date(from_date) >= as.Date("2026-01-01"),
+    as.Date(from_date) <= as.Date("2026-05-28"),
     # exclude "sent" rows; success rate is calculated from outcome events only.
     # including "sent" would inflate the denominator and deflate the rate.
     result %in% c("success", "failure")
@@ -82,18 +82,18 @@ tbl(con, in_schema("ibm_verify", "mfa_activity")) |>
 By week:
 
 ```r
-tbl(con, in_schema("ibm_verify", "mfa_activity")) |>
+tbl(con, in_schema("ibm_verify_events_transformed", "events_mfa_activity")) |>
   # set the reporting window; see the timespans note in cookbook/notes.qmd
   filter(
-    from_date >= as.Date("2026-01-01"),
-    from_date <= as.Date("2026-05-28"),
+    as.Date(from_date) >= as.Date("2026-01-01"),
+    as.Date(from_date) <= as.Date("2026-05-28"),
     # exclude "sent" rows; success rate is calculated from outcome events only.
     # including "sent" would inflate the denominator and deflate the rate.
     result %in% c("success", "failure")
   ) |>
   # floor_date(..., "week") translates to Athena's date_trunc('week', ...),
   # which anchors each bin to its Monday
-  mutate(week_start = floor_date(from_date, "week")) |>
+  mutate(week_start = floor_date(as.Date(from_date), "week")) |>
   group_by(week_start) |>
   summarise(
     mfa_success_rate =

@@ -19,21 +19,8 @@ column* you read (see [the note on reporting timespans](../notes.qmd#metrics-can
 - `mtd_unique_users` for month-to-date
 - `ytd_unique_users` for year-to-date
 
-The `WHERE from_date BETWEEN ...` bounds set the "as of" reporting date; the
+The `WHERE CAST(from_date AS DATE) BETWEEN ...` bounds set the "as of" reporting date; the
 most recent row in the window holds the current cumulative total.
-
-::: {.callout-warning}
-`ytd_unique_users` may be unreliable. IBM Verify computes it over a longer
-window than its underlying data retention actually covers, so the figure can
-undercount and has been seen decreasing from one day to the next. Treat it as
-an estimate only, and prefer `mtd_unique_users` where the reporting question
-allows. See [Why Unique Users Cannot Be Added
-Up](../unique-users.qmd#year-to-date-and-365-day-figures) for detail.
-:::
-
-A `since_apr22_unique_users` column (cumulative distinct users since launch) was
-previously available but has been removed; see the [data retention
-note](../../catalog/ibm_verify.qmd#data-retention).
 
 ::: {.callout-note collapse="true" title="Example queries"}
 
@@ -53,8 +40,8 @@ WITH ranked AS (
             PARTITION BY application_name
             ORDER BY from_date DESC
         ) AS rn
-    FROM ibm_verify.app_login_counts
-    WHERE from_date BETWEEN DATE '2026-06-01' AND DATE '2026-06-08'
+    FROM ibm_verify_events_transformed.events_app_login_counts
+    WHERE CAST(from_date AS DATE) BETWEEN DATE '2026-06-01' AND DATE '2026-06-08'
     -- to exclude internal applications from adoption reporting, uncomment:
     -- AND application_name NOT IN (
     --     SELECT al.alias
@@ -84,8 +71,8 @@ WITH ranked AS (
             PARTITION BY application_name
             ORDER BY from_date DESC
         ) AS rn
-    FROM ibm_verify.app_login_counts
-    WHERE from_date BETWEEN DATE '2026-01-01' AND DATE '2026-06-08'
+    FROM ibm_verify_events_transformed.events_app_login_counts
+    WHERE CAST(from_date AS DATE) BETWEEN DATE '2026-01-01' AND DATE '2026-06-08'
     -- to exclude internal applications from adoption reporting, uncomment:
     -- AND application_name NOT IN (
     --     SELECT al.alias
@@ -108,10 +95,10 @@ ORDER BY ytd_unique_users DESC;
 Month-to-date:
 
 ```r
-tbl(con, in_schema("ibm_verify", "app_login_counts")) |>
+tbl(con, in_schema("ibm_verify_events_transformed", "events_app_login_counts")) |>
   filter(
-    from_date >= as.Date("2026-06-01"),
-    from_date <= as.Date("2026-06-08")
+    as.Date(from_date) >= as.Date("2026-06-01"),
+    as.Date(from_date) <= as.Date("2026-06-08")
   ) |>
   # to exclude internal applications from adoption reporting, uncomment:
   # anti_join(
@@ -137,10 +124,10 @@ tbl(con, in_schema("ibm_verify", "app_login_counts")) |>
 Year-to-date:
 
 ```r
-tbl(con, in_schema("ibm_verify", "app_login_counts")) |>
+tbl(con, in_schema("ibm_verify_events_transformed", "events_app_login_counts")) |>
   filter(
-    from_date >= as.Date("2026-01-01"),
-    from_date <= as.Date("2026-06-08")
+    as.Date(from_date) >= as.Date("2026-01-01"),
+    as.Date(from_date) <= as.Date("2026-06-08")
   ) |>
   # to exclude internal applications from adoption reporting, uncomment:
   # anti_join(

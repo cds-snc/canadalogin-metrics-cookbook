@@ -16,7 +16,7 @@ active users to keep it in a readable range.
 For each call centre reporting week, take `calls_accepted` from
 `call_centre.weekly_activity_report`, subtract that week's `test_calls`, and
 divide by the total user-days in that week, then multiply by 100. User-days is
-the sum of `ibm_verify.auth_total_logins.unique_users` over the days whose `date`
+the sum of `ibm_verify_events_transformed.events_auth_total_logins.unique_users` over the days whose `date`
 falls inside the week's `date_range_start` to `date_range_end`, so the numerator
 and the denominator cover the same span of days. A weekly call count over weekly
 user-days is a per-day rate. The two tables store their dates as text, so both
@@ -44,7 +44,7 @@ SELECT
     CAST(w.calls_accepted - COALESCE(w.test_calls, 0) AS DOUBLE)
         / SUM(a.unique_users) * 100 AS calls_per_100_dau
 FROM call_centre.weekly_activity_report AS w
-JOIN ibm_verify.auth_total_logins AS a
+JOIN ibm_verify_events_transformed.events_auth_total_logins AS a
     ON CAST(a.date AS DATE)
        BETWEEN CAST(w.date_range_start AS DATE) AND CAST(w.date_range_end AS DATE)
 GROUP BY w.date_range_start, w.date_range_end, w.calls_accepted, w.test_calls
@@ -57,7 +57,7 @@ ORDER BY w.date_range_start;
 weekly <- tbl(con, in_schema("call_centre", "weekly_activity_report")) |>
   select(date_range_start, date_range_end, calls_accepted, test_calls)
 
-dau <- tbl(con, in_schema("ibm_verify", "auth_total_logins")) |>
+dau <- tbl(con, in_schema("ibm_verify_events_transformed", "events_auth_total_logins")) |>
   select(dau_date = date, unique_users)
 
 weekly |>

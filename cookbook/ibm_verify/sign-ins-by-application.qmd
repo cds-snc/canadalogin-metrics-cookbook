@@ -30,9 +30,9 @@ by application.
 SELECT
   application_name,
   SUM(total_logins) AS total_sso_events
-FROM   ibm_verify.app_login_counts
+FROM   ibm_verify_events_transformed.events_app_login_counts
 -- set the reporting window; see the timespans note in cookbook/notes.qmd
-WHERE  from_date BETWEEN DATE '2026-01-01' AND DATE '2026-05-28'
+WHERE  CAST(from_date AS DATE) BETWEEN DATE '2026-01-01' AND DATE '2026-05-28'
 -- optionally filter out internal applications; see the internal applications
 -- note in cookbook/notes.qmd
   AND application_name NOT IN (
@@ -53,11 +53,11 @@ internal_apps <- tbl(con, in_schema("rp", "alias")) |>
   filter(is_internal) |>
   select(application_name = alias)
 
-tbl(con, in_schema("ibm_verify", "app_login_counts")) |>
+tbl(con, in_schema("ibm_verify_events_transformed", "events_app_login_counts")) |>
   # set the reporting window; see the timespans note in cookbook/notes.qmd
   filter(
-    from_date >= as.Date("2026-01-01"),
-    from_date <= as.Date("2026-05-28")
+    as.Date(from_date) >= as.Date("2026-01-01"),
+    as.Date(from_date) <= as.Date("2026-05-28")
   ) |>
   # optionally filter out internal applications; see the internal applications
   # note in cookbook/notes.qmd

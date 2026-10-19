@@ -30,9 +30,9 @@ WITH ranked AS (
             PARTITION BY application_name
             ORDER BY unique_users DESC, from_date ASC
         ) AS rn
-    FROM ibm_verify.app_login_counts
+    FROM ibm_verify_events_transformed.events_app_login_counts
     -- set the reporting window; see the timespans note in cookbook/notes.qmd
-    WHERE from_date BETWEEN DATE '2026-01-01' AND DATE '2026-05-28'
+    WHERE CAST(from_date AS DATE) BETWEEN DATE '2026-01-01' AND DATE '2026-05-28'
     -- to exclude internal applications from adoption reporting, uncomment:
     -- AND application_name NOT IN (
     --     SELECT al.alias
@@ -54,11 +54,11 @@ ORDER BY peak_daily_unique_users DESC;
 ## R
 
 ```r
-tbl(con, in_schema("ibm_verify", "app_login_counts")) |>
+tbl(con, in_schema("ibm_verify_events_transformed", "events_app_login_counts")) |>
   # set the reporting window; see the timespans note in cookbook/notes.qmd
   filter(
-    from_date >= as.Date("2026-01-01"),
-    from_date <= as.Date("2026-05-28")
+    as.Date(from_date) >= as.Date("2026-01-01"),
+    as.Date(from_date) <= as.Date("2026-05-28")
   ) |>
   # to exclude internal applications from adoption reporting, uncomment:
   # anti_join(

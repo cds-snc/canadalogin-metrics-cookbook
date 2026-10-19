@@ -46,9 +46,9 @@ SELECT
     SUM(count) AS mfa_authentications,
     CAST(SUM(count) AS DOUBLE)
         / NULLIF(SUM(SUM(count)) OVER (), 0) AS factor_share
-FROM ibm_verify.mfa_activity
+FROM ibm_verify_events_transformed.events_mfa_activity
 -- set the reporting window; see the timespans note in cookbook/notes.qmd
-WHERE from_date BETWEEN DATE '2026-01-01' AND DATE '2026-05-28'
+WHERE CAST(from_date AS DATE) BETWEEN DATE '2026-01-01' AND DATE '2026-05-28'
   -- restrict to the factors the public can use to sign in. email_otp is
   -- excluded because it only validates emails at sign-up, and kq, totp, qr,
   -- and ibm_verify_push are internal factors, not public sign-in options.
@@ -73,11 +73,11 @@ ORDER BY mfa_authentications DESC;
 otp_types <- c("sms_otp", "email_otp", "voice_otp")
 sign_in_types <- c("sms_otp", "voice_otp", "fido2")
 
-tbl(con, in_schema("ibm_verify", "mfa_activity")) |>
+tbl(con, in_schema("ibm_verify_events_transformed", "events_mfa_activity")) |>
   # set the reporting window; see the timespans note in cookbook/notes.qmd
   filter(
-    from_date >= as.Date("2026-01-01"),
-    from_date <= as.Date("2026-05-28"),
+    as.Date(from_date) >= as.Date("2026-01-01"),
+    as.Date(from_date) <= as.Date("2026-05-28"),
     # restrict to the factors the public can use to sign in. email_otp is
     # excluded because it only validates emails at sign-up, and kq, totp, qr,
     # and ibm_verify_push are internal factors, not public sign-in options.

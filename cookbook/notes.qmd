@@ -26,7 +26,7 @@ public launch. How you select a window depends on the kind of metric.
 
 **Additive metrics** (sign-ins, MFA attempts, success rates, averages) are
 computed by aggregating daily rows, so the window is just the date bounds in the
-`WHERE from_date BETWEEN DATE '<start>' AND DATE '<end>'` clause. The same query
+`WHERE CAST(from_date AS DATE) BETWEEN DATE '<start>' AND DATE '<end>'` clause. The same query
 covers any window; only the start date changes:
 
 - Month-to-date: first of the current month (for example, `2026-06-01`)
@@ -45,27 +45,9 @@ latest value:
 
 Never sum these cumulative columns across rows.
 
-::: {.callout-warning}
-`ytd_unique_users` (and the `rolling_365d_unique_users` field used elsewhere)
-may be unreliable. IBM Verify computes both over a longer window than its
-underlying data retention actually covers, so the figures can undercount and
-`ytd_unique_users` has been seen decreasing from one day to the next. Treat
-both as estimates only. See [Why Unique Users Cannot Be Added
-Up](unique-users.qmd#year-to-date-and-365-day-figures) for detail.
-:::
-
-There is no cumulative since-launch column. The `since_apr22_unique_users` field
-that previously provided it has been removed: the cumulative count is computed by
-the IBM Verify API, which sees only the most recent 366.5 days of source data, so
-a since-launch total silently truncates once launch is more than a year in the
-past. The `mtd_` and `ytd_` windows are unaffected because they fall inside that
-horizon.
-
-This limit does not affect the additive metrics above. Those are aggregated from
-the daily rows we store on our side, which are retained beyond a year, so a
-date-bounded since-launch window over an additive metric stays correct however
-far back it reaches. See the [data retention
-note](../catalog/ibm_verify.qmd#data-retention) in the catalog.
+There is no since-launch unique-user column. Additive metrics, such as
+authentication events, SSO events, and MFA attempts, can be summed over any
+window back to launch.
 
 ## Weighted averages should be used for call centre averages
 
