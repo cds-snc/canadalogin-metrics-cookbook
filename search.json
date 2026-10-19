@@ -297,7 +297,7 @@
     "href": "cookbook/index.html#all-metrics",
     "title": "About",
     "section": "All Metrics",
-    "text": "All Metrics\n\n\n    \n      \n      \n    \n\n\n\n\n\n\nMetric\n\n\n\nDescription\n\n\n\n\n\n\n\n\nAbandonment Rate\n\n\nShare of accepted calls abandoned before an agent answered.\n\n\n\n\n\n\nAll MFA Activity by Factor\n\n\nMFA attempts by factor, with each factor’s share of the total.\n\n\n\n\n\n\nAnswer Rate\n\n\nShare of accepted calls answered by an agent.\n\n\n\n\n\n\nApplications per Credential\n\n\nAverage number of distinct applications one credential reaches.\n\n\n\n\n\n\nAuthentication Events\n\n\nTotal authentication events, successful and failed.\n\n\n\n\n\n\nAuthentication Success Rate\n\n\nShare of authentication attempts that succeeded, across CanadaLogin.\n\n\n\n\n\n\nAverage Call Length\n\n\nAverage length of answered calls.\n\n\n\n\n\n\nAverage Daily SSO Events\n\n\nAverage SSO events per day for each application.\n\n\n\n\n\n\nAverage Delay\n\n\nAverage wait before a call is answered.\n\n\n\n\n\n\nAverage Handle Time\n\n\nAverage agent time per call, including after-call wrap-up.\n\n\n\n\n\n\nCall Topic Share\n\n\nEach call topic’s share of all topic records.\n\n\n\n\n\n\nCalls Accepted\n\n\nNumber of calls the call centre accepted in a reporting period.\n\n\n\n\n\n\nCalls Answered\n\n\nNumber of calls agents answered in a reporting period.\n\n\n\n\n\n\nCalls per Active User\n\n\nCall volume relative to the active user base, comparable across weeks.\n\n\n\n\n\n\nCompleted Sign-In Sessions (Estimated)\n\n\nEstimated number of sign-ins that got all the way through the flow.\n\n\n\n\n\n\nCumulative Unique Users\n\n\nDistinct users who signed in this month or this calendar year.\n\n\n\n\n\n\nCumulative Unique Users by Application\n\n\nDistinct users per application this month or this calendar year.\n\n\n\n\n\n\nDwell Time\n\n\nHow long readers stay on each Signal Check edition and dashboard, as a drop-off curve of page views.\n\n\n\n\n\n\nMFA Authentications\n\n\nTotal MFA attempts in a reporting period.\n\n\n\n\n\n\nMFA Success Rate\n\n\nShare of MFA attempts that succeeded.\n\n\n\n\n\n\nMFA Success Rate by Factor\n\n\nMFA success rate for each factor.\n\n\n\n\n\n\nMean Time to Resolution\n\n\nAverage minutes from incident detection to resolution.\n\n\n\n\n\n\nNew Accounts and Idle Account Rate\n\n\nAccounts created per day, and the share that never reached a partner service.\n\n\n\n\n\n\nOutage Events\n\n\nIndividual site outages: when a site went down, when it recovered, and the status code.\n\n\n\n\n\n\nPeak Daily Unique Users\n\n\nHighest number of unique users on any single day.\n\n\n\n\n\n\nSLA First-Response Breach Rate\n\n\nShare of PSOM tickets that missed the time-to-first-response SLA.\n\n\n\n\n\n\nSLA PSO Time-to-Done Breach Rate\n\n\nShare of PSOM tickets that missed the PSO time-to-done SLA.\n\n\n\n\n\n\nSLA Time-to-Done Breach Rate\n\n\nShare of PSOM tickets that missed the time-to-done SLA.\n\n\n\n\n\n\nSSO Events by Application\n\n\nTotal SSO events for each application.\n\n\n\n\n\n\nSSO Success Rate by Application\n\n\nShare of SSO events that succeeded, by application.\n\n\n\n\n\n\nService Level (Answered Within 60s)\n\n\nShare of calls answered within 60 seconds.\n\n\n\n\n\n\nSign-Ins per Active User (Estimated)\n\n\nEstimated sign-ins per user in a calendar month, among users who signed in.\n\n\n\n\n\n\nSign-in MFA Activity by Factor\n\n\nMFA attempts across the factors the public can sign in with, with each factor’s share.\n\n\n\n\n\n\nSite Response Time\n\n\nAverage HTTP response time for each monitored site, over rolling windows.\n\n\n\n\n\n\nSite Uptime\n\n\nRolling-window uptime percentage for each monitored site.\n\n\n\n\n\n\nTask Success Rate\n\n\nShare of users who started a task and reached its finishing point, from GA4 funnels.\n\n\n\n\n\n\nTickets by Priority\n\n\nPSOM tickets in the latest snapshot, by priority.\n\n\n\n\n\n\nTickets by Status\n\n\nPSOM tickets in the latest snapshot, by workflow status.\n\n\n\n\n\n\nTop 10 Call Topics\n\n\nThe ten most common call topics.\n\n\n\n\n\n\nWeekly Ticket Volume\n\n\nNumber of PSOM tickets in each Monday snapshot.\n\n\n\n\n\n\nNo matching items",
+    "text": "All Metrics\n\n\n    \n      \n      \n    \n\n\n\n\n\n\nMetric\n\n\n\nDescription\n\n\n\n\n\n\n\n\nAbandonment Rate\n\n\nShare of accepted calls abandoned before an agent answered.\n\n\n\n\n\n\nAll MFA Activity by Factor\n\n\nMFA attempts by factor, with each factor’s share of the total.\n\n\n\n\n\n\nAnswer Rate\n\n\nShare of accepted calls answered by an agent.\n\n\n\n\n\n\nApplications per Credential\n\n\nAverage number of distinct applications one credential reaches.\n\n\n\n\n\n\nAuthentication Events\n\n\nTotal authentication events, successful and failed.\n\n\n\n\n\n\nAuthentication Success Rate\n\n\nShare of authentication attempts that succeeded, across CanadaLogin.\n\n\n\n\n\n\nAverage Call Length\n\n\nAverage length of answered calls.\n\n\n\n\n\n\nAverage Daily SSO Events\n\n\nAverage SSO events per day for each application.\n\n\n\n\n\n\nAverage Delay\n\n\nAverage wait before a call is answered.\n\n\n\n\n\n\nAverage Handle Time\n\n\nAverage agent time per call, including after-call wrap-up.\n\n\n\n\n\n\nCall Topic Share\n\n\nEach call topic’s share of all topic records.\n\n\n\n\n\n\nCalls Accepted\n\n\nNumber of calls the call centre accepted in a reporting period.\n\n\n\n\n\n\nCalls Answered\n\n\nNumber of calls agents answered in a reporting period.\n\n\n\n\n\n\nCalls per Active User\n\n\nCall volume relative to the active user base, comparable across weeks.\n\n\n\n\n\n\nCompleted Sign-In Sessions (Estimated)\n\n\nEstimated number of sign-ins that got all the way through the flow.\n\n\n\n\n\n\nCumulative Unique Users\n\n\nDistinct users who signed in this month or this calendar year.\n\n\n\n\n\n\nCumulative Unique Users by Application\n\n\nDistinct users per application this month or this calendar year.\n\n\n\n\n\n\nDwell Time\n\n\nHow long readers stay on each Signal Check edition and dashboard, as a drop-off curve of page views.\n\n\n\n\n\n\nEscalation Rate\n\n\nShare of call centre calls escalated to Partner Success and Operations.\n\n\n\n\n\n\nEscalations to PSO\n\n\nCalls the call centre escalated to Partner Success and Operations.\n\n\n\n\n\n\nMFA Authentications\n\n\nTotal MFA attempts in a reporting period.\n\n\n\n\n\n\nMFA Success Rate\n\n\nShare of MFA attempts that succeeded.\n\n\n\n\n\n\nMFA Success Rate by Factor\n\n\nMFA success rate for each factor.\n\n\n\n\n\n\nMean Time to Resolution\n\n\nAverage minutes from incident detection to resolution.\n\n\n\n\n\n\nNew Accounts and Idle Account Rate\n\n\nAccounts created per day, and the share that never reached a partner service.\n\n\n\n\n\n\nOutage Events\n\n\nIndividual site outages: when a site went down, when it recovered, and the status code.\n\n\n\n\n\n\nPeak Daily Unique Users\n\n\nHighest number of unique users on any single day.\n\n\n\n\n\n\nSLA First-Response Breach Rate\n\n\nShare of PSOM tickets that missed the time-to-first-response SLA.\n\n\n\n\n\n\nSLA PSO Time-to-Done Breach Rate\n\n\nShare of PSOM tickets that missed the PSO time-to-done SLA.\n\n\n\n\n\n\nSLA Time-to-Done Breach Rate\n\n\nShare of PSOM tickets that missed the time-to-done SLA.\n\n\n\n\n\n\nSSO Events by Application\n\n\nTotal SSO events for each application.\n\n\n\n\n\n\nSSO Success Rate by Application\n\n\nShare of SSO events that succeeded, by application.\n\n\n\n\n\n\nService Level (Answered Within 60s)\n\n\nShare of calls answered within 60 seconds.\n\n\n\n\n\n\nSign-Ins per Active User (Estimated)\n\n\nEstimated sign-ins per user in a calendar month, among users who signed in.\n\n\n\n\n\n\nSign-in MFA Activity by Factor\n\n\nMFA attempts across the factors the public can sign in with, with each factor’s share.\n\n\n\n\n\n\nSite Response Time\n\n\nAverage HTTP response time for each monitored site, over rolling windows.\n\n\n\n\n\n\nSite Uptime\n\n\nRolling-window uptime percentage for each monitored site.\n\n\n\n\n\n\nTask Success Rate\n\n\nShare of users who started a task and reached its finishing point, from GA4 funnels.\n\n\n\n\n\n\nTickets by Priority\n\n\nPSOM tickets in the latest snapshot, by priority.\n\n\n\n\n\n\nTickets by Status\n\n\nPSOM tickets in the latest snapshot, by workflow status.\n\n\n\n\n\n\nTop 10 Call Topics\n\n\nThe ten most common call topics.\n\n\n\n\n\n\nWeekly Ticket Volume\n\n\nNumber of PSOM tickets in each Monday snapshot.\n\n\n\n\n\n\nNo matching items",
     "crumbs": [
       "Metrics Cookbook"
     ]
@@ -327,7 +327,7 @@
     "href": "cookbook/index.html#scope",
     "title": "About",
     "section": "Scope",
-    "text": "Scope\nThis cookbook covers calculated metrics. Metrics already present in a table without any calculation do not need to be included, although they can be if they need clarification.\nThe initial version focuses on:\n\nIBM Verify application sign-in metrics\ncall centre activity metrics\ncall centre topic metrics\n\nCross-source metrics comparing sign-in activity and call volume are planned for a future revision.",
+    "text": "Scope\nThis cookbook covers calculated metrics. Metrics already present in a table without any calculation do not need to be included, although they can be if they need clarification.\nIt covers every source listed above. Cross-source metrics comparing sign-in activity and call volume are planned.",
     "crumbs": [
       "Metrics Cookbook"
     ]
@@ -809,7 +809,7 @@
     "href": "cookbook/google_analytics/dwell-time.html#calculation",
     "title": "Dwell Time",
     "section": "Calculation",
-    "text": "Calculation\nDwell curve: for each page and each milestone, divide the read_Ns event count by the page_view event count over the reporting window. Both come from meta_page_events.\nMedian dwell time: the longest milestone that at least half of the page’s views reached.\nGroup on pagepath_redacted, never pagepath, which holds a private token for Signal Check pages.\n\n\n\n\n\n\nNoteExample queries\n\n\n\n\n\n\nSQLR\n\n\nDwell curve:\nWITH events AS (\n    SELECT\n        pagepath_redacted,\n        eventname,\n        SUM(eventcount) AS n\n    FROM google_analytics.meta_page_events\n    WHERE page_kind IN ('signal_check', 'dashboard')\n      AND (eventname = 'page_view' OR REGEXP_LIKE(eventname, '^read_[0-9]+s$'))\n      -- set the reporting window; see the timespans note in cookbook/notes.qmd\n      AND CAST(date AS DATE) BETWEEN DATE '2026-09-01' AND DATE '2026-09-30'\n    GROUP BY pagepath_redacted, eventname\n),\nviews AS (\n    SELECT pagepath_redacted, n AS page_views\n    FROM events\n    WHERE eventname = 'page_view'\n)\nSELECT\n    e.pagepath_redacted,\n    CAST(REGEXP_EXTRACT(e.eventname, '[0-9]+') AS INTEGER) AS milestone_seconds,\n    v.page_views,\n    e.n AS page_views_reached,\n    CAST(e.n AS DOUBLE) / v.page_views AS share_reached\nFROM events e\nJOIN views v ON e.pagepath_redacted = v.pagepath_redacted\nWHERE e.eventname &lt;&gt; 'page_view'\nORDER BY e.pagepath_redacted, milestone_seconds;\nMedian dwell time:\nWITH events AS (\n    SELECT\n        pagepath_redacted,\n        eventname,\n        SUM(eventcount) AS n\n    FROM google_analytics.meta_page_events\n    WHERE page_kind IN ('signal_check', 'dashboard')\n      AND (eventname = 'page_view' OR REGEXP_LIKE(eventname, '^read_[0-9]+s$'))\n      -- set the reporting window; see the timespans note in cookbook/notes.qmd\n      AND CAST(date AS DATE) BETWEEN DATE '2026-09-01' AND DATE '2026-09-30'\n    GROUP BY pagepath_redacted, eventname\n),\nviews AS (\n    SELECT pagepath_redacted, n AS page_views\n    FROM events\n    WHERE eventname = 'page_view'\n)\nSELECT\n    e.pagepath_redacted,\n    v.page_views,\n    -- NULL when fewer than half of the page's views reached 1 second\n    MAX(CASE\n        WHEN CAST(e.n AS DOUBLE) / v.page_views &gt;= 0.5\n        THEN CAST(REGEXP_EXTRACT(e.eventname, '[0-9]+') AS INTEGER)\n    END) AS median_dwell_seconds\nFROM events e\nJOIN views v ON e.pagepath_redacted = v.pagepath_redacted\nWHERE e.eventname &lt;&gt; 'page_view'\nGROUP BY e.pagepath_redacted, v.page_views\nORDER BY e.pagepath_redacted;\n\n\nDwell curve:\nevents &lt;- tbl(con, in_schema(\"google_analytics\", \"meta_page_events\")) |&gt;\n  filter(\n    page_kind %in% c(\"signal_check\", \"dashboard\"),\n    eventname == \"page_view\" | str_detect(eventname, \"^read_[0-9]+s$\"),\n    # set the reporting window; see the timespans note in cookbook/notes.qmd\n    as.Date(date) &gt;= as.Date(\"2026-09-01\"),\n    as.Date(date) &lt;= as.Date(\"2026-09-30\")\n  ) |&gt;\n  group_by(pagepath_redacted, eventname) |&gt;\n  summarise(n = sum(eventcount, na.rm = TRUE), .groups = \"drop\")\n\nviews &lt;- events |&gt;\n  filter(eventname == \"page_view\") |&gt;\n  select(pagepath_redacted, page_views = n)\n\nevents |&gt;\n  filter(eventname != \"page_view\") |&gt;\n  inner_join(views, by = \"pagepath_redacted\") |&gt;\n  transmute(\n    pagepath_redacted,\n    milestone_seconds = as.integer(str_extract(eventname, \"[0-9]+\")),\n    page_views,\n    page_views_reached = n,\n    share_reached = as.numeric(n) / page_views\n  ) |&gt;\n  arrange(pagepath_redacted, milestone_seconds)\nMedian dwell time:\nevents &lt;- tbl(con, in_schema(\"google_analytics\", \"meta_page_events\")) |&gt;\n  filter(\n    page_kind %in% c(\"signal_check\", \"dashboard\"),\n    eventname == \"page_view\" | str_detect(eventname, \"^read_[0-9]+s$\"),\n    # set the reporting window; see the timespans note in cookbook/notes.qmd\n    as.Date(date) &gt;= as.Date(\"2026-09-01\"),\n    as.Date(date) &lt;= as.Date(\"2026-09-30\")\n  ) |&gt;\n  group_by(pagepath_redacted, eventname) |&gt;\n  summarise(n = sum(eventcount, na.rm = TRUE), .groups = \"drop\")\n\nviews &lt;- events |&gt;\n  filter(eventname == \"page_view\") |&gt;\n  select(pagepath_redacted, page_views = n)\n\nevents |&gt;\n  filter(eventname != \"page_view\") |&gt;\n  inner_join(views, by = \"pagepath_redacted\") |&gt;\n  group_by(pagepath_redacted, page_views) |&gt;\n  summarise(\n    # NA when fewer than half of the page's views reached 1 second\n    median_dwell_seconds = max(\n      if_else(\n        as.numeric(n) / page_views &gt;= 0.5,\n        as.integer(str_extract(eventname, \"[0-9]+\")),\n        NA_integer_\n      ),\n      na.rm = TRUE\n    ),\n    .groups = \"drop\"\n  ) |&gt;\n  arrange(pagepath_redacted)",
+    "text": "Calculation\nDwell curve: for each page and each milestone, divide the read_Ns event count by the page_view event count over the reporting window. Both come from meta_page_events.\nMedian dwell time: the time at which half of the page’s views were still open. Take the last milestone at least half the views reached and the next one, and interpolate on a log scale to where the share crosses 50%. It is 0 when fewer than half reached 1 second, and infinite when half were still open at 600 seconds.\nGroup on pagepath_redacted, never pagepath, which holds a private token for Signal Check pages.\n\n\n\n\n\n\nNoteExample queries\n\n\n\n\n\n\nSQLR\n\n\nDwell curve:\nWITH events AS (\n    SELECT\n        pagepath_redacted,\n        eventname,\n        SUM(eventcount) AS n\n    FROM google_analytics.meta_page_events\n    WHERE page_kind IN ('signal_check', 'dashboard')\n      AND (eventname = 'page_view' OR REGEXP_LIKE(eventname, '^read_[0-9]+s$'))\n      -- set the reporting window; see the timespans note in cookbook/notes.qmd\n      AND CAST(date AS DATE) BETWEEN DATE '2026-09-01' AND DATE '2026-09-30'\n    GROUP BY pagepath_redacted, eventname\n),\nviews AS (\n    SELECT pagepath_redacted, n AS page_views\n    FROM events\n    WHERE eventname = 'page_view'\n)\nSELECT\n    e.pagepath_redacted,\n    CAST(REGEXP_EXTRACT(e.eventname, '[0-9]+') AS INTEGER) AS milestone_seconds,\n    v.page_views,\n    e.n AS page_views_reached,\n    CAST(e.n AS DOUBLE) / v.page_views AS share_reached\nFROM events e\nJOIN views v ON e.pagepath_redacted = v.pagepath_redacted\nWHERE e.eventname &lt;&gt; 'page_view'\nORDER BY e.pagepath_redacted, milestone_seconds;\nMedian dwell time:\nWITH events AS (\n    SELECT\n        pagepath_redacted,\n        eventname,\n        SUM(eventcount) AS n\n    FROM google_analytics.meta_page_events\n    WHERE page_kind IN ('signal_check', 'dashboard')\n      AND (eventname = 'page_view' OR REGEXP_LIKE(eventname, '^read_[0-9]+s$'))\n      -- set the reporting window; see the timespans note in cookbook/notes.qmd\n      AND CAST(date AS DATE) BETWEEN DATE '2026-09-01' AND DATE '2026-09-30'\n    GROUP BY pagepath_redacted, eventname\n),\nviews AS (\n    SELECT pagepath_redacted, n AS page_views\n    FROM events\n    WHERE eventname = 'page_view'\n),\n-- every milestone, so one nobody reached reads as zero, not missing\ncurve AS (\n    SELECT\n        v.pagepath_redacted,\n        v.page_views,\n        m.seconds,\n        CAST(COALESCE(e.n, 0) AS DOUBLE) / v.page_views AS share,\n        LEAD(m.seconds) OVER (PARTITION BY v.pagepath_redacted ORDER BY m.seconds) AS next_seconds,\n        LEAD(CAST(COALESCE(e.n, 0) AS DOUBLE) / v.page_views)\n            OVER (PARTITION BY v.pagepath_redacted ORDER BY m.seconds) AS next_share\n    FROM views v\n    CROSS JOIN UNNEST(ARRAY[1, 5, 15, 30, 60, 120, 300, 600]) AS m (seconds)\n    LEFT JOIN events e\n        ON e.pagepath_redacted = v.pagepath_redacted\n       AND e.eventname = 'read_' || CAST(m.seconds AS VARCHAR) || 's'\n),\ncrossing AS (\n    SELECT\n        *,\n        ROW_NUMBER() OVER (PARTITION BY pagepath_redacted ORDER BY seconds DESC) AS rn\n    FROM curve\n    WHERE share &gt;= 0.5\n)\nSELECT\n    v.pagepath_redacted,\n    v.page_views,\n    CASE\n        -- fewer than half of the page views reached 1 second\n        WHEN c.seconds IS NULL THEN 0\n        -- half were still open at the last milestone\n        WHEN c.next_seconds IS NULL THEN infinity()\n        ELSE exp(ln(c.seconds) + (c.share - 0.5) / (c.share - c.next_share)\n                 * (ln(c.next_seconds) - ln(c.seconds)))\n    END AS median_dwell_seconds\nFROM views v\nLEFT JOIN crossing c\n    ON c.pagepath_redacted = v.pagepath_redacted\n   AND c.rn = 1\nORDER BY v.pagepath_redacted;\n\n\nDwell curve:\nevents &lt;- tbl(con, in_schema(\"google_analytics\", \"meta_page_events\")) |&gt;\n  filter(\n    page_kind %in% c(\"signal_check\", \"dashboard\"),\n    eventname == \"page_view\" | str_detect(eventname, \"^read_[0-9]+s$\"),\n    # set the reporting window; see the timespans note in cookbook/notes.qmd\n    as.Date(date) &gt;= as.Date(\"2026-09-01\"),\n    as.Date(date) &lt;= as.Date(\"2026-09-30\")\n  ) |&gt;\n  group_by(pagepath_redacted, eventname) |&gt;\n  summarise(n = sum(eventcount, na.rm = TRUE), .groups = \"drop\")\n\nviews &lt;- events |&gt;\n  filter(eventname == \"page_view\") |&gt;\n  select(pagepath_redacted, page_views = n)\n\nevents |&gt;\n  filter(eventname != \"page_view\") |&gt;\n  inner_join(views, by = \"pagepath_redacted\") |&gt;\n  transmute(\n    pagepath_redacted,\n    milestone_seconds = as.integer(str_extract(eventname, \"[0-9]+\")),\n    page_views,\n    page_views_reached = n,\n    share_reached = as.numeric(n) / page_views\n  ) |&gt;\n  arrange(pagepath_redacted, milestone_seconds)\nMedian dwell time:\nmilestones &lt;- c(1, 5, 15, 30, 60, 120, 300, 600)\n\n# The time half the page views were still open, interpolated on a log scale\n# between the milestones either side of 50%. `seconds` must be sorted.\nmedian_read &lt;- function(seconds, share) {\n  above &lt;- which(share &gt;= 0.5)\n  if (length(above) == 0L) return(0)\n  i &lt;- max(above)\n  if (i == length(seconds)) return(Inf)\n  step &lt;- (share[i] - 0.5) / (share[i] - share[i + 1L])\n  exp(log(seconds[i]) + step * (log(seconds[i + 1L]) - log(seconds[i])))\n}\n\nevents &lt;- tbl(con, in_schema(\"google_analytics\", \"meta_page_events\")) |&gt;\n  filter(\n    page_kind %in% c(\"signal_check\", \"dashboard\"),\n    eventname == \"page_view\" | str_detect(eventname, \"^read_[0-9]+s$\"),\n    # set the reporting window; see the timespans note in cookbook/notes.qmd\n    as.Date(date) &gt;= as.Date(\"2026-09-01\"),\n    as.Date(date) &lt;= as.Date(\"2026-09-30\")\n  ) |&gt;\n  group_by(pagepath_redacted, eventname) |&gt;\n  summarise(n = sum(eventcount, na.rm = TRUE), .groups = \"drop\") |&gt;\n  collect() |&gt;\n  mutate(n = as.numeric(n))\n\nviews &lt;- events |&gt;\n  filter(eventname == \"page_view\") |&gt;\n  select(pagepath_redacted, page_views = n)\n\nreached &lt;- events |&gt;\n  filter(eventname != \"page_view\") |&gt;\n  transmute(\n    pagepath_redacted,\n    seconds = as.numeric(str_extract(eventname, \"[0-9]+\")),\n    n\n  )\n\nviews |&gt;\n  # every milestone, so one nobody reached reads as zero, not missing\n  cross_join(tibble(seconds = milestones)) |&gt;\n  left_join(reached, by = c(\"pagepath_redacted\", \"seconds\")) |&gt;\n  mutate(share = coalesce(n, 0) / page_views) |&gt;\n  arrange(pagepath_redacted, seconds) |&gt;\n  group_by(pagepath_redacted, page_views) |&gt;\n  summarise(median_dwell_seconds = median_read(seconds, share), .groups = \"drop\") |&gt;\n  arrange(pagepath_redacted)",
     "crumbs": [
       "Metrics Cookbook",
       "Google Analytics",
@@ -821,7 +821,7 @@
     "href": "cookbook/google_analytics/dwell-time.html#interpretation-notes",
     "title": "Dwell Time",
     "section": "Interpretation notes",
-    "text": "Interpretation notes\nOnly visible time counts. The clock pauses while the tab is in the background and resumes when the reader comes back, so a tab left open overnight does not reach read_600s unless someone is looking at it.\nThe median is a floor, not an exact time. A median_dwell_seconds of 60 means the median reader stayed at least 60 seconds and less than 120. The longest milestone is 600 seconds, so a median of 600 means “10 minutes or more”.\nPrefer the curve or the median to an average. Readership is small, often a few dozen page views per page per month, and one forgotten tab can move a mean a long way. At these counts, check page_views before comparing two pages. A share built on five page views is too unstable to rank.\nThe curve counts page views, not people. A reader who reloads the page, or comes back on another day, starts the milestones again and counts twice. Use page_views as the denominator, since totalusers in meta_page_events can’t be summed across days.\nread_1s is approximate. The page checks the clock once a second, so read_1s means “1 to 2 seconds”. Milestones from 15 seconds up are not affected.\nThis metric covers only Signal Check editions and the dashboards. Public CanadaLogin pages do not fire read_Ns events. For time on those pages, use GA4’s built-in average engagement time, which is only available in the GA4 interface, not in the data lake.",
+    "text": "Interpretation notes\nOnly visible time counts. The clock pauses while the tab is in the background and resumes when the reader comes back, so a tab left open overnight does not reach read_600s unless someone is looking at it.\nThe median is an estimate between two measured milestones. A median_dwell_seconds of 45 means half the views passed 30 seconds and fewer than half passed 60; the interpolation places the crossing in between. An infinite median means half the views were still open at 10 minutes, so report it as “over 10 minutes”. Signal Checks before #9 report the floor milestone instead, the longest milestone at least half the views reached, so their medians read lower.\nPrefer the curve or the median to an average. Readership is small, often a few dozen page views per page per month, and one forgotten tab can move a mean a long way. At these counts, check page_views before comparing two pages. A share built on five page views is too unstable to rank.\nThe curve counts page views, not people. A reader who reloads the page, or comes back on another day, starts the milestones again and counts twice. Use page_views as the denominator, since totalusers in meta_page_events can’t be summed across days.\nread_1s is approximate. The page checks the clock once a second, so read_1s means “1 to 2 seconds”. Milestones from 15 seconds up are not affected.\nThis metric covers only Signal Check editions and the dashboards. Public CanadaLogin pages do not fire read_Ns events. For time on those pages, use GA4’s built-in average engagement time, which is only available in the GA4 interface, not in the data lake.",
     "crumbs": [
       "Metrics Cookbook",
       "Google Analytics",
@@ -889,99 +889,147 @@
     ]
   },
   {
-    "objectID": "cookbook/call_centre/calls-per-active-user.html",
-    "href": "cookbook/call_centre/calls-per-active-user.html",
-    "title": "Calls per Active User",
+    "objectID": "cookbook/call_centre/escalation-rate.html",
+    "href": "cookbook/call_centre/escalation-rate.html",
+    "title": "Escalation Rate",
     "section": "",
-    "text": "Call centre volume divided by the size of the active user base, so you can compare support demand across weeks even as the user base grows.\nRaw call volume moves partly because the number of people using CanadaLogin changes. Normalizing by active users takes that out and leaves how often a typical user needed to phone in on a given day. The figure is scaled to calls per 100 active users to keep it in a readable range.",
+    "text": "The share of call centre calls escalated to Partner Success and Operations (PSO). See Escalations to PSO for what counts as an escalation.",
     "crumbs": [
       "Metrics Cookbook",
       "Call Centre",
-      "Calls per Active User"
+      "Escalation Rate"
     ]
   },
   {
-    "objectID": "cookbook/call_centre/calls-per-active-user.html#calculation",
-    "href": "cookbook/call_centre/calls-per-active-user.html#calculation",
-    "title": "Calls per Active User",
+    "objectID": "cookbook/call_centre/escalation-rate.html#calculation",
+    "href": "cookbook/call_centre/escalation-rate.html#calculation",
+    "title": "Escalation Rate",
     "section": "Calculation",
-    "text": "Calculation\nFor each call centre reporting week, take calls_accepted from call_centre.weekly_activity_report, subtract that week’s test_calls, and divide by the total user-days in that week, then multiply by 100. User-days is the sum of ibm_verify_events_transformed.events_auth_total_logins.unique_users over the days whose date falls inside the week’s date_range_start to date_range_end, so the numerator and the denominator cover the same span of days. A weekly call count over weekly user-days is a per-day rate. The two tables store their dates as text, so both sides of the join are cast to DATE.\nUse calls_accepted, not calls_answered: accepted counts everything that reached the queue, so an abandoned call still counts as demand. test_calls is a subset of accepted and is large enough at current volumes to be worth subtracting.\n\n\n\n\n\n\nNoteExample queries\n\n\n\n\n\n\nSQLR\n\n\nSELECT\n    w.date_range_start,\n    w.date_range_end,\n    CAST(w.calls_accepted AS BIGINT) AS calls_accepted,\n    CAST(COALESCE(w.test_calls, 0) AS BIGINT) AS test_calls,\n    CAST(w.calls_accepted - COALESCE(w.test_calls, 0) AS BIGINT) AS calls_excl_test,\n    AVG(a.unique_users) AS avg_daily_active_users,\n    CAST(w.calls_accepted - COALESCE(w.test_calls, 0) AS DOUBLE)\n        / SUM(a.unique_users) * 100 AS calls_per_100_dau\nFROM call_centre.weekly_activity_report AS w\nJOIN ibm_verify_events_transformed.events_auth_total_logins AS a\n    ON CAST(a.date AS DATE)\n       BETWEEN CAST(w.date_range_start AS DATE) AND CAST(w.date_range_end AS DATE)\nGROUP BY w.date_range_start, w.date_range_end, w.calls_accepted, w.test_calls\nORDER BY w.date_range_start;\n\n\nweekly &lt;- tbl(con, in_schema(\"call_centre\", \"weekly_activity_report\")) |&gt;\n  select(date_range_start, date_range_end, calls_accepted, test_calls)\n\ndau &lt;- tbl(con, in_schema(\"ibm_verify_events_transformed\", \"events_auth_total_logins\")) |&gt;\n  select(dau_date = date, unique_users)\n\nweekly |&gt;\n  cross_join(dau) |&gt;\n  filter(\n    as.Date(dau_date) &gt;= as.Date(date_range_start),\n    as.Date(dau_date) &lt;= as.Date(date_range_end)\n  ) |&gt;\n  group_by(date_range_start, date_range_end, calls_accepted, test_calls) |&gt;\n  summarise(\n    avg_daily_active_users = mean(unique_users, na.rm = TRUE),\n    user_days = sum(unique_users, na.rm = TRUE),\n    .groups = \"drop\"\n  ) |&gt;\n  mutate(\n    test_calls = coalesce(test_calls, 0),\n    calls_excl_test = calls_accepted - test_calls,\n    calls_per_100_dau = calls_excl_test / user_days * 100\n  ) |&gt;\n  arrange(date_range_start) |&gt;\n  select(\n    date_range_start,\n    date_range_end,\n    calls_accepted,\n    test_calls,\n    calls_excl_test,\n    avg_daily_active_users,\n    calls_per_100_dau\n  )",
+    "text": "Calculation\nDivide the escalations by the distinct calls (call_no) in call_centre.weekly_topic_dump over the same span of call dates. Both come from the same table, so they cover the same calls. The examples group by calendar month, but any span of call dates works.\nStart no earlier than 2026-06-29, when escalation to PSO began.\n\n\n\n\n\n\nNoteExample queries\n\n\n\n\n\n\nSQLR\n\n\nSELECT\n    date_trunc('month', call_date) AS month,\n    COUNT(DISTINCT call_no) AS calls,\n    -- transactiontype is padded with trailing spaces\n    COUNT(DISTINCT CASE WHEN trim(transactiontype) = 'Callback' THEN call_no END) AS escalations,\n    CAST(COUNT(DISTINCT CASE WHEN trim(transactiontype) = 'Callback' THEN call_no END) AS DOUBLE)\n        / COUNT(DISTINCT call_no) AS escalation_rate\nFROM call_centre.weekly_topic_dump\n-- set the reporting window; escalation to PSO began on 2026-06-29\nWHERE call_date BETWEEN DATE '2026-07-01' AND DATE '2026-09-30'\nGROUP BY date_trunc('month', call_date)\nORDER BY month;\n\n\ntbl(con, in_schema(\"call_centre\", \"weekly_topic_dump\")) |&gt;\n  filter(\n    # set the reporting window; escalation to PSO began on 2026-06-29\n    call_date &gt;= as.Date(\"2026-07-01\"),\n    call_date &lt;= as.Date(\"2026-09-30\")\n  ) |&gt;\n  # transactiontype is padded with trailing spaces\n  mutate(escalated_call = if_else(str_trim(transactiontype) == \"Callback\", call_no, NA)) |&gt;\n  group_by(month = floor_date(call_date, \"month\")) |&gt;\n  summarise(\n    calls = n_distinct(call_no),\n    escalations = n_distinct(escalated_call)\n  ) |&gt;\n  mutate(escalation_rate = as.numeric(escalations) / calls) |&gt;\n  arrange(month)",
     "crumbs": [
       "Metrics Cookbook",
       "Call Centre",
-      "Calls per Active User"
+      "Escalation Rate"
     ]
   },
   {
-    "objectID": "cookbook/call_centre/calls-per-active-user.html#interpretation-notes",
-    "href": "cookbook/call_centre/calls-per-active-user.html#interpretation-notes",
-    "title": "Calls per Active User",
+    "objectID": "cookbook/call_centre/escalation-rate.html#interpretation-notes",
+    "href": "cookbook/call_centre/escalation-rate.html#interpretation-notes",
+    "title": "Escalation Rate",
     "section": "Interpretation notes",
-    "text": "Interpretation notes\nBoth sides are per-day averages over the same Sunday to Saturday week: average daily calls over average daily active users. On a typical day, roughly this many calls came in per 100 active users. This converts cleanly to a percentage, e.g., 2 calls per 100 users means 2% of users called on a given day.\nWatch the units. Dividing a whole week of calls by one day’s active users reads about seven times too high. Normalizing by user-days avoids that and holds up for a partial week, since the day count comes from the data rather than a hardcoded 7. avg_daily_active_users is output for auditing only; the rate comes from the sum.\nA call centre week runs Sunday to Saturday, from the report’s own date_range_start and date_range_end. The IBM Verify metrics anchor weeks on Monday, so the two do not line up; the join and the denominator follow the call centre boundaries.\nA week appears only once daily active user data exists for it, so the series starts near the April 22, 2026 launch.",
+    "text": "Interpretation notes\nThe denominator is the topic dump, not the weekly report. The weekly report’s calls_accepted has no call dates, so it cannot be cut to the same span as the escalations, and it includes test calls. The topic dump has no test calls, but it misses calls with no topic logged, so it reads slightly below the weekly report. That pushes the rate up slightly.\nOne call moves the rate. Escalations are rare, so a single call can change a month’s rate by a percentage point or more. Show the counts next to the rate, and prefer longer spans.\nA partial period is a rate to date. Label it with its last day of call centre data, and cut escalations and calls at that same day.",
     "crumbs": [
       "Metrics Cookbook",
       "Call Centre",
-      "Calls per Active User"
+      "Escalation Rate"
     ]
   },
   {
-    "objectID": "cookbook/call_centre/calls-per-active-user.html#alternative-names",
-    "href": "cookbook/call_centre/calls-per-active-user.html#alternative-names",
-    "title": "Calls per Active User",
+    "objectID": "cookbook/call_centre/escalation-rate.html#alternative-names",
+    "href": "cookbook/call_centre/escalation-rate.html#alternative-names",
+    "title": "Escalation Rate",
     "section": "Alternative names",
-    "text": "Alternative names\n\ncall centre contact rate\nnormalized call volume\nsupport contacts per active user\ncalls per 100 users\nsupport demand",
+    "text": "Alternative names\n\ncallback rate\nshare of calls escalated\npercent of calls escalated\nescalation share",
     "crumbs": [
       "Metrics Cookbook",
       "Call Centre",
-      "Calls per Active User"
+      "Escalation Rate"
     ]
   },
   {
-    "objectID": "cookbook/call_centre/calls-accepted.html",
-    "href": "cookbook/call_centre/calls-accepted.html",
-    "title": "Calls Accepted",
+    "objectID": "cookbook/call_centre/calls-answered.html",
+    "href": "cookbook/call_centre/calls-answered.html",
+    "title": "Calls Answered",
     "section": "",
-    "text": "The number of calls accepted by the call centre during a reporting period.\nThis metric is useful for tracking call centre demand and understanding how contact volume changes over time.",
+    "text": "The number of calls answered by call centre agents during a reporting period.\nThis metric is also used as a weighting variable when calculating weighted average call length and weighted average delay.",
     "crumbs": [
       "Metrics Cookbook",
       "Call Centre",
-      "Calls Accepted"
+      "Calls Answered"
     ]
   },
   {
-    "objectID": "cookbook/call_centre/calls-accepted.html#calculation",
-    "href": "cookbook/call_centre/calls-accepted.html#calculation",
-    "title": "Calls Accepted",
+    "objectID": "cookbook/call_centre/calls-answered.html#calculation",
+    "href": "cookbook/call_centre/calls-answered.html#calculation",
+    "title": "Calls Answered",
     "section": "Calculation",
-    "text": "Calculation\nUse calls_accepted by reporting period, or sum across periods for a total.\n\n\n\n\n\n\nNoteExample queries\n\n\n\n\n\n\nSQLR\n\n\nBy week:\nSELECT\n    date_range_start,\n    date_range_end,\n    CAST(calls_accepted AS BIGINT) AS calls_accepted\nFROM call_centre.weekly_activity_report\nORDER BY date_range_start;\nTotal over a period:\nSELECT\n    SUM(CAST(calls_accepted AS BIGINT)) AS total_calls_accepted\nFROM call_centre.weekly_activity_report\nWHERE CAST(date_range_start AS DATE) BETWEEN DATE '2026-01-01' AND DATE '2026-05-31';\n\n\nBy week:\ntbl(con, in_schema(\"call_centre\", \"weekly_activity_report\")) |&gt;\n  arrange(date_range_start) |&gt;\n  select(\n    date_range_start,\n    date_range_end,\n    calls_accepted\n  )\nTotal over a period:\ntbl(con, in_schema(\"call_centre\", \"weekly_activity_report\")) |&gt;\n  filter(\n    as.Date(date_range_start) &gt;= as.Date(\"2026-01-01\"),\n    as.Date(date_range_start) &lt;= as.Date(\"2026-05-31\")\n  ) |&gt;\n  summarise(\n    total_calls_accepted = sum(calls_accepted, na.rm = TRUE)\n  )",
+    "text": "Calculation\nUse calls_answered by reporting period, or sum across periods for a total.\n\n\n\n\n\n\nNoteExample queries\n\n\n\n\n\n\nSQLR\n\n\nBy week:\nSELECT\n    date_range_start,\n    date_range_end,\n    CAST(calls_answered AS BIGINT) AS calls_answered\nFROM call_centre.weekly_activity_report\nORDER BY date_range_start;\nTotal over a period:\nSELECT\n    SUM(CAST(calls_answered AS BIGINT)) AS total_calls_answered\nFROM call_centre.weekly_activity_report\nWHERE CAST(date_range_start AS DATE) BETWEEN DATE '2026-01-01' AND DATE '2026-05-31';\n\n\nBy week:\ntbl(con, in_schema(\"call_centre\", \"weekly_activity_report\")) |&gt;\n  arrange(date_range_start) |&gt;\n  select(\n    date_range_start,\n    date_range_end,\n    calls_answered\n  )\nTotal over a period:\ntbl(con, in_schema(\"call_centre\", \"weekly_activity_report\")) |&gt;\n  filter(\n    as.Date(date_range_start) &gt;= as.Date(\"2026-01-01\"),\n    as.Date(date_range_start) &lt;= as.Date(\"2026-05-31\")\n  ) |&gt;\n  summarise(\n    total_calls_answered = sum(calls_answered, na.rm = TRUE)\n  )",
     "crumbs": [
       "Metrics Cookbook",
       "Call Centre",
-      "Calls Accepted"
+      "Calls Answered"
     ]
   },
   {
-    "objectID": "cookbook/call_centre/calls-accepted.html#interpretation-notes",
-    "href": "cookbook/call_centre/calls-accepted.html#interpretation-notes",
-    "title": "Calls Accepted",
+    "objectID": "cookbook/call_centre/calls-answered.html#interpretation-notes",
+    "href": "cookbook/call_centre/calls-answered.html#interpretation-notes",
+    "title": "Calls Answered",
     "section": "Interpretation notes",
-    "text": "Interpretation notes\nCalls accepted may not be identical to calls answered, depending on call centre definitions and routing logic.",
+    "text": "Interpretation notes\nCalls answered is commonly used as the weighting field when combining weekly average call length or delay values.",
     "crumbs": [
       "Metrics Cookbook",
       "Call Centre",
-      "Calls Accepted"
+      "Calls Answered"
     ]
   },
   {
-    "objectID": "cookbook/call_centre/calls-accepted.html#alternative-names",
-    "href": "cookbook/call_centre/calls-accepted.html#alternative-names",
-    "title": "Calls Accepted",
+    "objectID": "cookbook/call_centre/calls-answered.html#alternative-names",
+    "href": "cookbook/call_centre/calls-answered.html#alternative-names",
+    "title": "Calls Answered",
     "section": "Alternative names",
-    "text": "Alternative names\n\ncalls received\naccepted calls\nweekly call volume\ncall centre demand\nnumber of calls handled by the queue",
+    "text": "Alternative names\n\nanswered calls\ncalls handled\nagent-answered calls\ncompleted calls\ncalls taken by agents",
     "crumbs": [
       "Metrics Cookbook",
       "Call Centre",
-      "Calls Accepted"
+      "Calls Answered"
+    ]
+  },
+  {
+    "objectID": "cookbook/call_centre/call-topic-share.html",
+    "href": "cookbook/call_centre/call-topic-share.html",
+    "title": "Call Topic Share",
+    "section": "",
+    "text": "The percentage of all topic records represented by each call topic.\nThis is useful for understanding the relative importance of each call driver compared to the overall volume.",
+    "crumbs": [
+      "Metrics Cookbook",
+      "Call Centre",
+      "Call Topic Share"
+    ]
+  },
+  {
+    "objectID": "cookbook/call_centre/call-topic-share.html#calculation",
+    "href": "cookbook/call_centre/call-topic-share.html#calculation",
+    "title": "Call Topic Share",
+    "section": "Calculation",
+    "text": "Calculation\nCount records by cleaned topic, then divide each topic count by the total count across all topics.\n\n\n\n\n\n\nNoteExample queries\n\n\n\n\n\n\nSQLR\n\n\nWITH topic_counts AS (\n    SELECT\n        REGEXP_REPLACE(TRIM(statobject), '\\s+', ' ') AS call_topic,\n        COUNT(*) AS topic_count\n    FROM call_centre.weekly_topic_dump\n    GROUP BY REGEXP_REPLACE(TRIM(statobject), '\\s+', ' ')\n)\n\nSELECT\n    call_topic,\n    topic_count,\n    CAST(topic_count AS DOUBLE)\n        / NULLIF(SUM(topic_count) OVER (), 0) AS topic_share\nFROM topic_counts\nORDER BY topic_count DESC;\n\n\ntbl(con, in_schema(\"call_centre\", \"weekly_topic_dump\")) |&gt;\n  mutate(\n    call_topic = str_squish(statobject)\n  ) |&gt;\n  count(call_topic, name = \"topic_count\") |&gt;\n  mutate(\n    topic_share = as.double(topic_count) / sum(topic_count, na.rm = TRUE)\n  ) |&gt;\n  arrange(desc(topic_count))",
+    "crumbs": [
+      "Metrics Cookbook",
+      "Call Centre",
+      "Call Topic Share"
+    ]
+  },
+  {
+    "objectID": "cookbook/call_centre/call-topic-share.html#interpretation-notes",
+    "href": "cookbook/call_centre/call-topic-share.html#interpretation-notes",
+    "title": "Call Topic Share",
+    "section": "Interpretation notes",
+    "text": "Interpretation notes\nTopic share is useful for comparing relative demand across contact reasons. Interpret alongside total call volume.",
+    "crumbs": [
+      "Metrics Cookbook",
+      "Call Centre",
+      "Call Topic Share"
+    ]
+  },
+  {
+    "objectID": "cookbook/call_centre/call-topic-share.html#alternative-names",
+    "href": "cookbook/call_centre/call-topic-share.html#alternative-names",
+    "title": "Call Topic Share",
+    "section": "Alternative names",
+    "text": "Alternative names\n\nshare of calls by topic\npercentage of calls by reason\ntopic distribution\ncall reason mix\ncontact driver share",
+    "crumbs": [
+      "Metrics Cookbook",
+      "Call Centre",
+      "Call Topic Share"
     ]
   },
   {
@@ -1205,7 +1253,7 @@
     "href": "catalog/sre.html",
     "title": "Platform",
     "section": "",
-    "text": "Platform metrics for CanadaLogin, in the sre schema. Currently, both tables are derived from the CanadaLogin Platform team’s CanadaLogin_MTTR_Dashboard Google Sheet (maintained by hand in the CDS Google Drive) and fetched by the sre-mttr-sheets-fetcher Lambda using Google Sheets API 6am ET every Monday. They share one source and grain (one row per incident); they differ only in history: mttr_current holds the latest state of each incident, while mttr_history accumulates a dated snapshot of every incident on each upload.",
+    "text": "Platform metrics for CanadaLogin, in the sre schema. It holds two groups of tables: incident tables, which record outages and how long they took to resolve, and uptime tables, which record whether each monitored site was up and how fast it responded.\nThe incident tables come from the CanadaLogin Platform team’s CanadaLogin_MTTR_Dashboard Google Sheet, maintained by hand in the CDS Google Drive. The sre-mttr-sheets-fetcher Lambda reads it through the Google Sheets API every Monday at 06:00 ET. Both tables have one row per incident and differ only in history: mttr_current holds the latest state of each incident, while mttr_history adds a dated snapshot of every incident on each upload.",
     "crumbs": [
       "Data Catalog",
       "Platform"
@@ -1696,7 +1744,7 @@
     "href": "catalog/ibm_verify/auth_total_logins.html#provenance",
     "title": "ibm_verify.auth_total_logins",
     "section": "Provenance",
-    "text": "Provenance\nQueried directly from the IBM Verify production instance via API.\n\nUpdated: Daily, at 6am America/Toronto\nRetention: While CanadaLogin exists\nSteward: EDCP Data and Research Team\nContact: Yinlin Zhang",
+    "text": "Provenance\nQueried directly from the IBM Verify production instance via API.\n\nUpdated: Daily, at 06:00 ET\nRetention: While CanadaLogin exists\nSteward: EDCP Data and Research Team\nContact: Yinlin Zhang",
     "crumbs": [
       "Data Catalog",
       "IBM Verify (deprecated)",
@@ -2084,7 +2132,7 @@
     "href": "catalog/call_centre/weekly_topic_dump.html#fields",
     "title": "call_centre.weekly_topic_dump",
     "section": "Fields",
-    "text": "Fields\nOne row per topic record per call. A single call (call_no) may appear on multiple rows if more than one topic was recorded.\n\n\n\n\n\n\n\n\nField Name\nType\nDescription\n\n\n\n\ncall_no\ninteger\nIdentifier for the call. Not unique - multiple rows share the same call_no when multiple topics were recorded\n\n\ncall_datetime\ntimestamp\nDate and time the call took place\n\n\ncall_date\ndate\nDate the call took place\n\n\ndate\nstring\nCall date as a text date. Mirrors call_date\n\n\nclienttype\nstring\nType of caller, for example “Business”, “Public”, “Government of Canada”\n\n\nlanguage\nstring\nLanguage of the call, for example “English”, “French”\n\n\norigin\nstring\nProvince or region the caller is calling from\n\n\nstatobject\nstring\nThe call topic as recorded in the source system. May contain leading/trailing whitespace or inconsistent spacing\n\n\ncstat\nstring\nFull topic classification path, including category and topic (for example, “Main Document description::What is CanadaLogin?”)\n\n\ntransactiontype\nstring\nType of transaction recorded for the topic, for example “Search”, “Callback”\n\n\nprogramcontact\nstring\nProgram contact information provided to the caller, if any. Often missing\n\n\nsource\nfloat\nUnused",
+    "text": "Fields\nOne row per topic record per call. A single call (call_no) may appear on multiple rows if more than one topic was recorded.\n\n\n\n\n\n\n\n\nField Name\nType\nDescription\n\n\n\n\ncall_no\ninteger\nIdentifier for the call. Not unique - multiple rows share the same call_no when multiple topics were recorded\n\n\ncall_datetime\ntimestamp\nDate and time the call took place\n\n\ncall_date\ndate\nDate the call took place\n\n\ndate\nstring\nCall date as a text date. Mirrors call_date\n\n\nclienttype\nstring\nType of caller, for example “Business”, “Public”, “Government of Canada”\n\n\nlanguage\nstring\nLanguage of the call, for example “English”, “French”\n\n\norigin\nstring\nProvince or region the caller is calling from\n\n\nstatobject\nstring\nThe call topic as recorded in the source system. May contain leading/trailing whitespace or inconsistent spacing\n\n\ncstat\nstring\nFull topic classification path, including category and topic (for example, “Main Document description::What is CanadaLogin?”)\n\n\ntransactiontype\nstring\nType of transaction recorded for the topic: “Search”, “Callback”, or “Comment”. Padded with trailing spaces, so trim before comparing. “Callback” marks every topic row of a call escalated to PSO\n\n\nprogramcontact\nstring\nProgram contact information provided to the caller, if any. Often missing\n\n\nsource\nfloat\nUnused",
     "crumbs": [
       "Data Catalog",
       "Call Centre",
@@ -2384,7 +2432,7 @@
     "href": "catalog/ibm_verify/app_login_counts.html#provenance",
     "title": "ibm_verify.app_login_counts",
     "section": "Provenance",
-    "text": "Provenance\nQueried directly from the IBM Verify production instance via API.\n\nUpdated: Daily, at 6am America/Toronto\nRetention: While CanadaLogin exists\nSteward: EDCP Data and Research Team\nContact: Yinlin Zhang",
+    "text": "Provenance\nQueried directly from the IBM Verify production instance via API.\n\nUpdated: Daily, at 06:00 ET\nRetention: While CanadaLogin exists\nSteward: EDCP Data and Research Team\nContact: Yinlin Zhang",
     "crumbs": [
       "Data Catalog",
       "IBM Verify (deprecated)",
@@ -2432,7 +2480,7 @@
     "href": "catalog/ibm_verify/mfa_activity.html#provenance",
     "title": "ibm_verify.mfa_activity",
     "section": "Provenance",
-    "text": "Provenance\nQueried directly from the IBM Verify production instance via API.\n\nUpdated: Daily, at 6am America/Toronto\nRetention: While CanadaLogin exists\nSteward: EDCP Data and Research Team\nContact: Yinlin Zhang",
+    "text": "Provenance\nQueried directly from the IBM Verify production instance via API.\n\nUpdated: Daily, at 06:00 ET\nRetention: While CanadaLogin exists\nSteward: EDCP Data and Research Team\nContact: Yinlin Zhang",
     "crumbs": [
       "Data Catalog",
       "IBM Verify (deprecated)",
@@ -3006,7 +3054,7 @@
     "href": "cookbook/call_centre.html#activity-metrics",
     "title": "Call Centre",
     "section": "Activity Metrics",
-    "text": "Activity Metrics\nMetrics in this section describe call centre operations, sourced from call_centre.weekly_activity_report.\n\n\n\n\n\n\nMetric\n\n\n\nDescription\n\n\n\n\n\n\n\n\nCalls Accepted\n\n\nNumber of calls the call centre accepted in a reporting period.\n\n\n\n\n\n\nCalls Answered\n\n\nNumber of calls agents answered in a reporting period.\n\n\n\n\n\n\nAverage Call Length\n\n\nAverage length of answered calls.\n\n\n\n\n\n\nAverage Delay\n\n\nAverage wait before a call is answered.\n\n\n\n\n\n\nAbandonment Rate\n\n\nShare of accepted calls abandoned before an agent answered.\n\n\n\n\n\n\nAnswer Rate\n\n\nShare of accepted calls answered by an agent.\n\n\n\n\n\n\nService Level (Answered Within 60s)\n\n\nShare of calls answered within 60 seconds.\n\n\n\n\n\n\nAverage Handle Time\n\n\nAverage agent time per call, including after-call wrap-up.\n\n\n\n\n\n\nCalls per Active User\n\n\nCall volume relative to the active user base, comparable across weeks.\n\n\n\n\n\n\nNo matching items",
+    "text": "Activity Metrics\nMetrics in this section describe call centre operations, sourced from call_centre.weekly_activity_report.\n\n\n\n\n\n\nMetric\n\n\n\nDescription\n\n\n\n\n\n\n\n\nCalls Accepted\n\n\nNumber of calls the call centre accepted in a reporting period.\n\n\n\n\n\n\nCalls Answered\n\n\nNumber of calls agents answered in a reporting period.\n\n\n\n\n\n\nAverage Call Length\n\n\nAverage length of answered calls.\n\n\n\n\n\n\nAverage Delay\n\n\nAverage wait before a call is answered.\n\n\n\n\n\n\nAbandonment Rate\n\n\nShare of accepted calls abandoned before an agent answered.\n\n\n\n\n\n\nAnswer Rate\n\n\nShare of accepted calls answered by an agent.\n\n\n\n\n\n\nService Level (Answered Within 60s)\n\n\nShare of calls answered within 60 seconds.\n\n\n\n\n\n\nAverage Handle Time\n\n\nAverage agent time per call, including after-call wrap-up.\n\n\n\n\n\n\nCalls per Active User\n\n\nCall volume relative to the active user base, comparable across weeks.\n\n\n\n\n\n\nEscalations to PSO\n\n\nCalls the call centre escalated to Partner Success and Operations.\n\n\n\n\n\n\nEscalation Rate\n\n\nShare of call centre calls escalated to Partner Success and Operations.\n\n\n\n\n\n\nNo matching items",
     "crumbs": [
       "Metrics Cookbook",
       "Call Centre"
@@ -3120,99 +3168,147 @@
     ]
   },
   {
-    "objectID": "cookbook/call_centre/call-topic-share.html",
-    "href": "cookbook/call_centre/call-topic-share.html",
-    "title": "Call Topic Share",
+    "objectID": "cookbook/call_centre/call-escalations.html",
+    "href": "cookbook/call_centre/call-escalations.html",
+    "title": "Escalations to PSO",
     "section": "",
-    "text": "The percentage of all topic records represented by each call topic.\nThis is useful for understanding the relative importance of each call driver compared to the overall volume.",
+    "text": "The number of calls the call centre escalated to Partner Success and Operations (PSO). The call centre calls these callbacks: the call passes to a higher level of support, which calls the person back.",
     "crumbs": [
       "Metrics Cookbook",
       "Call Centre",
-      "Call Topic Share"
+      "Escalations to PSO"
     ]
   },
   {
-    "objectID": "cookbook/call_centre/call-topic-share.html#calculation",
-    "href": "cookbook/call_centre/call-topic-share.html#calculation",
-    "title": "Call Topic Share",
+    "objectID": "cookbook/call_centre/call-escalations.html#calculation",
+    "href": "cookbook/call_centre/call-escalations.html#calculation",
+    "title": "Escalations to PSO",
     "section": "Calculation",
-    "text": "Calculation\nCount records by cleaned topic, then divide each topic count by the total count across all topics.\n\n\n\n\n\n\nNoteExample queries\n\n\n\n\n\n\nSQLR\n\n\nWITH topic_counts AS (\n    SELECT\n        REGEXP_REPLACE(TRIM(statobject), '\\s+', ' ') AS call_topic,\n        COUNT(*) AS topic_count\n    FROM call_centre.weekly_topic_dump\n    GROUP BY REGEXP_REPLACE(TRIM(statobject), '\\s+', ' ')\n)\n\nSELECT\n    call_topic,\n    topic_count,\n    CAST(topic_count AS DOUBLE)\n        / NULLIF(SUM(topic_count) OVER (), 0) AS topic_share\nFROM topic_counts\nORDER BY topic_count DESC;\n\n\ntbl(con, in_schema(\"call_centre\", \"weekly_topic_dump\")) |&gt;\n  mutate(\n    call_topic = str_squish(statobject)\n  ) |&gt;\n  count(call_topic, name = \"topic_count\") |&gt;\n  mutate(\n    topic_share = as.double(topic_count) / sum(topic_count, na.rm = TRUE)\n  ) |&gt;\n  arrange(desc(topic_count))",
+    "text": "Calculation\nCount the distinct calls (call_no) in call_centre.weekly_topic_dump with a transactiontype of “Callback”, over a span of call dates. Every topic row of an escalated call carries the flag. The examples group by calendar month, but any span of call dates works.\nStart no earlier than 2026-06-29, when escalation to PSO began. Callbacks before then were not handled the same way.\n\n\n\n\n\n\nNoteExample queries\n\n\n\n\n\n\nSQLR\n\n\nSELECT\n    date_trunc('month', call_date) AS month,\n    COUNT(DISTINCT call_no) AS escalations\nFROM call_centre.weekly_topic_dump\n-- transactiontype is padded with trailing spaces\nWHERE trim(transactiontype) = 'Callback'\n  -- set the reporting window; escalation to PSO began on 2026-06-29\n  AND call_date BETWEEN DATE '2026-07-01' AND DATE '2026-09-30'\nGROUP BY date_trunc('month', call_date)\nORDER BY month;\n\n\ntbl(con, in_schema(\"call_centre\", \"weekly_topic_dump\")) |&gt;\n  filter(\n    # transactiontype is padded with trailing spaces\n    str_trim(transactiontype) == \"Callback\",\n    # set the reporting window; escalation to PSO began on 2026-06-29\n    call_date &gt;= as.Date(\"2026-07-01\"),\n    call_date &lt;= as.Date(\"2026-09-30\")\n  ) |&gt;\n  group_by(month = floor_date(call_date, \"month\")) |&gt;\n  summarise(escalations = n_distinct(call_no)) |&gt;\n  arrange(month)",
     "crumbs": [
       "Metrics Cookbook",
       "Call Centre",
-      "Call Topic Share"
+      "Escalations to PSO"
     ]
   },
   {
-    "objectID": "cookbook/call_centre/call-topic-share.html#interpretation-notes",
-    "href": "cookbook/call_centre/call-topic-share.html#interpretation-notes",
-    "title": "Call Topic Share",
+    "objectID": "cookbook/call_centre/call-escalations.html#interpretation-notes",
+    "href": "cookbook/call_centre/call-escalations.html#interpretation-notes",
+    "title": "Escalations to PSO",
     "section": "Interpretation notes",
-    "text": "Interpretation notes\nTopic share is useful for comparing relative demand across contact reasons. Interpret alongside total call volume.",
+    "text": "Interpretation notes\nEscalations are rare. One or two calls can double a month’s count, so compare over long spans and read the count next to the escalation rate.\nPSOM tickets are a cross-check, not the source. Each escalation becomes a ticket on the PSOM Jira board (jira.psom), created the next working day. Match them with form_topic LIKE '%Escalated from Call Center%' OR lower(summary) LIKE '%canadalogin callback%', reading each ticket from its own latest snapshot. The summary match catches PSOM-140 and PSOM-147, two callback tickets with a blank form topic. The two sources agree call for call, but a ticket count can still differ from this one: a count on form topic alone misses the blank-topic tickets, and a count by ticket creation date includes escalations whose calls are not yet in the call centre data.\nThe callback column in weekly_activity_report holds the same count by Sunday-to-Saturday week. It has no call dates, so it cannot give calendar months.",
     "crumbs": [
       "Metrics Cookbook",
       "Call Centre",
-      "Call Topic Share"
+      "Escalations to PSO"
     ]
   },
   {
-    "objectID": "cookbook/call_centre/call-topic-share.html#alternative-names",
-    "href": "cookbook/call_centre/call-topic-share.html#alternative-names",
-    "title": "Call Topic Share",
+    "objectID": "cookbook/call_centre/call-escalations.html#alternative-names",
+    "href": "cookbook/call_centre/call-escalations.html#alternative-names",
+    "title": "Escalations to PSO",
     "section": "Alternative names",
-    "text": "Alternative names\n\nshare of calls by topic\npercentage of calls by reason\ntopic distribution\ncall reason mix\ncontact driver share",
+    "text": "Alternative names\n\ncallbacks\ncall centre escalations\nescalated calls\nescalations to Partner Success and Operations",
     "crumbs": [
       "Metrics Cookbook",
       "Call Centre",
-      "Call Topic Share"
+      "Escalations to PSO"
     ]
   },
   {
-    "objectID": "cookbook/call_centre/calls-answered.html",
-    "href": "cookbook/call_centre/calls-answered.html",
-    "title": "Calls Answered",
+    "objectID": "cookbook/call_centre/calls-accepted.html",
+    "href": "cookbook/call_centre/calls-accepted.html",
+    "title": "Calls Accepted",
     "section": "",
-    "text": "The number of calls answered by call centre agents during a reporting period.\nThis metric is also used as a weighting variable when calculating weighted average call length and weighted average delay.",
+    "text": "The number of calls accepted by the call centre during a reporting period.\nThis metric is useful for tracking call centre demand and understanding how contact volume changes over time.",
     "crumbs": [
       "Metrics Cookbook",
       "Call Centre",
-      "Calls Answered"
+      "Calls Accepted"
     ]
   },
   {
-    "objectID": "cookbook/call_centre/calls-answered.html#calculation",
-    "href": "cookbook/call_centre/calls-answered.html#calculation",
-    "title": "Calls Answered",
+    "objectID": "cookbook/call_centre/calls-accepted.html#calculation",
+    "href": "cookbook/call_centre/calls-accepted.html#calculation",
+    "title": "Calls Accepted",
     "section": "Calculation",
-    "text": "Calculation\nUse calls_answered by reporting period, or sum across periods for a total.\n\n\n\n\n\n\nNoteExample queries\n\n\n\n\n\n\nSQLR\n\n\nBy week:\nSELECT\n    date_range_start,\n    date_range_end,\n    CAST(calls_answered AS BIGINT) AS calls_answered\nFROM call_centre.weekly_activity_report\nORDER BY date_range_start;\nTotal over a period:\nSELECT\n    SUM(CAST(calls_answered AS BIGINT)) AS total_calls_answered\nFROM call_centre.weekly_activity_report\nWHERE CAST(date_range_start AS DATE) BETWEEN DATE '2026-01-01' AND DATE '2026-05-31';\n\n\nBy week:\ntbl(con, in_schema(\"call_centre\", \"weekly_activity_report\")) |&gt;\n  arrange(date_range_start) |&gt;\n  select(\n    date_range_start,\n    date_range_end,\n    calls_answered\n  )\nTotal over a period:\ntbl(con, in_schema(\"call_centre\", \"weekly_activity_report\")) |&gt;\n  filter(\n    as.Date(date_range_start) &gt;= as.Date(\"2026-01-01\"),\n    as.Date(date_range_start) &lt;= as.Date(\"2026-05-31\")\n  ) |&gt;\n  summarise(\n    total_calls_answered = sum(calls_answered, na.rm = TRUE)\n  )",
+    "text": "Calculation\nUse calls_accepted by reporting period, or sum across periods for a total.\n\n\n\n\n\n\nNoteExample queries\n\n\n\n\n\n\nSQLR\n\n\nBy week:\nSELECT\n    date_range_start,\n    date_range_end,\n    CAST(calls_accepted AS BIGINT) AS calls_accepted\nFROM call_centre.weekly_activity_report\nORDER BY date_range_start;\nTotal over a period:\nSELECT\n    SUM(CAST(calls_accepted AS BIGINT)) AS total_calls_accepted\nFROM call_centre.weekly_activity_report\nWHERE CAST(date_range_start AS DATE) BETWEEN DATE '2026-01-01' AND DATE '2026-05-31';\n\n\nBy week:\ntbl(con, in_schema(\"call_centre\", \"weekly_activity_report\")) |&gt;\n  arrange(date_range_start) |&gt;\n  select(\n    date_range_start,\n    date_range_end,\n    calls_accepted\n  )\nTotal over a period:\ntbl(con, in_schema(\"call_centre\", \"weekly_activity_report\")) |&gt;\n  filter(\n    as.Date(date_range_start) &gt;= as.Date(\"2026-01-01\"),\n    as.Date(date_range_start) &lt;= as.Date(\"2026-05-31\")\n  ) |&gt;\n  summarise(\n    total_calls_accepted = sum(calls_accepted, na.rm = TRUE)\n  )",
     "crumbs": [
       "Metrics Cookbook",
       "Call Centre",
-      "Calls Answered"
+      "Calls Accepted"
     ]
   },
   {
-    "objectID": "cookbook/call_centre/calls-answered.html#interpretation-notes",
-    "href": "cookbook/call_centre/calls-answered.html#interpretation-notes",
-    "title": "Calls Answered",
+    "objectID": "cookbook/call_centre/calls-accepted.html#interpretation-notes",
+    "href": "cookbook/call_centre/calls-accepted.html#interpretation-notes",
+    "title": "Calls Accepted",
     "section": "Interpretation notes",
-    "text": "Interpretation notes\nCalls answered is commonly used as the weighting field when combining weekly average call length or delay values.",
+    "text": "Interpretation notes\nCalls accepted may not be identical to calls answered, depending on call centre definitions and routing logic.",
     "crumbs": [
       "Metrics Cookbook",
       "Call Centre",
-      "Calls Answered"
+      "Calls Accepted"
     ]
   },
   {
-    "objectID": "cookbook/call_centre/calls-answered.html#alternative-names",
-    "href": "cookbook/call_centre/calls-answered.html#alternative-names",
-    "title": "Calls Answered",
+    "objectID": "cookbook/call_centre/calls-accepted.html#alternative-names",
+    "href": "cookbook/call_centre/calls-accepted.html#alternative-names",
+    "title": "Calls Accepted",
     "section": "Alternative names",
-    "text": "Alternative names\n\nanswered calls\ncalls handled\nagent-answered calls\ncompleted calls\ncalls taken by agents",
+    "text": "Alternative names\n\ncalls received\naccepted calls\nweekly call volume\ncall centre demand\nnumber of calls handled by the queue",
     "crumbs": [
       "Metrics Cookbook",
       "Call Centre",
-      "Calls Answered"
+      "Calls Accepted"
+    ]
+  },
+  {
+    "objectID": "cookbook/call_centre/calls-per-active-user.html",
+    "href": "cookbook/call_centre/calls-per-active-user.html",
+    "title": "Calls per Active User",
+    "section": "",
+    "text": "Call centre volume divided by the size of the active user base, so you can compare support demand across weeks even as the user base grows.\nRaw call volume moves partly because the number of people using CanadaLogin changes. Normalizing by active users takes that out and leaves how often a typical user needed to phone in on a given day. The figure is scaled to calls per 100 active users to keep it in a readable range.",
+    "crumbs": [
+      "Metrics Cookbook",
+      "Call Centre",
+      "Calls per Active User"
+    ]
+  },
+  {
+    "objectID": "cookbook/call_centre/calls-per-active-user.html#calculation",
+    "href": "cookbook/call_centre/calls-per-active-user.html#calculation",
+    "title": "Calls per Active User",
+    "section": "Calculation",
+    "text": "Calculation\nFor each call centre reporting week, take calls_accepted from call_centre.weekly_activity_report, subtract that week’s test_calls, and divide by the total user-days in that week, then multiply by 100. User-days is the sum of ibm_verify_events_transformed.events_auth_total_logins.unique_users over the days whose date falls inside the week’s date_range_start to date_range_end, so the numerator and the denominator cover the same span of days. A weekly call count over weekly user-days is a per-day rate. The two tables store their dates as text, so both sides of the join are cast to DATE.\nUse calls_accepted, not calls_answered: accepted counts everything that reached the queue, so an abandoned call still counts as demand. test_calls is a subset of accepted and is large enough at current volumes to be worth subtracting.\n\n\n\n\n\n\nNoteExample queries\n\n\n\n\n\n\nSQLR\n\n\nSELECT\n    w.date_range_start,\n    w.date_range_end,\n    CAST(w.calls_accepted AS BIGINT) AS calls_accepted,\n    CAST(COALESCE(w.test_calls, 0) AS BIGINT) AS test_calls,\n    CAST(w.calls_accepted - COALESCE(w.test_calls, 0) AS BIGINT) AS calls_excl_test,\n    AVG(a.unique_users) AS avg_daily_active_users,\n    CAST(w.calls_accepted - COALESCE(w.test_calls, 0) AS DOUBLE)\n        / SUM(a.unique_users) * 100 AS calls_per_100_dau\nFROM call_centre.weekly_activity_report AS w\nJOIN ibm_verify_events_transformed.events_auth_total_logins AS a\n    ON CAST(a.date AS DATE)\n       BETWEEN CAST(w.date_range_start AS DATE) AND CAST(w.date_range_end AS DATE)\nGROUP BY w.date_range_start, w.date_range_end, w.calls_accepted, w.test_calls\nORDER BY w.date_range_start;\n\n\nweekly &lt;- tbl(con, in_schema(\"call_centre\", \"weekly_activity_report\")) |&gt;\n  select(date_range_start, date_range_end, calls_accepted, test_calls)\n\ndau &lt;- tbl(con, in_schema(\"ibm_verify_events_transformed\", \"events_auth_total_logins\")) |&gt;\n  select(dau_date = date, unique_users)\n\nweekly |&gt;\n  cross_join(dau) |&gt;\n  filter(\n    as.Date(dau_date) &gt;= as.Date(date_range_start),\n    as.Date(dau_date) &lt;= as.Date(date_range_end)\n  ) |&gt;\n  group_by(date_range_start, date_range_end, calls_accepted, test_calls) |&gt;\n  summarise(\n    avg_daily_active_users = mean(unique_users, na.rm = TRUE),\n    user_days = sum(unique_users, na.rm = TRUE),\n    .groups = \"drop\"\n  ) |&gt;\n  mutate(\n    test_calls = coalesce(test_calls, 0),\n    calls_excl_test = calls_accepted - test_calls,\n    calls_per_100_dau = calls_excl_test / user_days * 100\n  ) |&gt;\n  arrange(date_range_start) |&gt;\n  select(\n    date_range_start,\n    date_range_end,\n    calls_accepted,\n    test_calls,\n    calls_excl_test,\n    avg_daily_active_users,\n    calls_per_100_dau\n  )",
+    "crumbs": [
+      "Metrics Cookbook",
+      "Call Centre",
+      "Calls per Active User"
+    ]
+  },
+  {
+    "objectID": "cookbook/call_centre/calls-per-active-user.html#interpretation-notes",
+    "href": "cookbook/call_centre/calls-per-active-user.html#interpretation-notes",
+    "title": "Calls per Active User",
+    "section": "Interpretation notes",
+    "text": "Interpretation notes\nBoth sides are per-day averages over the same Sunday to Saturday week: average daily calls over average daily active users. On a typical day, roughly this many calls came in per 100 active users. This converts cleanly to a percentage, e.g., 2 calls per 100 users means 2% of users called on a given day.\nWatch the units. Dividing a whole week of calls by one day’s active users reads about seven times too high. Normalizing by user-days avoids that and holds up for a partial week, since the day count comes from the data rather than a hardcoded 7. avg_daily_active_users is output for auditing only; the rate comes from the sum.\nA call centre week runs Sunday to Saturday, from the report’s own date_range_start and date_range_end. The IBM Verify metrics anchor weeks on Monday, so the two do not line up; the join and the denominator follow the call centre boundaries.\nA week appears only once daily active user data exists for it, so the series starts near the April 22, 2026 launch.",
+    "crumbs": [
+      "Metrics Cookbook",
+      "Call Centre",
+      "Calls per Active User"
+    ]
+  },
+  {
+    "objectID": "cookbook/call_centre/calls-per-active-user.html#alternative-names",
+    "href": "cookbook/call_centre/calls-per-active-user.html#alternative-names",
+    "title": "Calls per Active User",
+    "section": "Alternative names",
+    "text": "Alternative names\n\ncall centre contact rate\nnormalized call volume\nsupport contacts per active user\ncalls per 100 users\nsupport demand",
+    "crumbs": [
+      "Metrics Cookbook",
+      "Call Centre",
+      "Calls per Active User"
     ]
   },
   {

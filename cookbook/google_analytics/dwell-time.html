@@ -86,9 +86,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-7de235e3fdb1f329c0b221c428aa6f51.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark-4c439c898bba901b790a010c341a49de.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-7de235e3fdb1f329c0b221c428aa6f51.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-88a945ed1e2be4f97bf21de973267cf7.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-b85d610ac85a2aaf60d1a455c142aa92.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-88a945ed1e2be4f97bf21de973267cf7.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -419,6 +419,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <div class="sidebar-item-container"> 
   <a href="../../cookbook/call_centre/calls-per-active-user.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Calls per Active User</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../cookbook/call_centre/call-escalations.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Escalations to PSO</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../cookbook/call_centre/escalation-rate.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Escalation Rate</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -905,7 +917,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="calculation" class="level2">
 <h2 class="anchored" data-anchor-id="calculation">Calculation</h2>
 <p>Dwell curve: for each page and each milestone, divide the <code>read_Ns</code> event count by the <code>page_view</code> event count over the reporting window. Both come from <a href="../../catalog/google_analytics/meta_page_events.html"><code>meta_page_events</code></a>.</p>
-<p>Median dwell time: the longest milestone that at least half of the page’s views reached.</p>
+<p>Median dwell time: the time at which half of the page’s views were still open. Take the last milestone at least half the views reached and the next one, and interpolate on a log scale to where the share crosses 50%. It is 0 when fewer than half reached 1 second, and infinite when half were still open at 600 seconds.</p>
 <p>Group on <code>pagepath_redacted</code>, never <code>pagepath</code>, which holds a private token for Signal Check pages.</p>
 <div class="callout callout-style-default callout-note callout-titled" title="Example queries">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
@@ -968,20 +980,46 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">SELECT</span> pagepath_redacted, n <span class="kw">AS</span> page_views</span>
 <span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">FROM</span> <span class="kw">events</span></span>
 <span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">WHERE</span> eventname <span class="op">=</span> <span class="st">'page_view'</span></span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    e.pagepath_redacted,</span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>    v.page_views,</span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- NULL when fewer than half of the page's views reached 1 second</span></span>
-<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">MAX</span>(<span class="cf">CASE</span></span>
-<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>        <span class="cf">WHEN</span> <span class="fu">CAST</span>(e.n <span class="kw">AS</span> <span class="dt">DOUBLE</span>) <span class="op">/</span> v.page_views <span class="op">&gt;=</span> <span class="fl">0.5</span></span>
-<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>        <span class="cf">THEN</span> <span class="fu">CAST</span>(REGEXP_EXTRACT(e.eventname, <span class="st">'[0-9]+'</span>) <span class="kw">AS</span> <span class="dt">INTEGER</span>)</span>
-<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">END</span>) <span class="kw">AS</span> median_dwell_seconds</span>
-<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> <span class="kw">events</span> e</span>
-<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a><span class="kw">JOIN</span> views v <span class="kw">ON</span> e.pagepath_redacted <span class="op">=</span> v.pagepath_redacted</span>
-<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> e.eventname <span class="op">&lt;&gt;</span> <span class="st">'page_view'</span></span>
-<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> e.pagepath_redacted, v.page_views</span>
-<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> e.pagepath_redacted;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>),</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="co">-- every milestone, so one nobody reached reads as zero, not missing</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>curve <span class="kw">AS</span> (</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>    <span class="kw">SELECT</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>        v.pagepath_redacted,</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>        v.page_views,</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>        m.seconds,</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>        <span class="fu">CAST</span>(<span class="fu">COALESCE</span>(e.n, <span class="dv">0</span>) <span class="kw">AS</span> <span class="dt">DOUBLE</span>) <span class="op">/</span> v.page_views <span class="kw">AS</span> <span class="kw">share</span>,</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>        <span class="fu">LEAD</span>(m.seconds) <span class="kw">OVER</span> (<span class="kw">PARTITION</span> <span class="kw">BY</span> v.pagepath_redacted <span class="kw">ORDER</span> <span class="kw">BY</span> m.seconds) <span class="kw">AS</span> next_seconds,</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>        <span class="fu">LEAD</span>(<span class="fu">CAST</span>(<span class="fu">COALESCE</span>(e.n, <span class="dv">0</span>) <span class="kw">AS</span> <span class="dt">DOUBLE</span>) <span class="op">/</span> v.page_views)</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>            <span class="kw">OVER</span> (<span class="kw">PARTITION</span> <span class="kw">BY</span> v.pagepath_redacted <span class="kw">ORDER</span> <span class="kw">BY</span> m.seconds) <span class="kw">AS</span> next_share</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>    <span class="kw">FROM</span> views v</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>    <span class="kw">CROSS</span> <span class="kw">JOIN</span> UNNEST(<span class="dt">ARRAY</span>[<span class="dv">1</span>, <span class="dv">5</span>, <span class="dv">15</span>, <span class="dv">30</span>, <span class="dv">60</span>, <span class="dv">120</span>, <span class="dv">300</span>, <span class="dv">600</span>]) <span class="kw">AS</span> m (seconds)</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>    <span class="kw">LEFT</span> <span class="kw">JOIN</span> <span class="kw">events</span> e</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>        <span class="kw">ON</span> e.pagepath_redacted <span class="op">=</span> v.pagepath_redacted</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>       <span class="kw">AND</span> e.eventname <span class="op">=</span> <span class="st">'read_'</span> <span class="op">||</span> <span class="fu">CAST</span>(m.seconds <span class="kw">AS</span> <span class="dt">VARCHAR</span>) <span class="op">||</span> <span class="st">'s'</span></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>),</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>crossing <span class="kw">AS</span> (</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>    <span class="kw">SELECT</span></span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>        <span class="op">*</span>,</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>        <span class="fu">ROW_NUMBER</span>() <span class="kw">OVER</span> (<span class="kw">PARTITION</span> <span class="kw">BY</span> pagepath_redacted <span class="kw">ORDER</span> <span class="kw">BY</span> seconds <span class="kw">DESC</span>) <span class="kw">AS</span> rn</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>    <span class="kw">FROM</span> curve</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>    <span class="kw">WHERE</span> <span class="kw">share</span> <span class="op">&gt;=</span> <span class="fl">0.5</span></span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>    v.pagepath_redacted,</span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>    v.page_views,</span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>    <span class="cf">CASE</span></span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>        <span class="co">-- fewer than half of the page views reached 1 second</span></span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>        <span class="cf">WHEN</span> c.seconds <span class="kw">IS</span> <span class="kw">NULL</span> <span class="cf">THEN</span> <span class="dv">0</span></span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>        <span class="co">-- half were still open at the last milestone</span></span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>        <span class="cf">WHEN</span> c.next_seconds <span class="kw">IS</span> <span class="kw">NULL</span> <span class="cf">THEN</span> infinity()</span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>        <span class="cf">ELSE</span> <span class="fu">exp</span>(<span class="fu">ln</span>(c.seconds) <span class="op">+</span> (c.<span class="kw">share</span> <span class="op">-</span> <span class="fl">0.5</span>) <span class="op">/</span> (c.<span class="kw">share</span> <span class="op">-</span> c.next_share)</span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>                 <span class="op">*</span> (<span class="fu">ln</span>(c.next_seconds) <span class="op">-</span> <span class="fu">ln</span>(c.seconds)))</span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>    <span class="cf">END</span> <span class="kw">AS</span> median_dwell_seconds</span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> views v</span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a><span class="kw">LEFT</span> <span class="kw">JOIN</span> crossing c</span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a>    <span class="kw">ON</span> c.pagepath_redacted <span class="op">=</span> v.pagepath_redacted</span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a>   <span class="kw">AND</span> c.rn <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> v.pagepath_redacted;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
 <p>Dwell curve:</p>
@@ -1012,38 +1050,53 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
 <span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(pagepath_redacted, milestone_seconds)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Median dwell time:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>events <span class="ot">&lt;-</span> <span class="fu">tbl</span>(con, <span class="fu">in_schema</span>(<span class="st">"google_analytics"</span>, <span class="st">"meta_page_events"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    page_kind <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"signal_check"</span>, <span class="st">"dashboard"</span>),</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    eventname <span class="sc">==</span> <span class="st">"page_view"</span> <span class="sc">|</span> <span class="fu">str_detect</span>(eventname, <span class="st">"^read_[0-9]+s$"</span>),</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># set the reporting window; see the timespans note in cookbook/notes.qmd</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as.Date</span>(date) <span class="sc">&gt;=</span> <span class="fu">as.Date</span>(<span class="st">"2026-09-01"</span>),</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as.Date</span>(date) <span class="sc">&lt;=</span> <span class="fu">as.Date</span>(<span class="st">"2026-09-30"</span>)</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(pagepath_redacted, eventname) <span class="sc">|&gt;</span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">sum</span>(eventcount, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">.groups =</span> <span class="st">"drop"</span>)</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>views <span class="ot">&lt;-</span> events <span class="sc">|&gt;</span></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(eventname <span class="sc">==</span> <span class="st">"page_view"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(pagepath_redacted, <span class="at">page_views =</span> n)</span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>events <span class="sc">|&gt;</span></span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(eventname <span class="sc">!=</span> <span class="st">"page_view"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(views, <span class="at">by =</span> <span class="st">"pagepath_redacted"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(pagepath_redacted, page_views) <span class="sc">|&gt;</span></span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>    <span class="co"># NA when fewer than half of the page's views reached 1 second</span></span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">median_dwell_seconds =</span> <span class="fu">max</span>(</span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>      <span class="fu">if_else</span>(</span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>        <span class="fu">as.numeric</span>(n) <span class="sc">/</span> page_views <span class="sc">&gt;=</span> <span class="fl">0.5</span>,</span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>        <span class="fu">as.integer</span>(<span class="fu">str_extract</span>(eventname, <span class="st">"[0-9]+"</span>)),</span>
-<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>        <span class="cn">NA_integer_</span></span>
-<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>      ),</span>
-<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>      <span class="at">na.rm =</span> <span class="cn">TRUE</span></span>
-<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
-<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(pagepath_redacted)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>milestones <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">5</span>, <span class="dv">15</span>, <span class="dv">30</span>, <span class="dv">60</span>, <span class="dv">120</span>, <span class="dv">300</span>, <span class="dv">600</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># The time half the page views were still open, interpolated on a log scale</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># between the milestones either side of 50%. `seconds` must be sorted.</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>median_read <span class="ot">&lt;-</span> <span class="cf">function</span>(seconds, share) {</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  above <span class="ot">&lt;-</span> <span class="fu">which</span>(share <span class="sc">&gt;=</span> <span class="fl">0.5</span>)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">length</span>(above) <span class="sc">==</span> <span class="dv">0</span>L) <span class="fu">return</span>(<span class="dv">0</span>)</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  i <span class="ot">&lt;-</span> <span class="fu">max</span>(above)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (i <span class="sc">==</span> <span class="fu">length</span>(seconds)) <span class="fu">return</span>(<span class="cn">Inf</span>)</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  step <span class="ot">&lt;-</span> (share[i] <span class="sc">-</span> <span class="fl">0.5</span>) <span class="sc">/</span> (share[i] <span class="sc">-</span> share[i <span class="sc">+</span> <span class="dv">1</span>L])</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">exp</span>(<span class="fu">log</span>(seconds[i]) <span class="sc">+</span> step <span class="sc">*</span> (<span class="fu">log</span>(seconds[i <span class="sc">+</span> <span class="dv">1</span>L]) <span class="sc">-</span> <span class="fu">log</span>(seconds[i])))</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>events <span class="ot">&lt;-</span> <span class="fu">tbl</span>(con, <span class="fu">in_schema</span>(<span class="st">"google_analytics"</span>, <span class="st">"meta_page_events"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    page_kind <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"signal_check"</span>, <span class="st">"dashboard"</span>),</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    eventname <span class="sc">==</span> <span class="st">"page_view"</span> <span class="sc">|</span> <span class="fu">str_detect</span>(eventname, <span class="st">"^read_[0-9]+s$"</span>),</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># set the reporting window; see the timespans note in cookbook/notes.qmd</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as.Date</span>(date) <span class="sc">&gt;=</span> <span class="fu">as.Date</span>(<span class="st">"2026-09-01"</span>),</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as.Date</span>(date) <span class="sc">&lt;=</span> <span class="fu">as.Date</span>(<span class="st">"2026-09-30"</span>)</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(pagepath_redacted, eventname) <span class="sc">|&gt;</span></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">sum</span>(eventcount, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect</span>() <span class="sc">|&gt;</span></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">n =</span> <span class="fu">as.numeric</span>(n))</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>views <span class="ot">&lt;-</span> events <span class="sc">|&gt;</span></span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(eventname <span class="sc">==</span> <span class="st">"page_view"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(pagepath_redacted, <span class="at">page_views =</span> n)</span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>reached <span class="ot">&lt;-</span> events <span class="sc">|&gt;</span></span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(eventname <span class="sc">!=</span> <span class="st">"page_view"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">transmute</span>(</span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>    pagepath_redacted,</span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>    <span class="at">seconds =</span> <span class="fu">as.numeric</span>(<span class="fu">str_extract</span>(eventname, <span class="st">"[0-9]+"</span>)),</span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>    n</span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>views <span class="sc">|&gt;</span></span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>  <span class="co"># every milestone, so one nobody reached reads as zero, not missing</span></span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cross_join</span>(<span class="fu">tibble</span>(<span class="at">seconds =</span> milestones)) <span class="sc">|&gt;</span></span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(reached, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"pagepath_redacted"</span>, <span class="st">"seconds"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">share =</span> <span class="fu">coalesce</span>(n, <span class="dv">0</span>) <span class="sc">/</span> page_views) <span class="sc">|&gt;</span></span>
+<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(pagepath_redacted, seconds) <span class="sc">|&gt;</span></span>
+<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(pagepath_redacted, page_views) <span class="sc">|&gt;</span></span>
+<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">median_dwell_seconds =</span> <span class="fu">median_read</span>(seconds, share), <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(pagepath_redacted)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
@@ -1054,7 +1107,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="interpretation-notes" class="level2">
 <h2 class="anchored" data-anchor-id="interpretation-notes">Interpretation notes</h2>
 <p>Only visible time counts. The clock pauses while the tab is in the background and resumes when the reader comes back, so a tab left open overnight does not reach <code>read_600s</code> unless someone is looking at it.</p>
-<p>The median is a floor, not an exact time. A <code>median_dwell_seconds</code> of 60 means the median reader stayed at least 60 seconds and less than 120. The longest milestone is 600 seconds, so a median of 600 means “10 minutes or more”.</p>
+<p>The median is an estimate between two measured milestones. A <code>median_dwell_seconds</code> of 45 means half the views passed 30 seconds and fewer than half passed 60; the interpolation places the crossing in between. An infinite median means half the views were still open at 10 minutes, so report it as “over 10 minutes”. Signal Checks before #9 report the floor milestone instead, the longest milestone at least half the views reached, so their medians read lower.</p>
 <p>Prefer the curve or the median to an average. Readership is small, often a few dozen page views per page per month, and one forgotten tab can move a mean a long way. At these counts, check <code>page_views</code> before comparing two pages. A share built on five page views is too unstable to rank.</p>
 <p>The curve counts page views, not people. A reader who reloads the page, or comes back on another day, starts the milestones again and counts twice. Use <code>page_views</code> as the denominator, since <code>totalusers</code> in <code>meta_page_events</code> can’t be summed across days.</p>
 <p><code>read_1s</code> is approximate. The page checks the clock once a second, so <code>read_1s</code> means “1 to 2 seconds”. Milestones from 15 seconds up are not affected.</p>

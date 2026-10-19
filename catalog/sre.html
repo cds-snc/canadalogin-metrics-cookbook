@@ -52,9 +52,9 @@ ul.task-list li input[type="checkbox"] {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-7de235e3fdb1f329c0b221c428aa6f51.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-4c439c898bba901b790a010c341a49de.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-7de235e3fdb1f329c0b221c428aa6f51.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-88a945ed1e2be4f97bf21de973267cf7.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-b85d610ac85a2aaf60d1a455c142aa92.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-88a945ed1e2be4f97bf21de973267cf7.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -471,6 +471,18 @@ window.Quarto = {
   <div class="sidebar-item-container"> 
   <a href="../cookbook/call_centre/calls-per-active-user.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Calls per Active User</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/call_centre/call-escalations.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Escalations to PSO</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/call_centre/escalation-rate.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Escalation Rate</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -948,7 +960,8 @@ window.Quarto = {
 </header>
 
 
-<p>Platform metrics for CanadaLogin, in the <code>sre</code> schema. Currently, both tables are derived from the CanadaLogin Platform team’s <code>CanadaLogin_MTTR_Dashboard</code> Google Sheet (maintained by hand in the CDS Google Drive) and fetched by the <code>sre-mttr-sheets-fetcher</code> Lambda using Google Sheets API 6am ET every Monday. They share one source and grain (one row per incident); they differ only in history: <code>mttr_current</code> holds the latest state of each incident, while <code>mttr_history</code> accumulates a dated snapshot of every incident on each upload.</p>
+<p>Platform metrics for CanadaLogin, in the <code>sre</code> schema. It holds two groups of tables: incident tables, which record outages and how long they took to resolve, and uptime tables, which record whether each monitored site was up and how fast it responded.</p>
+<p>The incident tables come from the CanadaLogin Platform team’s <code>CanadaLogin_MTTR_Dashboard</code> Google Sheet, maintained by hand in the CDS Google Drive. The <code>sre-mttr-sheets-fetcher</code> Lambda reads it through the Google Sheets API every Monday at 06:00 ET. Both tables have one row per incident and differ only in history: <code>mttr_current</code> holds the latest state of each incident, while <code>mttr_history</code> adds a dated snapshot of every incident on each upload.</p>
 <section id="incident-tables" class="level2">
 <h2 class="anchored" data-anchor-id="incident-tables">Incident Tables</h2>
 <div id="listing-mttr-tables" class="quarto-listing quarto-listing-container-table">
@@ -968,7 +981,7 @@ Description
 </thead>
 <tbody class="list">
 
-<tr data-index="0" data-listing-file-modified-sort="1792438022329" data-listing-reading-time-sort="3" data-listing-word-count-sort="410" data-listing-title-sort="sre.mttr_current" data-listing-filename-sort="mttr_current.qmd">
+<tr data-index="0" data-listing-file-modified-sort="1792440014195" data-listing-reading-time-sort="3" data-listing-word-count-sort="410" data-listing-title-sort="sre.mttr_current" data-listing-filename-sort="mttr_current.qmd">
 <td>
 <a href="../catalog/sre/mttr_current.html" class="title listing-title">sre.mttr_current</a>
 </td>
@@ -978,7 +991,7 @@ Description
 
 </tr>
 
-<tr data-index="1" data-listing-file-modified-sort="1792438022329" data-listing-reading-time-sort="1" data-listing-word-count-sort="113" data-listing-title-sort="sre.mttr_history" data-listing-filename-sort="mttr_history.qmd">
+<tr data-index="1" data-listing-file-modified-sort="1792440014195" data-listing-reading-time-sort="1" data-listing-word-count-sort="113" data-listing-title-sort="sre.mttr_history" data-listing-filename-sort="mttr_history.qmd">
 <td>
 <a href="../catalog/sre/mttr_history.html" class="title listing-title">sre.mttr_history</a>
 </td>
@@ -1023,7 +1036,7 @@ Description
 </thead>
 <tbody class="list">
 
-<tr data-index="0" data-listing-file-modified-sort="1792438022329" data-listing-reading-time-sort="3" data-listing-word-count-sort="500" data-listing-title-sort="sre.uptime_summary" data-listing-filename-sort="uptime_summary.qmd">
+<tr data-index="0" data-listing-file-modified-sort="1792440014195" data-listing-reading-time-sort="3" data-listing-word-count-sort="500" data-listing-title-sort="sre.uptime_summary" data-listing-filename-sort="uptime_summary.qmd">
 <td>
 <a href="../catalog/sre/uptime_summary.html" class="title listing-title">sre.uptime_summary</a>
 </td>
@@ -1033,7 +1046,7 @@ Description
 
 </tr>
 
-<tr data-index="1" data-listing-file-modified-sort="1792438022329" data-listing-reading-time-sort="2" data-listing-word-count-sort="389" data-listing-title-sort="sre.uptime_timeseries" data-listing-filename-sort="uptime_timeseries.qmd">
+<tr data-index="1" data-listing-file-modified-sort="1792440014195" data-listing-reading-time-sort="2" data-listing-word-count-sort="389" data-listing-title-sort="sre.uptime_timeseries" data-listing-filename-sort="uptime_timeseries.qmd">
 <td>
 <a href="../catalog/sre/uptime_timeseries.html" class="title listing-title">sre.uptime_timeseries</a>
 </td>
