@@ -60,6 +60,10 @@ tbl(con, in_schema("call_centre", "weekly_topic_dump")) |>
 Topic share is useful for comparing relative demand across
 contact reasons. Interpret alongside total call volume.
 
+**This is a share of topic records, not of callers.** A call can carry several
+topics, so a call counts once per topic here. For the share of callers who asked
+about a topic, see [Calls by Topic Category](calls-by-topic-category.qmd).
+
 ## Alternative names
 
 - share of calls by topic

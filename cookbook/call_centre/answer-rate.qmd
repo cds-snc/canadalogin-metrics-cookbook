@@ -52,6 +52,9 @@ The rate is a proportion between 0 and 1. A high answer rate
 with rising delay can still indicate strain: calls are answered eventually, but
 callers wait longer to reach an agent.
 
+**Includes test calls.** The weekly report does not say which test calls were
+answered, so neither side of the rate can drop them consistently.
+
 ## Alternative names
 
 - answer ratio

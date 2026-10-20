@@ -52,6 +52,9 @@ tbl(con, in_schema("call_centre", "weekly_activity_report")) |>
 The rate is a proportion between 0 and 1. Read it together with
 average delay; a spike in abandonment usually coincides with longer waits.
 
+**Includes test calls.** The weekly report does not say which test calls were
+abandoned, so neither side of the rate can drop them consistently.
+
 ## Alternative names
 
 - abandon rate

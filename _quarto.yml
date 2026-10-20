@@ -70,6 +70,7 @@ website:
               - cookbook/call_centre/call-escalations.qmd
               - cookbook/call_centre/escalation-rate.qmd
               - cookbook/call_centre/call-topic-share.qmd
+              - cookbook/call_centre/calls-by-topic-category.qmd
               - cookbook/call_centre/top-10-call-topics.qmd
           - section: "Platform"
             href: cookbook/sre.qmd

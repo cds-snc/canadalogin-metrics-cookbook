@@ -85,6 +85,9 @@ Average delay should be interpreted alongside call volume. A
 low-volume week can produce unusual wait times that should not dominate the
 overall result.
 
+**Includes test calls.** The weekly report gives the number of test calls, not
+their wait, so they cannot be taken out of the average.
+
 ## Alternative names
 
 - average wait time

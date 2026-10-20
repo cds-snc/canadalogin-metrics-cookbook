@@ -85,6 +85,9 @@ tbl(con, in_schema("call_centre", "weekly_activity_report")) |>
 Use a weighted average rather than a simple average of weekly
 averages. A simple average may give too much influence to low-volume weeks.
 
+**Includes test calls.** The weekly report gives the number of test calls, not
+their length, so they cannot be taken out of the average.
+
 ## Alternative names
 
 - average call duration

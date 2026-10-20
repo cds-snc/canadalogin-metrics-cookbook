@@ -57,6 +57,9 @@ The result is a proportion between 0 and 1. Because only the
 weekly proportion is stored, the weighted average is an approximation of the true
 within-60s rate, but it is far closer than a simple average of weekly values.
 
+**Includes test calls.** The weekly report gives the number of test calls, not
+their wait, so they cannot be taken out of the share.
+
 ## Alternative names
 
 - service level

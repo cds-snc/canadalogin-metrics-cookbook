@@ -75,6 +75,10 @@ tbl(con, in_schema("call_centre", "weekly_activity_report")) |>
 Calls answered is commonly used as the weighting field when
 combining weekly average call length or delay values.
 
+**Includes test calls.** The weekly report counts test calls but does not say
+how many were answered, so they cannot be taken out. For demand without them,
+use [Calls Accepted](calls-accepted.qmd).
+
 ## Alternative names
 
 - answered calls

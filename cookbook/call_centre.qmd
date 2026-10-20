@@ -24,6 +24,7 @@ listing:
   - id: metrics-2
     contents:
       - call_centre/call-topic-share.qmd
+      - call_centre/calls-by-topic-category.qmd
       - call_centre/top-10-call-topics.qmd
     type: table
     fields: [title, description]

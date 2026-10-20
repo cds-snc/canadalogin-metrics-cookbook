@@ -1,0 +1,142 @@
+---
+title: "Calls by Topic Category"
+description: "Calls about each topic or category, as a share of calls, not of topic records."
+---
+
+How many calls were about each topic, and what share of all calls that is. Grouped
+into categories, this answers "what share of callers asked about X".
+
+It is a different measure from [Call Topic Share](call-topic-share.qmd), which
+answers "what share of the conversation was about X". An agent can log several
+topics on one call. Call Topic Share counts topic records, so a call counts once
+per topic and the shares add up to 100%. This metric counts calls, so a call
+counts once per topic it touched, and the shares add up to **more** than 100%.
+Say which one a figure is: the two can differ by more than a factor of two for
+the same topic.
+
+## Calculation
+
+Pick whole weeks of the [weekly activity
+report](../../catalog/call_centre/weekly_activity_report.qmd) (Sunday to Saturday).
+Take the topic records whose `call_date` falls inside those weeks, clean each
+topic, and count distinct `call_no` per topic. Divide by the weeks' calls,
+excluding test calls (see [Calls Accepted](calls-accepted.qmd)).
+
+The denominator is the weekly report rather than the calls in the topic dump,
+because some calls have no topic logged. Every call is a caller; a call with no
+topic is a caller whose reason was not recorded.
+
+::: {.callout-note collapse="true" title="Example queries"}
+
+::: {.panel-tabset}
+
+## SQL
+
+```sql
+WITH weeks AS (
+    SELECT
+        CAST(date_range_start AS DATE) AS week_start,
+        CAST(date_range_end AS DATE) AS week_end,
+        -- calls excluding test calls; a missing test_calls means none
+        calls_accepted - COALESCE(test_calls, 0) AS calls
+    FROM call_centre.weekly_activity_report
+    -- set the reporting window in whole weeks
+    WHERE CAST(date_range_start AS DATE) BETWEEN DATE '2026-09-06' AND DATE '2026-09-27'
+),
+topics AS (
+    -- one row per call and topic, so a topic logged twice on a call counts once
+    SELECT DISTINCT
+        call_no,
+        REGEXP_REPLACE(TRIM(statobject), '\s+', ' ') AS call_topic
+    FROM call_centre.weekly_topic_dump
+    WHERE call_date BETWEEN (SELECT MIN(week_start) FROM weeks)
+                        AND (SELECT MAX(week_end) FROM weeks)
+)
+
+SELECT
+    call_topic,
+    COUNT(*) AS calls,
+    CAST(COUNT(*) AS DOUBLE) / (SELECT SUM(calls) FROM weeks) AS share_of_calls
+FROM topics
+GROUP BY call_topic
+ORDER BY calls DESC, call_topic;
+```
+
+## R
+
+```r
+weeks <- tbl(con, in_schema("call_centre", "weekly_activity_report")) |>
+  # set the reporting window in whole weeks
+  filter(
+    as.Date(date_range_start) >= as.Date("2026-09-06"),
+    as.Date(date_range_start) <= as.Date("2026-09-27")
+  ) |>
+  transmute(
+    week_start = as.Date(date_range_start),
+    week_end = as.Date(date_range_end),
+    # calls excluding test calls; a missing test_calls means none
+    calls = calls_accepted - coalesce(test_calls, 0)
+  ) |>
+  collect()
+
+tbl(con, in_schema("call_centre", "weekly_topic_dump")) |>
+  filter(
+    call_date >= !!min(weeks$week_start),
+    call_date <= !!max(weeks$week_end)
+  ) |>
+  # one row per call and topic, so a topic logged twice on a call counts once
+  distinct(call_no, call_topic = str_squish(statobject)) |>
+  count(call_topic, name = "calls") |>
+  mutate(share_of_calls = as.double(calls) / !!sum(weeks$calls)) |>
+  arrange(desc(calls), call_topic)
+```
+
+:::
+
+:::
+
+## Grouping topics into categories
+
+Topic text is free-form and grows over time, so the Support dashboard groups it
+into a handful of categories with a hand-kept map: the
+[`topic-categories.csv`](https://github.com/cds-snc/canadalogin-reporting-dashboards/blob/main/dashboards/support/topic-categories.csv)
+lookup first, then the patterns in `topic_patterns` in that dashboard's
+`R/metrics.R`, then "Other". Use that map rather than writing another one.
+
+Count a call once per **category**, not once per topic: a call that touched two
+topics in the same category counts once in it. So apply the map to the call and
+topic rows before counting, not to the topic counts above:
+
+```r
+categories <- readr::read_csv(
+  "https://raw.githubusercontent.com/cds-snc/canadalogin-reporting-dashboards/main/dashboards/support/topic-categories.csv",
+  show_col_types = FALSE
+)
+
+call_topics |>                       # one row per call_no and call_topic
+  left_join(categories, by = c("call_topic" = "topic")) |>
+  mutate(category = coalesce(category, "Other")) |>
+  distinct(call_no, category) |>
+  count(category, name = "calls")
+```
+
+This uses the lookup only; topics it does not list fall to "Other" here, where
+the dashboard would first try its patterns.
+
+## Interpretation notes
+
+**Shares add up to more than 100%.** Do not stack them or draw them as a pie.
+Each one stands alone: "most callers asked what CanadaLogin is" is right;
+reading the remainder as "everything else" is wrong, because those same callers
+can appear under other categories too.
+
+**The windows have to match.** The weekly report runs Sunday to Saturday. Cut the
+topic records to the same days, or a topic's calls and the calls under it cover
+different spans.
+
+## Alternative names
+
+- why users called
+- call reasons
+- share of callers by topic
+- calls by category
