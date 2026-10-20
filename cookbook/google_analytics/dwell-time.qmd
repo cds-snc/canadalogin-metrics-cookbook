@@ -27,6 +27,12 @@ interpolate on a log scale to where the share crosses 50%. It is 0 when fewer
 than half reached 1 second, and infinite when half were still open at 600
 seconds.
 
+Total reading time: count each page view as the last milestone it reached, and
+add them up. A view that reached 60 seconds but not 120 counts as 60 seconds, one
+that reached 600 counts as 600, and one that never reached 1 second counts as 0.
+From the event counts, that is each milestone times the views that reached it
+but not the next one, summed.
+
 Group on `pagepath_redacted`, never `pagepath`, which holds a private token
 for Signal Check pages.
 
@@ -129,6 +135,46 @@ LEFT JOIN crossing c
 ORDER BY v.pagepath_redacted;
 ```
 
+Total reading time:
+
+```sql
+WITH events AS (
+    SELECT
+        pagepath_redacted,
+        eventname,
+        SUM(eventcount) AS n
+    FROM google_analytics.meta_page_events
+    WHERE page_kind IN ('signal_check', 'dashboard')
+      AND (eventname = 'page_view' OR REGEXP_LIKE(eventname, '^read_[0-9]+s$'))
+      -- set the reporting window; see the timespans note in cookbook/notes.qmd
+      AND CAST(date AS DATE) BETWEEN DATE '2026-09-01' AND DATE '2026-09-30'
+    GROUP BY pagepath_redacted, eventname
+),
+reached AS (
+    SELECT
+        pagepath_redacted,
+        CAST(REGEXP_EXTRACT(eventname, '[0-9]+') AS INTEGER) AS seconds,
+        n
+    FROM events
+    WHERE eventname <> 'page_view'
+),
+stops AS (
+    SELECT
+        pagepath_redacted,
+        seconds,
+        -- views whose last milestone this was: reached it, not the next one
+        GREATEST(n - COALESCE(LEAD(n) OVER (PARTITION BY pagepath_redacted ORDER BY seconds), 0), 0)
+            AS stopped_here
+    FROM reached
+)
+SELECT
+    pagepath_redacted,
+    SUM(seconds * stopped_here) AS reading_seconds
+FROM stops
+GROUP BY pagepath_redacted
+ORDER BY pagepath_redacted;
+```
+
 ## R
 
 Dwell curve:
@@ -214,6 +260,29 @@ views |>
   arrange(pagepath_redacted)
 ```
 
+Total reading time:
+
+```r
+tbl(con, in_schema("google_analytics", "meta_page_events")) |>
+  filter(
+    page_kind %in% c("signal_check", "dashboard"),
+    str_detect(eventname, "^read_[0-9]+s$"),
+    # set the reporting window; see the timespans note in cookbook/notes.qmd
+    as.Date(date) >= as.Date("2026-09-01"),
+    as.Date(date) <= as.Date("2026-09-30")
+  ) |>
+  group_by(pagepath_redacted, eventname) |>
+  summarise(n = sum(eventcount, na.rm = TRUE), .groups = "drop") |>
+  collect() |>
+  mutate(n = as.numeric(n), seconds = as.numeric(str_extract(eventname, "[0-9]+"))) |>
+  group_by(pagepath_redacted) |>
+  arrange(seconds, .by_group = TRUE) |>
+  # views whose last milestone this was: reached it, not the next one
+  mutate(stopped_here = pmax(n - lead(n, default = 0), 0)) |>
+  summarise(reading_seconds = sum(seconds * stopped_here), .groups = "drop") |>
+  arrange(pagepath_redacted)
+```
+
 :::
 
 :::
@@ -231,6 +300,16 @@ infinite median means half the views were still open at 10 minutes, so report
 it as "over 10 minutes". Signal Checks before #9 report the floor milestone
 instead, the longest milestone at least half the views reached, so their
 medians read lower.
+
+To combine pages, such as every dashboard, add their `page_view` and `read_Ns`
+counts across the pages first, then build one curve and read the median off it.
+Never average the per-page medians: a page with five views would count as much
+as one with ninety.
+
+**Total reading time is a floor.** Every view counts at the last milestone it
+passed, not at the time it was really open, so the total is time readers spent
+at the least. Say "at least" when you quote it. A view open for four minutes
+counts as two, and the 600-second cap means a long read counts as ten minutes.
 
 Prefer the curve or the median to an average. Readership is small, often a
 few dozen page views per page per month, and one forgotten tab can move a
@@ -258,3 +337,4 @@ which is only available in the GA4 interface, not in the data lake.
 - reading time
 - read depth
 - engagement time
+- total reading time

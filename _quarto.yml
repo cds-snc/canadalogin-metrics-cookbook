@@ -94,6 +94,8 @@ website:
             contents:
               - cookbook/google_analytics/task-success-rate.qmd
               - cookbook/google_analytics/dwell-time.qmd
+              - cookbook/google_analytics/signal-check-views.qmd
+              - cookbook/google_analytics/where-sessions-started.qmd
           - section: "Additional Notes"
             href: cookbook/notes.qmd
             contents:

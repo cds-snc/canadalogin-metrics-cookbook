@@ -1,0 +1,109 @@
+---
+title: "Where Sessions Started"
+description: "Sessions that included a Signal Check or dashboard, by where the session started."
+---
+
+Where readers came from when they opened a Signal Check or a dashboard: Slack,
+Teams, email, one of our own links, no link recorded, or another site.
+
+**The source belongs to the session, not the page.** Google Analytics records
+where a session started, then credits every page in it. So "Slack, 20 sessions"
+on a page means 20 sessions that started from a Slack link and opened this page
+at some point. It does not mean 20 people clicked a Slack link to this page: a
+reader who came from Slack to a Signal Check and then followed a link to a
+dashboard counts as a Slack session on the dashboard too.
+
+## Calculation
+
+From [`meta_page_traffic`](../../catalog/google_analytics/meta_page_traffic.qmd),
+sum `sessions` by page and source group over the reporting window. The groups map
+`sessionsource`:
+
+| Group | `sessionsource` |
+|---|---|
+| Slack | `slack` |
+| Teams | `teams`, or anything starting `teams.` |
+| Email | `email` |
+| Our own links | `latest-link`, `report_link`, `dashboard_link` |
+| No link recorded | `(direct)`, `(not set)` |
+| Other sites | anything else |
+
+The Readership dashboard's `source_group()` holds the same map; change both
+together.
+
+*Our own links* are the link to the latest Signal Check and the links inside a
+Signal Check or a dashboard. *No link recorded* is a bookmark, a typed address,
+or an app that drops the link's source.
+
+::: {.callout-note collapse="true" title="Example queries"}
+
+::: {.panel-tabset}
+
+## SQL
+
+```sql
+SELECT
+    pagepath_redacted,
+    CASE
+        WHEN sessionsource = 'slack' THEN 'Slack'
+        WHEN sessionsource = 'teams' OR starts_with(sessionsource, 'teams.') THEN 'Teams'
+        WHEN sessionsource = 'email' THEN 'Email'
+        WHEN sessionsource IN ('latest-link', 'report_link', 'dashboard_link') THEN 'Our own links'
+        WHEN sessionsource IN ('(direct)', '(not set)') THEN 'No link recorded'
+        ELSE 'Other sites'
+    END AS source_group,
+    SUM(sessions) AS sessions
+FROM google_analytics.meta_page_traffic
+WHERE page_kind IN ('signal_check', 'dashboard')
+  -- set the reporting window; see the timespans note in cookbook/notes.qmd
+  AND CAST(date AS DATE) BETWEEN DATE '2026-09-01' AND DATE '2026-09-30'
+GROUP BY 1, 2
+ORDER BY pagepath_redacted, sessions DESC, source_group;
+```
+
+## R
+
+```r
+tbl(con, in_schema("google_analytics", "meta_page_traffic")) |>
+  filter(
+    page_kind %in% c("signal_check", "dashboard"),
+    # set the reporting window; see the timespans note in cookbook/notes.qmd
+    as.Date(date) >= as.Date("2026-09-01"),
+    as.Date(date) <= as.Date("2026-09-30")
+  ) |>
+  mutate(
+    source_group = case_when(
+      sessionsource == "slack" ~ "Slack",
+      sessionsource == "teams" | substr(sessionsource, 1, 6) == "teams." ~ "Teams",
+      sessionsource == "email" ~ "Email",
+      sessionsource %in% c("latest-link", "report_link", "dashboard_link") ~ "Our own links",
+      sessionsource %in% c("(direct)", "(not set)") ~ "No link recorded",
+      TRUE ~ "Other sites"
+    )
+  ) |>
+  group_by(pagepath_redacted, source_group) |>
+  summarise(sessions = sum(sessions, na.rm = TRUE), .groups = "drop") |>
+  arrange(pagepath_redacted, desc(sessions), source_group)
+```
+
+:::
+
+:::
+
+## Interpretation notes
+
+**Sessions add up within a page, not across pages.** One session that opened two
+pages counts once on each, so the sessions on two pages together can exceed the
+sessions that reached either of them. For a whole product, sum per page and say
+"sessions that included a page", or count each session once in the GA4 interface.
+
+**For a Signal Check, use its first 14 days.** That is when the announcement posts
+send their readers. See [Signal Check Views](signal-check-views.qmd) for the
+window.
+
+## Alternative names
+
+- traffic sources
+- referral sources
+- where readers came from
+- session source
