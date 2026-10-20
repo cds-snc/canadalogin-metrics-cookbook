@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="description" content="Number of calls the call centre accepted in a reporting period.">
+<meta name="description" content="Calls the call centre accepted in a reporting period, excluding staff test calls.">
 
 <title>Calls Accepted – CanadaLogin Metrics Cookbook</title>
 <style>
@@ -262,6 +262,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../../cookbook/ibm_verify/average-daily-users.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Average Daily Users</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../../cookbook/ibm_verify/new-accounts-and-idle-rate.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">New Accounts and Idle Account Rate</span></a>
   </div>
@@ -326,8 +332,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth3 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../cookbook/ibm_verify/mfa-authentications.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">MFA Authentications</span></a>
+  <a href="../../cookbook/ibm_verify/mfa-challenges.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">MFA Challenges</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../cookbook/ibm_verify/second-factor-attempts.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Second-factor Attempts</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -352,6 +364,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <div class="sidebar-item-container"> 
   <a href="../../cookbook/ibm_verify/sign-in-mfa-activity-by-factor.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Sign-in MFA Activity by Factor</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../cookbook/ibm_verify/sign-in-factor-share-of-successes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Sign-in Factor Share of Successes</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../cookbook/ibm_verify/sms-code-entry-rate.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">SMS Code Entry Rate</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../cookbook/ibm_verify/sign-up-email-verification-rate.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Sign-up Email Verification Rate</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../cookbook/ibm_verify/sign-up-email-code-speed.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Sign-up Email Code Speed</span></a>
   </div>
 </li>
       </ul>
@@ -441,6 +477,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../../cookbook/call_centre/calls-by-topic-category.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Calls by Topic Category</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../../cookbook/call_centre/top-10-call-topics.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Top 10 Call Topics</span></a>
   </div>
@@ -505,6 +547,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../../cookbook/jira/tickets-opened-closed-and-open.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tickets Opened, Closed, and Open</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../../cookbook/jira/tickets-by-priority.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Tickets by Priority</span></a>
   </div>
@@ -548,6 +596,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <div class="sidebar-item-container"> 
   <a href="../../cookbook/google_analytics/dwell-time.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Dwell Time</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../cookbook/google_analytics/signal-check-views.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Signal Check Views</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../cookbook/google_analytics/where-sessions-started.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Where Sessions Started</span></a>
   </div>
 </li>
       </ul>
@@ -894,7 +954,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <div>
   <div class="description">
-    Number of calls the call centre accepted in a reporting period.
+    Calls the call centre accepted in a reporting period, excluding staff test calls.
   </div>
 </div>
 
@@ -911,11 +971,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>The number of calls accepted by the call centre during a reporting period.</p>
+<p>The number of calls accepted by the call centre during a reporting period, not counting the test calls staff make to check the line.</p>
 <p>This metric is useful for tracking call centre demand and understanding how contact volume changes over time.</p>
 <section id="calculation" class="level2">
 <h2 class="anchored" data-anchor-id="calculation">Calculation</h2>
-<p>Use <code>calls_accepted</code> by reporting period, or sum across periods for a total.</p>
+<p>Subtract <code>test_calls</code> from <code>calls_accepted</code> by reporting period, or sum the difference across periods for a total. A missing <code>test_calls</code> means none were made, so read it as 0. Test calls are a subset of accepted calls, and at current volumes they are large enough to matter.</p>
 <div class="callout callout-style-default callout-note callout-titled" title="Example queries">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -936,12 +996,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    date_range_start,</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    date_range_end,</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">CAST</span>(calls_accepted <span class="kw">AS</span> BIGINT) <span class="kw">AS</span> calls_accepted</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> call_centre.weekly_activity_report</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> date_range_start;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">CAST</span>(calls_accepted <span class="kw">AS</span> BIGINT) <span class="kw">AS</span> calls_accepted,</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">CAST</span>(<span class="fu">COALESCE</span>(test_calls, <span class="dv">0</span>) <span class="kw">AS</span> BIGINT) <span class="kw">AS</span> test_calls,</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- a missing test_calls means none were made</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">CAST</span>(calls_accepted <span class="op">-</span> <span class="fu">COALESCE</span>(test_calls, <span class="dv">0</span>) <span class="kw">AS</span> BIGINT) <span class="kw">AS</span> calls</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> call_centre.weekly_activity_report</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> date_range_start;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Total over a period:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">SUM</span>(<span class="fu">CAST</span>(calls_accepted <span class="kw">AS</span> BIGINT)) <span class="kw">AS</span> total_calls_accepted</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">SUM</span>(<span class="fu">CAST</span>(calls_accepted <span class="op">-</span> <span class="fu">COALESCE</span>(test_calls, <span class="dv">0</span>) <span class="kw">AS</span> BIGINT)) <span class="kw">AS</span> total_calls</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> call_centre.weekly_activity_report</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> <span class="fu">CAST</span>(date_range_start <span class="kw">AS</span> <span class="dt">DATE</span>) <span class="kw">BETWEEN</span> <span class="dt">DATE</span> <span class="st">'2026-01-01'</span> <span class="kw">AND</span> <span class="dt">DATE</span> <span class="st">'2026-05-31'</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -949,11 +1012,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>By week:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tbl</span>(con, <span class="fu">in_schema</span>(<span class="st">"call_centre"</span>, <span class="st">"weekly_activity_report"</span>)) <span class="sc">|&gt;</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(date_range_start) <span class="sc">|&gt;</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">transmute</span>(</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    date_range_start,</span>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    date_range_end,</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    calls_accepted</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    calls_accepted,</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">test_calls =</span> <span class="fu">coalesce</span>(test_calls, <span class="dv">0</span>),</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># a missing test_calls means none were made</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">calls =</span> calls_accepted <span class="sc">-</span> <span class="fu">coalesce</span>(test_calls, <span class="dv">0</span>)</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Total over a period:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tbl</span>(con, <span class="fu">in_schema</span>(<span class="st">"call_centre"</span>, <span class="st">"weekly_activity_report"</span>)) <span class="sc">|&gt;</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(</span>
@@ -961,7 +1027,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as.Date</span>(date_range_start) <span class="sc">&lt;=</span> <span class="fu">as.Date</span>(<span class="st">"2026-05-31"</span>)</span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">total_calls_accepted =</span> <span class="fu">sum</span>(calls_accepted, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">total_calls =</span> <span class="fu">sum</span>(calls_accepted <span class="sc">-</span> <span class="fu">coalesce</span>(test_calls, <span class="dv">0</span>), <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
@@ -973,12 +1039,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="interpretation-notes" class="level2">
 <h2 class="anchored" data-anchor-id="interpretation-notes">Interpretation notes</h2>
 <p>Calls accepted may not be identical to calls answered, depending on call centre definitions and routing logic.</p>
+<p><strong>Test calls are left out by default</strong> across the call centre recipes. Only this count can drop them: the weekly report gives the number of test calls, not their waits, lengths, or outcomes. The recipes built on answered or abandoned calls, and the averages, say that they include them. The topic dump has no test calls.</p>
 </section>
 <section id="alternative-names" class="level2">
 <h2 class="anchored" data-anchor-id="alternative-names">Alternative names</h2>
 <ul>
 <li>calls received</li>
 <li>accepted calls</li>
+<li>calls excluding test calls</li>
 <li>weekly call volume</li>
 <li>call centre demand</li>
 <li>number of calls handled by the queue</li>

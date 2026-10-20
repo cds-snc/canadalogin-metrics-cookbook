@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="description" content="Share of MFA attempts that succeeded.">
+<meta name="description" content="Share of second-factor attempts at sign-in that succeeded.">
 
 <title>MFA Success Rate – CanadaLogin Metrics Cookbook</title>
 <style>
@@ -73,7 +73,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../../">
 <link href="../../cookbook/ibm_verify/mfa-success-rate-by-factor.html" rel="next">
-<link href="../../cookbook/ibm_verify/mfa-authentications.html" rel="prev">
+<link href="../../cookbook/ibm_verify/second-factor-attempts.html" rel="prev">
 <link href="../../img/cds-snc.png" rel="icon" type="image/png">
 <script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
@@ -171,7 +171,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../cookbook/index.html">Metrics Cookbook</a></li><li class="breadcrumb-item"><a href="../../cookbook/ibm_verify.html">IBM Verify</a></li><li class="breadcrumb-item"><a href="../../cookbook/ibm_verify/mfa-authentications.html">MFA</a></li><li class="breadcrumb-item"><a href="../../cookbook/ibm_verify/mfa-success-rate.html">MFA Success Rate</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../cookbook/index.html">Metrics Cookbook</a></li><li class="breadcrumb-item"><a href="../../cookbook/ibm_verify.html">IBM Verify</a></li><li class="breadcrumb-item"><a href="../../cookbook/ibm_verify/mfa-challenges.html">MFA</a></li><li class="breadcrumb-item"><a href="../../cookbook/ibm_verify/mfa-success-rate.html">MFA Success Rate</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -262,6 +262,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../../cookbook/ibm_verify/average-daily-users.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Average Daily Users</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../../cookbook/ibm_verify/new-accounts-and-idle-rate.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">New Accounts and Idle Account Rate</span></a>
   </div>
@@ -326,8 +332,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth3 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../cookbook/ibm_verify/mfa-authentications.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">MFA Authentications</span></a>
+  <a href="../../cookbook/ibm_verify/mfa-challenges.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">MFA Challenges</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../cookbook/ibm_verify/second-factor-attempts.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Second-factor Attempts</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -352,6 +364,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <div class="sidebar-item-container"> 
   <a href="../../cookbook/ibm_verify/sign-in-mfa-activity-by-factor.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Sign-in MFA Activity by Factor</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../cookbook/ibm_verify/sign-in-factor-share-of-successes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Sign-in Factor Share of Successes</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../cookbook/ibm_verify/sms-code-entry-rate.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">SMS Code Entry Rate</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../cookbook/ibm_verify/sign-up-email-verification-rate.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Sign-up Email Verification Rate</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../cookbook/ibm_verify/sign-up-email-code-speed.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Sign-up Email Code Speed</span></a>
   </div>
 </li>
       </ul>
@@ -441,6 +477,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../../cookbook/call_centre/calls-by-topic-category.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Calls by Topic Category</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../../cookbook/call_centre/top-10-call-topics.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Top 10 Call Topics</span></a>
   </div>
@@ -505,6 +547,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../../cookbook/jira/tickets-opened-closed-and-open.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tickets Opened, Closed, and Open</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../../cookbook/jira/tickets-by-priority.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Tickets by Priority</span></a>
   </div>
@@ -548,6 +596,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <div class="sidebar-item-container"> 
   <a href="../../cookbook/google_analytics/dwell-time.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Dwell Time</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../cookbook/google_analytics/signal-check-views.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Signal Check Views</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../cookbook/google_analytics/where-sessions-started.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Where Sessions Started</span></a>
   </div>
 </li>
       </ul>
@@ -887,14 +947,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../cookbook/index.html">Metrics Cookbook</a></li><li class="breadcrumb-item"><a href="../../cookbook/ibm_verify.html">IBM Verify</a></li><li class="breadcrumb-item"><a href="../../cookbook/ibm_verify/mfa-authentications.html">MFA</a></li><li class="breadcrumb-item"><a href="../../cookbook/ibm_verify/mfa-success-rate.html">MFA Success Rate</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../cookbook/index.html">Metrics Cookbook</a></li><li class="breadcrumb-item"><a href="../../cookbook/ibm_verify.html">IBM Verify</a></li><li class="breadcrumb-item"><a href="../../cookbook/ibm_verify/mfa-challenges.html">MFA</a></li><li class="breadcrumb-item"><a href="../../cookbook/ibm_verify/mfa-success-rate.html">MFA Success Rate</a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title">MFA Success Rate</h1>
 </div>
 
 <div>
   <div class="description">
-    Share of MFA attempts that succeeded.
+    Share of second-factor attempts at sign-in that succeeded.
   </div>
 </div>
 
@@ -911,11 +971,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>The proportion of MFA attempts that succeeded over a selected reporting period.</p>
-<p>This metric is useful for monitoring how often users clear the second factor. A falling rate can point to user friction with a particular factor, delivery problems (for example, undelivered SMS or email OTPs), or attack traffic.</p>
+<p>The proportion of <a href="../../cookbook/ibm_verify/second-factor-attempts.html">second-factor attempts</a> at sign-in that succeeded over a selected reporting period.</p>
+<p>This metric is useful for monitoring how often users clear the second factor when they sign in. A falling rate can point to user friction with a particular factor, SMS delivery problems, or attack traffic.</p>
+<p>It covers the factors the public can sign in with: <code>sms_otp</code>, <code>voice_otp</code>, and <code>fido2</code> (passkeys). <code>email_otp</code> is not a second factor: it checks an email address at sign-up, and its rate is <a href="../../cookbook/ibm_verify/sign-up-email-verification-rate.html">Sign-up Email Verification Rate</a>. <code>kq</code>, <code>totp</code>, <code>qr</code>, and <code>ibm_verify_push</code> are internal factors. For one rate per factor, including those, see <a href="../../cookbook/ibm_verify/mfa-success-rate-by-factor.html">MFA Success Rate by Factor</a>.</p>
 <section id="calculation" class="level2">
 <h2 class="anchored" data-anchor-id="calculation">Calculation</h2>
-<p>Divide the sum of <code>count</code> where <code>result = 'success'</code> by the sum of <code>count</code> where <code>result</code> is <code>'success'</code> or <code>'failure'</code>. OTP factor types also produce a <code>'sent'</code> event per challenge, which must be excluded from both the numerator and the denominator, because <code>sent</code> rows do not represent outcomes.</p>
+<p>Restrict to the sign-in factors. Divide the sum of <code>count</code> where <code>result = 'success'</code> by the sum of <code>count</code> where <code>result</code> is <code>'success'</code> or <code>'failure'</code>. OTP factor types also produce a <code>'sent'</code> event per challenge, which must be excluded from both the numerator and the denominator, because <code>sent</code> rows do not represent outcomes.</p>
 <p>To track the metric over time, bin the same calculation by week. Truncating <code>from_date</code> to the week groups each day into its Monday-anchored bin, so the result is one success rate per Monday-to-Sunday week.</p>
 <div class="callout callout-style-default callout-note callout-titled" title="Example queries">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
@@ -940,9 +1001,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> ibm_verify_events_transformed.events_mfa_activity</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">-- set the reporting window; see the timespans note in cookbook/notes.qmd</span></span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> <span class="fu">CAST</span>(from_date <span class="kw">AS</span> <span class="dt">DATE</span>) <span class="kw">BETWEEN</span> <span class="dt">DATE</span> <span class="st">'2026-01-01'</span> <span class="kw">AND</span> <span class="dt">DATE</span> <span class="st">'2026-05-28'</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- exclude "sent" rows; success rate is calculated from outcome events only.</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- including "sent" would inflate the denominator and deflate the rate.</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">AND</span> result <span class="kw">IN</span> (<span class="st">'success'</span>, <span class="st">'failure'</span>);</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- the factors the public can sign in with; email_otp is a sign-up check</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">AND</span> mfa_type <span class="kw">IN</span> (<span class="st">'sms_otp'</span>, <span class="st">'voice_otp'</span>, <span class="st">'fido2'</span>)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- exclude "sent" rows; success rate is calculated from outcome events only.</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- including "sent" would inflate the denominator and deflate the rate.</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">AND</span> result <span class="kw">IN</span> (<span class="st">'success'</span>, <span class="st">'failure'</span>);</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>By week:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    date_trunc(<span class="st">'week'</span>, <span class="fu">CAST</span>(from_date <span class="kw">AS</span> <span class="dt">DATE</span>)) <span class="kw">AS</span> week_start,</span>
@@ -951,12 +1014,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> ibm_verify_events_transformed.events_mfa_activity</span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co">-- set the reporting window; see the timespans note in cookbook/notes.qmd</span></span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> <span class="fu">CAST</span>(from_date <span class="kw">AS</span> <span class="dt">DATE</span>) <span class="kw">BETWEEN</span> <span class="dt">DATE</span> <span class="st">'2026-01-01'</span> <span class="kw">AND</span> <span class="dt">DATE</span> <span class="st">'2026-05-28'</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- exclude "sent" rows; success rate is calculated from outcome events only.</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- including "sent" would inflate the denominator and deflate the rate.</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">AND</span> result <span class="kw">IN</span> (<span class="st">'success'</span>, <span class="st">'failure'</span>)</span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co">-- date_trunc('week', ...) anchors each bin to its Monday</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> date_trunc(<span class="st">'week'</span>, <span class="fu">CAST</span>(from_date <span class="kw">AS</span> <span class="dt">DATE</span>))</span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> week_start;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- the factors the public can sign in with; email_otp is a sign-up check</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">AND</span> mfa_type <span class="kw">IN</span> (<span class="st">'sms_otp'</span>, <span class="st">'voice_otp'</span>, <span class="st">'fido2'</span>)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- exclude "sent" rows; success rate is calculated from outcome events only.</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- including "sent" would inflate the denominator and deflate the rate.</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">AND</span> result <span class="kw">IN</span> (<span class="st">'success'</span>, <span class="st">'failure'</span>)</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co">-- date_trunc('week', ...) anchors each bin to its Monday</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> date_trunc(<span class="st">'week'</span>, <span class="fu">CAST</span>(from_date <span class="kw">AS</span> <span class="dt">DATE</span>))</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> week_start;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
 <p>Overall:</p>
@@ -965,35 +1030,39 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as.Date</span>(from_date) <span class="sc">&gt;=</span> <span class="fu">as.Date</span>(<span class="st">"2026-01-01"</span>),</span>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as.Date</span>(from_date) <span class="sc">&lt;=</span> <span class="fu">as.Date</span>(<span class="st">"2026-05-28"</span>),</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># exclude "sent" rows; success rate is calculated from outcome events only.</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># including "sent" would inflate the denominator and deflate the rate.</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    result <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"success"</span>, <span class="st">"failure"</span>)</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">mfa_success_rate =</span></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>      <span class="fu">sum</span>(<span class="fu">if_else</span>(result <span class="sc">==</span> <span class="st">"success"</span>, <span class="fu">as.double</span>(count), <span class="dv">0</span>), <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">/</span></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sum</span>(count, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># the factors the public can sign in with; email_otp is a sign-up check</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    mfa_type <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"sms_otp"</span>, <span class="st">"voice_otp"</span>, <span class="st">"fido2"</span>),</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># exclude "sent" rows; success rate is calculated from outcome events only.</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># including "sent" would inflate the denominator and deflate the rate.</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    result <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"success"</span>, <span class="st">"failure"</span>)</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">mfa_success_rate =</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>      <span class="fu">sum</span>(<span class="fu">if_else</span>(result <span class="sc">==</span> <span class="st">"success"</span>, <span class="fu">as.double</span>(count), <span class="dv">0</span>), <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">/</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sum</span>(count, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>By week:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tbl</span>(con, <span class="fu">in_schema</span>(<span class="st">"ibm_verify_events_transformed"</span>, <span class="st">"events_mfa_activity"</span>)) <span class="sc">|&gt;</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># set the reporting window; see the timespans note in cookbook/notes.qmd</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(</span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as.Date</span>(from_date) <span class="sc">&gt;=</span> <span class="fu">as.Date</span>(<span class="st">"2026-01-01"</span>),</span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as.Date</span>(from_date) <span class="sc">&lt;=</span> <span class="fu">as.Date</span>(<span class="st">"2026-05-28"</span>),</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># exclude "sent" rows; success rate is calculated from outcome events only.</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># including "sent" would inflate the denominator and deflate the rate.</span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    result <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"success"</span>, <span class="st">"failure"</span>)</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># floor_date(..., "week") translates to Athena's date_trunc('week', ...),</span></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># which anchors each bin to its Monday</span></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">week_start =</span> <span class="fu">floor_date</span>(<span class="fu">as.Date</span>(from_date), <span class="st">"week"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(week_start) <span class="sc">|&gt;</span></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">mfa_success_rate =</span></span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>      <span class="fu">sum</span>(<span class="fu">if_else</span>(result <span class="sc">==</span> <span class="st">"success"</span>, <span class="fu">as.double</span>(count), <span class="dv">0</span>), <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">/</span></span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sum</span>(count, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(week_start)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># the factors the public can sign in with; email_otp is a sign-up check</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    mfa_type <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"sms_otp"</span>, <span class="st">"voice_otp"</span>, <span class="st">"fido2"</span>),</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># exclude "sent" rows; success rate is calculated from outcome events only.</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># including "sent" would inflate the denominator and deflate the rate.</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    result <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"success"</span>, <span class="st">"failure"</span>)</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  <span class="co"># floor_date(..., "week") translates to Athena's date_trunc('week', ...),</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  <span class="co"># which anchors each bin to its Monday</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">week_start =</span> <span class="fu">floor_date</span>(<span class="fu">as.Date</span>(from_date), <span class="st">"week"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(week_start) <span class="sc">|&gt;</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">mfa_success_rate =</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>      <span class="fu">sum</span>(<span class="fu">if_else</span>(result <span class="sc">==</span> <span class="st">"success"</span>, <span class="fu">as.double</span>(count), <span class="dv">0</span>), <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">/</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sum</span>(count, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(week_start)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
@@ -1010,6 +1079,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <ul>
 <li>MFA pass rate</li>
 <li>second-factor success rate</li>
+<li>sign-in MFA success rate</li>
 <li>MFA completion rate</li>
 </ul>
 
@@ -1419,8 +1489,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../../cookbook/ibm_verify/mfa-authentications.html" class="pagination-link" aria-label="MFA Authentications">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">MFA Authentications</span>
+      <a href="../../cookbook/ibm_verify/second-factor-attempts.html" class="pagination-link" aria-label="Second-factor Attempts">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Second-factor Attempts</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">

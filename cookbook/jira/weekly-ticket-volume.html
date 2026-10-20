@@ -72,7 +72,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../../">
-<link href="../../cookbook/jira/tickets-by-priority.html" rel="next">
+<link href="../../cookbook/jira/tickets-opened-closed-and-open.html" rel="next">
 <link href="../../cookbook/jira/tickets-by-status.html" rel="prev">
 <link href="../../img/cds-snc.png" rel="icon" type="image/png">
 <script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
@@ -262,6 +262,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../../cookbook/ibm_verify/average-daily-users.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Average Daily Users</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../../cookbook/ibm_verify/new-accounts-and-idle-rate.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">New Accounts and Idle Account Rate</span></a>
   </div>
@@ -326,8 +332,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth3 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../cookbook/ibm_verify/mfa-authentications.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">MFA Authentications</span></a>
+  <a href="../../cookbook/ibm_verify/mfa-challenges.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">MFA Challenges</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../cookbook/ibm_verify/second-factor-attempts.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Second-factor Attempts</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -352,6 +364,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <div class="sidebar-item-container"> 
   <a href="../../cookbook/ibm_verify/sign-in-mfa-activity-by-factor.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Sign-in MFA Activity by Factor</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../cookbook/ibm_verify/sign-in-factor-share-of-successes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Sign-in Factor Share of Successes</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../cookbook/ibm_verify/sms-code-entry-rate.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">SMS Code Entry Rate</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../cookbook/ibm_verify/sign-up-email-verification-rate.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Sign-up Email Verification Rate</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../cookbook/ibm_verify/sign-up-email-code-speed.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Sign-up Email Code Speed</span></a>
   </div>
 </li>
       </ul>
@@ -441,6 +477,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../../cookbook/call_centre/calls-by-topic-category.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Calls by Topic Category</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../../cookbook/call_centre/top-10-call-topics.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Top 10 Call Topics</span></a>
   </div>
@@ -505,6 +547,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../../cookbook/jira/tickets-opened-closed-and-open.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tickets Opened, Closed, and Open</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../../cookbook/jira/tickets-by-priority.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Tickets by Priority</span></a>
   </div>
@@ -548,6 +596,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <div class="sidebar-item-container"> 
   <a href="../../cookbook/google_analytics/dwell-time.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Dwell Time</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../cookbook/google_analytics/signal-check-views.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Signal Check Views</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../cookbook/google_analytics/where-sessions-started.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Where Sessions Started</span></a>
   </div>
 </li>
       </ul>
@@ -914,7 +974,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The total number of PSOM tickets captured in each Monday snapshot, showing how the number of tickets in the project changes over time.</p>
 <section id="calculation" class="level2">
 <h2 class="anchored" data-anchor-id="calculation">Calculation</h2>
-<p>Keep only the Monday <code>date</code> partitions and count the rows in each. The snapshot ran weekly on Mondays until 2026-09-28 and daily from 2026-09-29, so filtering to Mondays gives one comparable total per week across the whole history.</p>
+<p>Keep only the Monday <code>date</code> partitions and count the rows in each. The snapshot ran weekly on Mondays until 2026-09-28 and nightly from 2026-09-29, so filtering to Mondays gives one comparable total per week across the whole history.</p>
+<p>For a finer view from 2026-09-29 on, count every partition: there is one per night.</p>
 <div class="callout callout-style-default callout-note callout-titled" title="Example queries">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -931,6 +992,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href="">SQL</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href="">R</a></li></ul>
 <div class="tab-content">
 <div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<p>By week:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">date</span>,</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> ticket_count</span>
@@ -938,12 +1000,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> day_of_week(<span class="fu">CAST</span>(<span class="dt">date</span> <span class="kw">AS</span> <span class="dt">DATE</span>)) <span class="op">=</span> <span class="dv">1</span></span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> <span class="dt">date</span></span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> <span class="dt">date</span> <span class="kw">DESC</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>By day, from the first nightly snapshot:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">date</span>,</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> ticket_count</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> jira.psom</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> <span class="fu">CAST</span>(<span class="dt">date</span> <span class="kw">AS</span> <span class="dt">DATE</span>) <span class="op">&gt;=</span> <span class="dt">DATE</span> <span class="st">'2026-09-29'</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> <span class="dt">date</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> <span class="dt">date</span> <span class="kw">DESC</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tbl</span>(con, <span class="fu">in_schema</span>(<span class="st">"jira"</span>, <span class="st">"psom"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">wday</span>(<span class="fu">as.Date</span>(date), <span class="at">week_start =</span> <span class="dv">1</span>) <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">|&gt;</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(date, <span class="at">name =</span> <span class="st">"ticket_count"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(date))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>By week:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tbl</span>(con, <span class="fu">in_schema</span>(<span class="st">"jira"</span>, <span class="st">"psom"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">wday</span>(<span class="fu">as.Date</span>(date), <span class="at">week_start =</span> <span class="dv">1</span>) <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">|&gt;</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(date, <span class="at">name =</span> <span class="st">"ticket_count"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(date))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>By day, from the first nightly snapshot:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tbl</span>(con, <span class="fu">in_schema</span>(<span class="st">"jira"</span>, <span class="st">"psom"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">as.Date</span>(date) <span class="sc">&gt;=</span> <span class="fu">as.Date</span>(<span class="st">"2026-09-29"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(date, <span class="at">name =</span> <span class="st">"ticket_count"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(date))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
@@ -953,7 +1029,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="interpretation-notes" class="level2">
 <h2 class="anchored" data-anchor-id="interpretation-notes">Interpretation notes</h2>
-<p>This counts the tickets still in the project on each Monday, not the tickets opened that week or the open backlog. It includes <code>Done</code> and <code>Canceled</code> tickets until they are archived, and it drops when a batch of tickets is archived (from 52 to 25 between 2026-09-14 and 2026-09-21). The first snapshot, 2026-06-30, was a Tuesday, so the filter leaves it out.</p>
+<p>This counts the tickets still in the project on each Monday, not the tickets opened that week or the open backlog; for those, see <a href="../../cookbook/jira/tickets-opened-closed-and-open.html">Tickets Opened, Closed, and Open</a>. It includes <code>Done</code> and <code>Canceled</code> tickets until they are archived, and it drops when a batch of tickets is archived (from 52 to 25 between 2026-09-14 and 2026-09-21). The first snapshot, 2026-06-30, was a Tuesday, so the filter leaves it out.</p>
 </section>
 <section id="alternative-names" class="level2">
 <h2 class="anchored" data-anchor-id="alternative-names">Alternative names</h2>
@@ -1374,8 +1450,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../../cookbook/jira/tickets-by-priority.html" class="pagination-link" aria-label="Tickets by Priority">
-        <span class="nav-page-text">Tickets by Priority</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../../cookbook/jira/tickets-opened-closed-and-open.html" class="pagination-link" aria-label="Tickets Opened, Closed, and Open">
+        <span class="nav-page-text">Tickets Opened, Closed, and Open</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

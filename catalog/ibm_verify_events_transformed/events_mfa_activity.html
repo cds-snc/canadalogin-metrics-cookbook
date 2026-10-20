@@ -227,6 +227,12 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../../cookbook/ibm_verify/average-daily-users.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Average Daily Users</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../../cookbook/ibm_verify/new-accounts-and-idle-rate.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">New Accounts and Idle Account Rate</span></a>
   </div>
@@ -291,8 +297,14 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth3 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../cookbook/ibm_verify/mfa-authentications.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">MFA Authentications</span></a>
+  <a href="../../cookbook/ibm_verify/mfa-challenges.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">MFA Challenges</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../cookbook/ibm_verify/second-factor-attempts.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Second-factor Attempts</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -317,6 +329,30 @@ ul.task-list li input[type="checkbox"] {
   <div class="sidebar-item-container"> 
   <a href="../../cookbook/ibm_verify/sign-in-mfa-activity-by-factor.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Sign-in MFA Activity by Factor</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../cookbook/ibm_verify/sign-in-factor-share-of-successes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Sign-in Factor Share of Successes</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../cookbook/ibm_verify/sms-code-entry-rate.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">SMS Code Entry Rate</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../cookbook/ibm_verify/sign-up-email-verification-rate.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Sign-up Email Verification Rate</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../cookbook/ibm_verify/sign-up-email-code-speed.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Sign-up Email Code Speed</span></a>
   </div>
 </li>
       </ul>
@@ -406,6 +442,12 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../../cookbook/call_centre/calls-by-topic-category.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Calls by Topic Category</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../../cookbook/call_centre/top-10-call-topics.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Top 10 Call Topics</span></a>
   </div>
@@ -470,6 +512,12 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../../cookbook/jira/tickets-opened-closed-and-open.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tickets Opened, Closed, and Open</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../../cookbook/jira/tickets-by-priority.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Tickets by Priority</span></a>
   </div>
@@ -513,6 +561,18 @@ ul.task-list li input[type="checkbox"] {
   <div class="sidebar-item-container"> 
   <a href="../../cookbook/google_analytics/dwell-time.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Dwell Time</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../cookbook/google_analytics/signal-check-views.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Signal Check Views</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../cookbook/google_analytics/where-sessions-started.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Where Sessions Started</span></a>
   </div>
 </li>
       </ul>
@@ -952,7 +1012,7 @@ ul.task-list li input[type="checkbox"] {
 <li>For success rates, divide “success” by “success” plus “failure”, and exclude “sent”.</li>
 <li>For usage, count “sent” for OTP factors and “success” plus “failure” for the others. Summing “sent” alone drops <code>fido2</code>.</li>
 </ul>
-<p><strong>Most <code>email_otp</code> is sign-up, not sign-in.</strong> The email check during sign-up logs an <code>email_otp</code> with no user, because the account does not exist yet. These are most <code>email_otp</code> “sent” events. See <a href="../../catalog/ibm_verify_events_raw/mfa_activity.html"><code>mfa_activity</code></a> in the raw stream.</p>
+<p><strong>Most <code>email_otp</code> is sign-up, not sign-in.</strong> The email check during sign-up logs an <code>email_otp</code> with no user, because the account does not exist yet. These are most <code>email_otp</code> “sent” events. The rest carry a user, and are most likely the same check when an existing user changes their email address. See <a href="../../catalog/ibm_verify_events_raw/mfa_activity.html"><code>mfa_activity</code></a> in the raw stream.</p>
 
 
 </section>

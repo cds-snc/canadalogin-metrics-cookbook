@@ -72,7 +72,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
 <link href="../cookbook/unique-users.html" rel="next">
-<link href="../cookbook/google_analytics/dwell-time.html" rel="prev">
+<link href="../cookbook/google_analytics/where-sessions-started.html" rel="prev">
 <link href="../img/cds-snc.png" rel="icon" type="image/png">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
@@ -261,6 +261,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../cookbook/ibm_verify/average-daily-users.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Average Daily Users</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../cookbook/ibm_verify/new-accounts-and-idle-rate.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">New Accounts and Idle Account Rate</span></a>
   </div>
@@ -325,8 +331,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth3 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../cookbook/ibm_verify/mfa-authentications.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">MFA Authentications</span></a>
+  <a href="../cookbook/ibm_verify/mfa-challenges.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">MFA Challenges</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/ibm_verify/second-factor-attempts.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Second-factor Attempts</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -351,6 +363,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <div class="sidebar-item-container"> 
   <a href="../cookbook/ibm_verify/sign-in-mfa-activity-by-factor.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Sign-in MFA Activity by Factor</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/ibm_verify/sign-in-factor-share-of-successes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Sign-in Factor Share of Successes</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/ibm_verify/sms-code-entry-rate.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">SMS Code Entry Rate</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/ibm_verify/sign-up-email-verification-rate.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Sign-up Email Verification Rate</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/ibm_verify/sign-up-email-code-speed.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Sign-up Email Code Speed</span></a>
   </div>
 </li>
       </ul>
@@ -440,6 +476,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../cookbook/call_centre/calls-by-topic-category.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Calls by Topic Category</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../cookbook/call_centre/top-10-call-topics.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Top 10 Call Topics</span></a>
   </div>
@@ -504,6 +546,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../cookbook/jira/tickets-opened-closed-and-open.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tickets Opened, Closed, and Open</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../cookbook/jira/tickets-by-priority.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Tickets by Priority</span></a>
   </div>
@@ -547,6 +595,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <div class="sidebar-item-container"> 
   <a href="../cookbook/google_analytics/dwell-time.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Dwell Time</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/google_analytics/signal-check-views.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Signal Check Views</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cookbook/google_analytics/where-sessions-started.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Where Sessions Started</span></a>
   </div>
 </li>
       </ul>
@@ -882,6 +942,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#metrics-can-be-reported-over-different-timespans" id="toc-metrics-can-be-reported-over-different-timespans" class="nav-link" data-scroll-target="#metrics-can-be-reported-over-different-timespans">Metrics can be reported over different timespans</a></li>
   <li><a href="#weighted-averages-should-be-used-for-call-centre-averages" id="toc-weighted-averages-should-be-used-for-call-centre-averages" class="nav-link" data-scroll-target="#weighted-averages-should-be-used-for-call-centre-averages">Weighted averages should be used for call centre averages</a></li>
   <li><a href="#internal-applications-should-usually-be-excluded-from-external-adoption-reporting" id="toc-internal-applications-should-usually-be-excluded-from-external-adoption-reporting" class="nav-link" data-scroll-target="#internal-applications-should-usually-be-excluded-from-external-adoption-reporting">Internal applications should usually be excluded from external adoption reporting</a></li>
+  <li><a href="#external-services-with-no-recent-traffic-can-be-treated-as-inactive" id="toc-external-services-with-no-recent-traffic-can-be-treated-as-inactive" class="nav-link" data-scroll-target="#external-services-with-no-recent-traffic-can-be-treated-as-inactive">External services with no recent traffic can be treated as inactive</a></li>
+  <li><a href="#the-user-id-unknown-counts-as-one-user" id="toc-the-user-id-unknown-counts-as-one-user" class="nav-link" data-scroll-target="#the-user-id-unknown-counts-as-one-user">The user ID “UNKNOWN” counts as one user</a></li>
   </ul>
 </nav>
     </div>
@@ -951,6 +1013,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span>  s.is_internal</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Query the list rather than pasting it into a filter. A service is reclassified by editing the source spreadsheet, and a query holding its own copy of the list will not notice. The same subquery works as a <code>NOT IN</code> in SQL and as an <code>anti_join()</code> in dbplyr; both forms appear in <a href="../cookbook/ibm_verify/sign-ins-by-application.html">SSO Events by Application</a>.</p>
 <p>Whether to exclude internal applications at all depends on the reporting question.</p>
+</section>
+<section id="external-services-with-no-recent-traffic-can-be-treated-as-inactive" class="level2">
+<h2 class="anchored" data-anchor-id="external-services-with-no-recent-traffic-can-be-treated-as-inactive">External services with no recent traffic can be treated as inactive</h2>
+<p>An external service with no SSO events in the last three months can be treated as inactive and left out of reporting, such as a count of integrated services or a table with one row per service. It is still a relying party; it has nothing to report. Say so wherever a count of services appears, because a reader cannot tell a dropped service from one that never existed.</p>
+</section>
+<section id="the-user-id-unknown-counts-as-one-user" class="level2">
+<h2 class="anchored" data-anchor-id="the-user-id-unknown-counts-as-one-user">The user ID “UNKNOWN” counts as one user</h2>
+<p>Some IBM Verify events carry the literal user ID <code>"UNKNOWN"</code> in place of a pseudonymized one. The summary tables count it as one user in <code>unique_users</code>, <code>mtd_unique_users</code>, and <code>ytd_unique_users</code>. Recipes that read the raw stream do the same, so the two agree. It moves any count by at most one.</p>
 
 
 </section>
@@ -1358,8 +1428,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../cookbook/google_analytics/dwell-time.html" class="pagination-link" aria-label="Dwell Time">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Dwell Time</span>
+      <a href="../cookbook/google_analytics/where-sessions-started.html" class="pagination-link" aria-label="Where Sessions Started">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Where Sessions Started</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">

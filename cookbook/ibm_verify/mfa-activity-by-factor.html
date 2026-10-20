@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="description" content="MFA attempts by factor, with each factor’s share of the total.">
+<meta name="description" content="MFA challenges by factor, with each factor’s share of the total.">
 
 <title>All MFA Activity by Factor – CanadaLogin Metrics Cookbook</title>
 <style>
@@ -171,7 +171,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../cookbook/index.html">Metrics Cookbook</a></li><li class="breadcrumb-item"><a href="../../cookbook/ibm_verify.html">IBM Verify</a></li><li class="breadcrumb-item"><a href="../../cookbook/ibm_verify/mfa-authentications.html">MFA</a></li><li class="breadcrumb-item"><a href="../../cookbook/ibm_verify/mfa-activity-by-factor.html">All MFA Activity by Factor</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../cookbook/index.html">Metrics Cookbook</a></li><li class="breadcrumb-item"><a href="../../cookbook/ibm_verify.html">IBM Verify</a></li><li class="breadcrumb-item"><a href="../../cookbook/ibm_verify/mfa-challenges.html">MFA</a></li><li class="breadcrumb-item"><a href="../../cookbook/ibm_verify/mfa-activity-by-factor.html">All MFA Activity by Factor</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -262,6 +262,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../../cookbook/ibm_verify/average-daily-users.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Average Daily Users</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../../cookbook/ibm_verify/new-accounts-and-idle-rate.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">New Accounts and Idle Account Rate</span></a>
   </div>
@@ -326,8 +332,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth3 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../cookbook/ibm_verify/mfa-authentications.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">MFA Authentications</span></a>
+  <a href="../../cookbook/ibm_verify/mfa-challenges.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">MFA Challenges</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../cookbook/ibm_verify/second-factor-attempts.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Second-factor Attempts</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -352,6 +364,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <div class="sidebar-item-container"> 
   <a href="../../cookbook/ibm_verify/sign-in-mfa-activity-by-factor.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Sign-in MFA Activity by Factor</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../cookbook/ibm_verify/sign-in-factor-share-of-successes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Sign-in Factor Share of Successes</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../cookbook/ibm_verify/sms-code-entry-rate.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">SMS Code Entry Rate</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../cookbook/ibm_verify/sign-up-email-verification-rate.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Sign-up Email Verification Rate</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../cookbook/ibm_verify/sign-up-email-code-speed.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Sign-up Email Code Speed</span></a>
   </div>
 </li>
       </ul>
@@ -441,6 +477,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../../cookbook/call_centre/calls-by-topic-category.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Calls by Topic Category</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../../cookbook/call_centre/top-10-call-topics.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Top 10 Call Topics</span></a>
   </div>
@@ -505,6 +547,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../../cookbook/jira/tickets-opened-closed-and-open.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tickets Opened, Closed, and Open</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../../cookbook/jira/tickets-by-priority.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Tickets by Priority</span></a>
   </div>
@@ -548,6 +596,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <div class="sidebar-item-container"> 
   <a href="../../cookbook/google_analytics/dwell-time.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Dwell Time</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../cookbook/google_analytics/signal-check-views.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Signal Check Views</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../cookbook/google_analytics/where-sessions-started.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Where Sessions Started</span></a>
   </div>
 </li>
       </ul>
@@ -887,14 +947,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../cookbook/index.html">Metrics Cookbook</a></li><li class="breadcrumb-item"><a href="../../cookbook/ibm_verify.html">IBM Verify</a></li><li class="breadcrumb-item"><a href="../../cookbook/ibm_verify/mfa-authentications.html">MFA</a></li><li class="breadcrumb-item"><a href="../../cookbook/ibm_verify/mfa-activity-by-factor.html">All MFA Activity by Factor</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../cookbook/index.html">Metrics Cookbook</a></li><li class="breadcrumb-item"><a href="../../cookbook/ibm_verify.html">IBM Verify</a></li><li class="breadcrumb-item"><a href="../../cookbook/ibm_verify/mfa-challenges.html">MFA</a></li><li class="breadcrumb-item"><a href="../../cookbook/ibm_verify/mfa-activity-by-factor.html">All MFA Activity by Factor</a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title">All MFA Activity by Factor</h1>
 </div>
 
 <div>
   <div class="description">
-    MFA attempts by factor, with each factor’s share of the total.
+    MFA challenges by factor, with each factor’s share of the total.
   </div>
 </div>
 
@@ -911,11 +971,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>The volume of MFA attempts broken down by factor type, with each factor’s share of total activity. This is the platform-wide view: it covers every factor type the system records, including the internal and administrative factors (<code>kq</code>, <code>totp</code>, <code>qr</code>, <code>ibm_verify_push</code>) and the <code>email_otp</code> factor used only to validate emails at sign-up. For usage restricted to the factors the public can sign in with, see <a href="../../cookbook/ibm_verify/sign-in-mfa-activity-by-factor.html">Sign-in MFA Activity by Factor</a>.</p>
+<p>The volume of MFA challenges broken down by factor type, with each factor’s share of total activity. This is the platform-wide view: it covers every factor type the system records, including the internal and administrative factors (<code>kq</code>, <code>totp</code>, <code>qr</code>, <code>ibm_verify_push</code>) and the <code>email_otp</code> factor used only to validate emails at sign-up. For usage restricted to the factors the public can sign in with, see <a href="../../cookbook/ibm_verify/sign-in-mfa-activity-by-factor.html">Sign-in MFA Activity by Factor</a>.</p>
 <p>This metric shows which second factors are exercised across the whole platform. Historically the mix has been dominated by <code>sms_otp</code> and <code>email_otp</code>. Passkeys (<code>fido2</code>) became generally available to the public on 2026-07-06, so <code>fido2</code> volume is expected to grow from that point, while factors such as <code>totp</code>, <code>kq</code>, <code>qr</code>, <code>voice_otp</code>, and <code>ibm_verify_push</code> continue to see little use.</p>
 <section id="calculation" class="level2">
 <h2 class="anchored" data-anchor-id="calculation">Calculation</h2>
-<p>Sum <code>count</code> grouped by <code>mfa_type</code>, then divide each factor’s total by the overall total to get its share. As with <a href="../../cookbook/ibm_verify/mfa-authentications.html">MFA Authentications</a>, de-duplicate before counting: OTP factor types (<code>sms_otp</code>, <code>email_otp</code>, <code>voice_otp</code>) record both a <code>sent</code> event and a subsequent <code>success</code>/<code>failure</code> event for the same challenge, so only the <code>sent</code> row is counted for these; non-OTP factor types (<code>fido2</code>, <code>kq</code>, <code>totp</code>, <code>ibm_verify_push</code>) have no <code>sent</code> event and are counted through their <code>success</code>/<code>failure</code> rows. Without this, OTP factors are roughly double-counted relative to non-OTP factors.</p>
+<p>Sum <code>count</code> grouped by <code>mfa_type</code>, then divide each factor’s total by the overall total to get its share. As with <a href="../../cookbook/ibm_verify/mfa-challenges.html">MFA Challenges</a>, de-duplicate before counting: OTP factor types (<code>sms_otp</code>, <code>email_otp</code>, <code>voice_otp</code>) record both a <code>sent</code> event and a subsequent <code>success</code>/<code>failure</code> event for the same challenge, so only the <code>sent</code> row is counted for these; non-OTP factor types (<code>fido2</code>, <code>kq</code>, <code>totp</code>, <code>ibm_verify_push</code>) have no <code>sent</code> event and are counted through their <code>success</code>/<code>failure</code> rows. Without this, OTP factors are roughly double-counted relative to non-OTP factors.</p>
 <div class="callout callout-style-default callout-note callout-titled" title="Example queries">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -934,7 +994,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    mfa_type,</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">SUM</span>(<span class="fu">count</span>) <span class="kw">AS</span> mfa_authentications,</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">SUM</span>(<span class="fu">count</span>) <span class="kw">AS</span> mfa_challenges,</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">CAST</span>(<span class="fu">SUM</span>(<span class="fu">count</span>) <span class="kw">AS</span> <span class="dt">DOUBLE</span>)</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>        <span class="op">/</span> <span class="fu">NULLIF</span>(<span class="fu">SUM</span>(<span class="fu">SUM</span>(<span class="fu">count</span>)) <span class="kw">OVER</span> (), <span class="dv">0</span>) <span class="kw">AS</span> factor_share</span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> ibm_verify_events_transformed.events_mfa_activity</span>
@@ -950,7 +1010,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    )</span>
 <span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>  )</span>
 <span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> mfa_type</span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> mfa_authentications <span class="kw">DESC</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> mfa_challenges <span class="kw">DESC</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>otp_types <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"sms_otp"</span>, <span class="st">"email_otp"</span>, <span class="st">"voice_otp"</span>)</span>
@@ -967,13 +1027,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
 <span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(mfa_type) <span class="sc">|&gt;</span></span>
 <span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">mfa_authentications =</span> <span class="fu">sum</span>(count, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">mfa_challenges =</span> <span class="fu">sum</span>(count, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
 <span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
 <span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">factor_share =</span></span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>      <span class="fu">as.double</span>(mfa_authentications) <span class="sc">/</span> <span class="fu">sum</span>(mfa_authentications, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>      <span class="fu">as.double</span>(mfa_challenges) <span class="sc">/</span> <span class="fu">sum</span>(mfa_challenges, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(mfa_authentications))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(mfa_challenges))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
