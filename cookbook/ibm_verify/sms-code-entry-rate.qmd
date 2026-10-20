@@ -1,0 +1,119 @@
+---
+title: "SMS Code Entry Rate"
+description: "Share of SMS codes sent that someone entered correctly."
+---
+
+The proportion of SMS one-time codes sent over a selected reporting period that
+someone went on to enter correctly.
+
+This is the clearest signal of automated traffic in the MFA data. Bots that
+request codes they cannot read drive codes sent up without codes entered, so the
+entry rate falls on those days while the [MFA Success Rate](mfa-success-rate.qmd)
+barely moves.
+
+The two rates have different denominators. The success rate divides successes by
+attempts (success plus failure), so a code that is never entered does not appear
+in it at all. The entry rate divides successes by codes sent, so every unentered
+code counts against it. Do not quote one as the other: on a typical day the entry
+rate sits far below the success rate.
+
+## Calculation
+
+Restrict to `mfa_type = 'sms_otp'`. Divide the sum of `count` where
+`result = 'success'` by the sum of `count` where `result = 'sent'`. To see a bot
+day, compute it per day rather than over the whole window.
+
+::: {.callout-note collapse="true" title="Example queries"}
+
+::: {.panel-tabset}
+
+## SQL
+
+Overall:
+
+```sql
+SELECT
+    CAST(SUM(count) FILTER (WHERE result = 'success') AS DOUBLE)
+        / NULLIF(SUM(count) FILTER (WHERE result = 'sent'), 0)
+        AS sms_code_entry_rate
+FROM ibm_verify_events_transformed.events_mfa_activity
+-- set the reporting window; see the timespans note in cookbook/notes.qmd
+WHERE CAST(from_date AS DATE) BETWEEN DATE '2026-01-01' AND DATE '2026-05-28'
+  AND mfa_type = 'sms_otp';
+```
+
+By day:
+
+```sql
+SELECT
+    CAST(from_date AS DATE) AS day,
+    SUM(count) FILTER (WHERE result = 'sent') AS sms_codes_sent,
+    SUM(count) FILTER (WHERE result = 'success') AS sms_codes_entered,
+    CAST(SUM(count) FILTER (WHERE result = 'success') AS DOUBLE)
+        / NULLIF(SUM(count) FILTER (WHERE result = 'sent'), 0)
+        AS sms_code_entry_rate
+FROM ibm_verify_events_transformed.events_mfa_activity
+-- set the reporting window; see the timespans note in cookbook/notes.qmd
+WHERE CAST(from_date AS DATE) BETWEEN DATE '2026-01-01' AND DATE '2026-05-28'
+  AND mfa_type = 'sms_otp'
+GROUP BY CAST(from_date AS DATE)
+ORDER BY day;
+```
+
+## R
+
+Overall:
+
+```r
+tbl(con, in_schema("ibm_verify_events_transformed", "events_mfa_activity")) |>
+  # set the reporting window; see the timespans note in cookbook/notes.qmd
+  filter(
+    as.Date(from_date) >= as.Date("2026-01-01"),
+    as.Date(from_date) <= as.Date("2026-05-28"),
+    mfa_type == "sms_otp"
+  ) |>
+  summarise(
+    sms_code_entry_rate =
+      sum(if_else(result == "success", as.double(count), 0), na.rm = TRUE) /
+        sum(if_else(result == "sent", as.double(count), 0), na.rm = TRUE)
+  )
+```
+
+By day:
+
+```r
+tbl(con, in_schema("ibm_verify_events_transformed", "events_mfa_activity")) |>
+  # set the reporting window; see the timespans note in cookbook/notes.qmd
+  filter(
+    as.Date(from_date) >= as.Date("2026-01-01"),
+    as.Date(from_date) <= as.Date("2026-05-28"),
+    mfa_type == "sms_otp"
+  ) |>
+  mutate(day = as.Date(from_date)) |>
+  group_by(day) |>
+  summarise(
+    sms_codes_sent = sum(if_else(result == "sent", count, 0L), na.rm = TRUE),
+    sms_codes_entered =
+      sum(if_else(result == "success", count, 0L), na.rm = TRUE),
+    sms_code_entry_rate =
+      sum(if_else(result == "success", as.double(count), 0), na.rm = TRUE) /
+        sum(if_else(result == "sent", as.double(count), 0), na.rm = TRUE)
+  ) |>
+  arrange(day)
+```
+
+:::
+
+:::
+
+## Interpretation notes
+
+The rate is a proportion between 0 and 1. The Automated Traffic dashboard flags
+a day when the rate falls well below a typical day while codes sent rise; its
+thresholds live there, not here.
+
+## Alternative names
+
+- SMS OTP entry rate
+- SMS code completion rate
+- codes entered per code sent

@@ -44,11 +44,15 @@ website:
                   - cookbook/ibm_verify/average-daily-sign-ins.qmd
               - section: "MFA"
                 contents:
-                  - cookbook/ibm_verify/mfa-authentications.qmd
+                  - cookbook/ibm_verify/mfa-challenges.qmd
+                  - cookbook/ibm_verify/second-factor-attempts.qmd
                   - cookbook/ibm_verify/mfa-success-rate.qmd
                   - cookbook/ibm_verify/mfa-success-rate-by-factor.qmd
                   - cookbook/ibm_verify/mfa-activity-by-factor.qmd
                   - cookbook/ibm_verify/sign-in-mfa-activity-by-factor.qmd
+                  - cookbook/ibm_verify/sign-in-factor-share-of-successes.qmd
+                  - cookbook/ibm_verify/sms-code-entry-rate.qmd
+                  - cookbook/ibm_verify/sign-up-email-verification-rate.qmd
           - section: "Call Centre"
             href: cookbook/call_centre.qmd
             contents:

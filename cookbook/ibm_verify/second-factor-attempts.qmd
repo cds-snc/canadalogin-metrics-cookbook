@@ -1,0 +1,74 @@
+---
+title: "Second-factor Attempts"
+description: "Second-factor outcomes at sign-in, successful or failed, in a reporting period."
+---
+
+The number of times someone presented a second factor at sign-in over a selected
+reporting period, whether it succeeded or failed.
+
+An attempt is an outcome: a code entered, right or wrong, or a passkey prompt
+that succeeded or failed. A code that was sent and never entered is not an
+attempt; it is still a [challenge](mfa-challenges.qmd). This is the denominator
+of [MFA Success Rate](mfa-success-rate.qmd), so the two always agree.
+
+It covers the factors the public can sign in with: `sms_otp`, `voice_otp`, and
+`fido2` (passkeys). `email_otp` checks an email address at sign-up and is not a
+second factor, and `kq`, `totp`, `qr`, and `ibm_verify_push` are internal.
+
+## Calculation
+
+Restrict to the sign-in factors and to the `success` and `failure` rows, then sum
+`count`. Leave out `sent` rows: they are issued codes, not outcomes.
+
+::: {.callout-note collapse="true" title="Example queries"}
+
+::: {.panel-tabset}
+
+## SQL
+
+```sql
+SELECT
+    SUM(count) AS second_factor_attempts
+FROM ibm_verify_events_transformed.events_mfa_activity
+-- set the reporting window; see the timespans note in cookbook/notes.qmd
+WHERE CAST(from_date AS DATE) BETWEEN DATE '2026-01-01' AND DATE '2026-05-28'
+  -- the factors the public can sign in with; email_otp is a sign-up check
+  AND mfa_type IN ('sms_otp', 'voice_otp', 'fido2')
+  -- outcomes only; a "sent" row is a code issued, not an attempt
+  AND result IN ('success', 'failure');
+```
+
+## R
+
+```r
+tbl(con, in_schema("ibm_verify_events_transformed", "events_mfa_activity")) |>
+  # set the reporting window; see the timespans note in cookbook/notes.qmd
+  filter(
+    as.Date(from_date) >= as.Date("2026-01-01"),
+    as.Date(from_date) <= as.Date("2026-05-28"),
+    # the factors the public can sign in with; email_otp is a sign-up check
+    mfa_type %in% c("sms_otp", "voice_otp", "fido2"),
+    # outcomes only; a "sent" row is a code issued, not an attempt
+    result %in% c("success", "failure")
+  ) |>
+  summarise(
+    second_factor_attempts = sum(count, na.rm = TRUE)
+  )
+```
+
+:::
+
+:::
+
+## Interpretation notes
+
+Attempts count tries, not people: someone who mistypes a code twice and then gets
+it right makes three attempts. Failed attempts are attempts less successes. For
+the codes issued, whether or not anyone entered them, use [MFA
+Challenges](mfa-challenges.qmd).
+
+## Alternative names
+
+- MFA attempts
+- second-factor outcomes
+- sign-in MFA attempts

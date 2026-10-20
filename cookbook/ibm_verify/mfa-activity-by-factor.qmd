@@ -1,9 +1,9 @@
 ---
 title: "All MFA Activity by Factor"
-description: "MFA attempts by factor, with each factor's share of the total."
+description: "MFA challenges by factor, with each factor's share of the total."
 ---
 
-The volume of MFA attempts broken down by factor type, with each factor's share
+The volume of MFA challenges broken down by factor type, with each factor's share
 of total activity. This is the platform-wide view: it covers every factor type
 the system records, including the internal and administrative factors (`kq`,
 `totp`, `qr`, `ibm_verify_push`) and the `email_otp` factor used only to validate
@@ -20,7 +20,7 @@ volume is expected to grow from that point, while factors such as `totp`, `kq`,
 
 Sum `count` grouped by `mfa_type`, then divide each factor's
 total by the overall total to get its share. As with [MFA
-Authentications](mfa-authentications.qmd), de-duplicate before counting: OTP factor
+Challenges](mfa-challenges.qmd), de-duplicate before counting: OTP factor
 types (`sms_otp`, `email_otp`, `voice_otp`) record both a `sent` event and a
 subsequent `success`/`failure` event for the same challenge, so only the `sent`
 row is counted for these; non-OTP factor types (`fido2`, `kq`, `totp`,
@@ -37,7 +37,7 @@ relative to non-OTP factors.
 ```sql
 SELECT
     mfa_type,
-    SUM(count) AS mfa_authentications,
+    SUM(count) AS mfa_challenges,
     CAST(SUM(count) AS DOUBLE)
         / NULLIF(SUM(SUM(count)) OVER (), 0) AS factor_share
 FROM ibm_verify_events_transformed.events_mfa_activity
@@ -53,7 +53,7 @@ WHERE CAST(from_date AS DATE) BETWEEN DATE '2026-01-01' AND DATE '2026-05-28'
     )
   )
 GROUP BY mfa_type
-ORDER BY mfa_authentications DESC;
+ORDER BY mfa_challenges DESC;
 ```
 
 ## R
@@ -73,13 +73,13 @@ tbl(con, in_schema("ibm_verify_events_transformed", "events_mfa_activity")) |>
   ) |>
   group_by(mfa_type) |>
   summarise(
-    mfa_authentications = sum(count, na.rm = TRUE)
+    mfa_challenges = sum(count, na.rm = TRUE)
   ) |>
   mutate(
     factor_share =
-      as.double(mfa_authentications) / sum(mfa_authentications, na.rm = TRUE)
+      as.double(mfa_challenges) / sum(mfa_challenges, na.rm = TRUE)
   ) |>
-  arrange(desc(mfa_authentications))
+  arrange(desc(mfa_challenges))
 ```
 
 :::

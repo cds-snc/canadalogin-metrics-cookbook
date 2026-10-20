@@ -33,11 +33,15 @@ listing:
     filter-ui: false
   - id: metrics-3
     contents:
-      - ibm_verify/mfa-authentications.qmd
+      - ibm_verify/mfa-challenges.qmd
+      - ibm_verify/second-factor-attempts.qmd
       - ibm_verify/mfa-success-rate.qmd
       - ibm_verify/mfa-success-rate-by-factor.qmd
       - ibm_verify/mfa-activity-by-factor.qmd
       - ibm_verify/sign-in-mfa-activity-by-factor.qmd
+      - ibm_verify/sign-in-factor-share-of-successes.qmd
+      - ibm_verify/sms-code-entry-rate.qmd
+      - ibm_verify/sign-up-email-verification-rate.qmd
     type: table
     fields: [title, description]
     field-display-names:
@@ -120,8 +124,9 @@ inflated the way the CanadaLogin-wide authentication events are.
 
 Metrics in this section describe multi-factor authentication (MFA) activity,
 sourced from `ibm_verify_events_transformed.events_mfa_activity`. That table has one row per day per MFA
-factor (`mfa_type`) per outcome (`result`), with the number of attempts in
-`count`.
+factor (`mfa_type`) per outcome (`result`), with the number of events in
+`count`. A `sent` row is a code issued; `success` and `failure` rows are
+outcomes. Most metrics here cover only the factors the public can sign in with.
 
 IBM Verify files MFA as a subtype of the authentication event rather than as an
 event type of its own, so these counts are a slice of the CanadaLogin-wide
