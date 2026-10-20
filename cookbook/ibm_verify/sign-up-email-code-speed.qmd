@@ -1,0 +1,161 @@
+---
+title: "Sign-up Email Code Speed"
+description: "How fast sign-up email codes are entered: codes entered and the median seconds per day."
+---
+
+How quickly people enter the code CanadaLogin emails them during sign-up, as the
+median seconds from the code being sent to it being entered, per day.
+
+A person has to open their inbox, find the message, and type the code, which
+takes a while. A bot reading the mailbox programmatically does it in a few
+seconds, so a day whose median drops sharply is a sign of automated sign-ups.
+This is a detection signal: the Automated Traffic dashboard holds the thresholds
+that turn it into a flag.
+
+It reads the [raw event stream](../../catalog/ibm_verify_events_raw/mfa_activity.qmd),
+because the summary table has no timestamps.
+
+## Calculation
+
+Take `Email OTP` events from the sign-up client (`performedby_type = 'api'`).
+Link each code to its entry through the hashed email address, `mfadevice`, leaving
+out a blank or `UNKNOWN` one: order each address's events by time, and keep a
+`success` whose previous event was a `sent`. That pairs an entry with the code
+sent just before it, and drops a success after a failure, which would otherwise
+time the retry rather than the code.
+
+The time to enter is the seconds between the two, rounded down and capped at 600,
+so one code left overnight cannot drag a day's figures. Report each ET day's codes
+entered and the median of their times. The median is the lower median: the
+smallest time with at least half the day's codes at or below it.
+
+Filter on the UTC `year`, `month`, and `day` partitions, and read one UTC day
+either side of the window: an ET day ends at 04:00 or 05:00 UTC the next day, and
+a code entered early in the window may have been sent the day before. Times are
+whole seconds, so a code sent and entered in the same second tie; order by
+`result` as well, which puts `sent` first.
+
+::: {.callout-note collapse="true" title="Example queries"}
+
+::: {.panel-tabset}
+
+## SQL
+
+```sql
+WITH events AS (
+    SELECT
+        mfadevice,
+        result,
+        from_iso8601_timestamp(replace(substr(time, 1, 19), ' ', 'T') || 'Z') AS at
+    FROM ibm_verify_events_raw.mfa_activity
+    -- UTC partitions: the window, plus one day either side
+    WHERE year = '2026'
+      AND (month = '09' OR (month = '08' AND day = '31') OR (month = '10' AND day = '01'))
+      AND mfamethod = 'Email OTP'
+      -- the sign-up client
+      AND performedby_type = 'api'
+      AND mfadevice NOT IN ('', 'UNKNOWN', 'Unknown')
+),
+paired AS (
+    SELECT
+        result,
+        at,
+        -- result breaks a tie within one second: "sent" sorts before "success"
+        lag(result) OVER (PARTITION BY mfadevice ORDER BY at, result) AS prev_result,
+        lag(at) OVER (PARTITION BY mfadevice ORDER BY at, result) AS prev_at
+    FROM events
+),
+entries AS (
+    SELECT
+        date(at_timezone(at, 'America/Toronto')) AS day,
+        -- whole seconds, capped so one late entry cannot skew the day
+        least(floor(to_unixtime(at) - to_unixtime(prev_at)), 600) AS seconds
+    FROM paired
+    WHERE result = 'success' AND prev_result = 'sent'
+),
+ranked AS (
+    SELECT
+        day,
+        seconds,
+        count(*) OVER (PARTITION BY day) AS codes_entered,
+        row_number() OVER (PARTITION BY day ORDER BY seconds) AS position
+    FROM entries
+)
+
+SELECT
+    day,
+    max(codes_entered) AS codes_entered,
+    -- the lower median: the first time at or past half the day's codes
+    min(seconds) FILTER (WHERE position >= codes_entered / 2.0) AS median_seconds
+FROM ranked
+-- set the reporting window in ET days; see the timespans note in cookbook/notes.qmd
+WHERE day BETWEEN DATE '2026-09-01' AND DATE '2026-09-30'
+GROUP BY day
+ORDER BY day;
+```
+
+## R
+
+```r
+tbl(con, in_schema("ibm_verify_events_raw", "mfa_activity")) |>
+  # UTC partitions: the window, plus one day either side
+  filter(
+    year == "2026",
+    month == "09" | (month == "08" & day == "31") | (month == "10" & day == "01"),
+    mfamethod == "Email OTP",
+    # the sign-up client
+    performedby_type == "api",
+    !mfadevice %in% c("", "UNKNOWN", "Unknown")
+  ) |>
+  mutate(at = sql("from_iso8601_timestamp(replace(substr(time, 1, 19), ' ', 'T') || 'Z')")) |>
+  group_by(mfadevice) |>
+  # result breaks a tie within one second: "sent" sorts before "success"
+  window_order(at, result) |>
+  mutate(prev_result = lag(result), prev_at = lag(at)) |>
+  ungroup() |>
+  filter(result == "success", prev_result == "sent") |>
+  mutate(
+    day = sql("date(at_timezone(at, 'America/Toronto'))"),
+    # whole seconds, capped so one late entry cannot skew the day
+    seconds = sql("least(floor(to_unixtime(at) - to_unixtime(prev_at)), 600)")
+  ) |>
+  group_by(day) |>
+  # counted before ordering, so it is the day's total, not a running count
+  mutate(codes_entered = n()) |>
+  window_order(seconds) |>
+  mutate(position = row_number()) |>
+  # set the reporting window in ET days; see the timespans note in cookbook/notes.qmd
+  filter(day >= as.Date("2026-09-01"), day <= as.Date("2026-09-30")) |>
+  summarise(
+    codes_entered = max(codes_entered, na.rm = TRUE),
+    # the lower median: the first time at or past half the day's codes
+    median_seconds = min(if_else(position >= codes_entered / 2, seconds, NA), na.rm = TRUE),
+    .groups = "drop"
+  ) |>
+  arrange(day)
+```
+
+:::
+
+:::
+
+## Interpretation notes
+
+**Read the median next to the count.** A fast median on a day with few codes is
+noise; a fast median on a day with many more codes than usual is the pattern bot
+sign-ups leave. The cap means a median of 600 seconds says "10 minutes or more",
+not exactly 10 minutes.
+
+**Only first-try entries are timed.** A success after a failure is left out, so
+someone who mistyped the code once does not count. That keeps the figure about
+reading the email, not about typing.
+
+**It is expensive for long windows.** The query reads the raw table. Keep the
+partition filter to the months you need.
+
+## Alternative names
+
+- email OTP speed
+- sign-up email code entry time
+- time to enter the email code
+- sign-up speed

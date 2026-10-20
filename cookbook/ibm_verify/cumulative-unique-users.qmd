@@ -84,6 +84,11 @@ Each column resets on its own cadence: `mtd_unique_users`
 resets at the start of each month and `ytd_unique_users` at the start of each
 calendar year. Do not sum these columns across rows; they are already cumulative.
 
+To compare a month in progress with the month before, read both on the same day
+of the month: the 12th against the 12th. If the earlier month is shorter, use its
+last day. Never compare a partial month with a finished one; the partial month
+always looks smaller.
+
 ## Alternative names
 
 - month-to-date unique users

@@ -33,6 +33,7 @@ website:
                   - cookbook/ibm_verify/completed-sign-in-sessions.qmd
                   - cookbook/ibm_verify/sign-ins-per-active-user.qmd
                   - cookbook/ibm_verify/cumulative-unique-users.qmd
+                  - cookbook/ibm_verify/average-daily-users.qmd
                   - cookbook/ibm_verify/new-accounts-and-idle-rate.qmd
               - section: "Applications"
                 contents:
@@ -53,6 +54,7 @@ website:
                   - cookbook/ibm_verify/sign-in-factor-share-of-successes.qmd
                   - cookbook/ibm_verify/sms-code-entry-rate.qmd
                   - cookbook/ibm_verify/sign-up-email-verification-rate.qmd
+                  - cookbook/ibm_verify/sign-up-email-code-speed.qmd
           - section: "Call Centre"
             href: cookbook/call_centre.qmd
             contents:

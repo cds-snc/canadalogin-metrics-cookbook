@@ -20,11 +20,21 @@ calls an SSO event, part of application usage.
 Sum `total_logins` over the selected reporting period, grouped
 by application.
 
+**By service.** A service can have several applications, one per name IBM Verify
+knows it by. To report a service, map each application to its service through
+[`rp.alias`](../../catalog/rp/alias.qmd), then sum. SSO events are counts, so they
+add up across a service's applications; unique users do not (see
+[Cumulative Unique Users by Application](cumulative-unique-users-by-application.qmd)).
+Keep an application with no `rp.alias` row under its own name rather than
+dropping it, so the service totals still add up to the application totals.
+
 ::: {.callout-note collapse="true" title="Example queries"}
 
 ::: {.panel-tabset}
 
 ## SQL
+
+By application:
 
 ```sql
 SELECT
@@ -45,7 +55,27 @@ GROUP  BY application_name
 ORDER  BY total_sso_events DESC;
 ```
 
+By service:
+
+```sql
+SELECT
+  COALESCE(s.service_name_en, a.application_name) AS service,
+  SUM(a.total_logins) AS total_sso_events
+FROM   ibm_verify_events_transformed.events_app_login_counts a
+-- left joins keep an application with no alias row, under its own name
+LEFT JOIN rp.alias al ON a.application_name = al.alias
+LEFT JOIN rp.service s ON al.rp_id = s.rp_id
+-- set the reporting window; see the timespans note in cookbook/notes.qmd
+WHERE  CAST(a.from_date AS DATE) BETWEEN DATE '2026-01-01' AND DATE '2026-05-28'
+  AND  NOT COALESCE(s.is_internal, FALSE)
+-- aggregate after the join: several applications can map to one service
+GROUP  BY COALESCE(s.service_name_en, a.application_name)
+ORDER  BY total_sso_events DESC;
+```
+
 ## R
+
+By application:
 
 ```r
 internal_apps <- tbl(con, in_schema("rp", "alias")) |>
@@ -63,6 +93,31 @@ tbl(con, in_schema("ibm_verify_events_transformed", "events_app_login_counts")) 
   # note in cookbook/notes.qmd
   anti_join(internal_apps, by = "application_name") |>
   group_by(application_name) |>
+  summarise(
+    total_sso_events = sum(total_logins, na.rm = TRUE)
+  ) |>
+  arrange(desc(total_sso_events))
+```
+
+By service:
+
+```r
+services <- tbl(con, in_schema("rp", "alias")) |>
+  inner_join(tbl(con, in_schema("rp", "service")), by = "rp_id") |>
+  select(application_name = alias, service_name_en, is_internal)
+
+tbl(con, in_schema("ibm_verify_events_transformed", "events_app_login_counts")) |>
+  # set the reporting window; see the timespans note in cookbook/notes.qmd
+  filter(
+    as.Date(from_date) >= as.Date("2026-01-01"),
+    as.Date(from_date) <= as.Date("2026-05-28")
+  ) |>
+  # a left join keeps an application with no alias row, under its own name
+  left_join(services, by = "application_name") |>
+  filter(!coalesce(is_internal, FALSE)) |>
+  # aggregate after the join: several applications can map to one service
+  mutate(service = coalesce(service_name_en, application_name)) |>
+  group_by(service) |>
   summarise(
     total_sso_events = sum(total_logins, na.rm = TRUE)
   ) |>
@@ -92,3 +147,4 @@ to authenticate again.
 - SSO event volume
 - single sign-on events
 - total uses of CanadaLogin by application
+- SSO events by service

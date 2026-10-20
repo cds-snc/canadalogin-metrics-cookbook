@@ -8,6 +8,7 @@ listing:
       - ibm_verify/completed-sign-in-sessions.qmd
       - ibm_verify/sign-ins-per-active-user.qmd
       - ibm_verify/cumulative-unique-users.qmd
+      - ibm_verify/average-daily-users.qmd
       - ibm_verify/new-accounts-and-idle-rate.qmd
     type: table
     fields: [title, description]
@@ -42,6 +43,7 @@ listing:
       - ibm_verify/sign-in-factor-share-of-successes.qmd
       - ibm_verify/sms-code-entry-rate.qmd
       - ibm_verify/sign-up-email-verification-rate.qmd
+      - ibm_verify/sign-up-email-code-speed.qmd
     type: table
     fields: [title, description]
     field-display-names:
