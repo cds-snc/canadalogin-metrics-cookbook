@@ -9,15 +9,20 @@ the number of tickets in the project changes over time.
 ## Calculation
 
 Keep only the Monday `date` partitions and count the rows in
-each. The snapshot ran weekly on Mondays until 2026-09-28 and daily from
+each. The snapshot ran weekly on Mondays until 2026-09-28 and nightly from
 2026-09-29, so filtering to Mondays gives one comparable total per week across
 the whole history.
+
+For a finer view from 2026-09-29 on, count every partition: there is one per
+night.
 
 ::: {.callout-note collapse="true" title="Example queries"}
 
 ::: {.panel-tabset}
 
 ## SQL
+
+By week:
 
 ```sql
 SELECT
@@ -29,11 +34,34 @@ GROUP BY date
 ORDER BY date DESC;
 ```
 
+By day, from the first nightly snapshot:
+
+```sql
+SELECT
+    date,
+    COUNT(*) AS ticket_count
+FROM jira.psom
+WHERE CAST(date AS DATE) >= DATE '2026-09-29'
+GROUP BY date
+ORDER BY date DESC;
+```
+
 ## R
+
+By week:
 
 ```r
 tbl(con, in_schema("jira", "psom")) |>
   filter(wday(as.Date(date), week_start = 1) == 1) |>
+  count(date, name = "ticket_count") |>
+  arrange(desc(date))
+```
+
+By day, from the first nightly snapshot:
+
+```r
+tbl(con, in_schema("jira", "psom")) |>
+  filter(as.Date(date) >= as.Date("2026-09-29")) |>
   count(date, name = "ticket_count") |>
   arrange(desc(date))
 ```
@@ -45,7 +73,8 @@ tbl(con, in_schema("jira", "psom")) |>
 ## Interpretation notes
 
 This counts the tickets still in the project on each
-Monday, not the tickets opened that week or the open backlog. It includes
+Monday, not the tickets opened that week or the open backlog; for those, see
+[Tickets Opened, Closed, and Open](tickets-opened-closed-and-open.qmd). It includes
 `Done` and `Canceled` tickets until they are archived, and it drops when a
 batch of tickets is archived (from 52 to 25 between 2026-09-14 and 2026-09-21).
 The first snapshot, 2026-06-30, was a Tuesday, so the filter leaves it out.

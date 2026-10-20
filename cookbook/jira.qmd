@@ -5,6 +5,7 @@ listing:
     contents:
       - jira/tickets-by-status.qmd
       - jira/weekly-ticket-volume.qmd
+      - jira/tickets-opened-closed-and-open.qmd
       - jira/tickets-by-priority.qmd
       - jira/sla-first-response-breach-rate.qmd
       - jira/sla-time-to-done-breach-rate.qmd

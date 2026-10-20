@@ -1,0 +1,209 @@
+---
+title: "Tickets Opened, Closed, and Open"
+description: "PSOM tickets opened and closed each week, the queue at the end of it, and how long tickets stay open."
+---
+
+How many PSOM tickets were opened and closed each week, how many were still open
+at the end of it, and how long a ticket typically stays open.
+
+## Calculation
+
+**Count every ticket ever seen, not the newest snapshot.** A ticket archived out
+of Jira leaves the board, so the newest [`jira.psom`](../../catalog/jira/psom.qmd)
+partition no longer has it. Reading only that partition makes it vanish from the
+history, as if it was never opened or closed. Take every `key` from every
+partition instead.
+
+- **Opened** on the date in `created`.
+- **Closed** on the earliest `status_changed` of any row where the ticket is
+  `Done`, `Canceled`, or `Ready to archive`, across all partitions. Earliest,
+  because a ticket that went Done and was later moved to Ready to archive keeps
+  the day it was done.
+- **Open at the end of a week** if it was opened on or before the week's last day
+  and not closed by then.
+
+Weeks run Monday to Sunday. Leave off the current week: it is not over, so its
+counts read short.
+
+Both timestamps carry a UTC offset; their first 10 characters are the local date.
+
+::: {.callout-note collapse="true" title="Example queries"}
+
+::: {.panel-tabset}
+
+## SQL
+
+By week:
+
+```sql
+WITH tickets AS (
+    -- every ticket in any partition, so archived ones stay in the history
+    SELECT key, MIN(CAST(substr(created, 1, 10) AS DATE)) AS created_on
+    FROM jira.psom
+    GROUP BY key
+),
+closed AS (
+    -- the earliest day the ticket was seen in a closed status
+    SELECT key, MIN(CAST(substr(status_changed, 1, 10) AS DATE)) AS closed_on
+    FROM jira.psom
+    WHERE status IN ('Done', 'Canceled', 'Ready to archive')
+    GROUP BY key
+),
+weeks AS (
+    -- Mondays of whole weeks; set the reporting window here
+    SELECT CAST(d AS DATE) AS week_start, CAST(date_add('day', 6, d) AS DATE) AS week_end
+    FROM UNNEST(sequence(DATE '2026-06-29', DATE '2026-09-28', INTERVAL '7' DAY)) AS w(d)
+)
+
+SELECT
+    w.week_start,
+    count_if(t.created_on BETWEEN w.week_start AND w.week_end) AS opened,
+    count_if(c.closed_on BETWEEN w.week_start AND w.week_end) AS closed,
+    count_if(t.created_on <= w.week_end
+             AND (c.closed_on IS NULL OR c.closed_on > w.week_end)) AS open_at_week_end
+FROM weeks w
+CROSS JOIN tickets t
+LEFT JOIN closed c ON t.key = c.key
+GROUP BY w.week_start
+ORDER BY w.week_start;
+```
+
+Median days open:
+
+```sql
+WITH tickets AS (
+    SELECT key, MIN(CAST(substr(created, 1, 10) AS DATE)) AS created_on
+    FROM jira.psom
+    GROUP BY key
+),
+closed AS (
+    SELECT key, MIN(CAST(substr(status_changed, 1, 10) AS DATE)) AS closed_on
+    FROM jira.psom
+    WHERE status IN ('Done', 'Canceled', 'Ready to archive')
+    GROUP BY key
+),
+ages AS (
+    -- closed in the 28 days to 2026-09-30, or still open on it; set the window here
+    SELECT
+        date_diff('day', t.created_on, COALESCE(c.closed_on, DATE '2026-09-30')) AS days_open,
+        c.closed_on IS NULL OR c.closed_on > DATE '2026-09-30' AS still_open
+    FROM tickets t
+    LEFT JOIN closed c ON t.key = c.key
+    WHERE t.created_on <= DATE '2026-09-30'
+      AND (c.closed_on IS NULL OR c.closed_on > DATE '2026-09-02')
+),
+ranked AS (
+    SELECT
+        days_open,
+        row_number() OVER (ORDER BY days_open) AS position,
+        COUNT(*) OVER () AS tickets
+    FROM ages
+)
+
+SELECT
+    -- the median: the middle age, or the mean of the middle two
+    AVG(CAST(days_open AS DOUBLE)) FILTER (
+        WHERE position IN (FLOOR((tickets + 1) / 2.0), CEIL((tickets + 1) / 2.0))
+    ) AS median_days_open,
+    MAX(tickets) AS tickets,
+    (SELECT count_if(still_open) FROM ages) AS still_open
+FROM ranked;
+```
+
+## R
+
+By week:
+
+```r
+psom <- tbl(con, in_schema("jira", "psom")) |>
+  select(key, status, created, status_changed) |>
+  collect()
+
+# every ticket in any partition, so archived ones stay in the history
+tickets <- psom |>
+  group_by(key) |>
+  summarise(created_on = min(as.Date(substr(created, 1, 10))), .groups = "drop")
+
+# the earliest day the ticket was seen in a closed status
+closed <- psom |>
+  filter(status %in% c("Done", "Canceled", "Ready to archive")) |>
+  group_by(key) |>
+  summarise(closed_on = min(as.Date(substr(status_changed, 1, 10))), .groups = "drop")
+
+board <- left_join(tickets, closed, by = "key")
+
+# Mondays of whole weeks; set the reporting window here
+tibble(week_start = seq(as.Date("2026-06-29"), as.Date("2026-09-28"), by = "7 days")) |>
+  mutate(week_end = week_start + 6) |>
+  rowwise() |>
+  mutate(
+    opened = sum(board$created_on >= week_start & board$created_on <= week_end),
+    closed = sum(board$closed_on >= week_start & board$closed_on <= week_end, na.rm = TRUE),
+    open_at_week_end = sum(board$created_on <= week_end &
+                             (is.na(board$closed_on) | board$closed_on > week_end))
+  ) |>
+  ungroup() |>
+  select(week_start, opened, closed, open_at_week_end)
+```
+
+Median days open:
+
+```r
+psom <- tbl(con, in_schema("jira", "psom")) |>
+  select(key, status, created, status_changed) |>
+  collect()
+
+tickets <- psom |>
+  group_by(key) |>
+  summarise(created_on = min(as.Date(substr(created, 1, 10))), .groups = "drop")
+
+closed <- psom |>
+  filter(status %in% c("Done", "Canceled", "Ready to archive")) |>
+  group_by(key) |>
+  summarise(closed_on = min(as.Date(substr(status_changed, 1, 10))), .groups = "drop")
+
+as_of <- as.Date("2026-09-30")
+
+# closed in the 28 days to as_of, or still open on it; set the window here
+left_join(tickets, closed, by = "key") |>
+  filter(created_on <= as_of, is.na(closed_on) | closed_on > as_of - 28) |>
+  mutate(
+    days_open = as.integer(coalesce(closed_on, as_of) - created_on),
+    still_open = is.na(closed_on) | closed_on > as_of
+  ) |>
+  summarise(
+    median_days_open = median(days_open),
+    tickets = n(),
+    still_open = sum(still_open)
+  )
+```
+
+:::
+
+:::
+
+## Interpretation notes
+
+**Why open tickets count in the median.** Taking only the tickets closed in the
+window leaves out the slow ones still sitting in the queue, so the median looks
+better than the service is. Taking the tickets opened in the window has the same
+fault: the ones still open have no age yet. Tickets closed in the window plus
+every ticket still open is the fix: each slow ticket counts at the age it has
+reached.
+
+**Close dates are approximate.** Many tickets were never caught at Done; they
+went straight to Ready to archive when the board was tidied, so their close date
+is the tidying day. The weekly snapshot until 2026-09-28 also means a status held
+for less than a week may never have been seen.
+
+**Test tickets are on the board** and cannot be filtered cleanly; counts include
+them.
+
+## Alternative names
+
+- PSOM queue
+- tickets opened
+- tickets closed
+- tickets awaiting handling
+- median ticket age
+- time to close

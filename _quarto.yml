@@ -84,6 +84,7 @@ website:
             contents:
               - cookbook/jira/tickets-by-status.qmd
               - cookbook/jira/weekly-ticket-volume.qmd
+              - cookbook/jira/tickets-opened-closed-and-open.qmd
               - cookbook/jira/tickets-by-priority.qmd
               - cookbook/jira/sla-first-response-breach-rate.qmd
               - cookbook/jira/sla-time-to-done-breach-rate.qmd
