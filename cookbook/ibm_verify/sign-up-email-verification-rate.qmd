@@ -1,0 +1,80 @@
+---
+title: "Sign-up Email Verification Rate"
+description: "Share of email code entries that succeeded, almost all of them at sign-up."
+---
+
+The proportion of email one-time-code entries that succeeded over a selected
+reporting period.
+
+During sign-up, CanadaLogin sends a code to the new user's email address to check
+that they control it. IBM Verify records this as the `email_otp` factor, but it is
+not a second factor: it happens before the account exists, and nobody signs in
+with it. That is why it is left out of [MFA Success Rate](mfa-success-rate.qmd)
+and the other sign-in factor metrics, and measured here on its own.
+
+A small share of `email_otp` events carry a user, so the account already existed
+and they are not sign-up checks. They are most likely the same check when an
+existing user changes their email address. The summary table cannot separate
+them. For the
+exact split, filter the raw stream on `performedby_type = 'api'`; see
+[`mfa_activity`](../../catalog/ibm_verify_events_raw/mfa_activity.qmd).
+
+## Calculation
+
+Restrict to `mfa_type = 'email_otp'`. Divide the sum of `count` where
+`result = 'success'` by the sum of `count` where `result` is `'success'` or
+`'failure'`. Exclude `sent` rows from both: they are codes issued, not outcomes.
+
+::: {.callout-note collapse="true" title="Example queries"}
+
+::: {.panel-tabset}
+
+## SQL
+
+```sql
+SELECT
+    CAST(SUM(count) FILTER (WHERE result = 'success') AS DOUBLE)
+        / NULLIF(SUM(count), 0) AS sign_up_email_verification_rate
+FROM ibm_verify_events_transformed.events_mfa_activity
+-- set the reporting window; see the timespans note in cookbook/notes.qmd
+WHERE CAST(from_date AS DATE) BETWEEN DATE '2026-01-01' AND DATE '2026-05-28'
+  AND mfa_type = 'email_otp'
+  -- outcomes only; a "sent" row is a code issued
+  AND result IN ('success', 'failure');
+```
+
+## R
+
+```r
+tbl(con, in_schema("ibm_verify_events_transformed", "events_mfa_activity")) |>
+  # set the reporting window; see the timespans note in cookbook/notes.qmd
+  filter(
+    as.Date(from_date) >= as.Date("2026-01-01"),
+    as.Date(from_date) <= as.Date("2026-05-28"),
+    mfa_type == "email_otp",
+    # outcomes only; a "sent" row is a code issued
+    result %in% c("success", "failure")
+  ) |>
+  summarise(
+    sign_up_email_verification_rate =
+      sum(if_else(result == "success", as.double(count), 0), na.rm = TRUE) /
+        sum(count, na.rm = TRUE)
+  )
+```
+
+:::
+
+:::
+
+## Interpretation notes
+
+The rate is a proportion between 0 and 1, counted per entry: someone who mistypes
+the code once and then gets it right adds one failure and one success. It does
+not count people who were sent a code and never entered one; those are sign-ups
+abandoned at the email step, and show up only as `sent` rows.
+
+## Alternative names
+
+- email OTP success rate
+- email verification success rate
+- sign-up email check rate

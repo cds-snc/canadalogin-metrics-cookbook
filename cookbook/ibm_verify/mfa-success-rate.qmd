@@ -1,20 +1,29 @@
 ---
 title: "MFA Success Rate"
-description: "Share of MFA attempts that succeeded."
+description: "Share of second-factor attempts at sign-in that succeeded."
 ---
 
-The proportion of MFA attempts that succeeded over a selected reporting period.
+The proportion of [second-factor attempts](second-factor-attempts.qmd) at sign-in
+that succeeded over a selected reporting period.
 
-This metric is useful for monitoring how often users clear the second factor. A
-falling rate can point to user friction with a particular factor, delivery
-problems (for example, undelivered SMS or email OTPs), or attack traffic.
+This metric is useful for monitoring how often users clear the second factor
+when they sign in. A falling rate can point to user friction with a particular
+factor, SMS delivery problems, or attack traffic.
+
+It covers the factors the public can sign in with: `sms_otp`, `voice_otp`, and
+`fido2` (passkeys). `email_otp` is not a second factor: it checks an email
+address at sign-up, and its rate is [Sign-up Email Verification
+Rate](sign-up-email-verification-rate.qmd). `kq`, `totp`, `qr`, and
+`ibm_verify_push` are internal factors. For one rate per factor, including those,
+see [MFA Success Rate by Factor](mfa-success-rate-by-factor.qmd).
 
 ## Calculation
 
-Divide the sum of `count` where `result = 'success'` by the sum
-of `count` where `result` is `'success'` or `'failure'`. OTP factor types also
-produce a `'sent'` event per challenge, which must be excluded from both the
-numerator and the denominator, because `sent` rows do not represent outcomes.
+Restrict to the sign-in factors. Divide the sum of `count` where
+`result = 'success'` by the sum of `count` where `result` is `'success'` or
+`'failure'`. OTP factor types also produce a `'sent'` event per challenge, which
+must be excluded from both the numerator and the denominator, because `sent` rows
+do not represent outcomes.
 
 To track the metric over time, bin the same calculation by week. Truncating
 `from_date` to the week groups each day into its Monday-anchored bin, so the
@@ -35,6 +44,8 @@ SELECT
 FROM ibm_verify_events_transformed.events_mfa_activity
 -- set the reporting window; see the timespans note in cookbook/notes.qmd
 WHERE CAST(from_date AS DATE) BETWEEN DATE '2026-01-01' AND DATE '2026-05-28'
+  -- the factors the public can sign in with; email_otp is a sign-up check
+  AND mfa_type IN ('sms_otp', 'voice_otp', 'fido2')
   -- exclude "sent" rows; success rate is calculated from outcome events only.
   -- including "sent" would inflate the denominator and deflate the rate.
   AND result IN ('success', 'failure');
@@ -50,6 +61,8 @@ SELECT
 FROM ibm_verify_events_transformed.events_mfa_activity
 -- set the reporting window; see the timespans note in cookbook/notes.qmd
 WHERE CAST(from_date AS DATE) BETWEEN DATE '2026-01-01' AND DATE '2026-05-28'
+  -- the factors the public can sign in with; email_otp is a sign-up check
+  AND mfa_type IN ('sms_otp', 'voice_otp', 'fido2')
   -- exclude "sent" rows; success rate is calculated from outcome events only.
   -- including "sent" would inflate the denominator and deflate the rate.
   AND result IN ('success', 'failure')
@@ -68,6 +81,8 @@ tbl(con, in_schema("ibm_verify_events_transformed", "events_mfa_activity")) |>
   filter(
     as.Date(from_date) >= as.Date("2026-01-01"),
     as.Date(from_date) <= as.Date("2026-05-28"),
+    # the factors the public can sign in with; email_otp is a sign-up check
+    mfa_type %in% c("sms_otp", "voice_otp", "fido2"),
     # exclude "sent" rows; success rate is calculated from outcome events only.
     # including "sent" would inflate the denominator and deflate the rate.
     result %in% c("success", "failure")
@@ -87,6 +102,8 @@ tbl(con, in_schema("ibm_verify_events_transformed", "events_mfa_activity")) |>
   filter(
     as.Date(from_date) >= as.Date("2026-01-01"),
     as.Date(from_date) <= as.Date("2026-05-28"),
+    # the factors the public can sign in with; email_otp is a sign-up check
+    mfa_type %in% c("sms_otp", "voice_otp", "fido2"),
     # exclude "sent" rows; success rate is calculated from outcome events only.
     # including "sent" would inflate the denominator and deflate the rate.
     result %in% c("success", "failure")
@@ -119,4 +136,5 @@ a Monday), so treat boundary weeks with caution when comparing trends.
 
 - MFA pass rate
 - second-factor success rate
+- sign-in MFA success rate
 - MFA completion rate

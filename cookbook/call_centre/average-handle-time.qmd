@@ -55,6 +55,9 @@ tbl(con, in_schema("call_centre", "weekly_activity_report")) |>
 Average handle time is always at least as large as average call
 length. A widening gap between the two points to growing after-call work.
 
+**Includes test calls.** The weekly report gives the number of test calls, not
+their handle time, so they cannot be taken out of the average.
+
 ## Alternative names
 
 - AHT

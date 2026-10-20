@@ -1,0 +1,80 @@
+---
+title: "Average Daily Users"
+description: "Distinct users on a typical day over a reporting window."
+---
+
+How many distinct users signed in to CanadaLogin on a typical day over a
+selected reporting window: the mean of the daily unique-user counts.
+
+**It is a typical day, not reach.** An average of 2,000 daily users over four
+weeks does not mean 2,000 people used CanadaLogin in those four weeks; the same
+person on ten different days counts on all ten. For how many different people
+used it, read a cumulative column (see [Cumulative Unique
+Users](cumulative-unique-users.qmd)). There is no unique-user count for an
+arbitrary window such as "the last 28 days".
+
+## Calculation
+
+Average `unique_users` over the days in the window that have a row. Return the
+number of days present beside it, and quote the average only when that equals
+the number of days in the window. A missing day is a gap in the data, not a day
+with no users: dividing by the length of the window would count it as zero and
+pull the average down.
+
+::: {.callout-note collapse="true" title="Example queries"}
+
+::: {.panel-tabset}
+
+## SQL
+
+```sql
+SELECT
+    AVG(CAST(unique_users AS DOUBLE)) AS average_daily_users,
+    COUNT(DISTINCT CAST(from_date AS DATE)) AS days_present,
+    -- the window's length, inclusive; quote the average only if they match
+    date_diff('day', DATE '2026-09-03', DATE '2026-09-30') + 1 AS days_in_window
+FROM ibm_verify_events_transformed.events_auth_total_logins
+-- set the reporting window; see the timespans note in cookbook/notes.qmd
+WHERE CAST(from_date AS DATE) BETWEEN DATE '2026-09-03' AND DATE '2026-09-30';
+```
+
+## R
+
+```r
+tbl(con, in_schema("ibm_verify_events_transformed", "events_auth_total_logins")) |>
+  # set the reporting window; see the timespans note in cookbook/notes.qmd
+  filter(
+    as.Date(from_date) >= as.Date("2026-09-03"),
+    as.Date(from_date) <= as.Date("2026-09-30")
+  ) |>
+  summarise(
+    average_daily_users = mean(as.double(unique_users), na.rm = TRUE),
+    days_present = n_distinct(as.Date(from_date)),
+    # the window's length, inclusive; quote the average only if they match
+    days_in_window = !!(as.integer(as.Date("2026-09-30") - as.Date("2026-09-03")) + 1L)
+  )
+```
+
+:::
+
+:::
+
+## Interpretation notes
+
+**Say "on a typical day" wherever it appears.** Readers take "average users" for
+how many people use the service, which is a much larger number.
+
+**Comparing two windows.** For a change against the previous window, use windows
+of the same length and check both are complete. Weekends run lower than
+weekdays, so a window should cover whole weeks: 28 days is four of each weekday.
+
+**The rate behind other metrics.** Summing the same daily counts instead of
+averaging them gives user-days, the denominator of [Calls per Active
+User](../call_centre/calls-per-active-user.qmd).
+
+## Alternative names
+
+- daily active users
+- DAU
+- average daily active users
+- typical daily users

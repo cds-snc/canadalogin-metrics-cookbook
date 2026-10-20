@@ -16,14 +16,22 @@ An account is **new** on the ET day of its first event in
 [`authentication_activity`](../../catalog/ibm_verify_events_raw/authentication_activity.qmd).
 It is **idle** if it has no successful event in
 [`application_usage`](../../catalog/ibm_verify_events_raw/application_usage.qmd)
-for a public relying party, one not flagged internal in
-[`rp.service`](../../catalog/rp/service.qmd). The **14-day** variant also counts
-an account as idle if its first public use came more than 14 days after its
-first event.
+for a public application. Public means not flagged internal in
+[`rp.service`](../../catalog/rp/service.qmd); an application with no row in
+[`rp.alias`](../../catalog/rp/alias.qmd) counts as public, because internal
+applications are the ones registered on purpose and a new partner can go live
+before it is added.
 
-Exclude the user ID `"UNKNOWN"`. Join to relying parties on alias, then
-aggregate (see [Joining through the
-lookup](../../catalog/rp.qmd#joining-through-the-lookup)).
+There are three idle windows:
+
+- **Ever:** no public use at all yet. Keeps falling as accounts age.
+- **14 days:** no public use within 14 days of the first event. Final once 14
+  days have passed.
+- **Same day:** no public use by the end of the ET day the account was made.
+  Final the next morning, so it is the one to use for spotting bot days.
+
+Leave out a blank user ID. The user ID `"UNKNOWN"` counts as one account, as it
+does in the summary tables (see [notes](../notes.qmd)).
 
 ::: {.callout-note collapse="true" title="Example queries"}
 
@@ -31,13 +39,15 @@ lookup](../../catalog/rp.qmd#joining-through-the-lookup)).
 
 ## SQL
 
+By day:
+
 ```sql
 WITH first_seen AS (
     SELECT
         subject,
         min(CAST(substr(time, 1, 19) AS timestamp)) AS first_ts
     FROM ibm_verify_events_raw.authentication_activity
-    WHERE subject NOT IN ('', 'UNKNOWN')
+    WHERE subject <> ''
     GROUP BY subject
 ),
 new_accounts AS (
@@ -50,14 +60,18 @@ new_accounts AS (
 ),
 public_use AS (
     SELECT
-        u.userid,
-        min(CAST(substr(u.time, 1, 19) AS timestamp)) AS first_public_ts
-    FROM ibm_verify_events_raw.application_usage u
-    JOIN rp.alias al ON u.applicationname = al.alias
-    JOIN rp.service s ON al.rp_id = s.rp_id
-    WHERE u.result = 'success'
-      AND NOT s.is_internal
-    GROUP BY u.userid
+        userid,
+        min(CAST(substr(time, 1, 19) AS timestamp)) AS first_public_ts
+    FROM ibm_verify_events_raw.application_usage
+    WHERE result = 'success'
+      -- only internal applications are left out; an unmapped one is public
+      AND applicationname NOT IN (
+          SELECT al.alias
+          FROM rp.alias al
+          JOIN rp.service s ON al.rp_id = s.rp_id
+          WHERE s.is_internal
+      )
+    GROUP BY userid
 )
 
 SELECT
@@ -65,8 +79,10 @@ SELECT
     count(*) AS new_accounts,
     count_if(p.userid IS NULL) AS idle_accounts,
     count_if(p.userid IS NULL OR p.first_public_ts > n.first_ts + INTERVAL '14' DAY) AS idle_accounts_14d,
+    count_if(p.userid IS NULL OR date(with_timezone(p.first_public_ts, 'UTC') AT TIME ZONE 'America/Toronto') > n.created_on) AS idle_accounts_same_day,
     CAST(count_if(p.userid IS NULL) AS DOUBLE) / count(*) AS idle_rate,
-    CAST(count_if(p.userid IS NULL OR p.first_public_ts > n.first_ts + INTERVAL '14' DAY) AS DOUBLE) / count(*) AS idle_rate_14d
+    CAST(count_if(p.userid IS NULL OR p.first_public_ts > n.first_ts + INTERVAL '14' DAY) AS DOUBLE) / count(*) AS idle_rate_14d,
+    CAST(count_if(p.userid IS NULL OR date(with_timezone(p.first_public_ts, 'UTC') AT TIME ZONE 'America/Toronto') > n.created_on) AS DOUBLE) / count(*) AS idle_rate_same_day
 FROM new_accounts n
 LEFT JOIN public_use p ON n.subject = p.userid
 -- set the reporting window; see the timespans note in cookbook/notes.qmd
@@ -75,28 +91,87 @@ GROUP BY n.created_on
 ORDER BY n.created_on;
 ```
 
+Since launch, point in time:
+
+```sql
+WITH first_seen AS (
+    SELECT
+        subject,
+        min(CAST(substr(time, 1, 19) AS timestamp)) AS first_ts
+    FROM ibm_verify_events_raw.authentication_activity
+    WHERE subject <> ''
+    GROUP BY subject
+),
+new_accounts AS (
+    SELECT
+        subject,
+        date(with_timezone(first_ts, 'UTC') AT TIME ZONE 'America/Toronto') AS created_on
+    FROM first_seen
+),
+public_use AS (
+    SELECT
+        userid,
+        min(CAST(substr(time, 1, 19) AS timestamp)) AS first_public_ts
+    FROM ibm_verify_events_raw.application_usage
+    WHERE result = 'success'
+      AND applicationname NOT IN (
+          SELECT al.alias
+          FROM rp.alias al
+          JOIN rp.service s ON al.rp_id = s.rp_id
+          WHERE s.is_internal
+      )
+    GROUP BY userid
+),
+-- accounts made each day, and accounts that first used a public service each day
+daily AS (
+    SELECT created_on AS day, count(*) AS created, 0 AS activated
+    FROM new_accounts
+    GROUP BY created_on
+    UNION ALL
+    SELECT
+        date(with_timezone(p.first_public_ts, 'UTC') AT TIME ZONE 'America/Toronto') AS day,
+        0 AS created,
+        count(*) AS activated
+    FROM new_accounts n
+    JOIN public_use p ON n.subject = p.userid
+    GROUP BY date(with_timezone(p.first_public_ts, 'UTC') AT TIME ZONE 'America/Toronto')
+)
+
+SELECT
+    day,
+    sum(sum(created)) OVER (ORDER BY day) AS accounts,
+    sum(sum(created) - sum(activated)) OVER (ORDER BY day) AS idle_accounts
+FROM daily
+GROUP BY day
+ORDER BY day;
+```
+
 ## R
+
+By day:
 
 ```r
 first_seen <- tbl(con, in_schema("ibm_verify_events_raw", "authentication_activity")) |>
-  filter(!is.na(subject), !subject %in% c("", "UNKNOWN")) |>
+  filter(!is.na(subject), subject != "") |>
   mutate(ts = sql("CAST(substr(time, 1, 19) AS timestamp)")) |>
   group_by(subject) |>
   summarise(first_ts = min(ts, na.rm = TRUE), .groups = "drop") |>
   # time is a UTC string; report on ET days
   mutate(created_on = sql("date(with_timezone(first_ts, 'UTC') AT TIME ZONE 'America/Toronto')"))
 
-public_apps <- tbl(con, in_schema("rp", "alias")) |>
+# only internal applications are left out; an unmapped one is public
+internal_apps <- tbl(con, in_schema("rp", "alias")) |>
   inner_join(tbl(con, in_schema("rp", "service")), by = "rp_id") |>
-  filter(!is_internal) |>
+  filter(is_internal) |>
   select(applicationname = alias)
 
 public_use <- tbl(con, in_schema("ibm_verify_events_raw", "application_usage")) |>
   filter(result == "success") |>
-  inner_join(public_apps, by = "applicationname") |>
+  anti_join(internal_apps, by = "applicationname") |>
   mutate(ts = sql("CAST(substr(time, 1, 19) AS timestamp)")) |>
   group_by(userid) |>
-  summarise(first_public_ts = min(ts, na.rm = TRUE), .groups = "drop")
+  summarise(first_public_ts = min(ts, na.rm = TRUE), .groups = "drop") |>
+  mutate(first_public_day = sql("date(with_timezone(first_public_ts, 'UTC') AT TIME ZONE 'America/Toronto')"))
 
 first_seen |>
   # set the reporting window; see the timespans note in cookbook/notes.qmd
@@ -107,20 +182,72 @@ first_seen |>
   left_join(public_use, by = c("subject" = "userid")) |>
   mutate(
     idle = is.na(first_public_ts),
-    idle_14d = is.na(first_public_ts) | first_public_ts > sql("first_ts + INTERVAL '14' DAY")
+    idle_14d = is.na(first_public_ts) | first_public_ts > sql("first_ts + INTERVAL '14' DAY"),
+    idle_same_day = is.na(first_public_ts) | first_public_day > created_on
   ) |>
   group_by(created_on) |>
   summarise(
     new_accounts = n(),
     idle_accounts = sum(as.integer(idle), na.rm = TRUE),
     idle_accounts_14d = sum(as.integer(idle_14d), na.rm = TRUE),
+    idle_accounts_same_day = sum(as.integer(idle_same_day), na.rm = TRUE),
     .groups = "drop"
   ) |>
   mutate(
     idle_rate = as.numeric(idle_accounts) / new_accounts,
-    idle_rate_14d = as.numeric(idle_accounts_14d) / new_accounts
+    idle_rate_14d = as.numeric(idle_accounts_14d) / new_accounts,
+    idle_rate_same_day = as.numeric(idle_accounts_same_day) / new_accounts
   ) |>
   arrange(created_on)
+```
+
+Since launch, point in time:
+
+```r
+first_seen <- tbl(con, in_schema("ibm_verify_events_raw", "authentication_activity")) |>
+  filter(!is.na(subject), subject != "") |>
+  mutate(ts = sql("CAST(substr(time, 1, 19) AS timestamp)")) |>
+  group_by(subject) |>
+  summarise(first_ts = min(ts, na.rm = TRUE), .groups = "drop") |>
+  mutate(created_on = sql("date(with_timezone(first_ts, 'UTC') AT TIME ZONE 'America/Toronto')"))
+
+internal_apps <- tbl(con, in_schema("rp", "alias")) |>
+  inner_join(tbl(con, in_schema("rp", "service")), by = "rp_id") |>
+  filter(is_internal) |>
+  select(applicationname = alias)
+
+public_use <- tbl(con, in_schema("ibm_verify_events_raw", "application_usage")) |>
+  filter(result == "success") |>
+  anti_join(internal_apps, by = "applicationname") |>
+  mutate(ts = sql("CAST(substr(time, 1, 19) AS timestamp)")) |>
+  group_by(userid) |>
+  summarise(first_public_ts = min(ts, na.rm = TRUE), .groups = "drop") |>
+  mutate(first_public_day = sql("date(with_timezone(first_public_ts, 'UTC') AT TIME ZONE 'America/Toronto')"))
+
+# accounts made each day, and accounts that first used a public service each day
+created <- first_seen |>
+  count(day = created_on, name = "created") |>
+  mutate(activated = 0L)
+
+activated <- first_seen |>
+  inner_join(public_use, by = c("subject" = "userid")) |>
+  count(day = first_public_day, name = "activated") |>
+  mutate(created = 0L)
+
+union_all(created, activated) |>
+  group_by(day) |>
+  summarise(
+    created = sum(created, na.rm = TRUE),
+    activated = sum(activated, na.rm = TRUE),
+    .groups = "drop"
+  ) |>
+  window_order(day) |>
+  mutate(
+    accounts = cumsum(created),
+    idle_accounts = cumsum(created - activated)
+  ) |>
+  select(day, accounts, idle_accounts) |>
+  arrange(day)
 ```
 
 :::
@@ -133,14 +260,21 @@ first_seen |>
 never use a service. Normal days run about 10% to 15% idle. On bot-wave days,
 nearly all new accounts are idle.
 
-**Compare months with the 14-day rate.** The "ever" rate keeps falling as
-accounts have more time to reach a service, so recent days look worse than old
-ones. The 14-day rate is final once 14 days have passed, so the last 14 days of
-any window are still provisional.
+**Pick the window for the question.** To spot a bot day, use the same-day rate:
+it is final the next morning. To compare months, use the 14-day rate: the "ever"
+rate keeps falling as accounts have more time to reach a service, so recent days
+look worse than old ones, and the last 14 days of any window are still
+provisional on the 14-day rate.
 
 **New accounts add up across days, rates do not.** Each account has one creation
 day, so summing `new_accounts` or `idle_accounts` over days is correct. Recompute
 a rate over a longer window from the summed counts.
+
+**Since launch is point in time.** An account leaves the idle count on the day it
+first uses a public service, and earlier days are never restated. So the idle
+count on a past day is what it was on that day, not how many of those accounts
+are still idle now. The other choice, restating history, would shrink every past
+day's idle count as accounts later reach a service.
 
 **When an account appears.** Most new accounts first appear with a successful
 password, which suggests the sign-up flow signs an account in once the password
@@ -160,3 +294,5 @@ grows every month. Run it for a reporting window, not on a schedule.
 - idle accounts
 - dormant accounts
 - accounts with no service use
+- accounts since launch
+- total accounts

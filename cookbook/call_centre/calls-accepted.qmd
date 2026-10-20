@@ -1,17 +1,20 @@
 ---
 title: "Calls Accepted"
-description: "Number of calls the call centre accepted in a reporting period."
+description: "Calls the call centre accepted in a reporting period, excluding staff test calls."
 ---
 
-The number of calls accepted by the call centre during a reporting period.
+The number of calls accepted by the call centre during a reporting period, not
+counting the test calls staff make to check the line.
 
 This metric is useful for tracking call centre demand and understanding how
 contact volume changes over time.
 
 ## Calculation
 
-Use `calls_accepted` by reporting period, or sum across periods
-for a total.
+Subtract `test_calls` from `calls_accepted` by reporting period, or sum the
+difference across periods for a total. A missing `test_calls` means none were
+made, so read it as 0. Test calls are a subset of accepted calls, and at current
+volumes they are large enough to matter.
 
 ::: {.callout-note collapse="true" title="Example queries"}
 
@@ -25,7 +28,10 @@ By week:
 SELECT
     date_range_start,
     date_range_end,
-    CAST(calls_accepted AS BIGINT) AS calls_accepted
+    CAST(calls_accepted AS BIGINT) AS calls_accepted,
+    CAST(COALESCE(test_calls, 0) AS BIGINT) AS test_calls,
+    -- a missing test_calls means none were made
+    CAST(calls_accepted - COALESCE(test_calls, 0) AS BIGINT) AS calls
 FROM call_centre.weekly_activity_report
 ORDER BY date_range_start;
 ```
@@ -34,7 +40,7 @@ Total over a period:
 
 ```sql
 SELECT
-    SUM(CAST(calls_accepted AS BIGINT)) AS total_calls_accepted
+    SUM(CAST(calls_accepted - COALESCE(test_calls, 0) AS BIGINT)) AS total_calls
 FROM call_centre.weekly_activity_report
 WHERE CAST(date_range_start AS DATE) BETWEEN DATE '2026-01-01' AND DATE '2026-05-31';
 ```
@@ -46,10 +52,13 @@ By week:
 ```r
 tbl(con, in_schema("call_centre", "weekly_activity_report")) |>
   arrange(date_range_start) |>
-  select(
+  transmute(
     date_range_start,
     date_range_end,
-    calls_accepted
+    calls_accepted,
+    test_calls = coalesce(test_calls, 0),
+    # a missing test_calls means none were made
+    calls = calls_accepted - coalesce(test_calls, 0)
   )
 ```
 
@@ -62,7 +71,7 @@ tbl(con, in_schema("call_centre", "weekly_activity_report")) |>
     as.Date(date_range_start) <= as.Date("2026-05-31")
   ) |>
   summarise(
-    total_calls_accepted = sum(calls_accepted, na.rm = TRUE)
+    total_calls = sum(calls_accepted - coalesce(test_calls, 0), na.rm = TRUE)
   )
 ```
 
@@ -75,10 +84,16 @@ tbl(con, in_schema("call_centre", "weekly_activity_report")) |>
 Calls accepted may not be identical to calls answered,
 depending on call centre definitions and routing logic.
 
+**Test calls are left out by default** across the call centre recipes. Only this
+count can drop them: the weekly report gives the number of test calls, not their
+waits, lengths, or outcomes. The recipes built on answered or abandoned calls, and
+the averages, say that they include them. The topic dump has no test calls.
+
 ## Alternative names
 
 - calls received
 - accepted calls
+- calls excluding test calls
 - weekly call volume
 - call centre demand
 - number of calls handled by the queue

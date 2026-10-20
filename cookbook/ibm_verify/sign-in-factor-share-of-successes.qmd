@@ -1,0 +1,136 @@
+---
+title: "Sign-in Factor Share of Successes"
+description: "Each sign-in factor's share of successful second factors, including passkey share."
+---
+
+Each sign-in factor's share of the second factors that succeeded over a selected
+reporting period. The `fido2` row is the passkey share: of the people who cleared
+a second factor at sign-in, how many did it with a passkey.
+
+This is the measure to use for passkey uptake. It compares like with like, a
+completed second factor against a completed second factor. The share in
+[Sign-in MFA Activity by Factor](sign-in-mfa-activity-by-factor.qmd) does not:
+it counts an SMS code as soon as it is sent, entered or not, but a passkey only
+once the prompt reaches an outcome, so it understates passkeys.
+
+It covers the factors the public can sign in with: `sms_otp`, `voice_otp`, and
+`fido2`. `email_otp` is a sign-up check, not a sign-in factor.
+
+## Calculation
+
+Restrict to the sign-in factors and to `result = 'success'`. Sum `count` by
+`mfa_type`, then divide each factor's successes by all sign-in successes.
+
+For a trend, do the same per Monday-to-Sunday week, and leave off any week the
+reporting window cuts short: a part week has too few days to compare.
+
+::: {.callout-note collapse="true" title="Example queries"}
+
+::: {.panel-tabset}
+
+## SQL
+
+By factor:
+
+```sql
+SELECT
+    mfa_type,
+    SUM(count) AS successes,
+    CAST(SUM(count) AS DOUBLE)
+        / NULLIF(SUM(SUM(count)) OVER (), 0) AS share_of_successes
+FROM ibm_verify_events_transformed.events_mfa_activity
+-- set the reporting window; see the timespans note in cookbook/notes.qmd
+WHERE CAST(from_date AS DATE) BETWEEN DATE '2026-01-01' AND DATE '2026-05-28'
+  -- the factors the public can sign in with; email_otp is a sign-up check
+  AND mfa_type IN ('sms_otp', 'voice_otp', 'fido2')
+  AND result = 'success'
+GROUP BY mfa_type
+ORDER BY successes DESC;
+```
+
+Passkey share by week:
+
+```sql
+SELECT
+    date_trunc('week', CAST(from_date AS DATE)) AS week_start,
+    SUM(count) FILTER (WHERE mfa_type = 'fido2') AS passkey_successes,
+    SUM(count) AS successes,
+    CAST(SUM(count) FILTER (WHERE mfa_type = 'fido2') AS DOUBLE)
+        / NULLIF(SUM(count), 0) AS passkey_share
+FROM ibm_verify_events_transformed.events_mfa_activity
+-- whole Monday-to-Sunday weeks only: start on a Monday, end on a Sunday
+WHERE CAST(from_date AS DATE) BETWEEN DATE '2026-01-05' AND DATE '2026-05-24'
+  AND mfa_type IN ('sms_otp', 'voice_otp', 'fido2')
+  AND result = 'success'
+-- date_trunc('week', ...) anchors each bin to its Monday
+GROUP BY date_trunc('week', CAST(from_date AS DATE))
+ORDER BY week_start;
+```
+
+## R
+
+By factor:
+
+```r
+tbl(con, in_schema("ibm_verify_events_transformed", "events_mfa_activity")) |>
+  # set the reporting window; see the timespans note in cookbook/notes.qmd
+  filter(
+    as.Date(from_date) >= as.Date("2026-01-01"),
+    as.Date(from_date) <= as.Date("2026-05-28"),
+    # the factors the public can sign in with; email_otp is a sign-up check
+    mfa_type %in% c("sms_otp", "voice_otp", "fido2"),
+    result == "success"
+  ) |>
+  group_by(mfa_type) |>
+  summarise(successes = sum(count, na.rm = TRUE)) |>
+  mutate(
+    share_of_successes =
+      as.double(successes) / sum(successes, na.rm = TRUE)
+  ) |>
+  arrange(desc(successes))
+```
+
+Passkey share by week:
+
+```r
+tbl(con, in_schema("ibm_verify_events_transformed", "events_mfa_activity")) |>
+  # whole Monday-to-Sunday weeks only: start on a Monday, end on a Sunday
+  filter(
+    as.Date(from_date) >= as.Date("2026-01-05"),
+    as.Date(from_date) <= as.Date("2026-05-24"),
+    mfa_type %in% c("sms_otp", "voice_otp", "fido2"),
+    result == "success"
+  ) |>
+  # floor_date(..., "week") translates to Athena's date_trunc('week', ...),
+  # which anchors each bin to its Monday
+  mutate(week_start = floor_date(as.Date(from_date), "week")) |>
+  group_by(week_start) |>
+  summarise(
+    passkey_successes =
+      sum(if_else(mfa_type == "fido2", count, 0L), na.rm = TRUE),
+    successes = sum(count, na.rm = TRUE),
+    passkey_share =
+      sum(if_else(mfa_type == "fido2", as.double(count), 0), na.rm = TRUE) /
+        sum(count, na.rm = TRUE)
+  ) |>
+  arrange(week_start)
+```
+
+:::
+
+:::
+
+## Interpretation notes
+
+The shares are proportions between 0 and 1 and sum to 1 across the three
+factors. Passkeys (`fido2`) became generally available on 2026-07-06, so a window
+that starts earlier shows little or no passkey share. A share can rise because
+passkey use grew or because SMS use fell; read the share next to the successes
+behind it.
+
+## Alternative names
+
+- passkey share
+- passkey uptake
+- sign-in factor mix
+- share of completed second factors

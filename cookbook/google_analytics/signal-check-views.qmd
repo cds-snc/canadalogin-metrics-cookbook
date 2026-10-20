@@ -1,0 +1,120 @@
+---
+title: "Signal Check Views"
+description: "Page views of each Signal Check in its first 14 days, and against a typical Signal Check at the same age."
+---
+
+How many times each Signal Check was viewed in its first 14 days, and whether a
+new one is ahead of or behind a typical Signal Check at the same age.
+
+Always name a Signal Check as "Signal Check #N", never "edition" or a bare "#N".
+
+## Calculation
+
+From [`meta_page_traffic`](../../catalog/google_analytics/meta_page_traffic.qmd),
+take the Signal Check pages: `page_kind = 'signal_check'` and a
+`pagepath_redacted` ending in `<YYYYMMDD>_signal-check.html`. The date in the file
+name is the day the Signal Check was sent.
+
+- **Day 1 is the publication date.** Views before it are the team reviewing the
+  draft, so leave them out.
+- **The first 14 days** are the publication date and the 13 days after it. A
+  fixed window makes Signal Checks comparable; views since publication favour
+  the older ones.
+- **Only Signal Checks published from 2026-07-23**, when tracking began. Signal
+  Check #1 and #2 came out before it and have no comparable figures.
+- **The number** comes from the page title, `#N`.
+
+**Typical Signal Check.** To judge a new Signal Check that is, say, 5 days old,
+add up each earlier Signal Check's views over its own first 5 days, and take the
+median. Use only Signal Checks with all 14 days tracked, and leave out the new
+one itself. Comparing at the same age is the point: a 5-day-old Signal Check
+against the others' full 14 days always looks behind.
+
+::: {.callout-note collapse="true" title="Example queries"}
+
+::: {.panel-tabset}
+
+## SQL
+
+```sql
+WITH pages AS (
+    SELECT
+        pagepath_redacted,
+        CAST(date AS DATE) AS day,
+        -- the date in the file name is the day it was sent
+        CAST(date_parse(regexp_extract(pagepath_redacted, '([0-9]{8})_signal-check', 1), '%Y%m%d') AS DATE)
+            AS published,
+        CAST(regexp_extract(pagetitle, '#([0-9]+)', 1) AS INTEGER) AS number,
+        screenpageviews
+    FROM google_analytics.meta_page_traffic
+    WHERE page_kind = 'signal_check'
+      AND regexp_like(pagepath_redacted, '[0-9]{8}_signal-check[.]html$')
+)
+
+SELECT
+    MAX(number) AS signal_check,
+    published,
+    -- day 1 is the publication date; earlier views are the draft being reviewed
+    SUM(screenpageviews) FILTER (WHERE day BETWEEN published AND date_add('day', 13, published))
+        AS views_first_14_days,
+    SUM(screenpageviews) FILTER (WHERE day >= published) AS views_since_published
+FROM pages
+-- tracking began on 2026-07-23
+WHERE published >= DATE '2026-07-23'
+GROUP BY pagepath_redacted, published
+ORDER BY published;
+```
+
+## R
+
+```r
+tbl(con, in_schema("google_analytics", "meta_page_traffic")) |>
+  filter(
+    page_kind == "signal_check",
+    str_detect(pagepath_redacted, "[0-9]{8}_signal-check[.]html$")
+  ) |>
+  mutate(
+    day = as.Date(date),
+    # the date in the file name is the day it was sent
+    published = sql("CAST(date_parse(regexp_extract(pagepath_redacted, '([0-9]{8})_signal-check', 1), '%Y%m%d') AS DATE)"),
+    number = sql("CAST(regexp_extract(pagetitle, '#([0-9]+)', 1) AS INTEGER)")
+  ) |>
+  # tracking began on 2026-07-23
+  filter(published >= as.Date("2026-07-23")) |>
+  group_by(pagepath_redacted, published) |>
+  summarise(
+    signal_check = max(number, na.rm = TRUE),
+    # day 1 is the publication date; earlier views are the draft being reviewed
+    views_first_14_days = sum(
+      if_else(day >= published & day <= sql("date_add('day', 13, published)"), screenpageviews, 0L),
+      na.rm = TRUE
+    ),
+    views_since_published = sum(if_else(day >= published, screenpageviews, 0L), na.rm = TRUE),
+    .groups = "drop"
+  ) |>
+  select(signal_check, published, views_first_14_days, views_since_published) |>
+  arrange(published)
+```
+
+:::
+
+:::
+
+## Interpretation notes
+
+**Views, not readers.** A reader who opens a Signal Check twice counts twice. For
+how far readers get, see [Dwell Time](dwell-time.qmd).
+
+**A young Signal Check is incomplete.** Until its 14th day has been exported,
+`views_first_14_days` is still growing. Compare it with a typical Signal Check at
+the same age, not with the others' 14-day totals.
+
+**Views come in early.** Most of a Signal Check's views land in the first few
+days, after it is announced, so a slow first day matters more than a slow tenth.
+
+## Alternative names
+
+- Signal Check readership
+- Signal Check reach
+- views per Signal Check
+- Signal Check page views

@@ -33,6 +33,7 @@ website:
                   - cookbook/ibm_verify/completed-sign-in-sessions.qmd
                   - cookbook/ibm_verify/sign-ins-per-active-user.qmd
                   - cookbook/ibm_verify/cumulative-unique-users.qmd
+                  - cookbook/ibm_verify/average-daily-users.qmd
                   - cookbook/ibm_verify/new-accounts-and-idle-rate.qmd
               - section: "Applications"
                 contents:
@@ -44,11 +45,16 @@ website:
                   - cookbook/ibm_verify/average-daily-sign-ins.qmd
               - section: "MFA"
                 contents:
-                  - cookbook/ibm_verify/mfa-authentications.qmd
+                  - cookbook/ibm_verify/mfa-challenges.qmd
+                  - cookbook/ibm_verify/second-factor-attempts.qmd
                   - cookbook/ibm_verify/mfa-success-rate.qmd
                   - cookbook/ibm_verify/mfa-success-rate-by-factor.qmd
                   - cookbook/ibm_verify/mfa-activity-by-factor.qmd
                   - cookbook/ibm_verify/sign-in-mfa-activity-by-factor.qmd
+                  - cookbook/ibm_verify/sign-in-factor-share-of-successes.qmd
+                  - cookbook/ibm_verify/sms-code-entry-rate.qmd
+                  - cookbook/ibm_verify/sign-up-email-verification-rate.qmd
+                  - cookbook/ibm_verify/sign-up-email-code-speed.qmd
           - section: "Call Centre"
             href: cookbook/call_centre.qmd
             contents:
@@ -64,6 +70,7 @@ website:
               - cookbook/call_centre/call-escalations.qmd
               - cookbook/call_centre/escalation-rate.qmd
               - cookbook/call_centre/call-topic-share.qmd
+              - cookbook/call_centre/calls-by-topic-category.qmd
               - cookbook/call_centre/top-10-call-topics.qmd
           - section: "Platform"
             href: cookbook/sre.qmd
@@ -77,6 +84,7 @@ website:
             contents:
               - cookbook/jira/tickets-by-status.qmd
               - cookbook/jira/weekly-ticket-volume.qmd
+              - cookbook/jira/tickets-opened-closed-and-open.qmd
               - cookbook/jira/tickets-by-priority.qmd
               - cookbook/jira/sla-first-response-breach-rate.qmd
               - cookbook/jira/sla-time-to-done-breach-rate.qmd
@@ -86,6 +94,8 @@ website:
             contents:
               - cookbook/google_analytics/task-success-rate.qmd
               - cookbook/google_analytics/dwell-time.qmd
+              - cookbook/google_analytics/signal-check-views.qmd
+              - cookbook/google_analytics/where-sessions-started.qmd
           - section: "Additional Notes"
             href: cookbook/notes.qmd
             contents:

@@ -73,6 +73,10 @@ The top 10 view is useful for quick reporting but may hide
 important lower-volume issues. In cases where there are not many calls, it may be
 useful to limit this list to a top 5, or to truncate ties at the end of the list.
 
+**This is a share of topic records, not of callers.** A call can carry several
+topics, so a call counts once per topic here. For the share of callers who asked
+about a topic, see [Calls by Topic Category](calls-by-topic-category.qmd).
+
 ## Alternative names
 
 - top 10 call reasons

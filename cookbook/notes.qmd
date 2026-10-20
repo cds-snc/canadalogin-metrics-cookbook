@@ -77,3 +77,18 @@ will not notice. The same subquery works as a `NOT IN` in SQL and as an
 
 Whether to exclude internal applications at all depends on the reporting
 question.
+
+## External services with no recent traffic can be treated as inactive
+
+An external service with no SSO events in the last three months can be treated
+as inactive and left out of reporting, such as a count of integrated services or
+a table with one row per service. It is still a relying party; it has nothing to
+report. Say so wherever a count of services appears, because a reader cannot
+tell a dropped service from one that never existed.
+
+## The user ID "UNKNOWN" counts as one user
+
+Some IBM Verify events carry the literal user ID `"UNKNOWN"` in place of a
+pseudonymized one. The summary tables count it as one user in `unique_users`,
+`mtd_unique_users`, and `ytd_unique_users`. Recipes that read the raw stream do
+the same, so the two agree. It moves any count by at most one.

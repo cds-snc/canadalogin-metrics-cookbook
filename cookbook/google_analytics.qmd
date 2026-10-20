@@ -5,6 +5,8 @@ listing:
     contents:
       - google_analytics/task-success-rate.qmd
       - google_analytics/dwell-time.qmd
+      - google_analytics/signal-check-views.qmd
+      - google_analytics/where-sessions-started.qmd
     type: table
     fields: [title, description]
     field-display-names:

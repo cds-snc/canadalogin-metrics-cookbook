@@ -1,0 +1,90 @@
+---
+title: "MFA Challenges"
+description: "Second-factor challenges issued at sign-in in a reporting period."
+---
+
+The number of second-factor challenges CanadaLogin issued at sign-in over a
+selected reporting period: one per code sent, and one per passkey prompt that
+reached an outcome.
+
+This metric measures second-factor volume. It counts challenges, not people, and
+not outcomes: an SMS code that is sent and never entered is still a challenge.
+For the challenges that reached an outcome, see [Second-factor
+Attempts](second-factor-attempts.qmd).
+
+It covers the factors the public can sign in with: `sms_otp`, `voice_otp`, and
+`fido2` (passkeys). `email_otp` is left out because it only checks an email
+address at sign-up (see [Sign-up Email Verification
+Rate](sign-up-email-verification-rate.qmd)), and `kq`, `totp`, `qr`, and
+`ibm_verify_push` are internal factors. For every factor the platform records,
+see [All MFA Activity by Factor](mfa-activity-by-factor.qmd).
+
+## Calculation
+
+Restrict to the sign-in factors and sum `count` over the selected reporting
+period. The OTP factors (`sms_otp`, `voice_otp`) record both a `sent` event and a
+subsequent `success`/`failure` event for the same challenge; to avoid
+double-counting, only the `sent` row is used for these. `fido2` does not generate
+a `sent` event, so its `success`/`failure` rows are used instead.
+
+::: {.callout-note collapse="true" title="Example queries"}
+
+::: {.panel-tabset}
+
+## SQL
+
+```sql
+SELECT
+    SUM(count) AS mfa_challenges
+FROM ibm_verify_events_transformed.events_mfa_activity
+-- set the reporting window; see the timespans note in cookbook/notes.qmd
+WHERE CAST(from_date AS DATE) BETWEEN DATE '2026-01-01' AND DATE '2026-05-28'
+  -- the factors the public can sign in with; email_otp is a sign-up check
+  AND mfa_type IN ('sms_otp', 'voice_otp', 'fido2')
+  -- OTP types record both a "sent" event and a "success"/"failure" event for
+  -- the same challenge. Counting all three would double-count them. fido2
+  -- has no "sent" event and is counted through its outcome rows instead.
+  AND (
+    result = 'sent'
+    OR (result IN ('success', 'failure') AND mfa_type = 'fido2')
+  );
+```
+
+## R
+
+```r
+tbl(con, in_schema("ibm_verify_events_transformed", "events_mfa_activity")) |>
+  # set the reporting window; see the timespans note in cookbook/notes.qmd
+  filter(
+    as.Date(from_date) >= as.Date("2026-01-01"),
+    as.Date(from_date) <= as.Date("2026-05-28"),
+    # the factors the public can sign in with; email_otp is a sign-up check
+    mfa_type %in% c("sms_otp", "voice_otp", "fido2"),
+    # OTP types record both a "sent" and a "success"/"failure" event per
+    # challenge; use only "sent" for these. fido2 has no "sent" event.
+    result == "sent" |
+      (result %in% c("success", "failure") & mfa_type == "fido2")
+  ) |>
+  summarise(
+    mfa_challenges = sum(count, na.rm = TRUE)
+  )
+```
+
+:::
+
+:::
+
+## Interpretation notes
+
+A challenge is not an attempt. Bot traffic that requests SMS codes it cannot
+read raises challenges without raising attempts, so a jump in challenges with
+no matching jump in [Second-factor Attempts](second-factor-attempts.qmd) is a
+sign of automated traffic, not of more people signing in. Passkey (`fido2`)
+activity appears only from the 2026-07-06 rollout onward.
+
+## Alternative names
+
+- MFA authentications
+- second-factor challenges
+- total MFA challenges
+- MFA volume

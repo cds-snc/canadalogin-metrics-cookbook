@@ -50,5 +50,6 @@ one "success". `fido2` logs only "success" or "failure".
 
 **Most `email_otp` is sign-up, not sign-in.** The email check during sign-up
 logs an `email_otp` with no user, because the account does not exist yet. These
-are most `email_otp` "sent" events. See
+are most `email_otp` "sent" events. The rest carry a user, and are most likely
+the same check when an existing user changes their email address. See
 [`mfa_activity`](../ibm_verify_events_raw/mfa_activity.qmd) in the raw stream.
