@@ -51,9 +51,9 @@ ul.task-list li input[type="checkbox"] {
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-88a945ed1e2be4f97bf21de973267cf7.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark-b85d610ac85a2aaf60d1a455c142aa92.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-88a945ed1e2be4f97bf21de973267cf7.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-93cc562312ac75ac46853482b70b30dd.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-29b275b645b730cc06e059d5c582456a.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-93cc562312ac75ac46853482b70b30dd.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -996,6 +996,16 @@ ul.task-list li input[type="checkbox"] {
 <td><code>error_id</code> event parameter.</td>
 </tr>
 <tr class="odd">
+<td>rp_name</td>
+<td>string</td>
+<td><code>rp_name</code> event parameter. The relying party (partner service) the user came from</td>
+</tr>
+<tr class="even">
+<td>rp_client_id</td>
+<td>string</td>
+<td><code>rp_client_id</code> event parameter. The relying party’s client registration</td>
+</tr>
+<tr class="odd">
 <td>eventcount</td>
 <td>bigint</td>
 <td>Number of events</td>
@@ -1022,6 +1032,7 @@ ul.task-list li input[type="checkbox"] {
 <li>otherwise the row is dropped</li>
 </ul>
 <p>Code columns are strings. This means that leading zeros should not be dropped, but an open open defect remains where they are coerced to ints <em>at some point upstream</em>. This means that the error code “000” is sometimes reported as <code>000</code> and sometimes as <code>0</code>.</p>
+<p><code>rp_name</code> and <code>rp_client_id</code> are often blank, and blank rows are kept. Manage CanadaLogin sends <code>rp_name</code> but no <code>rp_client_id</code>, and one <code>rp_name</code> can have several client IDs. Most errors caused by a misconfigured relying party arrive with no relying party at all, so a blank value on those errors is itself a finding.</p>
 <p>The <code>totalusers</code> field does not sum across rows, do not add them. This is a common pitfall and the reason is similar to the reason <a href="../../cookbook/notes.html#daily-unique-users-are-not-the-same-as-period-unique-users">we can’t sum unique users</a> in IBM Verify.</p>
 
 
