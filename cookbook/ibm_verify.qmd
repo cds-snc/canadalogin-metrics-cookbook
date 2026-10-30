@@ -23,6 +23,7 @@ listing:
       - ibm_verify/sign-in-success-rate-by-application.qmd
       - ibm_verify/peak-daily-unique-users.qmd
       - ibm_verify/cumulative-unique-users-by-application.qmd
+      - ibm_verify/daily-share-of-monthly-users.qmd
       - ibm_verify/applications-per-credential.qmd
       - ibm_verify/average-daily-sign-ins.qmd
     type: table
