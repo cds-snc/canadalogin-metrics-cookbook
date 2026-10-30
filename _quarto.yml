@@ -41,6 +41,7 @@ website:
                   - cookbook/ibm_verify/sign-in-success-rate-by-application.qmd
                   - cookbook/ibm_verify/peak-daily-unique-users.qmd
                   - cookbook/ibm_verify/cumulative-unique-users-by-application.qmd
+                  - cookbook/ibm_verify/daily-share-of-monthly-users.qmd
                   - cookbook/ibm_verify/applications-per-credential.qmd
                   - cookbook/ibm_verify/average-daily-sign-ins.qmd
               - section: "MFA"

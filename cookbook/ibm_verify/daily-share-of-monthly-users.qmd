@@ -1,0 +1,182 @@
+---
+title: "Daily Share of Monthly Users by Application"
+description: "The share of an application's monthly users who sign in on a typical day."
+---
+
+How often the people who use an application come back. On a typical day in the
+month, what share of that month's users reached the application?
+
+This is the standard DAU/MAU ratio, sometimes called stickiness. See [The Power
+User
+Curve](https://a16z.com/the-power-user-curve-the-best-way-to-understand-your-most-engaged-users/)
+(Andrew Chen and Li Jin, a16z).
+
+## Calculation
+
+Per application and calendar month, from
+[`events_app_login_counts`](../../catalog/ibm_verify_events_transformed/events_app_login_counts.qmd):
+
+- **User-days**: the sum of daily `unique_users`.
+- **Mean daily active users**: user-days divided by the days in the month. The
+  table has no row for a day with no users, so dividing by the days in the month
+  counts those days as zero.
+- **Monthly active users**: the month's `mtd_unique_users`. It only grows within
+  a month, so its maximum is the month's total even when the last day has no row.
+- **Daily share of monthly users**: mean daily active users divided by monthly
+  active users.
+- **Active days per user**: user-days divided by monthly active users. This is the
+  same ratio multiplied by the days in the month.
+
+Only complete months are reported. A month is complete when it has ended and the
+application's first row in the table falls before the 1st. Internal applications
+are left out.
+
+::: {.callout-note collapse="true" title="Example queries"}
+
+::: {.panel-tabset}
+
+## SQL
+
+```sql
+WITH first_seen AS (
+    SELECT application_name, MIN(CAST(from_date AS DATE)) AS first_day
+    FROM ibm_verify_events_transformed.events_app_login_counts
+    GROUP BY application_name
+),
+
+monthly AS (
+    SELECT
+        application_name,
+        date_trunc('month', CAST(from_date AS DATE)) AS month,
+        SUM(unique_users) AS user_days,
+        -- mtd_unique_users only grows within a month, so its maximum is the
+        -- month's distinct users even when the last day has no row
+        MAX(mtd_unique_users) AS monthly_active_users
+    FROM ibm_verify_events_transformed.events_app_login_counts
+    -- set the reporting window; whole, finished calendar months only
+    WHERE CAST(from_date AS DATE) BETWEEN DATE '2026-05-01' AND DATE '2026-09-30'
+    GROUP BY 1, 2
+),
+
+services AS (
+    SELECT al.alias AS application_name, s.service_name_en, s.is_internal
+    FROM rp.alias al
+    JOIN rp.service s ON al.rp_id = s.rp_id
+),
+
+complete AS (
+    SELECT
+        m.month,
+        m.application_name,
+        sv.service_name_en,
+        day_of_month(last_day_of_month(m.month)) AS days_in_month,
+        m.user_days,
+        m.monthly_active_users
+    FROM monthly m
+    JOIN first_seen f ON m.application_name = f.application_name
+    -- a left join keeps an application with no alias row
+    LEFT JOIN services sv ON m.application_name = sv.application_name
+    -- live for the whole month: first row before the 1st
+    WHERE f.first_day < m.month
+      AND NOT COALESCE(sv.is_internal, false)
+)
+
+SELECT
+    month,
+    application_name,
+    service_name_en,
+    days_in_month,
+    user_days,
+    CAST(user_days AS DOUBLE) / days_in_month AS mean_daily_active_users,
+    monthly_active_users,
+    CAST(user_days AS DOUBLE) / days_in_month / monthly_active_users
+        AS dau_mau_ratio,
+    CAST(user_days AS DOUBLE) / monthly_active_users AS active_days_per_user
+FROM complete
+ORDER BY month, dau_mau_ratio DESC;
+```
+
+## R
+
+```r
+app_logins <- tbl(con, in_schema("ibm_verify_events_transformed", "events_app_login_counts"))
+
+first_seen <- app_logins |>
+  group_by(application_name) |>
+  summarise(first_day = min(as.Date(from_date), na.rm = TRUE))
+
+services <- tbl(con, in_schema("rp", "alias")) |>
+  inner_join(tbl(con, in_schema("rp", "service")), by = "rp_id") |>
+  select(application_name = alias, service_name_en, is_internal)
+
+app_logins |>
+  # set the reporting window; whole, finished calendar months only
+  filter(
+    as.Date(from_date) >= as.Date("2026-05-01"),
+    as.Date(from_date) <= as.Date("2026-09-30")
+  ) |>
+  group_by(application_name, month = floor_date(as.Date(from_date), "month")) |>
+  summarise(
+    user_days = sum(unique_users, na.rm = TRUE),
+    # mtd_unique_users only grows within a month, so its maximum is the
+    # month's distinct users even when the last day has no row
+    monthly_active_users = max(mtd_unique_users, na.rm = TRUE),
+    .groups = "drop"
+  ) |>
+  inner_join(first_seen, by = "application_name") |>
+  # live for the whole month: first row before the 1st
+  filter(first_day < month) |>
+  # a left join keeps an application with no alias row
+  left_join(services, by = "application_name") |>
+  filter(!coalesce(is_internal, FALSE)) |>
+  mutate(
+    days_in_month = day(last_day_of_month(month)),
+    mean_daily_active_users = as.double(user_days) / days_in_month,
+    dau_mau_ratio = as.double(user_days) / days_in_month / monthly_active_users,
+    active_days_per_user = as.double(user_days) / monthly_active_users
+  ) |>
+  select(
+    month, application_name, service_name_en, days_in_month, user_days,
+    mean_daily_active_users, monthly_active_users, dau_mau_ratio,
+    active_days_per_user
+  ) |>
+  arrange(month, desc(dau_mau_ratio))
+```
+
+:::
+
+:::
+
+## Interpretation notes
+
+The lowest possible value is one divided by the days in the month, about 3%. It
+means every user came on exactly one day. The highest is 100%, meaning every user
+came every day. Active days per user is often easier to read: 2.5 means a typical
+monthly user signed in on two or three days.
+
+**Partial months are left out.** A month-to-date figure is biased high, not just
+noisy. On the 1st, everyone active that day is the whole month's base, so the
+ratio is 100%. It then falls as occasional users join the base. A trailing 28-day
+window avoids this, but it needs per-user data that the summary tables do not
+hold.
+
+**Read a service with several applications row by row.** Each row is exact for
+its application. Adding rows together counts someone who used both applications
+twice, in both the numerator and the denominator, by an amount that cannot be
+recovered.
+
+**`unique_users` counts users with any SSO event, successful or not.** Failed
+events almost always carry the user ID `"UNKNOWN"`, which counts as one user. It
+only matters for applications with a handful of users.
+
+**This is an average.** It does not show whether most users come once or a few
+come daily. The per-user version, a histogram of users by days active in the
+month (the "L30"), needs per-user data.
+
+## Alternative names
+
+- DAU/MAU ratio
+- stickiness
+- engagement ratio
+- sign-in frequency by application
+- active days per user
