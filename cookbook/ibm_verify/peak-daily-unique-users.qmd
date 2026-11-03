@@ -33,7 +33,7 @@ WITH ranked AS (
     FROM ibm_verify_events_transformed.events_app_login_counts
     -- set the reporting window; see the timespans note in cookbook/notes.qmd
     WHERE CAST(from_date AS DATE) BETWEEN DATE '2026-01-01' AND DATE '2026-05-28'
-    -- to exclude internal applications from adoption reporting, uncomment:
+    -- to exclude internal CanadaLogin components from adoption reporting, uncomment:
     -- AND application_name NOT IN (
     --     SELECT al.alias
     --     FROM   rp.alias al
@@ -60,7 +60,7 @@ tbl(con, in_schema("ibm_verify_events_transformed", "events_app_login_counts")) 
     as.Date(from_date) >= as.Date("2026-01-01"),
     as.Date(from_date) <= as.Date("2026-05-28")
   ) |>
-  # to exclude internal applications from adoption reporting, uncomment:
+  # to exclude internal CanadaLogin components from adoption reporting, uncomment:
   # anti_join(
   #   tbl(con, in_schema("rp", "alias")) |>
   #     inner_join(tbl(con, in_schema("rp", "service")), by = "rp_id") |>

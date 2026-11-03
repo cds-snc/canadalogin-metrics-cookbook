@@ -50,8 +50,8 @@ One row per event.
 
 **Flow Application is CanadaLogin's own.** Almost every new account reaches it
 right after sign-up, which suggests it is the sign-up flow. It is an internal
-application in [`rp.service`](../rp/service.qmd), so exclude internal
-applications when the question is about partner services.
+CanadaLogin component in [`rp.service`](../rp/service.qmd), so exclude internal
+CanadaLogin components when the question is about partner services.
 
 **Join to relying parties after, not before, aggregating.** See [Joining through
 the lookup](../rp.qmd#joining-through-the-lookup).

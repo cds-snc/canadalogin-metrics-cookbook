@@ -145,11 +145,11 @@ than counting them as `0.0`, or an average will read too low.
 - **Traffic to the Manage CanadaLogin app is excluded.** Someone can go
   through sign up or sign in without coming from a valid relying party, using
   a link that names the Manage CanadaLogin app as the destination. Real users
-  always arrive from a valid relying party, so this traffic is internal
-  employee traffic, not actual users. Every funnel that is not a Manage
+  always arrive from a valid relying party, so this traffic comes from
+  employees, not actual users. Every funnel that is not a Manage
   CanadaLogin task therefore excludes traffic with the Manage CanadaLogin
   relying party ID. See
-  [Internal applications](../notes.qmd#internal-applications-should-usually-be-excluded-from-external-adoption-reporting).
+  [Internal CanadaLogin components](../notes.qmd#internal-canadalogin-components-should-usually-be-excluded-from-external-adoption-reporting).
 - **A series can change definition part way through.**
   `funnel_metrics_current` returns the newest version for each date, and a new
   version is not always backfilled. Check `funnel_version` across the rows

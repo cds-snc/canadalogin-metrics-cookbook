@@ -88,8 +88,8 @@ The relevant IBM Verify tables are:
 Their `from_date` is a string, so every query below casts it. See [Dates are
 strings](../catalog/ibm_verify_events_transformed.qmd#dates-are-strings).
 
-**Internal applications.** Internal applications are typically excluded from
-public-facing adoption metrics. Which ones are internal comes from
+**Internal CanadaLogin components.** Internal CanadaLogin components are
+typically excluded from public-facing adoption metrics. Which ones are internal comes from
 [`rp.service.is_internal`](../catalog/rp/service.qmd), resolved to IBM Verify's
 application names through [`rp.alias`](../catalog/rp/alias.qmd):
 
@@ -101,7 +101,7 @@ WHERE  s.is_internal
 ```
 
 Use the subquery rather than a pasted list, so the classification stays in one
-place. See the internal applications note in [notes.qmd](notes.qmd).
+place. See the internal CanadaLogin components note in [notes.qmd](notes.qmd).
 
 ## CanadaLogin Metrics
 

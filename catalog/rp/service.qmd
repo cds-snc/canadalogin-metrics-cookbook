@@ -33,7 +33,7 @@ holds current state only and keeps no history.
 | `service_name_fr` | `varchar` | French name of the service. Free text.  |
 | `operator` | `varchar` | The organization that runs the service, typed by hand. Display only, see the note below. |
 | `gc_orgid` | `bigint` | The `gc_orgID` of the operating organization, or `0` for entities that are not in the originating dataset. |
-| `is_internal` | `boolean` | Is the service internal facing, rather than something the public signs in to? |
+| `is_internal` | `boolean` | Is the service an internal CanadaLogin component, rather than something the public signs in to? |
 | `launch_date` | `varchar` | Approximate date the service launched to the public, as `YYYY-MM-DD`. Stored as text. |
 | `fetched_at` | `timestamp(3)` | When the Lambda last read the source sheet, in UTC. |
 

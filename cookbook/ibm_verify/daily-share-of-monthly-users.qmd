@@ -28,8 +28,8 @@ Per application and calendar month, from
   same ratio multiplied by the days in the month.
 
 Only complete months are reported. A month is complete when it has ended and the
-application's first row in the table falls before the 1st. Internal applications
-are left out.
+application's first row in the table falls before the 1st. Internal CanadaLogin
+components are left out.
 
 ::: {.callout-note collapse="true" title="Example queries"}
 

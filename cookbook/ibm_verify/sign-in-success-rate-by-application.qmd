@@ -30,8 +30,8 @@ SELECT
 FROM ibm_verify_events_transformed.events_app_login_counts
 -- set the reporting window; see the timespans note in cookbook/notes.qmd
 WHERE CAST(from_date AS DATE) BETWEEN DATE '2026-01-01' AND DATE '2026-05-28'
--- optionally filter out internal applications; see the internal applications
--- note in cookbook/notes.qmd
+-- optionally filter out internal CanadaLogin components;
+-- see the note on them in cookbook/notes.qmd
   AND application_name NOT IN (
       SELECT al.alias
       FROM   rp.alias al
@@ -56,8 +56,8 @@ tbl(con, in_schema("ibm_verify_events_transformed", "events_app_login_counts")) 
     as.Date(from_date) >= as.Date("2026-01-01"),
     as.Date(from_date) <= as.Date("2026-05-28")
   ) |>
-  # optionally filter out internal applications; see the internal applications
-  # note in cookbook/notes.qmd
+  # optionally filter out internal CanadaLogin components;
+  # see the note on them in cookbook/notes.qmd
   anti_join(internal_apps, by = "application_name") |>
   group_by(application_name) |>
   summarise(

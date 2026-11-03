@@ -63,10 +63,10 @@ In reporting language, prefer **sign-in** over **login**. The underlying IBM
 Verify field may be called `total_logins`, but "sign-ins" is preferred (and
 often enforced) when talking about CanadaLogin.
 
-Where applicable, internal applications are excluded from external-facing
-adoption reporting. The exclusion list is not maintained here: it is derived
+Where applicable, internal CanadaLogin components are excluded from
+external-facing adoption reporting. The exclusion list is not maintained here: it is derived
 from [`rp.service.is_internal`](../catalog/rp/service.qmd) at query time. See the
-internal applications note in [notes.qmd](notes.qmd) for the pattern.
+internal CanadaLogin components note in [notes.qmd](notes.qmd) for the pattern.
 
 ## Scope
 

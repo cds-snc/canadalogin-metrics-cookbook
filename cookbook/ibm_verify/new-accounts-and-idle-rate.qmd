@@ -19,7 +19,7 @@ It is **idle** if it has no successful event in
 for a public application. Public means not flagged internal in
 [`rp.service`](../../catalog/rp/service.qmd); an application with no row in
 [`rp.alias`](../../catalog/rp/alias.qmd) counts as public, because internal
-applications are the ones registered on purpose and a new partner can go live
+CanadaLogin components are the ones registered on purpose and a new partner can go live
 before it is added.
 
 There are three idle windows:
@@ -64,7 +64,7 @@ public_use AS (
         min(CAST(substr(time, 1, 19) AS timestamp)) AS first_public_ts
     FROM ibm_verify_events_raw.application_usage
     WHERE result = 'success'
-      -- only internal applications are left out; an unmapped one is public
+      -- only internal CanadaLogin components are left out; an unmapped one is public
       AND applicationname NOT IN (
           SELECT al.alias
           FROM rp.alias al
@@ -159,7 +159,7 @@ first_seen <- tbl(con, in_schema("ibm_verify_events_raw", "authentication_activi
   # time is a UTC string; report on ET days
   mutate(created_on = sql("date(with_timezone(first_ts, 'UTC') AT TIME ZONE 'America/Toronto')"))
 
-# only internal applications are left out; an unmapped one is public
+# only internal CanadaLogin components are left out; an unmapped one is public
 internal_apps <- tbl(con, in_schema("rp", "alias")) |>
   inner_join(tbl(con, in_schema("rp", "service")), by = "rp_id") |>
   filter(is_internal) |>
