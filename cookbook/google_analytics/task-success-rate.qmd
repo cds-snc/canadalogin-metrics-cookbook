@@ -142,8 +142,13 @@ than counting them as `0.0`, or an average will read too low.
   window. A user who fails, retries and succeeds counts once, as a success. A
   user who fails three times and gives up counts once, as a failure. The rate
   is a share of people, not of attempts.
-- **Sign ups and sign ins without a valid destination RP are excluded.** It is technically possible for someone to go through the sign up or sign in flow without entering via a valid RP service, via a link that specifies the CL manage app as the destination relying party. Actual users will always enter via a valid RP, so we can be confident that traffic with the Manage CanadaLogin RP id parameter represents internal employee traffic, rather than actul users. All funnels that are not manage app tasks therefore exclude traffic with the Manage App RP id parameter.
-  Manage CanadaLogin app, which is internal. See
+- **Traffic to the Manage CanadaLogin app is excluded.** Someone can go
+  through sign up or sign in without coming from a valid relying party, using
+  a link that names the Manage CanadaLogin app as the destination. Real users
+  always arrive from a valid relying party, so this traffic is internal
+  employee traffic, not actual users. Every funnel that is not a Manage
+  CanadaLogin task therefore excludes traffic with the Manage CanadaLogin
+  relying party ID. See
   [Internal applications](../notes.qmd#internal-applications-should-usually-be-excluded-from-external-adoption-reporting).
 - **A series can change definition part way through.**
   `funnel_metrics_current` returns the newest version for each date, and a new
@@ -183,10 +188,21 @@ started in a tagged browser session, so the two numbers will not match.
 * **Entry**: `reset_password`, the "Reset your password" screen
 * **Exit**: `complete`, the "Your password has been reset" screen
 
-**Many people who start are checking whether they have an account.** They enter their 
-email, enter the OTP code sent to them, and get error 26 ("This email is not associated
-with an account"). The funnel counts them as failures. Resolving this issue is a 
-[work in progress](https://github.com/cds-snc/canadalogin-reporting-data-pipeline/issues/80).
+**Account checkers are excluded.** Many people who start password recovery are
+checking whether they have a CanadaLogin account, not recovering a password.
+They enter their email, enter the OTP code sent to them, and get error 26
+("This email is not associated with an account"). Since version 5, the funnel
+excludes any user who gets error 26 on the password recovery form. The beacon
+sends the code as `026`, but GA stores it as `26`.
+
+- **The rate is a lower bound.** Only the phone branch returns error 26. An
+  account checker who picks passkey and fails, or quits at the method choice,
+  can't be told apart from a real user. They still count as failures, so the
+  true task success rate is higher than the one reported.
+- **The series steps up on 2026-08-29.** Version 5 starts on that date because
+  GA keeps event data for only 2 months. Earlier days are on versions 3 and 4,
+  which count account checkers as failures. The jump reflects the change in
+  measurement, not a change in user behaviour. Do not read a trend across it.
 
 #### Recover 2-step verification
 
