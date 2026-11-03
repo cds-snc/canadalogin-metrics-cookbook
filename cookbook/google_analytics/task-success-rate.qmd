@@ -188,21 +188,22 @@ started in a tagged browser session, so the two numbers will not match.
 * **Entry**: `reset_password`, the "Reset your password" screen
 * **Exit**: `complete`, the "Your password has been reset" screen
 
-**Account checkers are excluded.** Many people who start password recovery are
-checking whether they have a CanadaLogin account, not recovering a password.
-They enter their email, enter the OTP code sent to them, and get error 26
-("This email is not associated with an account"). Since version 5, the funnel
-excludes any user who gets error 26 on the password recovery form. The beacon
-sends the code as `026`, but GA stores it as `26`.
+**Account checkers are excluded from version 5.** Many people who start are
+checking whether they have an account, not recovering a password. They enter
+their email, enter the OTP code sent to them, and get error 26 ("This email is
+not associated with an account"). Counted as failures, they would make the rate
+mostly a measure of account checking. The funnel drops any user with a
+`form_api_call_end` event where `error_id` is `26` and `form_id` is
+`passwordrecovery`, using a GA4 user exclusion segment (the `exclude_users`
+block in the [YAML](https://github.com/cds-snc/canadalogin-reporting-data-pipeline/blob/main/infra/modules/google_analytics/funnel_src/funnels/recover_password.yaml)). An excluded user leaves every step, not only the step where
+the error appeared.
 
-- **The rate is a lower bound.** Only the phone branch returns error 26. An
-  account checker who picks passkey and fails, or quits at the method choice,
-  can't be told apart from a real user. They still count as failures, so the
-  true task success rate is higher than the one reported.
-- **The series steps up on 2026-08-29.** Version 5 starts on that date because
-  GA keeps event data for only 2 months. Earlier days are on versions 3 and 4,
-  which count account checkers as failures. The jump reflects the change in
-  measurement, not a change in user behaviour. Do not read a trend across it.
+**The rate is a lower bound.** Only the phone branch returns error 26. The
+passkey branch never looks up the email, and an address with no account fails
+the passkey prompt the same way a cancel does. Those checkers, and checkers who
+quit at the method choice screen, stay in and count as failures, even though
+they had no password to reset. The true success rate for account holders is
+higher.
 
 #### Recover 2-step verification
 
@@ -212,9 +213,9 @@ sends the code as `026`, but GA stores it as `26`.
 * **Exit**: `confirmation`, the "Delete sign-in methods you're not using
   anymore" screen
 
-- **Exit is a cleanup screen, not a confirmation.** The last step is "Delete
-  sign-in methods you're not using anymore", offered after a new method is set
-  up.
+**Exit is a cleanup screen, not a confirmation.** The last step is "Delete
+sign-in methods you're not using anymore", offered after a new method is set
+up.
 
 #### Migration
 
@@ -234,13 +235,13 @@ New account:
   without skipping
 * **Exit**: `migration_complete`, the "Migration - Confirmation" screen
 
-- **The denominator is not the first step.** In both funnels, `task_success`
-  divides by `migration_not_skipped`, users who answered the legacy sign-in
-  prompt without skipping it. The rate is the share of people who chose to
-  link a legacy method and finished. 
-- **The prompt step has a time limit** in `migration_existing_to_cl`. The
-  legacy method prompt must follow the 2-step verification step within 30
-  minutes.
+**The denominator is not the first step.** In both funnels, `task_success`
+divides by `migration_not_skipped`, users who answered the legacy sign-in
+prompt without skipping it. The rate is the share of people who chose to link a
+legacy method and finished.
+
+**The prompt step has a time limit** in `migration_existing_to_cl`. The legacy
+method prompt must follow the 2-step verification step within 30 minutes.
 
 ## Alternative names
 
