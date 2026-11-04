@@ -97,9 +97,9 @@ weekly |>
 
 Both sides are per-day averages over the same Sunday to
 Saturday week: average daily calls over average daily active users. On a typical
-day, roughly this many calls came in per 100 active users. This converts cleanly
-to a percentage, e.g., 2 calls per 100 users means 2% of users called on a given
-day.
+day, roughly this many calls came in per 100 active users. It can also be shown
+as a percentage of active users, e.g., 2 calls per 100 users is 2%, though it
+counts calls rather than callers.
 
 Watch the units. Dividing a whole week of calls by one day's active users reads
 about seven times too high. Normalizing by user-days avoids that and holds up for
