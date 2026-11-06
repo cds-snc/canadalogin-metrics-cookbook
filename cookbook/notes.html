@@ -966,7 +966,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="daily-unique-users-are-not-the-same-as-period-unique-users">Daily unique users are not the same as period unique users</h2>
 <p>Summing daily unique users gives a measure of user-days, not distinct people over the full period.</p>
 <p>For distinct people over a longer period, use a cumulative unique user field such as <code>mtd_unique_users</code> or <code>ytd_unique_users</code>.</p>
-<p>For a plain-language explanation of why the daily figures cannot be added, and why no unique-user count exists for an arbitrary window, see <a href="../cookbook/unique-users.html">Why Unique Users Cannot Be Added Up</a>.</p>
+<p>For distinct people over any other window, count the hashed user IDs in the <a href="../catalog/ibm_verify_events_raw.html">raw IBM Verify event stream</a>. The raw tables are preliminary, so check a raw count against the transformed figure for the same window.</p>
 </section>
 <section id="metrics-can-be-reported-over-different-timespans" class="level2">
 <h2 class="anchored" data-anchor-id="metrics-can-be-reported-over-different-timespans">Metrics can be reported over different timespans</h2>
