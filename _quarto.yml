@@ -97,11 +97,8 @@ website:
               - cookbook/google_analytics/dwell-time.qmd
               - cookbook/google_analytics/signal-check-views.qmd
               - cookbook/google_analytics/where-sessions-started.qmd
-          - section: "Additional Notes"
+          - text: "Additional Notes"
             href: cookbook/notes.qmd
-            contents:
-              - text: "Adding Up Unique Users"
-                href: cookbook/unique-users.qmd
 #          - cookbook/cross-source.qmd
       - section: "Data Catalog"
         href: catalog/index.qmd

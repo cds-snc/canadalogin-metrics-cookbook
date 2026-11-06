@@ -1,6 +1,16 @@
 ---
 title: "Why Unique Users Cannot Be Added Up"
+# Kept for existing links but out of the sidebar and search: the page predates
+# the raw event stream. The structure test skips pages marked `unlisted`.
+unlisted: true
+search: false
 ---
+
+::: {.callout-warning}
+**No longer relevant.** This page has been out of date since October 2026, when
+we implemented the [IBM Verify events pipeline](../catalog/ibm_verify_events_raw.qmd).
+We can now do most of the things this page says we cannot.
+:::
 
 A unique-user figure counts people, not sign-ins. That makes it behave
 differently from most numbers in this cookbook. This page explains the two rules

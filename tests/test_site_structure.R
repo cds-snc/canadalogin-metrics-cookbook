@@ -65,6 +65,12 @@ drafts <- pages[vapply(
   function(path) isTRUE(front_matter(path)$draft),
   logical(1)
 )]
+# Published but kept out of the sidebar on purpose, reachable by link only.
+unlisted <- pages[vapply(
+  file.path(root, pages),
+  function(path) isTRUE(front_matter(path)$unlisted),
+  logical(1)
+)]
 source_pages <- grep("^(cookbook|catalog)/[^/]+/", pages, value = TRUE)
 
 # Tests ----------------------------------------------------------------------
@@ -76,7 +82,7 @@ test_that("the render list resolves to some pages", {
 })
 
 test_that("every rendered page is in the sidebar", {
-  expect_equal(setdiff(setdiff(pages, drafts), hrefs), character(0))
+  expect_equal(setdiff(setdiff(pages, c(drafts, unlisted)), hrefs), character(0))
 })
 
 test_that("every sidebar entry points to a file that exists", {
