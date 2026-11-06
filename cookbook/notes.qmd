@@ -16,7 +16,7 @@ Summing daily unique users gives a measure of user-days, not distinct people ove
 
 For distinct people over a longer period, use a cumulative unique user field such as `mtd_unique_users` or `ytd_unique_users`.
 
-For a plain-language explanation of why the daily figures cannot be added, and why no unique-user count exists for an arbitrary window, see [Why Unique Users Cannot Be Added Up](unique-users.qmd).
+For distinct people over any other window, count the hashed user IDs in the [raw IBM Verify event stream](../catalog/ibm_verify_events_raw.qmd). The raw tables are preliminary, so check a raw count against the transformed figure for the same window.
 
 ## Metrics can be reported over different timespans
 
