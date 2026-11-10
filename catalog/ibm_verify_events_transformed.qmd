@@ -45,5 +45,5 @@ WHERE CAST(from_date AS DATE) BETWEEN DATE '2026-09-01' AND DATE '2026-09-30'
 
 In R, wrap both sides in `as.Date()`:
 `filter(as.Date(from_date) >= as.Date("2026-09-01"))`. A bare string on the
-right fails the same way, because RAthena turns ISO-date strings into `DATE`
-literals.
+right fails the same way, because noctua (like RAthena) turns ISO-date
+strings into `DATE` literals.
