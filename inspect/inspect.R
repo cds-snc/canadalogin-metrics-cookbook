@@ -13,7 +13,7 @@
 
 suppressPackageStartupMessages({
   library(DBI)
-  library(RAthena)
+  library(noctua)
   library(dplyr)
   library(dbplyr)
   library(purrr)
@@ -61,10 +61,11 @@ options(width = 200)
 # Connection -----------------------------------------------------------------
 
 con <- dbConnect(
-  RAthena::athena(),
+  noctua::athena(),
   profile_name   = athena_profile,
   region_name    = athena_region,
-  s3_staging_dir = athena_staging_dir
+  s3_staging_dir = athena_staging_dir,
+  bigint         = "numeric"
 )
 
 # Glimpse one table ----------------------------------------------------------
@@ -136,7 +137,7 @@ table_schema <- function(schema, table) {
 
 # Discover and glimpse every table -------------------------------------------
 
-tables <- RAthena::dbGetTables(con) |>
+tables <- noctua::dbGetTables(con) |>
   filter(TableType == "BASE TABLE") |>
   arrange(Schema, TableName)
 
@@ -149,7 +150,7 @@ schema_rows <- schema_rows[order(schema_rows$schema,
                                  schema_rows$column), ]
 write.csv(schema_rows, schema_file, row.names = FALSE)
 
-# Sink only stdout to the file; RAthena's "Data scanned" notes go to the
+# Sink only stdout to the file; noctua's "Data scanned" notes go to the
 # message stream (the console), keeping the file itself clean.
 sink(glimpse_file)
 

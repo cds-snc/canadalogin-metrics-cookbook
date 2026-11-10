@@ -49,8 +49,8 @@ For these rows, group on the `operator` value instead.
 
 **`launch_date` is a string, so cast both sides when comparing.** Comparing it
 against an R value that looks like an ISO date fails with
-`TYPE_MISMATCH: Cannot apply operator: varchar = date`, because RAthena casts
-ISO-format strings to a SQL `DATE` literal. 
+`TYPE_MISMATCH: Cannot apply operator: varchar = date`, because noctua (like RAthena)
+casts ISO-format strings to a SQL `DATE` literal. 
 
 **This is not a complete inventory of relying parties.** A service is added to the
 sheet when it shows up in IBM Verify or the analytics data, so a service that is

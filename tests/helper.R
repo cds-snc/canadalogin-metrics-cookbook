@@ -14,7 +14,7 @@
 suppressPackageStartupMessages({
   library(testthat)
   library(DBI)
-  library(RAthena)
+  library(noctua)
   library(dplyr)
   library(dbplyr)
   library(stringr)
@@ -29,10 +29,11 @@ if (file.exists(".env")) load_dot_env(".env")
 
 connect_athena <- function() {
   dbConnect(
-    RAthena::athena(),
+    noctua::athena(),
     profile_name   = Sys.getenv("AWS_PROFILE"),
     region_name    = Sys.getenv("AWS_REGION", "ca-central-1"),
-    s3_staging_dir = Sys.getenv("ATHENA_S3_STAGING_DIR")
+    s3_staging_dir = Sys.getenv("ATHENA_S3_STAGING_DIR"),
+    bigint         = "numeric"
   )
 }
 
@@ -51,10 +52,10 @@ normalize <- function(df) {
   out <- df |>
     ungroup() |>
     as_tibble() |>
-    mutate(across(where(\(x) is.numeric(x) || inherits(x, "integer64")), as.double)) |>
+    mutate(across(where(is.numeric), as.double)) |>
     select(sort(names(df))) |>
     arrange(across(everything()))
-  # RAthena returns data.table-backed frames; strip the externalptr reference so
+  # noctua returns data.table-backed frames; strip the externalptr reference so
   # waldo::compare doesn't trip on mismatched attribute list lengths.
   attr(out, ".internal.selfref") <- NULL
   out
