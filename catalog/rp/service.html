@@ -999,7 +999,7 @@ ul.task-list li input[type="checkbox"] {
 <h2 class="anchored" data-anchor-id="notes">Notes</h2>
 <p><strong>Group by <code>gc_orgid</code>, not <code>operator</code>.</strong> <code>gc_orgid</code> comes from the <a href="https://open.canada.ca/data/en/dataset/57180b36-3428-4a7f-afe3-2161a6b44ec5">GC Organization Names and Codes dataset</a>. IDs can be resolved to bilingual names through that dataset or the companion tool, <a href="https://github.com/cds-snc/gcorg-resolver"><code>cds-snc/gcorg-resolver</code></a>.</p>
 <p><strong><code>gc_orgid = 0</code> means not applicable.</strong> The organization running the service has no entry in the GC organization dataset, so there is no ID to record. For these rows, group on the <code>operator</code> value instead.</p>
-<p><strong><code>launch_date</code> is a string, so cast both sides when comparing.</strong> Comparing it against an R value that looks like an ISO date fails with <code>TYPE_MISMATCH: Cannot apply operator: varchar = date</code>, because RAthena casts ISO-format strings to a SQL <code>DATE</code> literal.</p>
+<p><strong><code>launch_date</code> is a string, so cast both sides when comparing.</strong> Comparing it against an R value that looks like an ISO date fails with <code>TYPE_MISMATCH: Cannot apply operator: varchar = date</code>, because noctua (like RAthena) casts ISO-format strings to a SQL <code>DATE</code> literal.</p>
 <p><strong>This is not a complete inventory of relying parties.</strong> A service is added to the sheet when it shows up in IBM Verify or the analytics data, so a service that is live but has no traffic yet will be missing. Do not use <code>count(*)</code> here as the denominator for “how many services use CanadaLogin”.</p>
 
 
