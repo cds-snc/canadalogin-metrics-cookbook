@@ -78,6 +78,8 @@
   {
     "listing": "/catalog/index.html",
     "items": [
+      "/catalog/billing/ibm_verify_resource_units.html",
+      "/catalog/billing/ibm_verify_total_users.html",
       "/catalog/call_centre/weekly_activity_report.html",
       "/catalog/call_centre/weekly_topic_dump.html",
       "/catalog/google_analytics/error_events.html",
@@ -127,6 +129,13 @@
     "items": [
       "/catalog/call_centre/weekly_activity_report.html",
       "/catalog/call_centre/weekly_topic_dump.html"
+    ]
+  },
+  {
+    "listing": "/catalog/billing.html",
+    "items": [
+      "/catalog/billing/ibm_verify_total_users.html",
+      "/catalog/billing/ibm_verify_resource_units.html"
     ]
   },
   {
