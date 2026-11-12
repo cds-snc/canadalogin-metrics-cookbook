@@ -1,0 +1,44 @@
+---
+title: "billing.ibm_verify_resource_units"
+description: "IBM Verify resource units consumed each month, by product group."
+---
+
+The resource units the CanadaLogin IBM Verify tenant consumed each month, split
+by product group, as reported in the IBM Verify billing export.
+
+Each row is one product group in one usage month.
+
+`Keywords`: billing, resource units, RU, usage, cost, invoice, IBM Verify, single sign-on, MFA, adaptive access
+
+## Provenance
+
+Sourced from a resource-unit CSV exported by hand from IBM Verify each month and
+loaded by the
+[monthly billing Lambda](https://github.com/cds-snc/canadalogin-reporting-data-pipeline/blob/main/infra/modules/upload_source/ibm_verify_monthly_billing/lambda_src/handler.py).
+Each export covers all past months. A new upload updates earlier months as
+well as adding the latest one.
+
+* **Updated**: Manually, monthly
+* **Retention**: Indefinitely
+* **Steward**: EDCP Data and Research Team
+* **Contact**: [Yinlin Zhang](mailto:yinlin.zhang@cds-snc.ca) (Data and Research team)
+
+## Fields
+
+| Field Name | Type | Description |
+|---|---|---|
+| `usage_month` | `date` | First day of the usage month. |
+| `usage_group` | `string` | IBM Verify product group. One of `Single sign-on`, `Multi-factor authentication`, `Adaptive access`, or `Lifecycle management and governance` |
+| `resource_units` | `decimal` | Resource units consumed by `usage_group` in `usage_month` |
+| `upload_date` | `date` | Date the CSV supplying this row was uploaded, in Eastern Time |
+| `uploaded_at` | `timestamp` | When the CSV supplying this row was uploaded to S3, in UTC |
+| `source_key` | `string` | S3 key of the CSV supplying this row, ending in the original filename |
+
+## Notes
+
+**The latest month is partial.** An export covers usage only up to its export
+date, so the row for the month the export was taken in is incomplete. The next
+monthly upload replaces it with the full figure.
+
+**Zero is a real value.** A group with no billable usage in a month has a row
+with `resource_units = 0`, not a missing row.

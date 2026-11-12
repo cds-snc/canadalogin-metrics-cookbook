@@ -127,6 +127,13 @@ website:
                 href: catalog/ibm_verify_events_raw/mfa_activity.qmd
               - text: adaptive_access
                 href: catalog/ibm_verify_events_raw/adaptive_access.qmd
+          - section: "IBM Verify Billing"
+            href: catalog/billing.qmd
+            contents:
+              - text: ibm_verify_total_users
+                href: catalog/billing/ibm_verify_total_users.qmd
+              - text: ibm_verify_resource_units
+                href: catalog/billing/ibm_verify_resource_units.qmd
           - section: "Call Centre"
             href: catalog/call_centre.qmd
             contents:

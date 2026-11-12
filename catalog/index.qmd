@@ -24,6 +24,7 @@ it updates, and caveats that apply to all of them.
 - [Relying Parties](rp.qmd) - reference tables in the `rp` schema that identify the services using CanadaLogin and their aliases
 - [IBM Verify Counts](ibm_verify_events_transformed.qmd) - daily summary tables in the `ibm_verify_events_transformed` schema, built from the IBM Verify event stream
 - [IBM Verify Events](ibm_verify_events_raw.qmd) - the IBM Verify event stream in the `ibm_verify_events_raw` schema, one row per event
+- [IBM Verify Billing](billing.qmd) - monthly IBM Verify billing reports in the `billing` schema: total users and resource units by product group
 - [Call Centre](call_centre.qmd) - weekly call centre data from the CanadaLogin support queue reports
 - [Platform](sre.qmd) - incident response and uptime tables in the `sre` schema
 - [Jira (PSOM)](jira.qmd) - daily snapshots of PSOM support tickets in the `jira` schema

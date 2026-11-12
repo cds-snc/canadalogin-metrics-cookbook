@@ -1,0 +1,45 @@
+---
+title: "billing.ibm_verify_total_users"
+description: "Snapshots of the IBM Verify tenant's total user count, one row per snapshot date."
+---
+
+The number of user accounts that exist in the CanadaLogin IBM Verify tenant, as
+reported in the IBM Verify billing export. IBM bills the `Lifecycle management
+and governance` group in
+[`ibm_verify_resource_units`](ibm_verify_resource_units.qmd) on this count.
+
+Each row is the count on one date. The report is exported by hand, typically on
+the first Monday of the month, so dates are irregular. For a month's count, take
+the latest snapshot in that month.
+
+`Keywords`: billing, total users, user count, accounts, IBM Verify, invoice
+
+## Provenance
+
+Sourced from a total users CSV exported from IBM Verify and loaded by the
+[monthly billing Lambda](https://github.com/cds-snc/canadalogin-reporting-data-pipeline/blob/main/infra/modules/upload_source/ibm_verify_monthly_billing/lambda_src/handler.py).
+
+* **Updated**: Manually, monthly
+* **Retention**: Indefinitely
+* **Steward**: EDCP Data and Research Team
+* **Contact**: [Yinlin Zhang](mailto:yinlin.zhang@cds-snc.ca) (Data and Research team)
+
+## Fields
+
+| Field Name | Type | Description |
+|---|---|---|
+| `snapshot_date` | `date` | Date the user count was recorded, from the CSV `Date` column |
+| `total_users` | `bigint` | Total number of users in the tenant on `snapshot_date` |
+| `upload_date` | `date` | Date the CSV supplying this row was uploaded, in America/Toronto |
+| `uploaded_at` | `timestamp` | When the CSV supplying this row was uploaded to S3, in UTC |
+| `source_key` | `string` | S3 key of the CSV supplying this row, ending in the original filename |
+
+## Notes
+
+**This is not a count of everyone who has used CanadaLogin.** Accounts count
+whether or not they have ever signed in, and deleted accounts drop out, so the
+count can fall. For people who have signed in, use
+[Cumulative Unique Users](../../cookbook/ibm_verify/cumulative-unique-users.qmd).
+
+**Later uploads can correct a date.** If a later upload carries a different
+value for an existing `snapshot_date`, the newer value replaces the old one.
