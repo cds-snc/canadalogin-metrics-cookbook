@@ -1,0 +1,28 @@
+---
+title: IBM Verify Billing
+listing:
+  - id: tables
+    contents:
+      - billing/ibm_verify_total_users.qmd
+      - billing/ibm_verify_resource_units.qmd
+    type: table
+    fields: [title, description]
+    field-display-names:
+      title: Table
+    sort: false
+    sort-ui: false
+    filter-ui: false
+---
+
+IBM Verify billing figures for the CanadaLogin tenant, in the `billing` schema.
+Both tables come from CSV reports exported by hand from IBM Verify each month and
+uploaded to S3, where the
+[monthly billing Lambda](https://github.com/cds-snc/canadalogin-reporting-data-pipeline/blob/main/infra/modules/upload_source/ibm_verify_monthly_billing/lambda_src/handler.py)
+merges them into the tables. `ibm_verify_total_users` holds dated snapshots of
+the tenant's total user count, while `ibm_verify_resource_units` holds the
+resource units consumed each month by each product group.
+
+## Tables
+
+::: {#tables}
+:::
