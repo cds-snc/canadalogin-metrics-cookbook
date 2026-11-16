@@ -23,8 +23,8 @@ internal. Drop events before the service's `launch_date`, which are pre-launch
 testing. Count the distinct services each user has reached up to the end date,
 then divide users with two or more by users with at least one.
 
-The end date is an ET day. Leave out the end date to measure up to the latest
-event.
+The end date is an ET day (America/Toronto). Leave out the end date to measure
+up to the latest event.
 
 ::: {.callout-note collapse="true" title="Example queries"}
 
@@ -108,24 +108,18 @@ tbl(con, in_schema("ibm_verify_events_raw", "application_usage")) |>
 
 ## Interpretation notes
 
-**Services, not applications.** Related applications of one service count as one
-service, through the registry in [`rp.alias`](../../catalog/rp/alias.qmd). For
-example, MyCGC runs two applications in IBM Verify (.NET and Power Pages), and a
-user who reaches both counts as one service. There is no hardcoded grouping: the
-recipe uses whatever the registry says, so a richer service source will improve
-the grouping later without changing the query. Counting by application name
-instead would count those users as multi-service.
+**Online services, not applications.** Related applications of one service
+count as one service, through the registry in
+[`rp.alias`](../../catalog/rp/alias.qmd). For example, MyCGC runs two
+applications in IBM Verify (.NET and Power Pages), and a user who reaches both
+counts as one service. Counting by application name instead would miscount
+those users as multi-service.
 
-**ATIP's two services are separate.** ATIP Online Management Tools is used by
-ATIP staff, and the ATIP Online Request Service by the public. They are
-different services in the registry, so a user who reaches both is a
-multi-service user. This pair is the most common combination.
-
-**The denominator is public-service users, not all CanadaLogin users.** It counts
-users who have signed in to at least one public service. Accounts that never
-reached one, such as those that stopped at sign-up or only used internal
-CanadaLogin components, are left out. See [New Accounts and Idle Account
-Rate](new-accounts-and-idle-rate.qmd) for those.
+**The denominator is users who have used at least one service, not all
+CanadaLogin accounts.** It counts users who have signed in to at least one
+public service. Accounts that never reached one, such as those that stopped at
+sign-up or only used internal CanadaLogin components, are left out. See [New
+Accounts and Idle Account Rate](new-accounts-and-idle-rate.qmd) for those.
 
 **Since launch, not a window.** The share covers every event up to the end date,
 so it tends to grow as users have more time to reach a second service. To count
