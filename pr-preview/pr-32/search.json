@@ -645,7 +645,7 @@
     "href": "cookbook/ibm_verify/new-accounts-and-idle-rate.html",
     "title": "New Accounts and Idle Account Rate",
     "section": "",
-    "text": "New CanadaLogin accounts per day, and how many of them never used a partner service. A jump in the idle rate is a sign of bot sign-ups.\nThis is the one IBM Verify metric that reads the raw event stream, because no summary table records when an account first appears.",
+    "text": "New CanadaLogin accounts per day, and how many of them never used a partner service. A jump in the idle rate is a sign of bot sign-ups.\nIt reads the raw event stream, because no summary table records when an account first appears.",
     "crumbs": [
       "Metrics Cookbook",
       "IBM Verify",

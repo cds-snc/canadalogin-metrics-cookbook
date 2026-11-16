@@ -982,7 +982,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <p>New CanadaLogin accounts per day, and how many of them never used a partner service. A jump in the idle rate is a sign of bot sign-ups.</p>
-<p>This is the one IBM Verify metric that reads the <a href="../../catalog/ibm_verify_events_raw.html">raw event stream</a>, because no summary table records when an account first appears.</p>
+<p>It reads the <a href="../../catalog/ibm_verify_events_raw.html">raw event stream</a>, because no summary table records when an account first appears.</p>
 <section id="calculation" class="level2">
 <h2 class="anchored" data-anchor-id="calculation">Calculation</h2>
 <p>An account is <strong>new</strong> on the ET day of its first event in <a href="../../catalog/ibm_verify_events_raw/authentication_activity.html"><code>authentication_activity</code></a>. It is <strong>idle</strong> if it has no successful event in <a href="../../catalog/ibm_verify_events_raw/application_usage.html"><code>application_usage</code></a> for a public application. Public means not flagged internal in <a href="../../catalog/rp/service.html"><code>rp.service</code></a>; an application with no row in <a href="../../catalog/rp/alias.html"><code>rp.alias</code></a> counts as public, because internal CanadaLogin components are the ones registered on purpose and a new partner can go live before it is added.</p>
