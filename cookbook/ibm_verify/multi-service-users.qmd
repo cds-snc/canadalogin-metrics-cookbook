@@ -1,0 +1,140 @@
+---
+title: "Multi-Service Users"
+description: "Share of users who have signed in to two or more public services."
+---
+
+The share of CanadaLogin users who have used it to sign in to two or more public
+services, out of users who have signed in to at least one.
+
+One account for many government services is one of CanadaLogin's main benefits.
+This metric measures how often that happens. It counts services, not
+applications, and leaves out internal CanadaLogin components, so it is the clean
+measure of breadth that [Applications per
+Credential](applications-per-credential.qmd) cannot give.
+
+## Calculation
+
+Read successful events from
+[`application_usage`](../../catalog/ibm_verify_events_raw/application_usage.qmd)
+with a known user ID (not blank or `"UNKNOWN"`). Map each `applicationname` to its
+service through [`rp.alias`](../../catalog/rp/alias.qmd) and
+[`rp.service`](../../catalog/rp/service.qmd), and keep only services that are not
+internal. Drop events before the service's `launch_date`, which are pre-launch
+testing. Count the distinct services each user has reached up to the end date,
+then divide users with two or more by users with at least one.
+
+The end date is an ET day. Leave out the end date to measure up to the latest
+event.
+
+::: {.callout-note collapse="true" title="Example queries"}
+
+::: {.panel-tabset}
+
+## SQL
+
+```sql
+WITH public_aliases AS (
+    SELECT DISTINCT
+        al.alias,
+        s.service_name_en,
+        CAST(s.launch_date AS DATE) AS launch_date
+    FROM rp.alias al
+    JOIN rp.service s ON al.rp_id = s.rp_id
+    WHERE NOT s.is_internal
+),
+events AS (
+    SELECT
+        userid,
+        applicationname,
+        -- time is a UTC string; report on ET days
+        date(with_timezone(CAST(substr(time, 1, 19) AS timestamp), 'UTC') AT TIME ZONE 'America/Toronto') AS et_day
+    FROM ibm_verify_events_raw.application_usage
+    WHERE result = 'success'
+      AND userid IS NOT NULL
+      AND userid NOT IN ('', 'UNKNOWN')
+),
+user_services AS (
+    SELECT
+        e.userid,
+        count(DISTINCT p.service_name_en) AS services
+    FROM events e
+    JOIN public_aliases p ON e.applicationname = p.alias
+    -- events before launch are pre-launch testing
+    WHERE e.et_day >= p.launch_date
+      AND e.et_day <= DATE '2026-11-15'
+    GROUP BY e.userid
+)
+
+SELECT
+    count(*) AS users,
+    count_if(services >= 2) AS multi_service_users,
+    CAST(count_if(services >= 2) AS DOUBLE) / count(*) AS multi_service_share
+FROM user_services;
+```
+
+## R
+
+```r
+public_aliases <- tbl(con, in_schema("rp", "alias")) |>
+  inner_join(tbl(con, in_schema("rp", "service")), by = "rp_id") |>
+  filter(!is_internal) |>
+  distinct(applicationname = alias, service_name_en, launch_date)
+
+tbl(con, in_schema("ibm_verify_events_raw", "application_usage")) |>
+  filter(
+    result == "success",
+    !is.na(userid), !userid %in% c("", "UNKNOWN")
+  ) |>
+  # time is a UTC string; report on ET days
+  mutate(et_day = sql("date(with_timezone(CAST(substr(time, 1, 19) AS timestamp), 'UTC') AT TIME ZONE 'America/Toronto')")) |>
+  inner_join(public_aliases, by = "applicationname") |>
+  # events before launch are pre-launch testing
+  filter(
+    et_day >= as.Date(launch_date),
+    et_day <= as.Date("2026-11-15")
+  ) |>
+  group_by(userid) |>
+  summarise(services = n_distinct(service_name_en), .groups = "drop") |>
+  summarise(
+    users = n(),
+    multi_service_users = sum(as.integer(services >= 2), na.rm = TRUE)
+  ) |>
+  mutate(multi_service_share = as.numeric(multi_service_users) / users)
+```
+
+:::
+
+:::
+
+## Interpretation notes
+
+**Services, not applications.** Related applications of one service count as one
+service, through the registry in [`rp.alias`](../../catalog/rp/alias.qmd). For
+example, MyCGC runs two applications in IBM Verify (.NET and Power Pages), and a
+user who reaches both counts as one service. There is no hardcoded grouping: the
+recipe uses whatever the registry says, so a richer service source will improve
+the grouping later without changing the query. Counting by application name
+instead would count those users as multi-service.
+
+**ATIP's two services are separate.** ATIP Online Management Tools is used by
+ATIP staff, and the ATIP Online Request Service by the public. They are
+different services in the registry, so a user who reaches both is a
+multi-service user. This pair is the most common combination.
+
+**The denominator is public-service users, not all CanadaLogin users.** It counts
+users who have signed in to at least one public service. Accounts that never
+reached one, such as those that stopped at sign-up or only used internal
+CanadaLogin components, are left out. See [New Accounts and Idle Account
+Rate](new-accounts-and-idle-rate.qmd) for those.
+
+**Since launch, not a window.** The share covers every event up to the end date,
+so it tends to grow as users have more time to reach a second service. To count
+services reached within a window instead, add a start date next to the end date.
+
+## Alternative names
+
+- multi-service share
+- users of two or more services
+- cross-service users
+- service breadth
+- one account, many services
