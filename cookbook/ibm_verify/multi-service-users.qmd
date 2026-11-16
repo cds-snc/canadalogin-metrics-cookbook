@@ -8,9 +8,7 @@ services, out of users who have signed in to at least one.
 
 One account for many government services is one of CanadaLogin's main benefits.
 This metric measures how often that happens. It counts services, not
-applications, and leaves out internal CanadaLogin components, so it is the clean
-measure of breadth that [Applications per
-Credential](applications-per-credential.qmd) cannot give.
+applications, and leaves out internal CanadaLogin components.
 
 ## Calculation
 
