@@ -1,17 +1,17 @@
 ---
 title: "rp.alias"
-description: "Maps each name a source system uses for a service back to one rp_id."
+description: "Maps each identifier or name a source system uses for a service back to one rp_id."
 ---
 
-One row per name that refers to a relying party. The same service is called
+One row per string that refers to a relying party. The same service is called
 different things in different systems, and this table maps each of those strings
 back to a single `rp_id`.
 
 Use it to join tables that have no shared service identifier, such as
-`ibm_verify_events_transformed.events_app_login_counts.application_name` and the `rp_name` breakdown in the
+`ibm_verify_events_transformed.events_app_login_counts.application_id` and the `rp_name` breakdown in the
 Google Analytics funnel tables.
 
-`Keywords`: Relying party, RP, alias, application name, crosswalk, lookup, join
+`Keywords`: Relying party, RP, alias, application ID, application name, crosswalk, lookup, join
 
 ## Provenance
 
@@ -32,7 +32,7 @@ single Parquet file. Not partitioned, overwritten in place, current state only.
 |---|---|---|
 | `alias` | `varchar` | The string that refers to the service, exactly as the source system writes it. |
 | `rp_id` | `bigint` | The relying party this alias refers to. Joins to `rp.service.rp_id`. |
-| `source` | `varchar` | Where the alias was first encountered, one of `IBM Verify` or `Google Analytics`. Record keeping only, see the note below. |
+| `source` | `varchar` | Where the alias was first encountered, for example `IBM Verify Application ID`, `IBM Verify Application Name`, `Google Analytics`, or `Call Centre Topics`. Record keeping only, see the note below. |
 | `fetched_at` | `timestamp(3)` | When the Lambda last read the source sheet, in UTC. |
 
 ## Notes
@@ -41,9 +41,17 @@ single Parquet file. Not partitioned, overwritten in place, current state only.
 name was first seen, not which system the name belongs to. Filtering by it before
 joining will silently drop matches for any alias that turns up in both systems.
 
-**One service, several aliases.** A service has as many rows here as it has names. For 
-example, `MyCGC` is `MyCGC` in Google Analytics but both `MyCGC - CGC - .NET - Prod` and
-`MyCGC - CGC - Power Pages - Prod` in IBM Verify. Joining a fact table through
+**Join IBM Verify applications on the application ID.** Every production IBM
+Verify application has two rows: one with its numeric `application_id` as the
+`alias`, and one with its name (`source` is `IBM Verify Application ID` and `IBM Verify Application Name`). Join `application_id` (or the raw tables'
+`applicationid`) to `alias`. An ID does not change when a partner renames the
+application, so the join keeps working. A name does change, and a renamed
+application would stop matching its name row.
+
+**One service, several aliases.** A service has as many rows here as it has strings. For
+example, `MyCGC` is `MyCGC` in Google Analytics but has one ID row (and one name
+row) for each of its two IBM Verify applications, `MyCGC - CGC - .NET - Prod` and
+`MyCGC - CGC - Power Pages - Prod`. Joining a fact table through
 this lookup is a many-to-one join, so aggregate after the join, not before.
 
 **Not every string in the analytics tables is an alias.** The `rp_name` breakdown
@@ -53,5 +61,5 @@ services, and an inner join drops them. If you are reconciling totals, exclude
 `RESERVED_TOTAL` explicitly rather than relying on the join to remove it.
 
 **Aliases are exact strings, not patterns.** They are matched literally, with no
-trimming or case folding. A new application name in IBM Verify will not resolve
-until it is added to the source sheet by hand.
+trimming or case folding. A new IBM Verify application will not resolve until its
+ID is added to the source sheet by hand.
