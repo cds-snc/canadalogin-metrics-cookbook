@@ -14,6 +14,12 @@ and for understanding peak demand.
 Take the maximum value of `unique_users` over the selected
 reporting period, grouped by application.
 
+Group on `application_id`, not `application_name`: a partner can rename an
+application, and the ID does not change. Each ID is labelled with its latest name
+from
+[`events_application_mapping`](../../catalog/ibm_verify_events_transformed/events_application_mapping.qmd).
+The ID `UNKNOWN` marks events with no application and is left out.
+
 ::: {.callout-note collapse="true" title="Example queries"}
 
 ::: {.panel-tabset}
@@ -21,20 +27,31 @@ reporting period, grouped by application.
 ## SQL
 
 ```sql
-WITH ranked AS (
+-- the latest name for each application ID
+WITH latest_names AS (
+    SELECT application_id, application_name
+    FROM   ibm_verify_events_transformed.events_application_mapping
+    WHERE  date = (
+        SELECT MAX(date)
+        FROM   ibm_verify_events_transformed.events_application_mapping
+    )
+),
+
+ranked AS (
     SELECT
-        application_name,
+        application_id,
         from_date,
         unique_users,
         ROW_NUMBER() OVER (
-            PARTITION BY application_name
+            PARTITION BY application_id
             ORDER BY unique_users DESC, from_date ASC
         ) AS rn
     FROM ibm_verify_events_transformed.events_app_login_counts
     -- set the reporting window; see the timespans note in cookbook/notes.qmd
     WHERE CAST(from_date AS DATE) BETWEEN DATE '2026-01-01' AND DATE '2026-05-28'
+      AND application_id <> 'UNKNOWN'
     -- to exclude internal CanadaLogin components from adoption reporting, uncomment:
-    -- AND application_name NOT IN (
+    -- AND application_id NOT IN (
     --     SELECT al.alias
     --     FROM   rp.alias al
     --     JOIN   rp.service s ON al.rp_id = s.rp_id
@@ -43,38 +60,50 @@ WITH ranked AS (
 )
 
 SELECT
-    application_name,
-    from_date,
-    unique_users AS peak_daily_unique_users
-FROM ranked
-WHERE rn = 1
+    r.application_id,
+    n.application_name,
+    r.from_date,
+    r.unique_users AS peak_daily_unique_users
+FROM ranked r
+LEFT JOIN latest_names n ON r.application_id = n.application_id
+WHERE r.rn = 1
 ORDER BY peak_daily_unique_users DESC;
 ```
 
 ## R
 
 ```r
+latest_names <- tbl(con, in_schema("ibm_verify_events_transformed", "events_application_mapping")) |>
+  filter(date == max(date, na.rm = TRUE)) |>
+  select(application_id, application_name)
+
 tbl(con, in_schema("ibm_verify_events_transformed", "events_app_login_counts")) |>
   # set the reporting window; see the timespans note in cookbook/notes.qmd
   filter(
     as.Date(from_date) >= as.Date("2026-01-01"),
-    as.Date(from_date) <= as.Date("2026-05-28")
+    as.Date(from_date) <= as.Date("2026-05-28"),
+    application_id != "UNKNOWN"
   ) |>
   # to exclude internal CanadaLogin components from adoption reporting, uncomment:
   # anti_join(
   #   tbl(con, in_schema("rp", "alias")) |>
   #     inner_join(tbl(con, in_schema("rp", "service")), by = "rp_id") |>
   #     filter(is_internal) |>
-  #     select(application_name = alias),
-  #   by = "application_name"
+  #     select(application_id = alias),
+  #   by = "application_id"
   # ) |>
-  group_by(application_name) |>
+  group_by(application_id) |>
   slice_max(
     unique_users,
     n = 1,
     with_ties = FALSE
   ) |>
+  ungroup() |>
+  # the table also holds the name seen that day; keep only the latest
+  select(-application_name) |>
+  left_join(latest_names, by = "application_id") |>
   select(
+    application_id,
     application_name,
     from_date,
     peak_daily_unique_users = unique_users

@@ -31,6 +31,11 @@ Only complete months are reported. A month is complete when it has ended and the
 application's first row in the table falls before the 1st. Internal CanadaLogin
 components are left out.
 
+Applications are grouped on `application_id`, so a renamed application stays one
+row. Each ID is labelled with its latest name from
+[`events_application_mapping`](../../catalog/ibm_verify_events_transformed/events_application_mapping.qmd).
+The ID `UNKNOWN` marks events with no application and is left out.
+
 ::: {.callout-note collapse="true" title="Example queries"}
 
 ::: {.panel-tabset}
@@ -38,15 +43,26 @@ components are left out.
 ## SQL
 
 ```sql
-WITH first_seen AS (
-    SELECT application_name, MIN(CAST(from_date AS DATE)) AS first_day
+-- the latest name for each application ID
+WITH latest_names AS (
+    SELECT application_id, application_name
+    FROM   ibm_verify_events_transformed.events_application_mapping
+    WHERE  date = (
+        SELECT MAX(date)
+        FROM   ibm_verify_events_transformed.events_application_mapping
+    )
+),
+
+first_seen AS (
+    SELECT application_id, MIN(CAST(from_date AS DATE)) AS first_day
     FROM ibm_verify_events_transformed.events_app_login_counts
-    GROUP BY application_name
+    WHERE application_id <> 'UNKNOWN'
+    GROUP BY application_id
 ),
 
 monthly AS (
     SELECT
-        application_name,
+        application_id,
         date_trunc('month', CAST(from_date AS DATE)) AS month,
         SUM(unique_users) AS user_days,
         -- mtd_unique_users only grows within a month, so its maximum is the
@@ -55,11 +71,12 @@ monthly AS (
     FROM ibm_verify_events_transformed.events_app_login_counts
     -- set the reporting window; whole, finished calendar months only
     WHERE CAST(from_date AS DATE) BETWEEN DATE '2026-05-01' AND DATE '2026-09-30'
+      AND application_id <> 'UNKNOWN'
     GROUP BY 1, 2
 ),
 
 services AS (
-    SELECT al.alias AS application_name, s.service_name_en, s.is_internal
+    SELECT al.alias AS application_id, s.service_name_en, s.is_internal
     FROM rp.alias al
     JOIN rp.service s ON al.rp_id = s.rp_id
 ),
@@ -67,15 +84,17 @@ services AS (
 complete AS (
     SELECT
         m.month,
-        m.application_name,
+        m.application_id,
+        n.application_name,
         sv.service_name_en,
         day_of_month(last_day_of_month(m.month)) AS days_in_month,
         m.user_days,
         m.monthly_active_users
     FROM monthly m
-    JOIN first_seen f ON m.application_name = f.application_name
-    -- a left join keeps an application with no alias row
-    LEFT JOIN services sv ON m.application_name = sv.application_name
+    JOIN first_seen f ON m.application_id = f.application_id
+    -- left joins keep an application with no alias row
+    LEFT JOIN services sv ON m.application_id = sv.application_id
+    LEFT JOIN latest_names n ON m.application_id = n.application_id
     -- live for the whole month: first row before the 1st
     WHERE f.first_day < m.month
       AND NOT COALESCE(sv.is_internal, false)
@@ -83,6 +102,7 @@ complete AS (
 
 SELECT
     month,
+    application_id,
     application_name,
     service_name_en,
     days_in_month,
@@ -101,21 +121,27 @@ ORDER BY month, dau_mau_ratio DESC;
 ```r
 app_logins <- tbl(con, in_schema("ibm_verify_events_transformed", "events_app_login_counts"))
 
+latest_names <- tbl(con, in_schema("ibm_verify_events_transformed", "events_application_mapping")) |>
+  filter(date == max(date, na.rm = TRUE)) |>
+  select(application_id, application_name)
+
 first_seen <- app_logins |>
-  group_by(application_name) |>
+  filter(application_id != "UNKNOWN") |>
+  group_by(application_id) |>
   summarise(first_day = min(as.Date(from_date), na.rm = TRUE))
 
 services <- tbl(con, in_schema("rp", "alias")) |>
   inner_join(tbl(con, in_schema("rp", "service")), by = "rp_id") |>
-  select(application_name = alias, service_name_en, is_internal)
+  select(application_id = alias, service_name_en, is_internal)
 
 app_logins |>
   # set the reporting window; whole, finished calendar months only
   filter(
     as.Date(from_date) >= as.Date("2026-05-01"),
-    as.Date(from_date) <= as.Date("2026-09-30")
+    as.Date(from_date) <= as.Date("2026-09-30"),
+    application_id != "UNKNOWN"
   ) |>
-  group_by(application_name, month = floor_date(as.Date(from_date), "month")) |>
+  group_by(application_id, month = floor_date(as.Date(from_date), "month")) |>
   summarise(
     user_days = sum(unique_users, na.rm = TRUE),
     # mtd_unique_users only grows within a month, so its maximum is the
@@ -123,11 +149,12 @@ app_logins |>
     monthly_active_users = max(mtd_unique_users, na.rm = TRUE),
     .groups = "drop"
   ) |>
-  inner_join(first_seen, by = "application_name") |>
+  inner_join(first_seen, by = "application_id") |>
   # live for the whole month: first row before the 1st
   filter(first_day < month) |>
-  # a left join keeps an application with no alias row
-  left_join(services, by = "application_name") |>
+  # left joins keep an application with no alias row
+  left_join(services, by = "application_id") |>
+  left_join(latest_names, by = "application_id") |>
   filter(!coalesce(is_internal, FALSE)) |>
   mutate(
     days_in_month = day(last_day_of_month(month)),
@@ -136,7 +163,7 @@ app_logins |>
     active_days_per_user = as.double(user_days) / monthly_active_users
   ) |>
   select(
-    month, application_name, service_name_en, days_in_month, user_days,
+    month, application_id, application_name, service_name_en, days_in_month, user_days,
     mean_daily_active_users, monthly_active_users, dau_mau_ratio,
     active_days_per_user
   ) |>

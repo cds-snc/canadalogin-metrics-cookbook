@@ -22,6 +22,12 @@ column* you read (see [the note on reporting timespans](../notes.qmd#metrics-can
 The `WHERE CAST(from_date AS DATE) BETWEEN ...` bounds set the "as of" reporting date; the
 most recent row in the window holds the current cumulative total.
 
+Group on `application_id`, not `application_name`: a partner can rename an
+application, and the ID does not change. Each ID is labelled with its latest name
+from
+[`events_application_mapping`](../../catalog/ibm_verify_events_transformed/events_application_mapping.qmd).
+The ID `UNKNOWN` marks events with no application and is left out.
+
 ::: {.callout-note collapse="true" title="Example queries"}
 
 ::: {.panel-tabset}
@@ -31,19 +37,30 @@ most recent row in the window holds the current cumulative total.
 Month-to-date:
 
 ```sql
-WITH ranked AS (
+-- the latest name for each application ID
+WITH latest_names AS (
+    SELECT application_id, application_name
+    FROM   ibm_verify_events_transformed.events_application_mapping
+    WHERE  date = (
+        SELECT MAX(date)
+        FROM   ibm_verify_events_transformed.events_application_mapping
+    )
+),
+
+ranked AS (
     SELECT
-        application_name,
+        application_id,
         from_date,
         mtd_unique_users,
         ROW_NUMBER() OVER (
-            PARTITION BY application_name
+            PARTITION BY application_id
             ORDER BY from_date DESC
         ) AS rn
     FROM ibm_verify_events_transformed.events_app_login_counts
     WHERE CAST(from_date AS DATE) BETWEEN DATE '2026-06-01' AND DATE '2026-06-08'
+    AND application_id <> 'UNKNOWN'
     -- to exclude internal CanadaLogin components from adoption reporting, uncomment:
-    -- AND application_name NOT IN (
+    -- AND application_id NOT IN (
     --     SELECT al.alias
     --     FROM   rp.alias al
     --     JOIN   rp.service s ON al.rp_id = s.rp_id
@@ -52,29 +69,42 @@ WITH ranked AS (
 )
 
 SELECT
-    application_name,
-    mtd_unique_users
-FROM ranked
-WHERE rn = 1
+    r.application_id,
+    n.application_name,
+    r.mtd_unique_users
+FROM ranked r
+LEFT JOIN latest_names n ON r.application_id = n.application_id
+WHERE r.rn = 1
 ORDER BY mtd_unique_users DESC;
 ```
 
 Year-to-date:
 
 ```sql
-WITH ranked AS (
+-- the latest name for each application ID
+WITH latest_names AS (
+    SELECT application_id, application_name
+    FROM   ibm_verify_events_transformed.events_application_mapping
+    WHERE  date = (
+        SELECT MAX(date)
+        FROM   ibm_verify_events_transformed.events_application_mapping
+    )
+),
+
+ranked AS (
     SELECT
-        application_name,
+        application_id,
         from_date,
         ytd_unique_users,
         ROW_NUMBER() OVER (
-            PARTITION BY application_name
+            PARTITION BY application_id
             ORDER BY from_date DESC
         ) AS rn
     FROM ibm_verify_events_transformed.events_app_login_counts
     WHERE CAST(from_date AS DATE) BETWEEN DATE '2026-01-01' AND DATE '2026-06-08'
+    AND application_id <> 'UNKNOWN'
     -- to exclude internal CanadaLogin components from adoption reporting, uncomment:
-    -- AND application_name NOT IN (
+    -- AND application_id NOT IN (
     --     SELECT al.alias
     --     FROM   rp.alias al
     --     JOIN   rp.service s ON al.rp_id = s.rp_id
@@ -83,10 +113,12 @@ WITH ranked AS (
 )
 
 SELECT
-    application_name,
-    ytd_unique_users
-FROM ranked
-WHERE rn = 1
+    r.application_id,
+    n.application_name,
+    r.ytd_unique_users
+FROM ranked r
+LEFT JOIN latest_names n ON r.application_id = n.application_id
+WHERE r.rn = 1
 ORDER BY ytd_unique_users DESC;
 ```
 
@@ -95,26 +127,36 @@ ORDER BY ytd_unique_users DESC;
 Month-to-date:
 
 ```r
+latest_names <- tbl(con, in_schema("ibm_verify_events_transformed", "events_application_mapping")) |>
+  filter(date == max(date, na.rm = TRUE)) |>
+  select(application_id, application_name)
+
 tbl(con, in_schema("ibm_verify_events_transformed", "events_app_login_counts")) |>
   filter(
     as.Date(from_date) >= as.Date("2026-06-01"),
-    as.Date(from_date) <= as.Date("2026-06-08")
+    as.Date(from_date) <= as.Date("2026-06-08"),
+    application_id != "UNKNOWN"
   ) |>
   # to exclude internal CanadaLogin components from adoption reporting, uncomment:
   # anti_join(
   #   tbl(con, in_schema("rp", "alias")) |>
   #     inner_join(tbl(con, in_schema("rp", "service")), by = "rp_id") |>
   #     filter(is_internal) |>
-  #     select(application_name = alias),
-  #   by = "application_name"
+  #     select(application_id = alias),
+  #   by = "application_id"
   # ) |>
-  group_by(application_name) |>
+  group_by(application_id) |>
   slice_max(
     from_date,
     n = 1,
     with_ties = FALSE
   ) |>
+  ungroup() |>
+  # the table also holds the name seen that day; keep only the latest
+  select(-application_name) |>
+  left_join(latest_names, by = "application_id") |>
   select(
+    application_id,
     application_name,
     mtd_unique_users
   ) |>
@@ -124,26 +166,36 @@ tbl(con, in_schema("ibm_verify_events_transformed", "events_app_login_counts")) 
 Year-to-date:
 
 ```r
+latest_names <- tbl(con, in_schema("ibm_verify_events_transformed", "events_application_mapping")) |>
+  filter(date == max(date, na.rm = TRUE)) |>
+  select(application_id, application_name)
+
 tbl(con, in_schema("ibm_verify_events_transformed", "events_app_login_counts")) |>
   filter(
     as.Date(from_date) >= as.Date("2026-01-01"),
-    as.Date(from_date) <= as.Date("2026-06-08")
+    as.Date(from_date) <= as.Date("2026-06-08"),
+    application_id != "UNKNOWN"
   ) |>
   # to exclude internal CanadaLogin components from adoption reporting, uncomment:
   # anti_join(
   #   tbl(con, in_schema("rp", "alias")) |>
   #     inner_join(tbl(con, in_schema("rp", "service")), by = "rp_id") |>
   #     filter(is_internal) |>
-  #     select(application_name = alias),
-  #   by = "application_name"
+  #     select(application_id = alias),
+  #   by = "application_id"
   # ) |>
-  group_by(application_name) |>
+  group_by(application_id) |>
   slice_max(
     from_date,
     n = 1,
     with_ties = FALSE
   ) |>
+  ungroup() |>
+  # the table also holds the name seen that day; keep only the latest
+  select(-application_name) |>
+  left_join(latest_names, by = "application_id") |>
   select(
+    application_id,
     application_name,
     ytd_unique_users
   ) |>

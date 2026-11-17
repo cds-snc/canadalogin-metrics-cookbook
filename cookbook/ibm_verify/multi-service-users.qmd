@@ -14,7 +14,7 @@ applications, and leaves out internal CanadaLogin components.
 
 Read successful events from
 [`application_usage`](../../catalog/ibm_verify_events_raw/application_usage.qmd)
-with a known user ID (not blank or `"UNKNOWN"`). Map each `applicationname` to its
+with a known user ID (not blank or `"UNKNOWN"`). Map each `applicationid` to its
 service through [`rp.alias`](../../catalog/rp/alias.qmd) and
 [`rp.service`](../../catalog/rp/service.qmd), and keep only services that are not
 internal. Drop events before the service's `launch_date`, which are pre-launch
@@ -33,7 +33,7 @@ up to the latest event.
 ```sql
 WITH public_aliases AS (
     SELECT DISTINCT
-        al.alias,
+        al.alias AS applicationid,
         s.service_name_en,
         CAST(s.launch_date AS DATE) AS launch_date
     FROM rp.alias al
@@ -43,7 +43,7 @@ WITH public_aliases AS (
 events AS (
     SELECT
         userid,
-        applicationname,
+        applicationid,
         -- time is a UTC string; report on ET days
         date(with_timezone(CAST(substr(time, 1, 19) AS timestamp), 'UTC') AT TIME ZONE 'America/Toronto') AS et_day
     FROM ibm_verify_events_raw.application_usage
@@ -56,7 +56,7 @@ user_services AS (
         e.userid,
         count(DISTINCT p.service_name_en) AS services
     FROM events e
-    JOIN public_aliases p ON e.applicationname = p.alias
+    JOIN public_aliases p ON e.applicationid = p.applicationid
     -- events before launch are pre-launch testing
     WHERE e.et_day >= p.launch_date
       AND e.et_day <= DATE '2026-11-15'
@@ -76,7 +76,7 @@ FROM user_services;
 public_aliases <- tbl(con, in_schema("rp", "alias")) |>
   inner_join(tbl(con, in_schema("rp", "service")), by = "rp_id") |>
   filter(!is_internal) |>
-  distinct(applicationname = alias, service_name_en, launch_date)
+  distinct(applicationid = alias, service_name_en, launch_date)
 
 tbl(con, in_schema("ibm_verify_events_raw", "application_usage")) |>
   filter(
@@ -85,7 +85,7 @@ tbl(con, in_schema("ibm_verify_events_raw", "application_usage")) |>
   ) |>
   # time is a UTC string; report on ET days
   mutate(et_day = sql("date(with_timezone(CAST(substr(time, 1, 19) AS timestamp), 'UTC') AT TIME ZONE 'America/Toronto')")) |>
-  inner_join(public_aliases, by = "applicationname") |>
+  inner_join(public_aliases, by = "applicationid") |>
   # events before launch are pre-launch testing
   filter(
     et_day >= as.Date(launch_date),
@@ -110,7 +110,7 @@ tbl(con, in_schema("ibm_verify_events_raw", "application_usage")) |>
 count as one service, through the registry in
 [`rp.alias`](../../catalog/rp/alias.qmd). For example, MyCGC runs two
 applications in IBM Verify (.NET and Power Pages), and a user who reaches both
-counts as one service. Counting by application name instead would miscount
+counts as one service. Counting by application instead would miscount
 those users as multi-service.
 
 **The denominator is users who have used at least one service, not all

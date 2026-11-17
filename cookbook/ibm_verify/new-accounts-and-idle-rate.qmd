@@ -64,7 +64,7 @@ public_use AS (
     FROM ibm_verify_events_raw.application_usage
     WHERE result = 'success'
       -- only internal CanadaLogin components are left out; an unmapped one is public
-      AND applicationname NOT IN (
+      AND applicationid NOT IN (
           SELECT al.alias
           FROM rp.alias al
           JOIN rp.service s ON al.rp_id = s.rp_id
@@ -113,7 +113,7 @@ public_use AS (
         min(CAST(substr(time, 1, 19) AS timestamp)) AS first_public_ts
     FROM ibm_verify_events_raw.application_usage
     WHERE result = 'success'
-      AND applicationname NOT IN (
+      AND applicationid NOT IN (
           SELECT al.alias
           FROM rp.alias al
           JOIN rp.service s ON al.rp_id = s.rp_id
@@ -162,11 +162,11 @@ first_seen <- tbl(con, in_schema("ibm_verify_events_raw", "authentication_activi
 internal_apps <- tbl(con, in_schema("rp", "alias")) |>
   inner_join(tbl(con, in_schema("rp", "service")), by = "rp_id") |>
   filter(is_internal) |>
-  select(applicationname = alias)
+  select(applicationid = alias)
 
 public_use <- tbl(con, in_schema("ibm_verify_events_raw", "application_usage")) |>
   filter(result == "success") |>
-  anti_join(internal_apps, by = "applicationname") |>
+  anti_join(internal_apps, by = "applicationid") |>
   mutate(ts = sql("CAST(substr(time, 1, 19) AS timestamp)")) |>
   group_by(userid) |>
   summarise(first_public_ts = min(ts, na.rm = TRUE), .groups = "drop") |>
@@ -213,11 +213,11 @@ first_seen <- tbl(con, in_schema("ibm_verify_events_raw", "authentication_activi
 internal_apps <- tbl(con, in_schema("rp", "alias")) |>
   inner_join(tbl(con, in_schema("rp", "service")), by = "rp_id") |>
   filter(is_internal) |>
-  select(applicationname = alias)
+  select(applicationid = alias)
 
 public_use <- tbl(con, in_schema("ibm_verify_events_raw", "application_usage")) |>
   filter(result == "success") |>
-  anti_join(internal_apps, by = "applicationname") |>
+  anti_join(internal_apps, by = "applicationid") |>
   mutate(ts = sql("CAST(substr(time, 1, 19) AS timestamp)")) |>
   group_by(userid) |>
   summarise(first_public_ts = min(ts, na.rm = TRUE), .groups = "drop") |>

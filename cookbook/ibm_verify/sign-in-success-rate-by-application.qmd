@@ -16,6 +16,12 @@ Divide the sum of `successful_logins` by the sum of all attempts
 (`successful_logins + failed_logins`) over the selected reporting period, grouped
 by application.
 
+Group on `application_id`, not `application_name`: a partner can rename an
+application, and the ID does not change. Each ID is labelled with its latest name
+from
+[`events_application_mapping`](../../catalog/ibm_verify_events_transformed/events_application_mapping.qmd).
+The ID `UNKNOWN` marks events with no application and is left out.
+
 ::: {.callout-note collapse="true" title="Example queries"}
 
 ::: {.panel-tabset}
@@ -23,47 +29,69 @@ by application.
 ## SQL
 
 ```sql
+-- the latest name for each application ID
+WITH latest_names AS (
+    SELECT application_id, application_name
+    FROM   ibm_verify_events_transformed.events_application_mapping
+    WHERE  date = (
+        SELECT MAX(date)
+        FROM   ibm_verify_events_transformed.events_application_mapping
+    )
+)
+
 SELECT
-    application_name,
-    CAST(SUM(successful_logins) AS DOUBLE)
-        / NULLIF(SUM(successful_logins + failed_logins), 0) AS sso_success_rate
-FROM ibm_verify_events_transformed.events_app_login_counts
+    a.application_id,
+    n.application_name,
+    CAST(SUM(a.successful_logins) AS DOUBLE)
+        / NULLIF(SUM(a.successful_logins + a.failed_logins), 0) AS sso_success_rate
+FROM ibm_verify_events_transformed.events_app_login_counts a
+LEFT JOIN latest_names n ON a.application_id = n.application_id
 -- set the reporting window; see the timespans note in cookbook/notes.qmd
-WHERE CAST(from_date AS DATE) BETWEEN DATE '2026-01-01' AND DATE '2026-05-28'
+WHERE CAST(a.from_date AS DATE) BETWEEN DATE '2026-01-01' AND DATE '2026-05-28'
+  AND a.application_id <> 'UNKNOWN'
 -- optionally filter out internal CanadaLogin components;
 -- see the note on them in cookbook/notes.qmd
-  AND application_name NOT IN (
+  AND a.application_id NOT IN (
       SELECT al.alias
       FROM   rp.alias al
       JOIN   rp.service s ON al.rp_id = s.rp_id
       WHERE  s.is_internal
   )
-GROUP BY application_name
+GROUP BY a.application_id, n.application_name
 ORDER BY sso_success_rate DESC;
 ```
 
 ## R
 
 ```r
+latest_names <- tbl(con, in_schema("ibm_verify_events_transformed", "events_application_mapping")) |>
+  filter(date == max(date, na.rm = TRUE)) |>
+  select(application_id, application_name)
+
 internal_apps <- tbl(con, in_schema("rp", "alias")) |>
   inner_join(tbl(con, in_schema("rp", "service")), by = "rp_id") |>
   filter(is_internal) |>
-  select(application_name = alias)
+  select(application_id = alias)
 
 tbl(con, in_schema("ibm_verify_events_transformed", "events_app_login_counts")) |>
   # set the reporting window; see the timespans note in cookbook/notes.qmd
   filter(
     as.Date(from_date) >= as.Date("2026-01-01"),
-    as.Date(from_date) <= as.Date("2026-05-28")
+    as.Date(from_date) <= as.Date("2026-05-28"),
+    application_id != "UNKNOWN"
   ) |>
   # optionally filter out internal CanadaLogin components;
   # see the note on them in cookbook/notes.qmd
-  anti_join(internal_apps, by = "application_name") |>
-  group_by(application_name) |>
+  anti_join(internal_apps, by = "application_id") |>
+  # the table also holds the name seen that day; keep only the latest
+  select(-application_name) |>
+  left_join(latest_names, by = "application_id") |>
+  group_by(application_id, application_name) |>
   summarise(
     sso_success_rate =
       sum(as.double(successful_logins), na.rm = TRUE) /
-        sum(successful_logins + failed_logins, na.rm = TRUE)
+        sum(successful_logins + failed_logins, na.rm = TRUE),
+    .groups = "drop"
   ) |>
   arrange(desc(sso_success_rate))
 ```
