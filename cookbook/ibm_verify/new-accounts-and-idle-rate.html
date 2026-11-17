@@ -87,9 +87,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-27d2efc3e2ef8bea60ed05644eaa6889.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark-8f3a6bb21e9be3cf0742ed1e64128e9b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-27d2efc3e2ef8bea60ed05644eaa6889.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-6a6b129ff275d6252f89565e79368c54.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-df81890ec15b76fb94bbd6084dacdfd4.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-6a6b129ff275d6252f89565e79368c54.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -310,8 +310,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../cookbook/ibm_verify/applications-per-credential.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Applications per Credential</span></a>
+  <a href="../../cookbook/ibm_verify/multi-service-users.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Multi-Service Users</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -982,7 +982,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <p>New CanadaLogin accounts per day, and how many of them never used a partner service. A jump in the idle rate is a sign of bot sign-ups.</p>
-<p>This is the one IBM Verify metric that reads the <a href="../../catalog/ibm_verify_events_raw.html">raw event stream</a>, because no summary table records when an account first appears.</p>
+<p>It reads the <a href="../../catalog/ibm_verify_events_raw.html">raw event stream</a>, because no summary table records when an account first appears.</p>
 <section id="calculation" class="level2">
 <h2 class="anchored" data-anchor-id="calculation">Calculation</h2>
 <p>An account is <strong>new</strong> on the ET day of its first event in <a href="../../catalog/ibm_verify_events_raw/authentication_activity.html"><code>authentication_activity</code></a>. It is <strong>idle</strong> if it has no successful event in <a href="../../catalog/ibm_verify_events_raw/application_usage.html"><code>application_usage</code></a> for a public application. Public means not flagged internal in <a href="../../catalog/rp/service.html"><code>rp.service</code></a>; an application with no row in <a href="../../catalog/rp/alias.html"><code>rp.alias</code></a> counts as public, because internal CanadaLogin components are the ones registered on purpose and a new partner can go live before it is added.</p>
