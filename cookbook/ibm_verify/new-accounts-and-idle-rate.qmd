@@ -6,9 +6,8 @@ description: "Accounts created per day, and the share that never reached a partn
 New CanadaLogin accounts per day, and how many of them never used a partner
 service. A jump in the idle rate is a sign of bot sign-ups.
 
-This is the one IBM Verify metric that reads the [raw event
-stream](../../catalog/ibm_verify_events_raw.qmd), because no summary table
-records when an account first appears.
+It reads the [raw event stream](../../catalog/ibm_verify_events_raw.qmd),
+because no summary table records when an account first appears.
 
 ## Calculation
 
