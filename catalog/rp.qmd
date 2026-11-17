@@ -36,21 +36,21 @@ That pipeline owns the table structure. Do not change it from this side.
 
 ## Joining through the lookup
 
-Resolve a source-system name to a relying party by joining on `alias`, then join
+Resolve a source-system identifier to a relying party by joining on `alias`, then join
 `rp_id` to `service` for the attributes:
 
 ```sql
 SELECT s.service_name_en,
        sum(a.successful_logins) AS successful_logins
 FROM ibm_verify_events_transformed.events_app_login_counts a
-JOIN rp.alias al ON a.application_name = al.alias
+JOIN rp.alias al ON a.application_id = al.alias
 JOIN rp.service s ON al.rp_id = s.rp_id
 WHERE CAST(a.from_date AS DATE) BETWEEN DATE '2026-07-01' AND DATE '2026-07-31'
 GROUP BY s.service_name_en
 ```
 
-Aggregate after the join, never before. Several IBM Verify application names can
-map to one service, so a pre-aggregated count keyed on `application_name` will
+Aggregate after the join, never before. Several IBM Verify applications can
+map to one service, so a pre-aggregated count keyed on `application_id` will
 split a service across its environments.
 
 ## Data quality

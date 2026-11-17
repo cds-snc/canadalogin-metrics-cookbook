@@ -20,12 +20,18 @@ calls an SSO event, part of application usage.
 Sum `total_logins` over the selected reporting period, grouped
 by application.
 
-**By service.** A service can have several applications, one per name IBM Verify
-knows it by. To report a service, map each application to its service through
-[`rp.alias`](../../catalog/rp/alias.qmd), then sum. SSO events are counts, so they
-add up across a service's applications; unique users do not (see
+Group on `application_id`, not `application_name`: a partner can rename an
+application, and the ID does not change. Label each ID with its latest name from
+[`events_application_mapping`](../../catalog/ibm_verify_events_transformed/events_application_mapping.qmd).
+The ID `UNKNOWN` marks events with no application and is left out.
+
+**By service.** A service can have several applications. To report a service,
+map each application to its service through
+[`rp.alias`](../../catalog/rp/alias.qmd) on `application_id = alias`, then sum.
+SSO events are counts, so they add up across a service's applications; unique
+users do not (see
 [Cumulative Unique Users by Application](cumulative-unique-users-by-application.qmd)).
-Keep an application with no `rp.alias` row under its own name rather than
+Keep an application with no `rp.alias` row under its latest name rather than
 dropping it, so the service totals still add up to the application totals.
 
 ::: {.callout-note collapse="true" title="Example queries"}
@@ -37,39 +43,64 @@ dropping it, so the service totals still add up to the application totals.
 By application:
 
 ```sql
+-- the latest name for each application ID
+WITH latest_names AS (
+  SELECT application_id, application_name
+  FROM   ibm_verify_events_transformed.events_application_mapping
+  WHERE  date = (
+      SELECT MAX(date)
+      FROM   ibm_verify_events_transformed.events_application_mapping
+  )
+)
+
 SELECT
-  application_name,
-  SUM(total_logins) AS total_sso_events
-FROM   ibm_verify_events_transformed.events_app_login_counts
+  a.application_id,
+  n.application_name,
+  SUM(a.total_logins) AS total_sso_events
+FROM   ibm_verify_events_transformed.events_app_login_counts a
+LEFT JOIN latest_names n ON a.application_id = n.application_id
 -- set the reporting window; see the timespans note in cookbook/notes.qmd
-WHERE  CAST(from_date AS DATE) BETWEEN DATE '2026-01-01' AND DATE '2026-05-28'
+WHERE  CAST(a.from_date AS DATE) BETWEEN DATE '2026-01-01' AND DATE '2026-05-28'
+  AND  a.application_id <> 'UNKNOWN'
 -- optionally filter out internal CanadaLogin components;
 -- see the note on them in cookbook/notes.qmd
-  AND application_name NOT IN (
+  AND a.application_id NOT IN (
       SELECT al.alias
       FROM   rp.alias al
       JOIN   rp.service s ON al.rp_id = s.rp_id
       WHERE  s.is_internal
   )
-GROUP  BY application_name
+GROUP  BY a.application_id, n.application_name
 ORDER  BY total_sso_events DESC;
 ```
 
 By service:
 
 ```sql
+-- the latest name for each application ID
+WITH latest_names AS (
+  SELECT application_id, application_name
+  FROM   ibm_verify_events_transformed.events_application_mapping
+  WHERE  date = (
+      SELECT MAX(date)
+      FROM   ibm_verify_events_transformed.events_application_mapping
+  )
+)
+
 SELECT
-  COALESCE(s.service_name_en, a.application_name) AS service,
+  COALESCE(s.service_name_en, n.application_name) AS service,
   SUM(a.total_logins) AS total_sso_events
 FROM   ibm_verify_events_transformed.events_app_login_counts a
--- left joins keep an application with no alias row, under its own name
-LEFT JOIN rp.alias al ON a.application_name = al.alias
+-- left joins keep an application with no alias row, under its latest name
+LEFT JOIN rp.alias al ON al.alias = a.application_id
 LEFT JOIN rp.service s ON al.rp_id = s.rp_id
+LEFT JOIN latest_names n ON a.application_id = n.application_id
 -- set the reporting window; see the timespans note in cookbook/notes.qmd
 WHERE  CAST(a.from_date AS DATE) BETWEEN DATE '2026-01-01' AND DATE '2026-05-28'
+  AND  a.application_id <> 'UNKNOWN'
   AND  NOT COALESCE(s.is_internal, FALSE)
 -- aggregate after the join: several applications can map to one service
-GROUP  BY COALESCE(s.service_name_en, a.application_name)
+GROUP  BY COALESCE(s.service_name_en, n.application_name)
 ORDER  BY total_sso_events DESC;
 ```
 
@@ -78,23 +109,32 @@ ORDER  BY total_sso_events DESC;
 By application:
 
 ```r
+latest_names <- tbl(con, in_schema("ibm_verify_events_transformed", "events_application_mapping")) |>
+  filter(date == max(date, na.rm = TRUE)) |>
+  select(application_id, application_name)
+
 internal_apps <- tbl(con, in_schema("rp", "alias")) |>
   inner_join(tbl(con, in_schema("rp", "service")), by = "rp_id") |>
   filter(is_internal) |>
-  select(application_name = alias)
+  select(application_id = alias)
 
 tbl(con, in_schema("ibm_verify_events_transformed", "events_app_login_counts")) |>
   # set the reporting window; see the timespans note in cookbook/notes.qmd
   filter(
     as.Date(from_date) >= as.Date("2026-01-01"),
-    as.Date(from_date) <= as.Date("2026-05-28")
+    as.Date(from_date) <= as.Date("2026-05-28"),
+    application_id != "UNKNOWN"
   ) |>
   # optionally filter out internal CanadaLogin components;
   # see the note on them in cookbook/notes.qmd
-  anti_join(internal_apps, by = "application_name") |>
-  group_by(application_name) |>
+  anti_join(internal_apps, by = "application_id") |>
+  # the table also holds the name seen that day; keep only the latest
+  select(-application_name) |>
+  left_join(latest_names, by = "application_id") |>
+  group_by(application_id, application_name) |>
   summarise(
-    total_sso_events = sum(total_logins, na.rm = TRUE)
+    total_sso_events = sum(total_logins, na.rm = TRUE),
+    .groups = "drop"
   ) |>
   arrange(desc(total_sso_events))
 ```
@@ -102,18 +142,26 @@ tbl(con, in_schema("ibm_verify_events_transformed", "events_app_login_counts")) 
 By service:
 
 ```r
+latest_names <- tbl(con, in_schema("ibm_verify_events_transformed", "events_application_mapping")) |>
+  filter(date == max(date, na.rm = TRUE)) |>
+  select(application_id, application_name)
+
 services <- tbl(con, in_schema("rp", "alias")) |>
   inner_join(tbl(con, in_schema("rp", "service")), by = "rp_id") |>
-  select(application_name = alias, service_name_en, is_internal)
+  select(application_id = alias, service_name_en, is_internal)
 
 tbl(con, in_schema("ibm_verify_events_transformed", "events_app_login_counts")) |>
   # set the reporting window; see the timespans note in cookbook/notes.qmd
   filter(
     as.Date(from_date) >= as.Date("2026-01-01"),
-    as.Date(from_date) <= as.Date("2026-05-28")
+    as.Date(from_date) <= as.Date("2026-05-28"),
+    application_id != "UNKNOWN"
   ) |>
-  # a left join keeps an application with no alias row, under its own name
-  left_join(services, by = "application_name") |>
+  # left joins keep an application with no alias row, under its latest name
+  left_join(services, by = "application_id") |>
+  # the table also holds the name seen that day; keep only the latest
+  select(-application_name) |>
+  left_join(latest_names, by = "application_id") |>
   filter(!coalesce(is_internal, FALSE)) |>
   # aggregate after the join: several applications can map to one service
   mutate(service = coalesce(service_name_en, application_name)) |>

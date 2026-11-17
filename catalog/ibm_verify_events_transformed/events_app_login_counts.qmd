@@ -33,8 +33,8 @@ One row per `application_id` per day.
 
 | Field Name | Type | Description |
 |---|---|---|
-| application_id | string | IBM Verify's numeric ID for the application |
-| application_name | string | The latest name seen for the application that day (for example, "IRIS - PRC - Prod"). Join to [`rp.alias`](../rp/alias.qmd) on this |
+| application_id | string | IBM Verify's numeric ID for the application. Stable when the application is renamed. Join to [`rp.alias`](../rp/alias.qmd) on this. `"UNKNOWN"` marks events with no application |
+| application_name | string | The latest name seen for the application that day (for example, "IRIS - PRC - Prod"). It changes if the application is renamed, so do not group or join on it. For a label, use the latest name in [`events_application_mapping`](events_application_mapping.qmd) |
 | from_date | string | The reporting day in ET, for example "2026-09-15". Cast before comparing to a date |
 | to_date | string | Same as `from_date` |
 | total_logins | bigint | SSO events for the application that day. Counts events, not people |
@@ -52,11 +52,12 @@ One row per `application_id` per day.
 daily values. The `mtd_` and `ytd_` columns are cumulative: take the latest
 value in the window, never sum them.
 
-**One row per ID.** If an application name has more than one ID, summing
-`unique_users` across them double-counts people who used both.
+**One row per ID.** An application keeps its ID when it is renamed, so group on
+`application_id`, not `application_name`. If a service has more than one
+application, summing `unique_users` across them double-counts people who used both.
 
-**Join to relying parties after, not before, aggregating.** Several application
-names can map to one service. See [Joining through the lookup](../rp.qmd#joining-through-the-lookup).
+**Join to relying parties after, not before, aggregating.** Several applications
+can map to one service. See [Joining through the lookup](../rp.qmd#joining-through-the-lookup).
 
 **Failed events rarely have a user.** Almost all failed SSO events have the user
 ID `"UNKNOWN"`, which counts as one user.

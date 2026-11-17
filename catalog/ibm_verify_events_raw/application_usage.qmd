@@ -31,8 +31,8 @@ One row per event.
 | time | string | When the event happened, in UTC (for example, "2026-09-15 00:00:05 UTC") |
 | userid | string | Hashed user ID. Can be `"UNKNOWN"` |
 | username | string | Hashed username |
-| applicationid | string | IBM Verify's numeric ID for the application |
-| applicationname | string | Application name (for example, "IRIS - PRC - Prod"). Join to [`rp.alias`](../rp/alias.qmd) on this |
+| applicationid | string | IBM Verify's numeric ID for the application. Stable when the application is renamed. Join to [`rp.alias`](../rp/alias.qmd) on this |
+| applicationname | string | Application name (for example, "IRIS - PRC - Prod"). It changes if the application is renamed, so do not group or join on it |
 | result | string | "success" or "failure" |
 | realm | string | IBM Verify directory. "cloudIdentityRealm", or "UNKNOWN" when the account is not found |
 | origin | string | Hashed client IP address |
@@ -67,6 +67,6 @@ tbl(con, in_schema("ibm_verify_events_raw", "application_usage")) |>
     et_day == as.Date("2026-09-15"), result == "success",
     !is.na(userid), !userid %in% c("", "UNKNOWN")
   ) |>
-  group_by(applicationname) |>
+  group_by(applicationid) |>
   summarise(unique_users = n_distinct(userid))
 ```
