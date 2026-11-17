@@ -1051,7 +1051,7 @@ Description
 </thead>
 <tbody class="list">
 
-<tr data-index="0" data-listing-file-modified-sort="1794920857119" data-listing-reading-time-sort="3" data-listing-word-count-sort="419" data-listing-title-sort="rp.service" data-listing-filename-sort="service.qmd">
+<tr data-index="0" data-listing-file-modified-sort="1794926551878" data-listing-reading-time-sort="3" data-listing-word-count-sort="419" data-listing-title-sort="rp.service" data-listing-filename-sort="service.qmd">
 <td>
 <a href="../catalog/rp/service.html" class="title listing-title">rp.service</a>
 </td>
@@ -1061,12 +1061,12 @@ Description
 
 </tr>
 
-<tr data-index="1" data-listing-file-modified-sort="1794920857119" data-listing-reading-time-sort="2" data-listing-word-count-sort="380" data-listing-title-sort="rp.alias" data-listing-filename-sort="alias.qmd">
+<tr data-index="1" data-listing-file-modified-sort="1794926551878" data-listing-reading-time-sort="3" data-listing-word-count-sort="473" data-listing-title-sort="rp.alias" data-listing-filename-sort="alias.qmd">
 <td>
 <a href="../catalog/rp/alias.html" class="title listing-title">rp.alias</a>
 </td>
 <td>
-<span class="listing-description">Maps each name a source system uses for a service back to one rp_id.</span>
+<span class="listing-description">Maps each identifier or name a source system uses for a service back to one rp_id.</span>
 </td>
 
 </tr>
@@ -1078,15 +1078,15 @@ Description
 </section>
 <section id="joining-through-the-lookup" class="level2">
 <h2 class="anchored" data-anchor-id="joining-through-the-lookup">Joining through the lookup</h2>
-<p>Resolve a source-system name to a relying party by joining on <code>alias</code>, then join <code>rp_id</code> to <code>service</code> for the attributes:</p>
+<p>Resolve a source-system identifier to a relying party by joining on <code>alias</code>, then join <code>rp_id</code> to <code>service</code> for the attributes:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> s.service_name_en,</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">sum</span>(a.successful_logins) <span class="kw">AS</span> successful_logins</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> ibm_verify_events_transformed.events_app_login_counts a</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="kw">JOIN</span> rp.alias al <span class="kw">ON</span> a.application_name <span class="op">=</span> al.alias</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="kw">JOIN</span> rp.alias al <span class="kw">ON</span> a.application_id <span class="op">=</span> al.alias</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="kw">JOIN</span> rp.service s <span class="kw">ON</span> al.rp_id <span class="op">=</span> s.rp_id</span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> <span class="fu">CAST</span>(a.from_date <span class="kw">AS</span> <span class="dt">DATE</span>) <span class="kw">BETWEEN</span> <span class="dt">DATE</span> <span class="st">'2026-07-01'</span> <span class="kw">AND</span> <span class="dt">DATE</span> <span class="st">'2026-07-31'</span></span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> s.service_name_en</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Aggregate after the join, never before. Several IBM Verify application names can map to one service, so a pre-aggregated count keyed on <code>application_name</code> will split a service across its environments.</p>
+<p>Aggregate after the join, never before. Several IBM Verify applications can map to one service, so a pre-aggregated count keyed on <code>application_id</code> will split a service across its environments.</p>
 </section>
 <section id="data-quality" class="level2">
 <h2 class="anchored" data-anchor-id="data-quality">Data quality</h2>

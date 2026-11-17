@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="description" content="Maps each name a source system uses for a service back to one rp_id.">
+<meta name="description" content="Maps each identifier or name a source system uses for a service back to one rp_id.">
 
 <title>rp.alias – CanadaLogin Metrics Cookbook</title>
 <style>
@@ -929,7 +929,7 @@ ul.task-list li input[type="checkbox"] {
 
 <div>
   <div class="description">
-    Maps each name a source system uses for a service back to one rp_id.
+    Maps each identifier or name a source system uses for a service back to one rp_id.
   </div>
 </div>
 
@@ -946,9 +946,9 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>One row per name that refers to a relying party. The same service is called different things in different systems, and this table maps each of those strings back to a single <code>rp_id</code>.</p>
-<p>Use it to join tables that have no shared service identifier, such as <code>ibm_verify_events_transformed.events_app_login_counts.application_name</code> and the <code>rp_name</code> breakdown in the Google Analytics funnel tables.</p>
-<p><code>Keywords</code>: Relying party, RP, alias, application name, crosswalk, lookup, join</p>
+<p>One row per string that refers to a relying party. The same service is called different things in different systems, and this table maps each of those strings back to a single <code>rp_id</code>.</p>
+<p>Use it to join tables that have no shared service identifier, such as <code>ibm_verify_events_transformed.events_app_login_counts.application_id</code> and the <code>rp_name</code> breakdown in the Google Analytics funnel tables.</p>
+<p><code>Keywords</code>: Relying party, RP, alias, application ID, application name, crosswalk, lookup, join</p>
 <section id="provenance" class="level2">
 <h2 class="anchored" data-anchor-id="provenance">Provenance</h2>
 <p>Maintained by hand in the same <a href="https://docs.google.com/spreadsheets/d/11czXAX6mTxZbbcH_XbFmI-TSoSTc2M5FXUp9teGw1D0/edit?gid=0#gid=0">CanadaLogin Relying Parties Google Sheet</a> as <a href="../../catalog/rp/service.html"><code>rp.service</code></a>, read every weekday by the same Lambda and written as a single Parquet file. Not partitioned, overwritten in place, current state only.</p>
@@ -989,7 +989,7 @@ ul.task-list li input[type="checkbox"] {
 <tr class="odd">
 <td><code>source</code></td>
 <td><code>varchar</code></td>
-<td>Where the alias was first encountered, one of <code>IBM Verify</code> or <code>Google Analytics</code>. Record keeping only, see the note below.</td>
+<td>Where the alias was first encountered, for example <code>IBM Verify Application ID</code>, <code>IBM Verify Application Name</code>, <code>Google Analytics</code>, or <code>Call Centre Topics</code>. Record keeping only, see the note below.</td>
 </tr>
 <tr class="even">
 <td><code>fetched_at</code></td>
@@ -1002,9 +1002,10 @@ ul.task-list li input[type="checkbox"] {
 <section id="notes" class="level2">
 <h2 class="anchored" data-anchor-id="notes">Notes</h2>
 <p><strong>Join on <code>alias</code> alone. Do not filter on <code>source</code>.</strong> <code>source</code> records where the name was first seen, not which system the name belongs to. Filtering by it before joining will silently drop matches for any alias that turns up in both systems.</p>
-<p><strong>One service, several aliases.</strong> A service has as many rows here as it has names. For example, <code>MyCGC</code> is <code>MyCGC</code> in Google Analytics but both <code>MyCGC - CGC - .NET - Prod</code> and <code>MyCGC - CGC - Power Pages - Prod</code> in IBM Verify. Joining a fact table through this lookup is a many-to-one join, so aggregate after the join, not before.</p>
+<p><strong>Join IBM Verify applications on the application ID.</strong> Every production IBM Verify application has two rows: one with its numeric <code>application_id</code> as the <code>alias</code>, and one with its name (<code>source</code> is <code>IBM Verify Application ID</code> and <code>IBM Verify Application Name</code>). Join <code>application_id</code> (or the raw tables’ <code>applicationid</code>) to <code>alias</code>. An ID does not change when a partner renames the application, so the join keeps working. A name does change, and a renamed application would stop matching its name row.</p>
+<p><strong>One service, several aliases.</strong> A service has as many rows here as it has strings. For example, <code>MyCGC</code> is <code>MyCGC</code> in Google Analytics but has one ID row (and one name row) for each of its two IBM Verify applications, <code>MyCGC - CGC - .NET - Prod</code> and <code>MyCGC - CGC - Power Pages - Prod</code>. Joining a fact table through this lookup is a many-to-one join, so aggregate after the join, not before.</p>
 <p><strong>Not every string in the analytics tables is an alias.</strong> The <code>rp_name</code> breakdown in the Google Analytics funnel tables also contains <code>RESERVED_TOTAL</code> (the all-services rollup), <code>(not set)</code>, and the empty string. None of these are services, and an inner join drops them. If you are reconciling totals, exclude <code>RESERVED_TOTAL</code> explicitly rather than relying on the join to remove it.</p>
-<p><strong>Aliases are exact strings, not patterns.</strong> They are matched literally, with no trimming or case folding. A new application name in IBM Verify will not resolve until it is added to the source sheet by hand.</p>
+<p><strong>Aliases are exact strings, not patterns.</strong> They are matched literally, with no trimming or case folding. A new IBM Verify application will not resolve until its ID is added to the source sheet by hand.</p>
 
 
 </section>

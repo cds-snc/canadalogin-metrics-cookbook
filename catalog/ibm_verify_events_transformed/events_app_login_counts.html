@@ -976,12 +976,12 @@ ul.task-list li input[type="checkbox"] {
 <tr class="odd">
 <td>application_id</td>
 <td>string</td>
-<td>IBM Verify’s numeric ID for the application</td>
+<td>IBM Verify’s numeric ID for the application. Stable when the application is renamed. Join to <a href="../../catalog/rp/alias.html"><code>rp.alias</code></a> on this. <code>"UNKNOWN"</code> marks events with no application</td>
 </tr>
 <tr class="even">
 <td>application_name</td>
 <td>string</td>
-<td>The latest name seen for the application that day (for example, “IRIS - PRC - Prod”). Join to <a href="../../catalog/rp/alias.html"><code>rp.alias</code></a> on this</td>
+<td>The latest name seen for the application that day (for example, “IRIS - PRC - Prod”). It changes if the application is renamed, so do not group or join on it. For a label, use the latest name in <a href="../../catalog/ibm_verify_events_transformed/events_application_mapping.html"><code>events_application_mapping</code></a></td>
 </tr>
 <tr class="odd">
 <td>from_date</td>
@@ -1039,8 +1039,8 @@ ul.task-list li input[type="checkbox"] {
 <section id="notes" class="level2">
 <h2 class="anchored" data-anchor-id="notes">Notes</h2>
 <p><code>total_logins</code>, <code>unique_users</code>, <code>failed_logins</code>, and <code>successful_logins</code> are daily values. The <code>mtd_</code> and <code>ytd_</code> columns are cumulative: take the latest value in the window, never sum them.</p>
-<p><strong>One row per ID.</strong> If an application name has more than one ID, summing <code>unique_users</code> across them double-counts people who used both.</p>
-<p><strong>Join to relying parties after, not before, aggregating.</strong> Several application names can map to one service. See <a href="../../catalog/rp.html#joining-through-the-lookup">Joining through the lookup</a>.</p>
+<p><strong>One row per ID.</strong> An application keeps its ID when it is renamed, so group on <code>application_id</code>, not <code>application_name</code>. If a service has more than one application, summing <code>unique_users</code> across them double-counts people who used both.</p>
+<p><strong>Join to relying parties after, not before, aggregating.</strong> Several applications can map to one service. See <a href="../../catalog/rp.html#joining-through-the-lookup">Joining through the lookup</a>.</p>
 <p><strong>Failed events rarely have a user.</strong> Almost all failed SSO events have the user ID <code>"UNKNOWN"</code>, which counts as one user.</p>
 <p><strong>Not inflated by second factors.</strong> Reaching an application uses the session the person already holds, so one handoff is one SSO event. <code>total_logins</code> still counts events, because one person can reach an application many times.</p>
 

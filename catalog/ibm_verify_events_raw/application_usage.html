@@ -1024,12 +1024,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tr class="even">
 <td>applicationid</td>
 <td>string</td>
-<td>IBM Verify’s numeric ID for the application</td>
+<td>IBM Verify’s numeric ID for the application. Stable when the application is renamed. Join to <a href="../../catalog/rp/alias.html"><code>rp.alias</code></a> on this</td>
 </tr>
 <tr class="odd">
 <td>applicationname</td>
 <td>string</td>
-<td>Application name (for example, “IRIS - PRC - Prod”). Join to <a href="../../catalog/rp/alias.html"><code>rp.alias</code></a> on this</td>
+<td>Application name (for example, “IRIS - PRC - Prod”). It changes if the application is renamed, so do not group or join on it</td>
 </tr>
 <tr class="even">
 <td>result</td>
@@ -1093,7 +1093,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    et_day <span class="sc">==</span> <span class="fu">as.Date</span>(<span class="st">"2026-09-15"</span>), result <span class="sc">==</span> <span class="st">"success"</span>,</span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="sc">!</span><span class="fu">is.na</span>(userid), <span class="sc">!</span>userid <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">""</span>, <span class="st">"UNKNOWN"</span>)</span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(applicationname) <span class="sc">|&gt;</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(applicationid) <span class="sc">|&gt;</span></span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">unique_users =</span> <span class="fu">n_distinct</span>(userid))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 
 
