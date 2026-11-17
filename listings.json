@@ -64,17 +64,10 @@
     ]
   },
   {
-    "listing": "/catalog/google_analytics.html",
+    "listing": "/catalog/call_centre.html",
     "items": [
-      "/catalog/google_analytics/property_traffic.html",
-      "/catalog/google_analytics/page_traffic.html",
-      "/catalog/google_analytics/error_events.html",
-      "/catalog/google_analytics/meta_page_traffic.html",
-      "/catalog/google_analytics/meta_page_events.html",
-      "/catalog/google_analytics/funnels.html",
-      "/catalog/google_analytics/funnels_current.html",
-      "/catalog/google_analytics/funnel_metrics.html",
-      "/catalog/google_analytics/funnel_metrics_current.html"
+      "/catalog/call_centre/weekly_activity_report.html",
+      "/catalog/call_centre/weekly_topic_dump.html"
     ]
   },
   {
@@ -85,10 +78,18 @@
     ]
   },
   {
-    "listing": "/catalog/call_centre.html",
+    "listing": "/catalog/google_analytics.html",
     "items": [
-      "/catalog/call_centre/weekly_activity_report.html",
-      "/catalog/call_centre/weekly_topic_dump.html"
+      "/catalog/google_analytics/property_traffic.html",
+      "/catalog/google_analytics/page_traffic.html",
+      "/catalog/google_analytics/partner_portal_page_traffic.html",
+      "/catalog/google_analytics/error_events.html",
+      "/catalog/google_analytics/meta_page_traffic.html",
+      "/catalog/google_analytics/meta_page_events.html",
+      "/catalog/google_analytics/funnels.html",
+      "/catalog/google_analytics/funnels_current.html",
+      "/catalog/google_analytics/funnel_metrics.html",
+      "/catalog/google_analytics/funnel_metrics_current.html"
     ]
   },
   {
@@ -116,6 +117,7 @@
       "/catalog/google_analytics/meta_page_events.html",
       "/catalog/google_analytics/meta_page_traffic.html",
       "/catalog/google_analytics/page_traffic.html",
+      "/catalog/google_analytics/partner_portal_page_traffic.html",
       "/catalog/google_analytics/property_traffic.html",
       "/catalog/ibm_verify/app_login_counts.html",
       "/catalog/ibm_verify/auth_total_logins.html",

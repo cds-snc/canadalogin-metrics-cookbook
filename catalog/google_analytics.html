@@ -854,6 +854,12 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../catalog/google_analytics/partner_portal_page_traffic.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">partner_portal_page_traffic</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../catalog/google_analytics/error_events.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">error_events</span></a>
   </div>
@@ -993,11 +999,11 @@ window.Quarto = {
 </header>
 
 
-<p>Tables in the <code>google_analytics</code> schema, populated from the CanadaLogin GA4 property. The two <code>meta_</code> tables come from a separate meta-analytics property, which measures readership of Signal Check, the published dashboards, and this Cookbook. Three scheduled Lambdas write into this schema each night, all in the <code>canadalogin-reporting-data-pipeline</code> repo’s <code>google_analytics</code> Terraform module:</p>
+<p>Tables in the <code>google_analytics</code> schema, populated from the CanadaLogin GA4 property. The two <code>meta_</code> tables come from a separate meta-analytics property, which measures readership of Signal Check, the published dashboards, and this Cookbook. <a href="../catalog/google_analytics/partner_portal_page_traffic.html"><code>partner_portal_page_traffic</code></a> comes from the CanadaLogin Partner Portal property, and is not available until the Partner Portal reaches production. Three scheduled Lambdas write into this schema each night, all in the <code>canadalogin-reporting-data-pipeline</code> repo’s <code>google_analytics</code> Terraform module:</p>
 <ul>
 <li><strong>06:30 ET</strong> - the funnel export, writing <a href="../catalog/google_analytics/funnels.html"><code>funnels</code></a></li>
 <li><strong>06:45 ET</strong> - the funnel metrics Lambda, deriving <a href="../catalog/google_analytics/funnel_metrics.html"><code>funnel_metrics</code></a> from the funnels the export just landed</li>
-<li><strong>07:00 ET</strong> - the daily export, writing <a href="../catalog/google_analytics/property_traffic.html"><code>property_traffic</code></a>, <a href="../catalog/google_analytics/page_traffic.html"><code>page_traffic</code></a>, <a href="../catalog/google_analytics/error_events.html"><code>error_events</code></a>, <a href="../catalog/google_analytics/meta_page_traffic.html"><code>meta_page_traffic</code></a>, and <a href="../catalog/google_analytics/meta_page_events.html"><code>meta_page_events</code></a>, then starting the crawler</li>
+<li><strong>07:00 ET</strong> - the daily export, writing <a href="../catalog/google_analytics/property_traffic.html"><code>property_traffic</code></a>, <a href="../catalog/google_analytics/page_traffic.html"><code>page_traffic</code></a>, <a href="../catalog/google_analytics/error_events.html"><code>error_events</code></a>, <a href="../catalog/google_analytics/meta_page_traffic.html"><code>meta_page_traffic</code></a>, <a href="../catalog/google_analytics/meta_page_events.html"><code>meta_page_events</code></a>, and <a href="../catalog/google_analytics/partner_portal_page_traffic.html"><code>partner_portal_page_traffic</code></a>, then starting the crawler</li>
 </ul>
 <p><a href="../catalog/google_analytics/funnels_current.html"><code>funnels_current</code></a> and <a href="../catalog/google_analytics/funnel_metrics_current.html"><code>funnel_metrics_current</code></a> are views over <code>funnels</code> and <code>funnel_metrics</code> respectively, resolving each date to its current funnel version.</p>
 <section id="tables" class="level2">
@@ -1019,7 +1025,7 @@ Description
 </thead>
 <tbody class="list">
 
-<tr data-index="0" data-listing-file-modified-sort="1794926551876" data-listing-reading-time-sort="2" data-listing-word-count-sort="267" data-listing-title-sort="google_analytics.property_traffic" data-listing-filename-sort="property_traffic.qmd">
+<tr data-index="0" data-listing-file-modified-sort="1794940739494" data-listing-reading-time-sort="2" data-listing-word-count-sort="267" data-listing-title-sort="google_analytics.property_traffic" data-listing-filename-sort="property_traffic.qmd">
 <td>
 <a href="../catalog/google_analytics/property_traffic.html" class="title listing-title">google_analytics.property_traffic</a>
 </td>
@@ -1029,7 +1035,7 @@ Description
 
 </tr>
 
-<tr data-index="1" data-listing-file-modified-sort="1794926551876" data-listing-reading-time-sort="2" data-listing-word-count-sort="352" data-listing-title-sort="google_analytics.page_traffic" data-listing-filename-sort="page_traffic.qmd">
+<tr data-index="1" data-listing-file-modified-sort="1794940739494" data-listing-reading-time-sort="2" data-listing-word-count-sort="352" data-listing-title-sort="google_analytics.page_traffic" data-listing-filename-sort="page_traffic.qmd">
 <td>
 <a href="../catalog/google_analytics/page_traffic.html" class="title listing-title">google_analytics.page_traffic</a>
 </td>
@@ -1039,7 +1045,17 @@ Description
 
 </tr>
 
-<tr data-index="2" data-listing-file-modified-sort="1794926551875" data-listing-reading-time-sort="2" data-listing-word-count-sort="355" data-listing-title-sort="google_analytics.error_events" data-listing-filename-sort="error_events.qmd">
+<tr data-index="2" data-listing-file-modified-sort="1794940739494" data-listing-reading-time-sort="2" data-listing-word-count-sort="399" data-listing-title-sort="google_analytics.partner_portal_page_traffic" data-listing-filename-sort="partner_portal_page_traffic.qmd">
+<td>
+<a href="../catalog/google_analytics/partner_portal_page_traffic.html" class="title listing-title">google_analytics.partner_portal_page_traffic</a>
+</td>
+<td>
+<span class="listing-description">Not available yet. Daily GA4 traffic to CanadaLogin Partner Portal pages, by page title and path.</span>
+</td>
+
+</tr>
+
+<tr data-index="3" data-listing-file-modified-sort="1794940739493" data-listing-reading-time-sort="2" data-listing-word-count-sort="355" data-listing-title-sort="google_analytics.error_events" data-listing-filename-sort="error_events.qmd">
 <td>
 <a href="../catalog/google_analytics/error_events.html" class="title listing-title">google_analytics.error_events</a>
 </td>
@@ -1049,7 +1065,7 @@ Description
 
 </tr>
 
-<tr data-index="3" data-listing-file-modified-sort="1794926551876" data-listing-reading-time-sort="4" data-listing-word-count-sort="620" data-listing-title-sort="google_analytics.meta_page_traffic" data-listing-filename-sort="meta_page_traffic.qmd">
+<tr data-index="4" data-listing-file-modified-sort="1794940739494" data-listing-reading-time-sort="4" data-listing-word-count-sort="620" data-listing-title-sort="google_analytics.meta_page_traffic" data-listing-filename-sort="meta_page_traffic.qmd">
 <td>
 <a href="../catalog/google_analytics/meta_page_traffic.html" class="title listing-title">google_analytics.meta_page_traffic</a>
 </td>
@@ -1059,7 +1075,7 @@ Description
 
 </tr>
 
-<tr data-index="4" data-listing-file-modified-sort="1794926551876" data-listing-reading-time-sort="3" data-listing-word-count-sort="446" data-listing-title-sort="google_analytics.meta_page_events" data-listing-filename-sort="meta_page_events.qmd">
+<tr data-index="5" data-listing-file-modified-sort="1794940739494" data-listing-reading-time-sort="3" data-listing-word-count-sort="446" data-listing-title-sort="google_analytics.meta_page_events" data-listing-filename-sort="meta_page_events.qmd">
 <td>
 <a href="../catalog/google_analytics/meta_page_events.html" class="title listing-title">google_analytics.meta_page_events</a>
 </td>
@@ -1069,7 +1085,7 @@ Description
 
 </tr>
 
-<tr data-index="5" data-listing-file-modified-sort="1794926551876" data-listing-reading-time-sort="4" data-listing-word-count-sort="733" data-listing-title-sort="google_analytics.funnels" data-listing-filename-sort="funnels.qmd">
+<tr data-index="6" data-listing-file-modified-sort="1794940739494" data-listing-reading-time-sort="4" data-listing-word-count-sort="733" data-listing-title-sort="google_analytics.funnels" data-listing-filename-sort="funnels.qmd">
 <td>
 <a href="../catalog/google_analytics/funnels.html" class="title listing-title">google_analytics.funnels</a>
 </td>
@@ -1079,7 +1095,7 @@ Description
 
 </tr>
 
-<tr data-index="6" data-listing-file-modified-sort="1794926551876" data-listing-reading-time-sort="2" data-listing-word-count-sort="311" data-listing-title-sort="google_analytics.funnels_current" data-listing-filename-sort="funnels_current.qmd">
+<tr data-index="7" data-listing-file-modified-sort="1794940739494" data-listing-reading-time-sort="2" data-listing-word-count-sort="311" data-listing-title-sort="google_analytics.funnels_current" data-listing-filename-sort="funnels_current.qmd">
 <td>
 <a href="../catalog/google_analytics/funnels_current.html" class="title listing-title">google_analytics.funnels_current</a>
 </td>
@@ -1089,7 +1105,7 @@ Description
 
 </tr>
 
-<tr data-index="7" data-listing-file-modified-sort="1794926551876" data-listing-reading-time-sort="3" data-listing-word-count-sort="513" data-listing-title-sort="google_analytics.funnel_metrics" data-listing-filename-sort="funnel_metrics.qmd">
+<tr data-index="8" data-listing-file-modified-sort="1794940739494" data-listing-reading-time-sort="3" data-listing-word-count-sort="513" data-listing-title-sort="google_analytics.funnel_metrics" data-listing-filename-sort="funnel_metrics.qmd">
 <td>
 <a href="../catalog/google_analytics/funnel_metrics.html" class="title listing-title">google_analytics.funnel_metrics</a>
 </td>
@@ -1099,7 +1115,7 @@ Description
 
 </tr>
 
-<tr data-index="8" data-listing-file-modified-sort="1794926551876" data-listing-reading-time-sort="1" data-listing-word-count-sort="188" data-listing-title-sort="google_analytics.funnel_metrics_current" data-listing-filename-sort="funnel_metrics_current.qmd">
+<tr data-index="9" data-listing-file-modified-sort="1794940739494" data-listing-reading-time-sort="1" data-listing-word-count-sort="188" data-listing-title-sort="google_analytics.funnel_metrics_current" data-listing-filename-sort="funnel_metrics_current.qmd">
 <td>
 <a href="../catalog/google_analytics/funnel_metrics_current.html" class="title listing-title">google_analytics.funnel_metrics_current</a>
 </td>
