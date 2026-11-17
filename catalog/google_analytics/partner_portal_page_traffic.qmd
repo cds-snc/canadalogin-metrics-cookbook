@@ -1,0 +1,67 @@
+---
+title: "google_analytics.partner_portal_page_traffic"
+description: "Not available yet. Daily GA4 traffic to CanadaLogin Partner Portal pages, by page title and path."
+# Not yet in prod, so no table exists yet.
+---
+
+::: {.callout-warning}
+**Not available yet.** The export is deployed, but the Partner Portal is not
+in production yet. The table will appear in Athena once production traffic
+arrives. Until then, queries against it fail with a "table not found" error.
+:::
+
+Daily traffic for the CanadaLogin Partner Portal GA4 property, broken down by
+page.
+
+Each row represents one day of traffic to a single Partner Portal page,
+identified by its title, its path, and the data stream that reported it.
+
+`Keywords`: Google Analytics, GA4, Partner Portal, page views, traffic, page title, page path, data stream
+
+## Provenance
+
+Pulled daily from the GA4 Data API (`runReport`) for the Partner Portal
+property, via the same Lambda and pipeline as
+[`page_traffic`](page_traffic.qmd). Only the production data stream is
+exported. The property's dev, test, and staging stream is left out.
+
+* **Updated**: Daily, at 07:00 ET
+* **Retention**: 7 years
+* **Steward**: EDCP Data and Research Team
+* **Contact**: [Yinlin Zhang](mailto:yinlin.zhang@cds-snc.ca) (Data and Research team)
+* **Location**: `s3://<transformed-bucket>/google_analytics/partner_portal_page_traffic/`
+
+## Fields
+
+One row per `date` per `streamname` per `pagetitle` per `pagepath`.
+
+| Field Name | Type | Description |
+|---|---|---|
+| date | string | The reporting day, as a partition key (for example, "2026-07-23") |
+| streamid | string | Numeric ID of the GA4 data stream that reported the page |
+| streamname | string | Display name of the GA4 data stream |
+| pagetitle | string | The page's `<title>` at the time of the visit |
+| pagepath | string | The page's URL path |
+| sessions | bigint | Number of sessions that included this page on this day |
+| activeusers | bigint | Number of distinct active users who viewed this page on this day |
+| screenpageviews | bigint | Number of times this page was viewed on this day |
+
+## Notes
+
+**This is a separate GA4 property from CanadaLogin.** Its users and sessions
+are counted independently of [`page_traffic`](page_traffic.qmd) and
+[`property_traffic`](property_traffic.qmd). Do not union or sum it with those
+tables to get a CanadaLogin total.
+
+**The production stream is selected by ID.** The export filters on `streamid`,
+so a renamed stream still lands here. Filter on `streamid`, not `streamname`,
+if you need to pin the stream in a query.
+
+**Only `screenpageviews` sums across pages.** GA4 counts `activeusers` and
+`sessions` *within* a row's dimension combination, so a user or session that
+touched three pages in a day appears in all three rows. Summing either across
+pages overcounts.
+
+**Keep both `pagetitle` and `pagepath` in mind when filtering.** A retitled
+page starts a fresh row with no link to its history. Prefer `pagepath` for
+anything that needs to survive a copy or title change.

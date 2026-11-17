@@ -168,6 +168,8 @@ website:
                 href: catalog/google_analytics/property_traffic.qmd
               - text: page_traffic
                 href: catalog/google_analytics/page_traffic.qmd
+              - text: partner_portal_page_traffic
+                href: catalog/google_analytics/partner_portal_page_traffic.qmd
               - text: error_events
                 href: catalog/google_analytics/error_events.qmd
               - text: meta_page_traffic
