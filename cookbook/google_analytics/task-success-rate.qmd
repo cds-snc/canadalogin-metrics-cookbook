@@ -142,14 +142,12 @@ than counting them as `0.0`, or an average will read too low.
   window. A user who fails, retries and succeeds counts once, as a success. A
   user who fails three times and gives up counts once, as a failure. The rate
   is a share of people, not of attempts.
-- **Traffic to the Manage CanadaLogin app is excluded.** Someone can go
-  through sign up or sign in without coming from a valid relying party, using
-  a link that names the Manage CanadaLogin app as the destination. Real users
-  always arrive from a valid relying party, so this traffic comes from
-  employees, not actual users. Every funnel that is not a Manage
-  CanadaLogin task therefore excludes traffic with the Manage CanadaLogin
-  relying party ID. See
+- **Most funnels exclude internal traffic.** Sign in, sign up, both
+  recoveries and both migrations are broken down by relying party, and they
+  exclude traffic whose relying party is the Manage CanadaLogin app. See
   [Internal CanadaLogin components](../notes.qmd#internal-canadalogin-components-should-usually-be-excluded-from-external-adoption-reporting).
+  The [Manage funnels](#manage) are not broken down by relying party, because
+  it is always the Manage CanadaLogin app.
 - **A series can change definition part way through.**
   `funnel_metrics_current` returns the newest version for each date, and a new
   version is not always backfilled. Check `funnel_version` across the rows
@@ -242,6 +240,63 @@ legacy method and finished.
 
 **The prompt step has a time limit** in `migration_existing_to_cl`. The legacy
 method prompt must follow the 2-step verification step within 30 minutes.
+
+#### Manage
+
+Change contact phone number:
+
+* **Funnel ID**: `manage_contact_phone`
+* **Definition**: [`manage_contact_phone.yaml`](https://github.com/cds-snc/canadalogin-reporting-data-pipeline/blob/main/infra/modules/google_analytics/funnel_src/funnels/manage_contact_phone.yaml)
+* **Entry**: `number_submitted`, submitting the new number on the "Phone Number Change - Enter new phone number" screen
+* **Exit**: `number_updated`, the phone number update completing (`phone_update_success`)
+
+Add a passkey:
+
+* **Funnel ID**: `manage_add_passkey`
+* **Definition**: [`manage_add_passkey.yaml`](https://github.com/cds-snc/canadalogin-reporting-data-pipeline/blob/main/infra/modules/google_analytics/funnel_src/funnels/manage_add_passkey.yaml)
+* **Entry**: `password_submitted`, submitting the password on the "Verify it's you" screen
+* **Exit**: `nickname_saved`, the passkey's name being submitted
+
+Add a 2-step phone:
+
+* **Funnel ID**: `manage_add_mfa_phone`
+* **Definition**: [`manage_add_mfa_phone.yaml`](https://github.com/cds-snc/canadalogin-reporting-data-pipeline/blob/main/infra/modules/google_analytics/funnel_src/funnels/manage_add_mfa_phone.yaml)
+* **Entry**: `password_submitted`, submitting the password on the "Verify it's you" screen
+* **Exit**: `phone_added`, the phone enrolment completing (`mfa_enroll_success`)
+
+Change email:
+
+* **Funnel ID**: `manage_change_email`
+* **Definition**: [`manage_change_email.yaml`](https://github.com/cds-snc/canadalogin-reporting-data-pipeline/blob/main/infra/modules/google_analytics/funnel_src/funnels/manage_change_email.yaml)
+* **Entry**: `password_submitted`, submitting the password on the "Verify it's you" screen
+* **Exit**: `email_updated`, the email update completing (`email_update_success`)
+
+Change password:
+
+* **Funnel ID**: `manage_password_change`
+* **Definition**: [`manage_password_change.yaml`](https://github.com/cds-snc/canadalogin-reporting-data-pipeline/blob/main/infra/modules/google_analytics/funnel_src/funnels/manage_password_change.yaml)
+* **Entry**: `password_submitted`, submitting the password on the "Verify it's you" screen
+* **Exit**: `password_changed`, the "password changed" step (`password_changed_success`)
+
+Delete a passkey:
+
+* **Funnel ID**: `manage_delete_passkey`
+* **Definition**: [`manage_delete_passkey.yaml`](https://github.com/cds-snc/canadalogin-reporting-data-pipeline/blob/main/infra/modules/google_analytics/funnel_src/funnels/manage_delete_passkey.yaml)
+* **Entry**: `password_submitted`, submitting the password on the "Verify it's you" screen
+* **Exit**: `passkey_deleted`, the "passkey deleted" step
+
+**Rates start when someone commits to the task.** A Manage rate counts people
+from their first submit, not from the first screen. That is the new number for
+contact phone, and the password for the other five. Someone who opens the
+first screen and leaves is not counted. `entry_success` counts from the first
+screen instead, so it is never higher.
+
+**Some exits are proxies:** add a passkey ends when the passkey is named, and
+change password ends on a step change, so both rates can run slightly high.
+
+**Volume is low.** Each Manage task has few people starting it each day, so a
+1-day rate swings widely. Read 28-day windows, and 7-day windows at the
+minimum. See the [window lengths](#interpretation-notes) above.
 
 ## Alternative names
 
