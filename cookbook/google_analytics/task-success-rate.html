@@ -87,9 +87,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-6a6b129ff275d6252f89565e79368c54.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark-df81890ec15b76fb94bbd6084dacdfd4.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-6a6b129ff275d6252f89565e79368c54.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-f45d275d4180772c0ccc1ef15f7356b9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-87de6e3a67860af382e3df67c8bdd026.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-f45d275d4180772c0ccc1ef15f7356b9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -965,6 +965,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#recover-password" id="toc-recover-password" class="nav-link" data-scroll-target="#recover-password">Recover password</a></li>
   <li><a href="#recover-2-step-verification" id="toc-recover-2-step-verification" class="nav-link" data-scroll-target="#recover-2-step-verification">Recover 2-step verification</a></li>
   <li><a href="#migration" id="toc-migration" class="nav-link" data-scroll-target="#migration">Migration</a></li>
+  <li><a href="#manage" id="toc-manage" class="nav-link" data-scroll-target="#manage">Manage</a></li>
   </ul></li>
   </ul></li>
   <li><a href="#alternative-names" id="toc-alternative-names" class="nav-link" data-scroll-target="#alternative-names">Alternative names</a></li>
@@ -1098,7 +1099,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h4 class="anchored" data-anchor-id="all-tasks">All tasks</h4>
 <ul>
 <li><strong>Users, not attempts.</strong> Every step counts distinct <code>activeUsers</code> in the window. A user who fails, retries and succeeds counts once, as a success. A user who fails three times and gives up counts once, as a failure. The rate is a share of people, not of attempts.</li>
-<li><strong>Traffic to the Manage CanadaLogin app is excluded.</strong> Someone can go through sign up or sign in without coming from a valid relying party, using a link that names the Manage CanadaLogin app as the destination. Real users always arrive from a valid relying party, so this traffic comes from employees, not actual users. Every funnel that is not a Manage CanadaLogin task therefore excludes traffic with the Manage CanadaLogin relying party ID. See <a href="../../cookbook/notes.html#internal-canadalogin-components-should-usually-be-excluded-from-external-adoption-reporting">Internal CanadaLogin components</a>.</li>
+<li><strong>Most funnels exclude internal traffic.</strong> Sign in, sign up, both recoveries and both migrations are broken down by relying party, and they exclude traffic whose relying party is the Manage CanadaLogin app. See <a href="../../cookbook/notes.html#internal-canadalogin-components-should-usually-be-excluded-from-external-adoption-reporting">Internal CanadaLogin components</a>. The <a href="#manage">Manage funnels</a> are not broken down by relying party, because it is always the Manage CanadaLogin app.</li>
 <li><strong>A series can change definition part way through.</strong> <code>funnel_metrics_current</code> returns the newest version for each date, and a new version is not always backfilled. Check <code>funnel_version</code> across the rows before reading a trend.</li>
 </ul>
 </section>
@@ -1161,6 +1162,54 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 <p><strong>The denominator is not the first step.</strong> In both funnels, <code>task_success</code> divides by <code>migration_not_skipped</code>, users who answered the legacy sign-in prompt without skipping it. The rate is the share of people who chose to link a legacy method and finished.</p>
 <p><strong>The prompt step has a time limit</strong> in <code>migration_existing_to_cl</code>. The legacy method prompt must follow the 2-step verification step within 30 minutes.</p>
+</section>
+<section id="manage" class="level4">
+<h4 class="anchored" data-anchor-id="manage">Manage</h4>
+<p>Change contact phone number:</p>
+<ul>
+<li><strong>Funnel ID</strong>: <code>manage_contact_phone</code></li>
+<li><strong>Definition</strong>: <a href="https://github.com/cds-snc/canadalogin-reporting-data-pipeline/blob/main/infra/modules/google_analytics/funnel_src/funnels/manage_contact_phone.yaml"><code>manage_contact_phone.yaml</code></a></li>
+<li><strong>Entry</strong>: <code>number_submitted</code>, submitting the new number on the “Phone Number Change - Enter new phone number” screen</li>
+<li><strong>Exit</strong>: <code>number_updated</code>, the phone number update completing (<code>phone_update_success</code>)</li>
+</ul>
+<p>Add a passkey:</p>
+<ul>
+<li><strong>Funnel ID</strong>: <code>manage_add_passkey</code></li>
+<li><strong>Definition</strong>: <a href="https://github.com/cds-snc/canadalogin-reporting-data-pipeline/blob/main/infra/modules/google_analytics/funnel_src/funnels/manage_add_passkey.yaml"><code>manage_add_passkey.yaml</code></a></li>
+<li><strong>Entry</strong>: <code>password_submitted</code>, submitting the password on the “Verify it’s you” screen</li>
+<li><strong>Exit</strong>: <code>nickname_saved</code>, the passkey’s name being submitted</li>
+</ul>
+<p>Add a 2-step phone:</p>
+<ul>
+<li><strong>Funnel ID</strong>: <code>manage_add_mfa_phone</code></li>
+<li><strong>Definition</strong>: <a href="https://github.com/cds-snc/canadalogin-reporting-data-pipeline/blob/main/infra/modules/google_analytics/funnel_src/funnels/manage_add_mfa_phone.yaml"><code>manage_add_mfa_phone.yaml</code></a></li>
+<li><strong>Entry</strong>: <code>password_submitted</code>, submitting the password on the “Verify it’s you” screen</li>
+<li><strong>Exit</strong>: <code>phone_added</code>, the phone enrolment completing (<code>mfa_enroll_success</code>)</li>
+</ul>
+<p>Change email:</p>
+<ul>
+<li><strong>Funnel ID</strong>: <code>manage_change_email</code></li>
+<li><strong>Definition</strong>: <a href="https://github.com/cds-snc/canadalogin-reporting-data-pipeline/blob/main/infra/modules/google_analytics/funnel_src/funnels/manage_change_email.yaml"><code>manage_change_email.yaml</code></a></li>
+<li><strong>Entry</strong>: <code>password_submitted</code>, submitting the password on the “Verify it’s you” screen</li>
+<li><strong>Exit</strong>: <code>email_updated</code>, the email update completing (<code>email_update_success</code>)</li>
+</ul>
+<p>Change password:</p>
+<ul>
+<li><strong>Funnel ID</strong>: <code>manage_password_change</code></li>
+<li><strong>Definition</strong>: <a href="https://github.com/cds-snc/canadalogin-reporting-data-pipeline/blob/main/infra/modules/google_analytics/funnel_src/funnels/manage_password_change.yaml"><code>manage_password_change.yaml</code></a></li>
+<li><strong>Entry</strong>: <code>password_submitted</code>, submitting the password on the “Verify it’s you” screen</li>
+<li><strong>Exit</strong>: <code>password_changed</code>, the “password changed” step (<code>password_changed_success</code>)</li>
+</ul>
+<p>Delete a passkey:</p>
+<ul>
+<li><strong>Funnel ID</strong>: <code>manage_delete_passkey</code></li>
+<li><strong>Definition</strong>: <a href="https://github.com/cds-snc/canadalogin-reporting-data-pipeline/blob/main/infra/modules/google_analytics/funnel_src/funnels/manage_delete_passkey.yaml"><code>manage_delete_passkey.yaml</code></a></li>
+<li><strong>Entry</strong>: <code>password_submitted</code>, submitting the password on the “Verify it’s you” screen</li>
+<li><strong>Exit</strong>: <code>passkey_deleted</code>, the “passkey deleted” step</li>
+</ul>
+<p><strong>Rates start when someone commits to the task.</strong> A Manage rate counts people from their first submit, not from the first screen. That is the new number for contact phone, and the password for the other five. Someone who opens the first screen and leaves is not counted. <code>entry_success</code> counts from the first screen instead, so it is never higher.</p>
+<p><strong>Some exits are proxies:</strong> add a passkey ends when the passkey is named, and change password ends on a step change, so both rates can run slightly high.</p>
+<p><strong>Volume is low.</strong> Each Manage task has few people starting it each day, so a 1-day rate swings widely. Read 28-day windows, and 7-day windows at the minimum. See the <a href="#interpretation-notes">window lengths</a> above.</p>
 </section>
 </section>
 </section>
