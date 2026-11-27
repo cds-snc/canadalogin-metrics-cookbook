@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Jira (PSOM) – CanadaLogin Metrics Cookbook</title>
+<title>Jira – CanadaLogin Metrics Cookbook</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -86,7 +86,7 @@ ul.task-list li input[type="checkbox"] {
 <script>
 
   window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-tables .list');
+    const listingTargetEl = window.document.querySelector('#listing-psom-tables .list');
     if (!listingTargetEl) {
       // No listing discovered, do not attach.
       return; 
@@ -99,7 +99,29 @@ ul.task-list li input[type="checkbox"] {
     };
 
     window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-tables'] = new List('listing-tables', options);
+    window['quarto-listings']['listing-psom-tables'] = new List('listing-psom-tables', options);
+
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  });
+  
+
+  window.document.addEventListener("DOMContentLoaded", function (_event) {
+    const listingTargetEl = window.document.querySelector('#listing-edcpptp-tables .list');
+    if (!listingTargetEl) {
+      // No listing discovered, do not attach.
+      return; 
+    }
+
+    const options = {
+      valueNames: ['listing-title','listing-description',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-title-sort'] }],
+      
+      searchColumns: ["listing-title","listing-author"],
+    };
+
+    window['quarto-listings'] = window['quarto-listings'] || {};
+    window['quarto-listings']['listing-edcpptp-tables'] = new List('listing-edcpptp-tables', options);
 
     if (window['quarto-listing-loaded']) {
       window['quarto-listing-loaded']();
@@ -190,7 +212,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../catalog/index.html">Data Catalog</a></li><li class="breadcrumb-item"><a href="../catalog/jira.html">Jira (PSOM)</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../catalog/index.html">Data Catalog</a></li><li class="breadcrumb-item"><a href="../catalog/jira.html">Jira</a></li></ol></nav>
         <a class="flex-grow-1" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -805,8 +827,8 @@ window.Quarto = {
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../catalog/jira.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text" id="quarto-sidebar-section-16-label">Jira (PSOM)</span></a>
-            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-16" aria-controls="quarto-sidebar-section-16" aria-expanded="true" aria-label="Toggle section: Jira (PSOM)">
+ <span class="menu-text" id="quarto-sidebar-section-16-label">Jira</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-16" aria-controls="quarto-sidebar-section-16" aria-expanded="true" aria-label="Toggle section: Jira">
               <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
             </button> 
       </div>
@@ -827,6 +849,24 @@ window.Quarto = {
   <div class="sidebar-item-container"> 
   <a href="../catalog/jira/psom_comment.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">psom_comment</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../catalog/jira/edcpptp.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">edcpptp</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../catalog/jira/edcpptp_comment.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">edcpptp_comment</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../catalog/jira/edcpptp_field_catalog.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">edcpptp_field_catalog</span></a>
   </div>
 </li>
       </ul>
@@ -972,16 +1012,17 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#tables" id="toc-tables" class="nav-link active" data-scroll-target="#tables">Tables</a></li>
+  <li><a href="#psom" id="toc-psom" class="nav-link active" data-scroll-target="#psom">PSOM</a></li>
+  <li><a href="#edcpptp" id="toc-edcpptp" class="nav-link" data-scroll-target="#edcpptp">EDCPPTP</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content" tabindex="-1">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../catalog/index.html">Data Catalog</a></li><li class="breadcrumb-item"><a href="../catalog/jira.html">Jira (PSOM)</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../catalog/index.html">Data Catalog</a></li><li class="breadcrumb-item"><a href="../catalog/jira.html">Jira</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">Jira (PSOM)</h1>
+<h1 class="title">Jira</h1>
 </div>
 
 
@@ -998,11 +1039,12 @@ window.Quarto = {
 </header>
 
 
-<p>Tables in the <code>jira</code> schema, populated by the daily PSOM Jira Service Management sync pipeline.</p>
-<p>Each day at ~06:00 ET, the <code>psom-sync</code> Lambda fetches a full snapshot of all tickets from the PSOM project (<code>jtickets.atlassian.net</code>) and writes it as three Parquet partitions in S3: one for tickets, one for their SLA clocks, and one for their comments. A single Glue crawler then updates all three Athena tables. Join them on <code>key</code> and <code>date</code>. Before 2026-09-29 the snapshot ran weekly, on Mondays.</p>
-<section id="tables" class="level2">
-<h2 class="anchored" data-anchor-id="tables">Tables</h2>
-<div id="listing-tables" class="quarto-listing quarto-listing-container-table">
+<p>Tables in the <code>jira</code> schema, populated by daily sync pipelines from two Jira projects on <code>jtickets.atlassian.net</code>. Each pipeline writes a full snapshot of its project to a new <code>date=</code> partition, so filter to one <code>date</code> before counting.</p>
+<section id="psom" class="level2">
+<h2 class="anchored" data-anchor-id="psom">PSOM</h2>
+<p>The PSOM Jira Service Management project holds partner support tickets.</p>
+<p>Each day at ~06:00 ET, the <code>psom-sync</code> Lambda fetches a full snapshot of all tickets from the PSOM project and writes it as three Parquet partitions in S3: one for tickets, one for their SLA clocks, and one for their comments. A single Glue crawler then updates all three Athena tables. Join them on <code>key</code> and <code>date</code>. Before 2026-09-29 the snapshot ran weekly, on Mondays.</p>
+<div id="listing-psom-tables" class="quarto-listing quarto-listing-container-table">
 <table class="quarto-listing-table table">
 <thead>
 <tr>
@@ -1019,7 +1061,7 @@ Description
 </thead>
 <tbody class="list">
 
-<tr data-index="0" data-listing-file-modified-sort="1795442824457" data-listing-reading-time-sort="3" data-listing-word-count-sort="568" data-listing-title-sort="jira.psom" data-listing-filename-sort="psom.qmd">
+<tr data-index="0" data-listing-file-modified-sort="1795788820181" data-listing-reading-time-sort="3" data-listing-word-count-sort="568" data-listing-title-sort="jira.psom" data-listing-filename-sort="psom.qmd">
 <td>
 <a href="../catalog/jira/psom.html" class="title listing-title">jira.psom</a>
 </td>
@@ -1029,7 +1071,7 @@ Description
 
 </tr>
 
-<tr data-index="1" data-listing-file-modified-sort="1795442824457" data-listing-reading-time-sort="3" data-listing-word-count-sort="529" data-listing-title-sort="jira.psom_sla" data-listing-filename-sort="psom_sla.qmd">
+<tr data-index="1" data-listing-file-modified-sort="1795788820181" data-listing-reading-time-sort="3" data-listing-word-count-sort="529" data-listing-title-sort="jira.psom_sla" data-listing-filename-sort="psom_sla.qmd">
 <td>
 <a href="../catalog/jira/psom_sla.html" class="title listing-title">jira.psom_sla</a>
 </td>
@@ -1039,12 +1081,69 @@ Description
 
 </tr>
 
-<tr data-index="2" data-listing-file-modified-sort="1795442824457" data-listing-reading-time-sort="2" data-listing-word-count-sort="305" data-listing-title-sort="jira.psom_comment" data-listing-filename-sort="psom_comment.qmd">
+<tr data-index="2" data-listing-file-modified-sort="1795788820181" data-listing-reading-time-sort="2" data-listing-word-count-sort="305" data-listing-title-sort="jira.psom_comment" data-listing-filename-sort="psom_comment.qmd">
 <td>
 <a href="../catalog/jira/psom_comment.html" class="title listing-title">jira.psom_comment</a>
 </td>
 <td>
 <span class="listing-description">Every comment on every PSOM ticket, one row per comment per snapshot.</span>
+</td>
+
+</tr>
+
+</tbody>
+</table>
+<div class="listing-no-matching d-none">No matching items</div>
+</div>
+</section>
+<section id="edcpptp" class="level2">
+<h2 class="anchored" data-anchor-id="edcpptp">EDCPPTP</h2>
+<p>The EDCP - Partner Transition Project (EDCPPTP) board tracks partners as they onboard or transition to CanadaLogin. Epics are departments and agencies, and Applications under them are the partner services.</p>
+<p>Each day at ~06:15 ET, the <code>edcpptp-sync</code> Lambda fetches a full snapshot of all issues from the EDCPPTP project and writes it as three Parquet partitions in S3: one for issues, one for their comments, and one for the Jira field catalog. The Lambda registers each partition in Glue itself, with no crawler. Join the issue and comment tables on <code>key</code> and <code>date</code>. Snapshots start on 2026-11-24.</p>
+<p>The Lambda fetches only the fields on a reviewed allow-list, and never fetches fields that identify individual public servants. Application custom fields are stored as JSON in one column. See <a href="../catalog/jira/edcpptp.html#custom-fields"><code>edcpptp</code></a> for the list.</p>
+<div id="listing-edcpptp-tables" class="quarto-listing quarto-listing-container-table">
+<table class="quarto-listing-table table">
+<thead>
+<tr>
+
+<th>
+Table
+</th>
+
+<th>
+Description
+</th>
+
+</tr>
+</thead>
+<tbody class="list">
+
+<tr data-index="0" data-listing-file-modified-sort="1795788820180" data-listing-reading-time-sort="8" data-listing-word-count-sort="1524" data-listing-title-sort="jira.edcpptp" data-listing-filename-sort="edcpptp.qmd">
+<td>
+<a href="../catalog/jira/edcpptp.html" class="title listing-title">jira.edcpptp</a>
+</td>
+<td>
+<span class="listing-description">Daily snapshot of every EDCPPTP Jira issue, one row per issue per snapshot.</span>
+</td>
+
+</tr>
+
+<tr data-index="1" data-listing-file-modified-sort="1795788820181" data-listing-reading-time-sort="2" data-listing-word-count-sort="236" data-listing-title-sort="jira.edcpptp_comment" data-listing-filename-sort="edcpptp_comment.qmd">
+<td>
+<a href="../catalog/jira/edcpptp_comment.html" class="title listing-title">jira.edcpptp_comment</a>
+</td>
+<td>
+<span class="listing-description">Every comment on every EDCPPTP issue, one row per comment per snapshot.</span>
+</td>
+
+</tr>
+
+<tr data-index="2" data-listing-file-modified-sort="1795788820181" data-listing-reading-time-sort="2" data-listing-word-count-sort="285" data-listing-title-sort="jira.edcpptp_field_catalog" data-listing-filename-sort="edcpptp_field_catalog.qmd">
+<td>
+<a href="../catalog/jira/edcpptp_field_catalog.html" class="title listing-title">jira.edcpptp_field_catalog</a>
+</td>
+<td>
+<span class="listing-description">Every Jira field definition, with EDCPPTP usage counts, one row per field per snapshot.</span>
 </td>
 
 </tr>

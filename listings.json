@@ -39,70 +39,6 @@
     ]
   },
   {
-    "listing": "/catalog/jira.html",
-    "items": [
-      "/catalog/jira/psom.html",
-      "/catalog/jira/psom_sla.html",
-      "/catalog/jira/psom_comment.html"
-    ]
-  },
-  {
-    "listing": "/catalog/ibm_verify_events_raw.html",
-    "items": [
-      "/catalog/ibm_verify_events_raw/authentication_activity.html",
-      "/catalog/ibm_verify_events_raw/application_usage.html",
-      "/catalog/ibm_verify_events_raw/mfa_activity.html",
-      "/catalog/ibm_verify_events_raw/adaptive_access.html"
-    ]
-  },
-  {
-    "listing": "/catalog/ibm_verify.html",
-    "items": [
-      "/catalog/ibm_verify/app_login_counts.html",
-      "/catalog/ibm_verify/auth_total_logins.html",
-      "/catalog/ibm_verify/mfa_activity.html"
-    ]
-  },
-  {
-    "listing": "/catalog/call_centre.html",
-    "items": [
-      "/catalog/call_centre/weekly_activity_report.html",
-      "/catalog/call_centre/weekly_topic_dump.html"
-    ]
-  },
-  {
-    "listing": "/catalog/billing.html",
-    "items": [
-      "/catalog/billing/ibm_verify_total_users.html",
-      "/catalog/billing/ibm_verify_resource_units.html"
-    ]
-  },
-  {
-    "listing": "/catalog/google_analytics.html",
-    "items": [
-      "/catalog/google_analytics/property_traffic.html",
-      "/catalog/google_analytics/page_traffic.html",
-      "/catalog/google_analytics/partner_portal_page_traffic.html",
-      "/catalog/google_analytics/error_events.html",
-      "/catalog/google_analytics/meta_page_traffic.html",
-      "/catalog/google_analytics/meta_page_events.html",
-      "/catalog/google_analytics/funnels.html",
-      "/catalog/google_analytics/funnels_current.html",
-      "/catalog/google_analytics/funnel_metrics.html",
-      "/catalog/google_analytics/funnel_metrics_current.html"
-    ]
-  },
-  {
-    "listing": "/catalog/ibm_verify_events_transformed.html",
-    "items": [
-      "/catalog/ibm_verify_events_transformed/events_auth_total_logins.html",
-      "/catalog/ibm_verify_events_transformed/events_app_login_counts.html",
-      "/catalog/ibm_verify_events_transformed/events_mfa_activity.html",
-      "/catalog/ibm_verify_events_transformed/events_adaptive_risk_summary.html",
-      "/catalog/ibm_verify_events_transformed/events_application_mapping.html"
-    ]
-  },
-  {
     "listing": "/catalog/index.html",
     "items": [
       "/catalog/billing/ibm_verify_resource_units.html",
@@ -131,6 +67,9 @@
       "/catalog/ibm_verify_events_transformed/events_application_mapping.html",
       "/catalog/ibm_verify_events_transformed/events_auth_total_logins.html",
       "/catalog/ibm_verify_events_transformed/events_mfa_activity.html",
+      "/catalog/jira/edcpptp.html",
+      "/catalog/jira/edcpptp_comment.html",
+      "/catalog/jira/edcpptp_field_catalog.html",
       "/catalog/jira/psom.html",
       "/catalog/jira/psom_comment.html",
       "/catalog/jira/psom_sla.html",
@@ -140,6 +79,73 @@
       "/catalog/sre/mttr_history.html",
       "/catalog/sre/uptime_summary.html",
       "/catalog/sre/uptime_timeseries.html"
+    ]
+  },
+  {
+    "listing": "/catalog/ibm_verify_events_transformed.html",
+    "items": [
+      "/catalog/ibm_verify_events_transformed/events_auth_total_logins.html",
+      "/catalog/ibm_verify_events_transformed/events_app_login_counts.html",
+      "/catalog/ibm_verify_events_transformed/events_mfa_activity.html",
+      "/catalog/ibm_verify_events_transformed/events_adaptive_risk_summary.html",
+      "/catalog/ibm_verify_events_transformed/events_application_mapping.html"
+    ]
+  },
+  {
+    "listing": "/catalog/google_analytics.html",
+    "items": [
+      "/catalog/google_analytics/property_traffic.html",
+      "/catalog/google_analytics/page_traffic.html",
+      "/catalog/google_analytics/partner_portal_page_traffic.html",
+      "/catalog/google_analytics/error_events.html",
+      "/catalog/google_analytics/meta_page_traffic.html",
+      "/catalog/google_analytics/meta_page_events.html",
+      "/catalog/google_analytics/funnels.html",
+      "/catalog/google_analytics/funnels_current.html",
+      "/catalog/google_analytics/funnel_metrics.html",
+      "/catalog/google_analytics/funnel_metrics_current.html"
+    ]
+  },
+  {
+    "listing": "/catalog/billing.html",
+    "items": [
+      "/catalog/billing/ibm_verify_total_users.html",
+      "/catalog/billing/ibm_verify_resource_units.html"
+    ]
+  },
+  {
+    "listing": "/catalog/call_centre.html",
+    "items": [
+      "/catalog/call_centre/weekly_activity_report.html",
+      "/catalog/call_centre/weekly_topic_dump.html"
+    ]
+  },
+  {
+    "listing": "/catalog/ibm_verify.html",
+    "items": [
+      "/catalog/ibm_verify/app_login_counts.html",
+      "/catalog/ibm_verify/auth_total_logins.html",
+      "/catalog/ibm_verify/mfa_activity.html"
+    ]
+  },
+  {
+    "listing": "/catalog/ibm_verify_events_raw.html",
+    "items": [
+      "/catalog/ibm_verify_events_raw/authentication_activity.html",
+      "/catalog/ibm_verify_events_raw/application_usage.html",
+      "/catalog/ibm_verify_events_raw/mfa_activity.html",
+      "/catalog/ibm_verify_events_raw/adaptive_access.html"
+    ]
+  },
+  {
+    "listing": "/catalog/jira.html",
+    "items": [
+      "/catalog/jira/psom.html",
+      "/catalog/jira/psom_sla.html",
+      "/catalog/jira/psom_comment.html",
+      "/catalog/jira/edcpptp.html",
+      "/catalog/jira/edcpptp_comment.html",
+      "/catalog/jira/edcpptp_field_catalog.html"
     ]
   },
   {
