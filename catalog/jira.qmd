@@ -1,7 +1,7 @@
 ---
-title: Jira (PSOM)
+title: Jira
 listing:
-  - id: tables
+  - id: psom-tables
     contents:
       - jira/psom.qmd
       - jira/psom_sla.qmd
@@ -13,19 +13,54 @@ listing:
     sort: false
     sort-ui: false
     filter-ui: false
+  - id: edcpptp-tables
+    contents:
+      - jira/edcpptp.qmd
+      - jira/edcpptp_comment.qmd
+      - jira/edcpptp_field_catalog.qmd
+    type: table
+    fields: [title, description]
+    field-display-names:
+      title: Table
+    sort: false
+    sort-ui: false
+    filter-ui: false
 ---
 
-Tables in the `jira` schema, populated by the daily PSOM Jira Service
-Management sync pipeline.
+Tables in the `jira` schema, populated by daily sync pipelines from two Jira
+projects on `jtickets.atlassian.net`. Each pipeline writes a full snapshot of
+its project to a new `date=` partition, so filter to one `date` before
+counting.
+
+## PSOM
+
+The PSOM Jira Service Management project holds partner support tickets.
 
 Each day at ~06:00 ET, the `psom-sync` Lambda fetches a full snapshot of all
-tickets from the PSOM project (`jtickets.atlassian.net`) and writes it as three
-Parquet partitions in S3: one for tickets, one for their SLA clocks, and one
-for their comments. A single Glue crawler then updates all three Athena tables.
-Join them on `key` and `date`. Before 2026-09-29 the snapshot ran weekly, on
-Mondays.
+tickets from the PSOM project and writes it as three Parquet partitions in S3:
+one for tickets, one for their SLA clocks, and one for their comments. A single
+Glue crawler then updates all three Athena tables. Join them on `key` and
+`date`. Before 2026-09-29 the snapshot ran weekly, on Mondays.
 
-## Tables
+::: {#psom-tables}
+:::
 
-::: {#tables}
+## EDCPPTP
+
+The EDCP - Partner Transition Project (EDCPPTP) board tracks partners as they
+onboard or transition to CanadaLogin. Epics are departments and agencies, and
+Applications under them are the partner services.
+
+Each day at ~06:15 ET, the `edcpptp-sync` Lambda fetches a full snapshot of all
+issues from the EDCPPTP project and writes it as three Parquet partitions in S3:
+one for issues, one for their comments, and one for the Jira field catalog. The
+Lambda registers each partition in Glue itself, with no crawler. Join the issue
+and comment tables on `key` and `date`. Snapshots start on 2026-11-24.
+
+The Lambda fetches only the fields on a reviewed allow-list, and never fetches
+fields that identify individual public servants. Application custom fields
+are stored as JSON in one column. See
+[`edcpptp`](jira/edcpptp.qmd#custom-fields) for the list.
+
+::: {#edcpptp-tables}
 :::

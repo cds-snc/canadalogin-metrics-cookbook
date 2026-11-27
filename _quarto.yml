@@ -152,7 +152,7 @@ website:
                 href: catalog/sre/uptime_summary.qmd
               - text: uptime_timeseries
                 href: catalog/sre/uptime_timeseries.qmd
-          - section: "Jira (PSOM)"
+          - section: "Jira"
             href: catalog/jira.qmd
             contents:
               - text: psom
@@ -161,6 +161,12 @@ website:
                 href: catalog/jira/psom_sla.qmd
               - text: psom_comment
                 href: catalog/jira/psom_comment.qmd
+              - text: edcpptp
+                href: catalog/jira/edcpptp.qmd
+              - text: edcpptp_comment
+                href: catalog/jira/edcpptp_comment.qmd
+              - text: edcpptp_field_catalog
+                href: catalog/jira/edcpptp_field_catalog.qmd
           - section: "Google Analytics"
             href: catalog/google_analytics.qmd
             contents:

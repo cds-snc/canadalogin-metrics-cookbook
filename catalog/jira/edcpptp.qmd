@@ -1,0 +1,173 @@
+---
+title: "jira.edcpptp"
+description: "Daily snapshot of every EDCPPTP Jira issue, one row per issue per snapshot."
+---
+
+Daily snapshot of all issues on the EDCP - Partner Transition Project
+(EDCPPTP) Jira board, which tracks partners as they onboard or transition to
+CanadaLogin.
+
+One row per Jira issue per snapshot. Each run writes a full snapshot of every
+issue in the project to a new `date=` partition. Previous partitions are kept,
+enabling point-in-time analysis. Comments are in
+[`edcpptp_comment`](edcpptp_comment.qmd), which joins to this table on `key` and
+`date`. The names and types of the custom fields in `custom_fields_json` are in
+[`edcpptp_field_catalog`](edcpptp_field_catalog.qmd).
+
+The board has three levels:
+
+* **Epic**: a department or agency, or a major initiative.
+* **Application**, **Task** or **Story**: one piece of work under an Epic.
+* **Subtask**: a step under an Application or Task.
+
+**Jira source:** `jtickets.atlassian.net`, project `EDCPPTP`, fetched via
+`POST /rest/api/3/search/jql`. See the
+[pipeline wiki](https://github.com/cds-snc/canadalogin-reporting-data-pipeline/wiki/Pipeline-EDCPPTP-Jira)
+for details.
+
+`Keywords`: jira, edcpptp, partner transition, PTT, onboarding, applications, departments, go-live, epics
+
+## Provenance
+
+Queried from Jira Cloud via API by the `edcpptp-sync` Lambda function. The
+Lambda requests only the fields on a reviewed allow-list. Fields that identify
+individual public servants (assignee, reporter, creator, request participants,
+team) are never fetched.
+
+* **Updated**: Daily, at ~06:15 ET
+* **Retention**: Pending. To be set at a retention meeting.
+* **Steward**: EDCP Data and Research Team
+* **Contact**: [Yinlin Zhang](mailto:yinlin.zhang@cds-snc.ca) (Data and Research team)
+* **Location**: `s3://canadalogin-reporting-transformed/edcpptp/issues/`
+
+## Fields
+
+One row per Jira issue per snapshot (`date` partition). A row is unique on
+(`key`, `date`).
+
+| Field Name | Type | Description |
+|---|---|---|
+| date | string | Partition key: the UTC date the Lambda ran (`YYYY-MM-DD`). |
+| key | string | Jira issue key, e.g. `EDCPPTP-770`. |
+| issue_type | string | Jira issue type, one of `Epic`, `Application`, `Task`, `Story`, `Subtask`. |
+| summary | string | One-line issue title. |
+| description | string | Full issue description, extracted from Atlassian Document Format (ADF) to plain text. |
+| status | string | Board status, one of `Not started`, `Prospect`, `Paused`, `In Progress`, `Blocked by us`, `Blocked by partner`, `Done`. |
+| status_category | string | Jira status category, one of `To Do` (`Not started`, `Prospect`, `Paused`), `In Progress` (`In Progress`, `Blocked by us`, `Blocked by partner`) or `Done` (`Done`). |
+| status_changed | string | ISO 8601 timestamp when the issue's status category last changed. |
+| priority | string | Jira priority. Unused. |
+| parent_key | string | Key of the direct parent issue. An Application, Task or Story's parent is an Epic. |
+| parent_type | string | Issue type of the direct parent. Null for Epics. |
+| parent_summary | string | Summary of the direct parent. Null for Epics. |
+| epic_key | string | Key of the Epic at the top of the issue's hierarchy. An Epic's own key for Epics. |
+| epic_summary | string | Summary of that Epic: the department, agency or initiative name. |
+| subtask_count | integer | Number of direct child Subtasks. |
+| issue_links_json | string | JSON array of linked issues. |
+| resolution | string | Jira resolution, `Done` once resolved. Null if unresolved. |
+| resolution_date | string | ISO 8601 timestamp when the issue was resolved. Null if unresolved. |
+| created | string | ISO 8601 timestamp when the issue was created. |
+| updated | string | ISO 8601 timestamp of the most recent field or comment update. |
+| due_date | string | Jira due date (`YYYY-MM-DD`). Rarely filled in. |
+| start_date | string | Jira start date (`YYYY-MM-DD`), from custom field `customfield_12614`. Rarely filled in. |
+| labels | string | Semicolon-separated list of labels applied to the issue. Empty string if none. |
+| comment_count | integer | Total number of comments on the issue. Equals the issue's row count in [`edcpptp_comment`](edcpptp_comment.qmd) for the same `date`. |
+| attachment_count | integer | Number of attachments on the issue. |
+| custom_fields_json | string | JSON object of the issue's allow-listed custom fields, keyed by Jira field ID. Only fields with a value are present. `{}` for every issue type except `Application`. See [Custom fields](#custom-fields). |
+| fetched_at | string | UTC timestamp when the Lambda wrote this row (`YYYY-MM-DD HH:MM:SS`). |
+
+### Custom fields
+
+`custom_fields_json` holds the 34 Application fields on the allow-list in the
+pipeline repo (`infra/modules/edcpptp/lambda_src/allowed_fields.json`). The
+names below are the Jira display names. Many are often empty.
+
+Each value keeps its Jira type:
+
+* **text**: a JSON string.
+* **option**: a JSON string holding the chosen option.
+* **multi-option**: a JSON array of strings, one per checked box.
+* **number**: a JSON number, e.g. `510000.0`.
+* **date**: a JSON string, `YYYY-MM-DD`.
+
+Organization and program:
+
+| Field ID | Name | Type | Description |
+|---|---|---|---|
+| customfield_13494 | Department or Agency | text | The partner department or agency, e.g. `HC - Health Canada`. Typically matches `epic_summary`. |
+| customfield_13560 | Application name (FR) | text | The application's French name. |
+| customfield_13562 | Application URL | text | The application's URL. |
+| customfield_13563 | Program Name (optional) | text | The program the application serves. Free text. |
+| customfield_13564 | Program ID (optional) | text | Program identifier, e.g. `BRT03 - Protection Within the Communications System`. |
+| customfield_13575 | Service ID | text | Service inventory ID, e.g. `SRV03143`. |
+
+Transition and milestones:
+
+| Field ID | Name | Type | Description |
+|---|---|---|---|
+| customfield_13559 | New or transitioning | option | One of `New`, `Transitioning from ECM`, `Transitioning from other`. |
+| customfield_13558 | Current Phase | option | One of `Preparation`, `Implementation`, `Testing`, `Migrating`, `Completed`. |
+| customfield_13727 | Completed milestones | multi-option | Milestones reached, e.g. `Intake done`, `Contacts collected and accesses granted`, `Test environment accessed`, `Staging environment accessed`, `Integration done`, `Compliance testing done`, `Ready for production approval`, `Live`, `Migration removed or not needed`, `Collected lessons learned`. |
+| customfield_13579 | Using CanadaLogin migration solution | option | `Yes` or `No`. |
+| customfield_13561 | Targeted Go-Live Date | date | The partner's target go-live date. |
+
+Authentication and tech stack:
+
+| Field ID | Name | Type | Description |
+|---|---|---|---|
+| customfield_13574 | Authentication integration protocol | multi-option | `SAML`, `OIDC`, or both. |
+| customfield_13502 | Current credential type(s) | multi-option | Sign-in credentials offered today, e.g. `GCKey`, `Interac`, `Provincial Partner`, `Internal Directory`, `Custom`, `None`. |
+| customfield_13496 | Credential broker type | option | E.g. `GCCF consolidator`, `Sign in Canada`, `Other (e.g. ESAS)`, `None`. |
+| customfield_13577 | Current MFA | option | E.g. `MFAaaS 3.0 (auth app, email, SMS/voice, part of GCKey)`, `MFAaaS 1.0 (SMS/voice or email, API)`, `Custom MFA built internally`, `No MFA`. |
+| customfield_13573 | Tech stack | text | Free-text description of the application's technology and integration. |
+| customfield_13570 | Identity assurance level | option | One of `LoA1`, `LoA2`, `LoA3`. |
+| customfield_13571 | Credential assurance level | option | One of `LoA1`, `LoA2`, `LoA3`. |
+| customfield_13569 | Current ID proofing methods | multi-option | E.g. `Self-asserted`, `In person`, `Interac banking verification service`, `Interac document verification service`, `CRA identity validation service`, `Other`, `None`. |
+| customfield_13572 | Access management layer | option | `Yes` or `No`. |
+| customfield_13589 | Has account recovery process | option | `Yes` or `No`. |
+| customfield_13568 | Verified ID attributes required (optional) | multi-option | Identity attributes the application needs verified, e.g. `Full name`, `Date of birth`, `Address`. |
+
+Volume and usage:
+
+| Field ID | Name | Type | Description |
+|---|---|---|---|
+| customfield_13585 | User type | multi-option | Who signs in, e.g. `Members of the public - Canada`, `Members of the public - International`, `Organizations or businesses`, `Official representatives (e.g. lawyers, accountants, advocates)`, `Public servants - Federal`, `Public servants - Other`, `Other`. |
+| customfield_13581 | Peak monthly unique users | number | Partner estimate. |
+| customfield_13583 | Total number of users | number | Partner estimate. |
+| customfield_13582 | Peak daily sign ins | number | Partner estimate. |
+| customfield_13487 | Estimated peak monthly users | number | Partner estimate. |
+| customfield_13488 | How many sign ins per month? | number | Partner estimate. |
+| customfield_13489 | Total unique users? | number | Partner estimate. |
+
+Governance and compliance:
+
+| Field ID | Name | Type | Description |
+|---|---|---|---|
+| customfield_13576 | Critical Business Application or Service (CBAS)? | option | `Yes` or `No`. |
+| customfield_13567 | Maximum tolerable downtime | option | One of `8 hours or less (very high availability)`, `8 hours to 1 day (high availability)`, `1 to 3 days (medium availability)`, `3 to 5 days (low availability)`, `6 days or more (very low availability)`. |
+| customfield_13584 | Personal information authorized to collect | multi-option | E.g. `First name`, `Middle name`, `Last name`, `Full name (single field)`, `Date of birth`, `Place of birth`, `Email address`, `Mailing address`, `Residential address`, `Address (not specified)`, `Other`. |
+| customfield_13587 | Authority to collect personal information (optional) | text | The legal authority to collect, usually citing an act. |
+| customfield_13586 | Has own privacy notice or terms and conditions (optional) | option | `Yes` or `No`. |
+
+## Notes
+
+All timestamp columns (`created`, `updated`, `status_changed`,
+`resolution_date`, `fetched_at`) are stored as `string`. The ISO 8601 ones carry
+an offset from UTC, e.g. `2026-11-10T14:27:11.967-0500`.
+
+**Every snapshot repeats every issue.** Each partition holds the whole project. Filter 
+to one `date` before counting. For the latest snapshot:
+
+```sql
+WHERE date = (SELECT MAX(date) FROM "jira"."edcpptp$partitions")
+```
+
+**Department: Epic or field.** `epic_summary` is the Epic the Application sits
+under. `customfield_13494` (Department or Agency) is what the partner entered.
+They usually agree, but not always. Group by `epic_summary` to match the
+board.
+
+**Overlapping volume fields.** There are two sets of similar user estimates:
+`customfield_13487` to `customfield_13489`, and `customfield_13581` to
+`customfield_13583`. The second set is filled in more often, and Applications
+with the first set usually have the second too. Prefer the second set.
+
