@@ -43,14 +43,14 @@ One row per `funnel_id` per `funnel_version` per `window_days` per
 | funnel_version | string | Partition key. The funnel definition's version at the time this row was run. A plain integer, but typed `string` by the crawler - see Notes |
 | window_days | string | Partition key. Length of the reporting window this row summarizes: "1" for a nightly monitoring run, "7" for a rolling weekly rate, "28" for a rolling four-week rate |
 | window_end | string | Partition key. Last date (inclusive) of the reporting window, as text (for example, "2026-07-23") |
-| funnelstepnumber | bigint | The step's 1-indexed position in the funnel |
+| funnelstepnumber | integer | The step's 1-indexed position in the funnel |
 | funnelstepname | string | The step's name, as declared in the funnel's YAML on GitHub. Not a closed set - see Provenance |
 | breakdown_dimension | string | The bare GA4 dimension a funnel's `breakdown:` block splits by (currently always "rp_name", the relying party) |
 | breakdown_value | string | The relying party this row covers, or the sentinel `RESERVED_TOTAL` for the funnel's grand total across all relying parties (including any past GA4's 15-value breakdown cap) - see Notes |
-| activeusers | bigint | Distinct active users who reached this step, for this relying party, within the window |
-| funnelstepcompletionrate | double | GA4's own step-over-step completion rate (this step's users over the previous step's) |
-| funnelstepabandonments | bigint | Users who reached this step but did not reach the next one |
-| funnelstepabandonmentrate | double | `funnelstepabandonments` as a proportion of this step's `activeusers` |
+| activeusers | integer | Distinct active users who reached this step, for this relying party, within the window |
+| funnelstepcompletionrate | float | GA4's own step-over-step completion rate (this step's users over the previous step's) |
+| funnelstepabandonments | integer | Users who reached this step but did not reach the next one |
+| funnelstepabandonmentrate | float | `funnelstepabandonments` as a proportion of this step's `activeusers` |
 | window_start | string | First date (inclusive) of the reporting window, as text. Derivable from `window_end` and `window_days`, but stored for convenience |
 | window_incomplete | boolean | `true` if this window was trimmed to the funnel's `valid_from`/`valid_to` bounds (see Notes) - **exclude these rows from any trend read as a full window** |
 

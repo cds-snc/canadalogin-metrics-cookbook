@@ -28,14 +28,14 @@ holds current state only and keeps no history.
 
 | Field Name | Type | Description |
 |---|---|---|
-| `rp_id` | `bigint` | Identifier for the relying party. Assigned by hand in the source sheet and stable across refreshes. Joins to `rp.alias.rp_id`. |
-| `service_name_en` | `varchar` | English name of the service. Free text. |
-| `service_name_fr` | `varchar` | French name of the service. Free text.  |
-| `operator` | `varchar` | The organization that runs the service, typed by hand. Display only, see the note below. |
-| `gc_orgid` | `bigint` | The `gc_orgID` of the operating organization, or `0` for entities that are not in the originating dataset. |
+| `rp_id` | `integer` | Identifier for the relying party. Assigned by hand in the source sheet and stable across refreshes. Joins to `rp.alias.rp_id`. |
+| `service_name_en` | `string` | English name of the service. Free text. |
+| `service_name_fr` | `string` | French name of the service. Free text.  |
+| `operator` | `string` | The organization that runs the service, typed by hand. Display only, see the note below. |
+| `gc_orgid` | `integer` | The `gc_orgID` of the operating organization, or `0` for entities that are not in the originating dataset. |
 | `is_internal` | `boolean` | Is the service an internal CanadaLogin component, rather than something the public signs in to? |
-| `launch_date` | `varchar` | Approximate date the service launched to the public, as `YYYY-MM-DD`. Stored as text. |
-| `fetched_at` | `timestamp(3)` | When the Lambda last read the source sheet, in UTC. |
+| `launch_date` | `string` | Approximate date the service launched to the public, as `YYYY-MM-DD`. Stored as text. |
+| `fetched_at` | `timestamp` | When the Lambda last read the source sheet, in UTC. |
 
 ## Notes
 

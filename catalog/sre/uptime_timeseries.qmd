@@ -29,13 +29,13 @@ GitHub Commits API for each site's history file (`history/<slug>.yml`).
 
 | Field Name | Type | Description |
 |---|---|---|
-| `date` | `varchar` | Hive partition key: the UTC date of the commit (`YYYY-MM-DD`). Use in `WHERE date = '...'` or `WHERE CAST(date AS DATE) BETWEEN ...` filters. |
-| `ping_timestamp` | `varchar` | UTC timestamp of the upptime bot's commit (`YYYY-MM-DD HH:MM:SS`). On a normal day this is the daily snapshot at ~23:2x UTC. On an outage day earlier commits record when the site went down or recovered. |
-| `slug` | `varchar` | Upptime site identifier, same six values as in `sre.uptime_summary`. |
-| `lang` | `varchar` | Short label, same six values as in `sre.uptime_summary`. |
-| `status` | `varchar` | Ping result at the moment of this commit: `up`, `down`, or `unknown`. |
-| `http_code` | `bigint` | HTTP status code at the moment of this commit. `200` on a normal day; `0` or `503` when down. `null` if unparseable. |
-| `response_ms` | `bigint` | Response time in milliseconds at the moment of this commit. Single-ping measurement at commit time, not a daily average. `null` if unparseable. |
+| `date` | `string` | Hive partition key: the UTC date of the commit (`YYYY-MM-DD`). Use in `WHERE date = '...'` or `WHERE CAST(date AS DATE) BETWEEN ...` filters. |
+| `ping_timestamp` | `string` | UTC timestamp of the upptime bot's commit (`YYYY-MM-DD HH:MM:SS`). On a normal day this is the daily snapshot at ~23:2x UTC. On an outage day earlier commits record when the site went down or recovered. |
+| `slug` | `string` | Upptime site identifier, same six values as in `sre.uptime_summary`. |
+| `lang` | `string` | Short label, same six values as in `sre.uptime_summary`. |
+| `status` | `string` | Ping result at the moment of this commit: `up`, `down`, or `unknown`. |
+| `http_code` | `integer` | HTTP status code at the moment of this commit. `200` on a normal day; `0` or `503` when down. `null` if unparseable. |
+| `response_ms` | `integer` | Response time in milliseconds at the moment of this commit. Single-ping measurement at commit time, not a daily average. `null` if unparseable. |
 
 ## Notes
 

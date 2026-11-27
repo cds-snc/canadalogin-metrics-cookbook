@@ -30,10 +30,10 @@ single Parquet file. Not partitioned, overwritten in place, current state only.
 
 | Field Name | Type | Description |
 |---|---|---|
-| `alias` | `varchar` | The string that refers to the service, exactly as the source system writes it. |
-| `rp_id` | `bigint` | The relying party this alias refers to. Joins to `rp.service.rp_id`. |
-| `source` | `varchar` | Where the alias was first encountered, for example `IBM Verify Application ID`, `IBM Verify Application Name`, `Google Analytics`, or `Call Centre Topics`. Record keeping only, see the note below. |
-| `fetched_at` | `timestamp(3)` | When the Lambda last read the source sheet, in UTC. |
+| `alias` | `string` | The string that refers to the service, exactly as the source system writes it. |
+| `rp_id` | `integer` | The relying party this alias refers to. Joins to `rp.service.rp_id`. |
+| `source` | `string` | Where the alias was first encountered, for example `IBM Verify Application ID`, `IBM Verify Application Name`, `Google Analytics`, or `Call Centre Topics`. Record keeping only, see the note below. |
+| `fetched_at` | `timestamp` | When the Lambda last read the source sheet, in UTC. |
 
 ## Notes
 

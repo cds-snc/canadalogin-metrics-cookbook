@@ -46,10 +46,10 @@ One row per `date` per `streamid` per `pagepath` per `pagetitle` per
 | sessionsource | string | Where the session started, for example `slack`, `teams`, `email`, `report_link`, `latest-link`, `github.com`, `google`, or `(direct)` |
 | sessionmedium | string | Session medium. `(not set)` for tagged links, since they carry a source only. Otherwise `(none)` for direct visits, `referral`, or `organic` |
 | sessioncampaignname | string | Session campaign. `(not set)` for tagged links, otherwise `(direct)`, `(referral)`, or `(organic)` |
-| sessions | bigint | Number of sessions from this source that included this page on this day |
-| screenpageviews | bigint | Number of times this page was viewed on this day, in those sessions |
-| totalusers | bigint | Number of distinct users in those sessions. Do not sum |
-| newusers | bigint | Number of first-time users in those sessions. Do not sum |
+| sessions | integer | Number of sessions from this source that included this page on this day |
+| screenpageviews | integer | Number of times this page was viewed on this day, in those sessions |
+| totalusers | integer | Number of distinct users in those sessions. Do not sum |
+| newusers | integer | Number of first-time users in those sessions. Do not sum |
 | pagepath_redacted | string | `pagepath` with the Signal Check token removed. Derived in the ETL. Filter and group on this |
 | page_kind | string | What kind of page this is, one of `signal_check`, `dashboard`, `redirect`, `cookbook`, `preview`, or `other`. Derived in the ETL |
 

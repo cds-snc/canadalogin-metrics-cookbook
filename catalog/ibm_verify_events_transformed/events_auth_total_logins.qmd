@@ -33,11 +33,11 @@ One row per day.
 |---|---|---|
 | from_date | string | The reporting day in ET, for example "2026-09-15". Cast before comparing to a date |
 | to_date | string | Same as `from_date` |
-| unique_users | bigint | Distinct users with any authentication event that day, successful or not |
-| failed_logins | bigint | Failed authentication events that day |
-| successful_logins | bigint | Successful authentication events that day |
-| mtd_unique_users | bigint | Distinct users month-to-date. Resets on the 1st |
-| ytd_unique_users | bigint | Distinct users year-to-date. Resets on January 1 |
+| unique_users | integer | Distinct users with any authentication event that day, successful or not |
+| failed_logins | integer | Failed authentication events that day |
+| successful_logins | integer | Successful authentication events that day |
+| mtd_unique_users | integer | Distinct users month-to-date. Resets on the 1st |
+| ytd_unique_users | integer | Distinct users year-to-date. Resets on January 1 |
 | fetched_at | string | When the job wrote the row, in ISO 8601 UTC |
 | date | string | Partition key. Same as `from_date` |
 
