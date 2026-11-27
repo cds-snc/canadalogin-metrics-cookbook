@@ -1,0 +1,54 @@
+---
+title: ECM
+listing:
+  - id: tables
+    contents:
+      - ecm/credential_baseline.qmd
+      - ecm/sic_split.qmd
+    type: table
+    fields: [title, description]
+    field-display-names:
+      title: Table
+    sort: false
+    sort-ui: false
+    filter-ui: false
+---
+
+Reference tables on the legacy External Credential Management (ECM) service,
+in the `ecm` schema. ECM is GCKey plus the Interac Sign-In Service (ISI). The
+tables hold ECM's size before CanadaLogin, so that analysts can measure how much
+of it now has a CanadaLogin replacement.
+
+`credential_baseline` holds one row per ECM application, with its credential
+counts for FY25-26. `sic_split` divides one ECM application, Sign-in Canada,
+between the CanadaLogin partner groups that replaced it.
+
+ECM calls an application a relying party. This site says "ECM application" for
+the ECM side and "service" for CanadaLogin.
+
+## Tables
+
+::: {#tables}
+:::
+
+## Provenance
+
+Both tables are static. They are not refreshed and they are not part of the
+pipeline. The credential counts come from ECM's `VendorData` reporting
+database. The Sign-in Canada shares are estimates made from CanadaLogin data.
+
+## Notes
+
+**The tables count credentials, not people.** An ECM active credential is a
+billing count, not a number of people.
+
+**The baseline is fixed on purpose.** It is not refreshed as ECM shrinks. A
+shrinking baseline would count each service that moves twice.
+
+**Join through `rp.alias`.** An ECM application points to the CanadaLogin
+service that replaced it through [`rp.alias`](rp/alias.qmd), where the alias is
+the ECM application's name. The two tables each explain their join.
+
+**These tables do not track people moving.** ECM and CanadaLogin credentials
+cannot be linked. The measure built on them is the volume of ECM that now has a
+CanadaLogin replacement, weighted by each ECM application's size.
