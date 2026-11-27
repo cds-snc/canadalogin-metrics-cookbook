@@ -169,6 +169,12 @@ ul.task-list li input[type="checkbox"] {
  <span class="menu-text">Introduction</span></a>
   </div>
 </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../style-guide.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Style Guide</span></a>
+  </div>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../../cookbook/index.html" class="sidebar-item-text sidebar-link">
@@ -998,112 +1004,112 @@ ul.task-list li input[type="checkbox"] {
 <tbody>
 <tr class="odd">
 <td>date</td>
-<td>varchar</td>
+<td>string</td>
 <td>Partition key: the date the Lambda ran (<code>YYYY-MM-DD</code>).</td>
 </tr>
 <tr class="even">
 <td>key</td>
-<td>varchar</td>
+<td>string</td>
 <td>Jira ticket key, e.g.&nbsp;<code>PSOM-42</code>.</td>
 </tr>
 <tr class="odd">
 <td>summary</td>
-<td>varchar</td>
+<td>string</td>
 <td>One-line ticket title.</td>
 </tr>
 <tr class="even">
 <td>description</td>
-<td>varchar</td>
+<td>string</td>
 <td>Full ticket description, extracted from Atlassian Document Format (ADF) to plain text.</td>
 </tr>
 <tr class="odd">
 <td>issue_type</td>
-<td>varchar</td>
+<td>string</td>
 <td>Jira issue type name, one of <code>Email Request</code>, <code>Partner Support Request form</code>.</td>
 </tr>
 <tr class="even">
 <td>status</td>
-<td>varchar</td>
+<td>string</td>
 <td>Current workflow status, one of <code>In progress</code>, <code>Waiting for customer</code>, <code>Escalated to PTT</code>, <code>Escalated to Auth PT</code>, <code>Done</code>, <code>Canceled</code>, <code>Ready to archive</code>.</td>
 </tr>
 <tr class="odd">
 <td>status_changed</td>
-<td>varchar</td>
+<td>string</td>
 <td>ISO 8601 timestamp when the ticket’s status category last changed.</td>
 </tr>
 <tr class="even">
 <td>priority</td>
-<td>varchar</td>
+<td>string</td>
 <td>Priority level, one of <code>High</code>, <code>Normal</code>, <code>Low</code>, <code>Critical</code>.</td>
 </tr>
 <tr class="odd">
 <td>assignee</td>
-<td>varchar</td>
+<td>string</td>
 <td>Display name of the current assignee; empty string if unassigned.</td>
 </tr>
 <tr class="even">
 <td>reporter</td>
-<td>varchar</td>
+<td>string</td>
 <td>Display name of the person who reported the ticket.</td>
 </tr>
 <tr class="odd">
 <td>creator</td>
-<td>varchar</td>
+<td>string</td>
 <td>Display name of the person who created the ticket (may differ from reporter).</td>
 </tr>
 <tr class="even">
 <td>created</td>
-<td>varchar</td>
+<td>string</td>
 <td>ISO 8601 timestamp when the ticket was created.</td>
 </tr>
 <tr class="odd">
 <td>updated</td>
-<td>varchar</td>
+<td>string</td>
 <td>ISO 8601 timestamp of the most recent field or comment update.</td>
 </tr>
 <tr class="even">
 <td>due_date</td>
-<td>int</td>
+<td>integer</td>
 <td>Jira due date. Unused.</td>
 </tr>
 <tr class="odd">
 <td>labels</td>
-<td>varchar</td>
+<td>string</td>
 <td>Semicolon-separated list of labels applied to the ticket.</td>
 </tr>
 <tr class="even">
 <td>request_type</td>
-<td>varchar</td>
+<td>string</td>
 <td>JSM service request type name, e.g.&nbsp;<code>New Access Request</code>. Unused.</td>
 </tr>
 <tr class="odd">
 <td>request_participants</td>
-<td>varchar</td>
+<td>string</td>
 <td>Semicolon-separated display names of request participants (CC’d users).</td>
 </tr>
 <tr class="even">
 <td>organizations</td>
-<td>varchar</td>
+<td>string</td>
 <td>Semicolon-separated names of JSM organizations the request is associated with.</td>
 </tr>
 <tr class="odd">
 <td>form_topic</td>
-<td>varchar</td>
+<td>string</td>
 <td>The ticket’s “Form topic” (a multi-select field), as a <code>;</code>-separated list of the chosen options. Options are grouped under Already Using, Onboarding, and Escalated from Call Center. A ticket can carry more than one topic.</td>
 </tr>
 <tr class="even">
 <td>solution_provided</td>
-<td>varchar</td>
+<td>string</td>
 <td>The ticket’s “Solution provided” checkbox: <code>Yes</code>, <code>No</code>, or <code>Planned for future</code>.</td>
 </tr>
 <tr class="odd">
 <td>comment_count</td>
-<td>bigint</td>
+<td>integer</td>
 <td>Total number of comments on the ticket. Equals the ticket’s row count in <a href="../../catalog/jira/psom_comment.html"><code>psom_comment</code></a> for the same <code>date</code>.</td>
 </tr>
 <tr class="even">
 <td>fetched_at</td>
-<td>varchar</td>
+<td>string</td>
 <td>UTC timestamp when the Lambda wrote this row (<code>YYYY-MM-DD HH:MM:SS</code>).</td>
 </tr>
 </tbody>
@@ -1111,7 +1117,7 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="notes" class="level2">
 <h2 class="anchored" data-anchor-id="notes">Notes</h2>
-<p>All timestamp columns (<code>created</code>, <code>updated</code>, <code>status_changed</code>, <code>fetched_at</code>) are stored as <code>varchar</code>. The ISO 8601 ones carry an offset from UTC, e.g. <code>2026-09-25T10:31:43.801-0400</code>.</p>
+<p>All timestamp columns (<code>created</code>, <code>updated</code>, <code>status_changed</code>, <code>fetched_at</code>) are stored as <code>string</code>. The ISO 8601 ones carry an offset from UTC, e.g. <code>2026-09-25T10:31:43.801-0400</code>.</p>
 <p><strong>Schema rework on 2026-09-28.</strong> The <code>sla_first_response_*</code> and <code>sla_time_to_done_*</code> columns moved to <a href="../../catalog/jira/psom_sla.html"><code>psom_sla</code></a>, and the JSON <code>comments</code> column moved to <a href="../../catalog/jira/psom_comment.html"><code>psom_comment</code></a>. The older partitions were rewritten to the new schema, so every partition has the same columns. <code>form_topic</code> and <code>solution_provided</code> were added at the same time. They are null in every partition before 2026-09-29, while new rows use an empty string when no option is chosen. Treat null and empty string alike.</p>
 
 

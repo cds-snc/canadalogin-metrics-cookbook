@@ -169,6 +169,12 @@ ul.task-list li input[type="checkbox"] {
  <span class="menu-text">Introduction</span></a>
   </div>
 </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../style-guide.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Style Guide</span></a>
+  </div>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../../cookbook/index.html" class="sidebar-item-text sidebar-link">
@@ -1046,87 +1052,87 @@ ul.task-list li input[type="checkbox"] {
 <tbody>
 <tr class="odd">
 <td><code>date</code></td>
-<td><code>varchar</code></td>
+<td><code>string</code></td>
 <td>Hive partition key: the date the Lambda ran for (yesterday’s date, <code>YYYY-MM-DD</code>).</td>
 </tr>
 <tr class="even">
 <td><code>fetch_date</code></td>
-<td><code>varchar</code></td>
+<td><code>string</code></td>
 <td>UTC timestamp when the Lambda fetched the data (<code>YYYY-MM-DD HH:MM:SS</code>). Useful for diagnosing staleness.</td>
 </tr>
 <tr class="odd">
 <td><code>slug</code></td>
-<td><code>varchar</code></td>
+<td><code>string</code></td>
 <td>Upptime site identifier. One of the six values in the table above.</td>
 </tr>
 <tr class="even">
 <td><code>lang</code></td>
-<td><code>varchar</code></td>
+<td><code>string</code></td>
 <td>Short label identifying the site variant, one of the six values in the table above.</td>
 </tr>
 <tr class="odd">
 <td><code>url</code></td>
-<td><code>varchar</code></td>
+<td><code>string</code></td>
 <td>The monitored URL.</td>
 </tr>
 <tr class="even">
 <td><code>status</code></td>
-<td><code>varchar</code></td>
+<td><code>string</code></td>
 <td>Site status at fetch time: <code>up</code> or <code>down</code>.</td>
 </tr>
 <tr class="odd">
 <td><code>uptime_day</code></td>
-<td><code>double</code></td>
+<td><code>float</code></td>
 <td>Uptime percentage over the past 24 hours (~288 five-minute pings).</td>
 </tr>
 <tr class="even">
 <td><code>uptime_week</code></td>
-<td><code>double</code></td>
+<td><code>float</code></td>
 <td>Uptime percentage over the past 7 days (~2,016 pings).</td>
 </tr>
 <tr class="odd">
 <td><code>uptime_month</code></td>
-<td><code>double</code></td>
+<td><code>float</code></td>
 <td>Uptime percentage over the past 30 days (~8,640 pings).</td>
 </tr>
 <tr class="even">
 <td><code>uptime_year</code></td>
-<td><code>double</code></td>
+<td><code>float</code></td>
 <td>Uptime percentage over the past 365 days (~105,120 pings).</td>
 </tr>
 <tr class="odd">
 <td><code>uptime_alltime</code></td>
-<td><code>double</code></td>
+<td><code>float</code></td>
 <td>Uptime percentage across all pings since monitoring began (April 2, 2026).</td>
 </tr>
 <tr class="even">
 <td><code>response_day_ms</code></td>
-<td><code>bigint</code></td>
+<td><code>integer</code></td>
 <td>Average response time over the past 24 hours, in milliseconds. Equals <code>0</code> during unmonitored outage gaps (see notes).</td>
 </tr>
 <tr class="odd">
 <td><code>response_week_ms</code></td>
-<td><code>bigint</code></td>
+<td><code>integer</code></td>
 <td>Average response time over the past 7 days, in milliseconds.</td>
 </tr>
 <tr class="even">
 <td><code>response_month_ms</code></td>
-<td><code>bigint</code></td>
+<td><code>integer</code></td>
 <td>Average response time over the past 30 days, in milliseconds.</td>
 </tr>
 <tr class="odd">
 <td><code>response_year_ms</code></td>
-<td><code>bigint</code></td>
+<td><code>integer</code></td>
 <td>Average response time over the past 365 days, in milliseconds.</td>
 </tr>
 <tr class="even">
 <td><code>response_alltime_ms</code></td>
-<td><code>bigint</code></td>
+<td><code>integer</code></td>
 <td>Average response time across all pings since monitoring began, in milliseconds.</td>
 </tr>
 <tr class="odd">
 <td><code>daily_minutes_down</code></td>
-<td><code>varchar</code></td>
+<td><code>string</code></td>
 <td>JSON string mapping each outage date to total minutes down on that date.</td>
 </tr>
 </tbody>

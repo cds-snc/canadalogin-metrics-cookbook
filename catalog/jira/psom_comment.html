@@ -169,6 +169,12 @@ ul.task-list li input[type="checkbox"] {
  <span class="menu-text">Introduction</span></a>
   </div>
 </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../style-guide.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Style Guide</span></a>
+  </div>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../../cookbook/index.html" class="sidebar-item-text sidebar-link">
@@ -1001,37 +1007,37 @@ ul.task-list li input[type="checkbox"] {
 <tbody>
 <tr class="odd">
 <td>date</td>
-<td>varchar</td>
+<td>string</td>
 <td>Partition key: the date the Lambda ran (<code>YYYY-MM-DD</code>).</td>
 </tr>
 <tr class="even">
 <td>key</td>
-<td>varchar</td>
+<td>string</td>
 <td>Jira ticket key, e.g.&nbsp;<code>PSOM-42</code>.</td>
 </tr>
 <tr class="odd">
 <td>comment_id</td>
-<td>varchar</td>
+<td>string</td>
 <td>Jira’s ID for the comment. Null before 2026-09-29.</td>
 </tr>
 <tr class="even">
 <td>author</td>
-<td>varchar</td>
+<td>string</td>
 <td>Display name of the comment’s author.</td>
 </tr>
 <tr class="odd">
 <td>created</td>
-<td>varchar</td>
+<td>string</td>
 <td>ISO 8601 timestamp when the comment was posted, e.g.&nbsp;<code>2026-07-02T08:32:40.494-0400</code>.</td>
 </tr>
 <tr class="even">
 <td>updated</td>
-<td>varchar</td>
+<td>string</td>
 <td>ISO 8601 timestamp when the comment was last edited. Equals <code>created</code> if never edited.</td>
 </tr>
 <tr class="odd">
 <td>body</td>
-<td>varchar</td>
+<td>string</td>
 <td>The comment text, extracted from Atlassian Document Format (ADF) to plain text.</td>
 </tr>
 <tr class="even">
@@ -1041,7 +1047,7 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 <tr class="odd">
 <td>fetched_at</td>
-<td>varchar</td>
+<td>string</td>
 <td>UTC timestamp when the Lambda wrote this row (<code>YYYY-MM-DD HH:MM:SS</code>).</td>
 </tr>
 </tbody>

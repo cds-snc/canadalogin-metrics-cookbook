@@ -169,6 +169,12 @@ ul.task-list li input[type="checkbox"] {
  <span class="menu-text">Introduction</span></a>
   </div>
 </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../style-guide.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Style Guide</span></a>
+  </div>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../../cookbook/index.html" class="sidebar-item-text sidebar-link">
@@ -1001,27 +1007,27 @@ ul.task-list li input[type="checkbox"] {
 <tbody>
 <tr class="odd">
 <td><code>rp_id</code></td>
-<td><code>bigint</code></td>
+<td><code>integer</code></td>
 <td>Identifier for the relying party. Assigned by hand in the source sheet and stable across refreshes. Joins to <code>rp.alias.rp_id</code>.</td>
 </tr>
 <tr class="even">
 <td><code>service_name_en</code></td>
-<td><code>varchar</code></td>
+<td><code>string</code></td>
 <td>English name of the service. Free text.</td>
 </tr>
 <tr class="odd">
 <td><code>service_name_fr</code></td>
-<td><code>varchar</code></td>
+<td><code>string</code></td>
 <td>French name of the service. Free text.</td>
 </tr>
 <tr class="even">
 <td><code>operator</code></td>
-<td><code>varchar</code></td>
+<td><code>string</code></td>
 <td>The organization that runs the service, typed by hand. Display only, see the note below.</td>
 </tr>
 <tr class="odd">
 <td><code>gc_orgid</code></td>
-<td><code>bigint</code></td>
+<td><code>integer</code></td>
 <td>The <code>gc_orgID</code> of the operating organization, or <code>0</code> for entities that are not in the originating dataset.</td>
 </tr>
 <tr class="even">
@@ -1031,12 +1037,12 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 <tr class="odd">
 <td><code>launch_date</code></td>
-<td><code>varchar</code></td>
+<td><code>string</code></td>
 <td>Approximate date the service launched to the public, as <code>YYYY-MM-DD</code>. Stored as text.</td>
 </tr>
 <tr class="even">
 <td><code>fetched_at</code></td>
-<td><code>timestamp(3)</code></td>
+<td><code>timestamp</code></td>
 <td>When the Lambda last read the source sheet, in UTC.</td>
 </tr>
 </tbody>

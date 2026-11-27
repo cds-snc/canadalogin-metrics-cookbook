@@ -169,6 +169,12 @@ ul.task-list li input[type="checkbox"] {
  <span class="menu-text">Introduction</span></a>
   </div>
 </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../style-guide.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Style Guide</span></a>
+  </div>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../../cookbook/index.html" class="sidebar-item-text sidebar-link">
@@ -1023,7 +1029,7 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 <tr class="odd">
 <td>funnelstepnumber</td>
-<td>bigint</td>
+<td>integer</td>
 <td>The step’s 1-indexed position in the funnel</td>
 </tr>
 <tr class="even">
@@ -1043,22 +1049,22 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 <tr class="odd">
 <td>activeusers</td>
-<td>bigint</td>
+<td>integer</td>
 <td>Distinct active users who reached this step, for this relying party, within the window</td>
 </tr>
 <tr class="even">
 <td>funnelstepcompletionrate</td>
-<td>double</td>
+<td>float</td>
 <td>GA4’s own step-over-step completion rate (this step’s users over the previous step’s)</td>
 </tr>
 <tr class="odd">
 <td>funnelstepabandonments</td>
-<td>bigint</td>
+<td>integer</td>
 <td>Users who reached this step but did not reach the next one</td>
 </tr>
 <tr class="even">
 <td>funnelstepabandonmentrate</td>
-<td>double</td>
+<td>float</td>
 <td><code>funnelstepabandonments</code> as a proportion of this step’s <code>activeusers</code></td>
 </tr>
 <tr class="odd">

@@ -167,6 +167,12 @@ ul.task-list li input[type="checkbox"] {
  <span class="menu-text">Introduction</span></a>
   </div>
 </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../style-guide.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Style Guide</span></a>
+  </div>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../cookbook/index.html" class="sidebar-item-text sidebar-link">
@@ -935,9 +941,9 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#field-types" id="toc-field-types" class="nav-link active" data-scroll-target="#field-types">Field Types</a></li>
-  <li><a href="#cumulative-fields" id="toc-cumulative-fields" class="nav-link" data-scroll-target="#cumulative-fields">Cumulative Fields</a></li>
+  <li><a href="#cumulative-fields" id="toc-cumulative-fields" class="nav-link active" data-scroll-target="#cumulative-fields">Cumulative Fields</a></li>
   <li><a href="#proportions" id="toc-proportions" class="nav-link" data-scroll-target="#proportions">Proportions</a></li>
+  <li><a href="#date-partitions" id="toc-date-partitions" class="nav-link" data-scroll-target="#date-partitions">Date Partitions</a></li>
   </ul>
 </nav>
     </div>
@@ -963,10 +969,6 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="field-types" class="level2">
-<h2 class="anchored" data-anchor-id="field-types">Field Types</h2>
-<p>Field types use Parquet-style names: boolean, date, float, integer, string, time, timestamp. For string columns that behave as factors, the possible values are listed.</p>
-</section>
 <section id="cumulative-fields" class="level2">
 <h2 class="anchored" data-anchor-id="cumulative-fields">Cumulative Fields</h2>
 <p>Cumulative fields only increase within a window and then reset. They are called out explicitly in each table entry. Never sum cumulative fields across rows; take the latest value for the window you need. See the cookbook <a href="../cookbook/notes.html">Notes</a> for guidance on selecting the right cumulative column for a given reporting window.</p>
@@ -974,6 +976,10 @@ ul.task-list li input[type="checkbox"] {
 <section id="proportions" class="level2">
 <h2 class="anchored" data-anchor-id="proportions">Proportions</h2>
 <p>Proportions are stored as values between 0 and 1, not 0 and 100.</p>
+</section>
+<section id="date-partitions" class="level2">
+<h2 class="anchored" data-anchor-id="date-partitions">Date Partitions</h2>
+<p>Every <code>date</code> partition column is a <code>YYYY-MM-DD</code> string. Cast it before comparing it to a date, the same way as <a href="../catalog/ibm_verify_events_transformed.html#dates-are-strings"><code>from_date</code></a>.</p>
 
 
 </section>

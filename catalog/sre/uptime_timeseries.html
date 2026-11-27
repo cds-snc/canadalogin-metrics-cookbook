@@ -169,6 +169,12 @@ ul.task-list li input[type="checkbox"] {
  <span class="menu-text">Introduction</span></a>
   </div>
 </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../style-guide.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Style Guide</span></a>
+  </div>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../../cookbook/index.html" class="sidebar-item-text sidebar-link">
@@ -1018,37 +1024,37 @@ ul.task-list li input[type="checkbox"] {
 <tbody>
 <tr class="odd">
 <td><code>date</code></td>
-<td><code>varchar</code></td>
+<td><code>string</code></td>
 <td>Hive partition key: the UTC date of the commit (<code>YYYY-MM-DD</code>). Use in <code>WHERE date = '...'</code> or <code>WHERE CAST(date AS DATE) BETWEEN ...</code> filters.</td>
 </tr>
 <tr class="even">
 <td><code>ping_timestamp</code></td>
-<td><code>varchar</code></td>
+<td><code>string</code></td>
 <td>UTC timestamp of the upptime bot’s commit (<code>YYYY-MM-DD HH:MM:SS</code>). On a normal day this is the daily snapshot at ~23:2x UTC. On an outage day earlier commits record when the site went down or recovered.</td>
 </tr>
 <tr class="odd">
 <td><code>slug</code></td>
-<td><code>varchar</code></td>
+<td><code>string</code></td>
 <td>Upptime site identifier, same six values as in <code>sre.uptime_summary</code>.</td>
 </tr>
 <tr class="even">
 <td><code>lang</code></td>
-<td><code>varchar</code></td>
+<td><code>string</code></td>
 <td>Short label, same six values as in <code>sre.uptime_summary</code>.</td>
 </tr>
 <tr class="odd">
 <td><code>status</code></td>
-<td><code>varchar</code></td>
+<td><code>string</code></td>
 <td>Ping result at the moment of this commit: <code>up</code>, <code>down</code>, or <code>unknown</code>.</td>
 </tr>
 <tr class="even">
 <td><code>http_code</code></td>
-<td><code>bigint</code></td>
+<td><code>integer</code></td>
 <td>HTTP status code at the moment of this commit. <code>200</code> on a normal day; <code>0</code> or <code>503</code> when down. <code>null</code> if unparseable.</td>
 </tr>
 <tr class="odd">
 <td><code>response_ms</code></td>
-<td><code>bigint</code></td>
+<td><code>integer</code></td>
 <td>Response time in milliseconds at the moment of this commit. Single-ping measurement at commit time, not a daily average. <code>null</code> if unparseable.</td>
 </tr>
 </tbody>

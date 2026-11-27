@@ -169,6 +169,12 @@ ul.task-list li input[type="checkbox"] {
  <span class="menu-text">Introduction</span></a>
   </div>
 </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../style-guide.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Style Guide</span></a>
+  </div>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../../cookbook/index.html" class="sidebar-item-text sidebar-link">
@@ -1019,32 +1025,32 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 <tr class="odd">
 <td>total_logins</td>
-<td>bigint</td>
+<td>integer</td>
 <td>SSO events for the application that day. Counts events, not people</td>
 </tr>
 <tr class="even">
 <td>unique_users</td>
-<td>bigint</td>
+<td>integer</td>
 <td>Distinct users with an SSO event for the application that day, successful or not</td>
 </tr>
 <tr class="odd">
 <td>failed_logins</td>
-<td>bigint</td>
+<td>integer</td>
 <td>Failed SSO events that day</td>
 </tr>
 <tr class="even">
 <td>successful_logins</td>
-<td>bigint</td>
+<td>integer</td>
 <td>Successful SSO events that day</td>
 </tr>
 <tr class="odd">
 <td>mtd_unique_users</td>
-<td>bigint</td>
+<td>integer</td>
 <td>Distinct users of the application month-to-date. Resets on the 1st</td>
 </tr>
 <tr class="even">
 <td>ytd_unique_users</td>
-<td>bigint</td>
+<td>integer</td>
 <td>Distinct users of the application year-to-date. Resets on January 1</td>
 </tr>
 <tr class="odd">

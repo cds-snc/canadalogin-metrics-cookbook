@@ -169,6 +169,12 @@ ul.task-list li input[type="checkbox"] {
  <span class="menu-text">Introduction</span></a>
   </div>
 </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../style-guide.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Style Guide</span></a>
+  </div>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../../cookbook/index.html" class="sidebar-item-text sidebar-link">
@@ -1001,22 +1007,22 @@ ul.task-list li input[type="checkbox"] {
 <tbody>
 <tr class="odd">
 <td>date</td>
-<td>varchar</td>
+<td>string</td>
 <td>Partition key: the date the Lambda ran (<code>YYYY-MM-DD</code>).</td>
 </tr>
 <tr class="even">
 <td>key</td>
-<td>varchar</td>
+<td>string</td>
 <td>Jira ticket key, e.g.&nbsp;<code>PSOM-42</code>.</td>
 </tr>
 <tr class="odd">
 <td>sla</td>
-<td>varchar</td>
+<td>string</td>
 <td>Which SLA clock, one of <code>first_response</code>, <code>time_to_done</code>, <code>pso_time_to_done</code>, or <code>escalated_to_pt</code>. See the Notes for definitions.</td>
 </tr>
 <tr class="even">
 <td>due</td>
-<td>varchar</td>
+<td>string</td>
 <td>ISO 8601 datetime with UTC offset, e.g.&nbsp;<code>2026-07-02T09:52:39-0400</code>. For a running clock, the breach deadline. For a clock that has stopped, when it stopped. Null if the clock never started.</td>
 </tr>
 <tr class="odd">
@@ -1026,12 +1032,12 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 <tr class="even">
 <td>goal_minutes</td>
-<td>bigint</td>
+<td>integer</td>
 <td>The goal, in working minutes. It varies between tickets.</td>
 </tr>
 <tr class="odd">
 <td>elapsed_minutes</td>
-<td>bigint</td>
+<td>integer</td>
 <td>Working minutes on the clock as of the fetch.</td>
 </tr>
 <tr class="even">
@@ -1041,7 +1047,7 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 <tr class="odd">
 <td>fetched_at</td>
-<td>varchar</td>
+<td>string</td>
 <td>UTC timestamp when the Lambda wrote this row (<code>YYYY-MM-DD HH:MM:SS</code>).</td>
 </tr>
 </tbody>
