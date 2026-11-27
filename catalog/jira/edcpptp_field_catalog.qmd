@@ -1,0 +1,46 @@
+---
+title: "jira.edcpptp_field_catalog"
+description: "Every Jira field definition, with EDCPPTP usage counts, one row per field per snapshot."
+---
+
+A lookup from Jira field IDs to their names and types, with how many EDCPPTP
+issues use each field.
+
+Each row is one Jira field definition (`field_id`) as it stood on one snapshot
+`date`. Use it to find the name and type behind a `customfield_*` key in
+[`edcpptp.custom_fields_json`](edcpptp.qmd#custom-fields). Join on `field_id`
+and `date`.
+
+`Keywords`: jira, edcpptp, custom fields, field names, field IDs, lookup, schema
+
+## Provenance
+
+Written by the `edcpptp-sync` Lambda in the same run as [`edcpptp`](edcpptp.qmd),
+from Jira's field list (`GET /rest/api/3/field`). The field list holds field
+definitions only, not issue values.
+
+* **Updated**: Daily, at ~06:15 ET
+* **Retention**: Pending. To be set at a retention meeting.
+* **Steward**: EDCP Data and Research Team
+* **Contact**: [Yinlin Zhang](mailto:yinlin.zhang@cds-snc.ca) (Data and Research team)
+* **Location**: `s3://canadalogin-reporting-transformed/edcpptp/field_catalog/`
+
+## Fields
+
+| Field Name | Type | Description |
+|---|---|---|
+| date | string | Partition key: the UTC date the Lambda ran (`YYYY-MM-DD`). |
+| field_id | string | Jira field ID, e.g. `customfield_13558` or `summary`. Matches the keys in `edcpptp.custom_fields_json`. |
+| field_name | string | Jira display name, e.g. `Current Phase`. |
+| custom | boolean | Is this a custom field? `false` means a built-in Jira field. |
+| schema_type | string | Jira value type, e.g. `string`, `number`, `date`, `option`, `array`. |
+| custom_schema | string | Jira custom field type, e.g. `com.atlassian.jira.plugin.system.customfieldtypes:select`. Null for built-in fields. |
+| populated_count | integer | Number of EDCPPTP issues in the snapshot with a value in this field. |
+| included_in_json | boolean | Is this field written to `edcpptp.custom_fields_json`? `true` only for allow-listed custom fields. |
+| fetched_at | string | UTC timestamp when the Lambda wrote this row (`YYYY-MM-DD HH:MM:SS`). |
+
+## Notes
+
+**Promoted fields are not in the JSON.** Built-in fields such as `status`, and
+the custom field `customfield_12614` (`Start date`), have their own columns in
+`edcpptp`. They have `included_in_json` set to `false`.

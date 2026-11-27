@@ -27,7 +27,7 @@ it updates, and caveats that apply to all of them.
 - [IBM Verify Billing](billing.qmd) - monthly IBM Verify billing reports in the `billing` schema: total users and resource units by product group
 - [Call Centre](call_centre.qmd) - weekly call centre data from the CanadaLogin support queue reports
 - [Platform](sre.qmd) - incident response and uptime tables in the `sre` schema
-- [Jira (PSOM)](jira.qmd) - daily snapshots of PSOM support tickets in the `jira` schema
+- [Jira](jira.qmd) - daily snapshots of PSOM support tickets and the EDCPPTP partner transition board in the `jira` schema
 - [Google Analytics](google_analytics.qmd) - tables in the `google_analytics` schema, populated from the CanadaLogin GA4 property
 - [IBM Verify (deprecated)](ibm_verify.qmd) - the old `ibm_verify` tables, pulled from the IBM Verify reporting API
 

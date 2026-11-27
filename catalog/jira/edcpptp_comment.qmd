@@ -1,0 +1,41 @@
+---
+title: "jira.edcpptp_comment"
+description: "Every comment on every EDCPPTP issue, one row per comment per snapshot."
+---
+
+Every comment on every EDCPPTP issue, one row per comment per snapshot.
+
+Each row is one comment on one issue (`key`) as it stood on one snapshot
+`date`. Join to [`edcpptp`](edcpptp.qmd) on `key` and `date`.
+
+`Keywords`: jira, edcpptp, partner transition, comments, notes, updates, blockers
+
+## Provenance
+
+Written by the `edcpptp-sync` Lambda in the same run as [`edcpptp`](edcpptp.qmd),
+from each issue's full comment history. Comment authors are never fetched.
+
+* **Updated**: Daily, at ~06:15 ET
+* **Retention**: Pending. To be set at a retention meeting.
+* **Steward**: EDCP Data and Research Team
+* **Contact**: [Yinlin Zhang](mailto:yinlin.zhang@cds-snc.ca) (Data and Research team)
+* **Location**: `s3://canadalogin-reporting-transformed/edcpptp/comments/`
+
+## Fields
+
+| Field Name | Type | Description |
+|---|---|---|
+| date | string | Partition key: the UTC date the Lambda ran (`YYYY-MM-DD`). |
+| key | string | Jira issue key, e.g. `EDCPPTP-770`. |
+| comment_id | string | Jira's ID for the comment. |
+| created | string | ISO 8601 timestamp when the comment was posted. |
+| updated | string | ISO 8601 timestamp when the comment was last edited. `created` if never edited. |
+| body | string | The comment text, extracted from Atlassian Document Format (ADF) to plain text. |
+| internal | boolean | Is the comment hidden from customers? Always `false`. |
+| fetched_at | string | UTC timestamp when the Lambda wrote this row (`YYYY-MM-DD HH:MM:SS`). |
+
+## Notes
+
+**Every snapshot repeats every comment.** Like `edcpptp`, each partition holds
+the full comment history of every issue, so a comment appears once per
+snapshot. Filter to one `date` before counting.
