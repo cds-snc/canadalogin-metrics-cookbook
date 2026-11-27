@@ -47,3 +47,6 @@ In R, wrap both sides in `as.Date()`:
 `filter(as.Date(from_date) >= as.Date("2026-09-01"))`. A bare string on the
 right fails the same way, because noctua (like RAthena) turns ISO-date
 strings into `DATE` literals.
+
+Cast inside `date_trunc()` and `floor_date()` too:
+`date_trunc('week', CAST(from_date AS DATE))`.

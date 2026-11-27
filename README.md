@@ -13,19 +13,18 @@ Quarto document (.qmd) is just a Markdown file wearing a fancy hat.
 ```text
 _quarto.yml      # website config: sidebar, render list, and theme
 index.qmd        # site introduction linking the two halves
+style-guide.qmd  # how to write pages
 cookbook/        # Metrics Cookbook: one file per metric, grouped by source
 catalog/         # Data Catalog: one file per table, grouped by source
+tests/           # structure test and parity tests
 custom.scss      # theme overrides
 ```
 
 ## Adding a page
 
-1. Create `cookbook/<source>/<metric>.qmd` or `catalog/<schema>/<table>.qmd`
-   with `title` and `description` front matter. A metric page has leading prose,
-   `## Calculation` with the collapsed SQL and R example queries,
-   `## Interpretation notes`, and `## Alternative names`. A catalog page has an
-   intro, `Keywords`, `## Provenance`, `## Fields`, and `## Notes`; start from
-   `catalog/data-catalog-template.qmd`.
+1. Create `cookbook/<source>/<metric>.qmd` or `catalog/<schema>/<table>.qmd`.
+   For a catalog page, start from `catalog/data-catalog-template.qmd`. Write it
+   to the [style guide](https://cds-snc.github.io/canadalogin-metrics-cookbook/style-guide.html).
 2. Add it to the listing `contents:` on its source page.
 3. Add it to the sidebar in `_quarto.yml`, under its source's section.
 4. Run the structure test. It fails if a rendered page is missing from the
@@ -35,6 +34,9 @@ custom.scss      # theme overrides
 ```bash
 Rscript -e 'testthat::test_file("tests/test_site_structure.R", load_helpers = FALSE, stop_on_failure = TRUE)'
 ```
+
+`tests/run_parity_tests.R` checks that every cookbook SQL query and its R twin
+return the same result against Athena.
 
 ## Deployment
 

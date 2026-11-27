@@ -2,12 +2,6 @@
 title: Additional Notes
 ---
 
-## Field Types
-
-Field types use Parquet-style names: boolean, date, float, integer, string,
-time, timestamp. For string columns that behave as factors, the possible values
-are listed.
-
 ## Cumulative Fields
 
 Cumulative fields only increase within a window and then reset. They are called
@@ -19,3 +13,9 @@ column for a given reporting window.
 ## Proportions
 
 Proportions are stored as values between 0 and 1, not 0 and 100.
+
+## Date Partitions
+
+Every `date` partition column is a `YYYY-MM-DD` string. Cast it before
+comparing it to a date, the same way as
+[`from_date`](ibm_verify_events_transformed.qmd#dates-are-strings).
