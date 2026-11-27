@@ -45,7 +45,7 @@ One row per `funnel_id` per `funnel_version` per `window_days` per
 | window_end | string | Partition key. Last date (inclusive) of the reporting window, as text |
 | metric_id | string | Which metric this row is. Declared per-funnel on GitHub; currently always "task_success" for both funnels, but not a closed set - see Provenance |
 | metric_type | string | The metric's calculation shape, from the same YAML declaration. Currently always "step_ratio" (one step's `activeusers` over another's) |
-| value | double | The computed metric value. `null`, not `0.0`, when the denominator is zero (nobody entered, so the rate is undefined - not a false zero) |
+| value | float | The computed metric value. `null`, not `0.0`, when the denominator is zero (nobody entered, so the rate is undefined - not a false zero) |
 | breakdown_dimension | string | The bare dimension the source funnel's `breakdown:` block splits by (currently always "rp_name") |
 | breakdown_value | string | The relying party this row covers, or `RESERVED_TOTAL` for the funnel's overall value - see [`funnels`](funnels.qmd) Notes |
 | window_start | string | First date (inclusive) of the reporting window, as text |

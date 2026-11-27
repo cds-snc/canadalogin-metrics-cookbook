@@ -25,14 +25,6 @@ The cookbook is organized by data source:
 - Google Analytics
 - Cross-source / interpretive metrics (planned)
 
-Each metric includes:
-
-- a description of what it measures and when to use it
-- plain-language alternative names
-- the calculation logic
-- an example query, shown in both SQL and R
-- interpretation notes, where relevant
-
 The companion [Data Catalog](../catalog/index.qmd) describes the underlying tables
 that these metrics are calculated from, field by field.
 
@@ -58,10 +50,6 @@ For each metric, confirm:
 All example SQL targets Amazon Athena (Trino dialect). Constructs such as
 `DATE '...'` literals, `ROW_NUMBER() OVER (...)`, and `REGEXP_REPLACE` follow
 Trino semantics.
-
-In reporting language, prefer **sign-in** over **login**. The underlying IBM
-Verify field may be called `total_logins`, but "sign-ins" is preferred (and
-often enforced) when talking about CanadaLogin.
 
 Where applicable, internal CanadaLogin components are excluded from
 external-facing adoption reporting. The exclusion list is not maintained here: it is derived

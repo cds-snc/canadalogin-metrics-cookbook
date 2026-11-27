@@ -34,7 +34,7 @@ One row per day per `mfa_type` per `result`.
 | to_date | string | Same as `from_date` |
 | mfa_type | string | The factor used. One of "sms_otp", "email_otp", "voice_otp", "fido2", "totp", "qr", "kq", or "ibm_verify_push" |
 | result | string | "sent", "success", or "failure" |
-| count | bigint | Number of MFA events for this day, factor, and result |
+| count | integer | Number of MFA events for this day, factor, and result |
 | fetched_at | string | When the job wrote the row, in ISO 8601 UTC |
 | date | string | Partition key. Same as `from_date` |
 

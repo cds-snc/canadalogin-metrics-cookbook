@@ -12,6 +12,12 @@
 #   Rscript tests/run_parity_tests.R
 #
 # Exits non-zero if any pair fails to run or the results disagree.
+#
+# SQL and R output column names must match exactly. R blocks can use only the
+# packages loaded in tests/helper.R; lubridate is not loaded, but dbplyr still
+# translates its verbs. Check a translation with
+# dbplyr::translate_sql(expr, con = con): floor_date(x, "week") becomes
+# Monday-anchored date_trunc('week', x) and rejects week_start.
 
 source("tests/helper.R")
 source("tests/extract_blocks.R")

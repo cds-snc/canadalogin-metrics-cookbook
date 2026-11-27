@@ -34,11 +34,11 @@ One row per day.
 |---|---|---|
 | from_date | string | The reporting day in ET, for example "2026-09-15". Cast before comparing to a date |
 | to_date | string | Same as `from_date` |
-| total_invocations | bigint | Every adaptive access evaluation that day, including those with no risk level |
-| very_high_count | bigint | Evaluations rated "VERY_HIGH" |
-| high_count | bigint | Evaluations rated "HIGH" |
-| medium_count | bigint | Evaluations rated "MEDIUM" |
-| low_count | bigint | Evaluations rated "LOW" |
+| total_invocations | integer | Every adaptive access evaluation that day, including those with no risk level |
+| very_high_count | integer | Evaluations rated "VERY_HIGH" |
+| high_count | integer | Evaluations rated "HIGH" |
+| medium_count | integer | Evaluations rated "MEDIUM" |
+| low_count | integer | Evaluations rated "LOW" |
 | fetched_at | string | When the job wrote the row, in ISO 8601 UTC |
 | date | string | Partition key. Same as `from_date` |
 

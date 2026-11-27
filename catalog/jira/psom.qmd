@@ -33,33 +33,33 @@ One row per Jira issue per snapshot (`date` partition).
 
 | Field Name | Type | Description |
 |---|---|---|
-| date | varchar | Partition key: the date the Lambda ran (`YYYY-MM-DD`).|
-| key | varchar | Jira ticket key, e.g. `PSOM-42`. |
-| summary | varchar | One-line ticket title. |
-| description | varchar | Full ticket description, extracted from Atlassian Document Format (ADF) to plain text. |
-| issue_type | varchar | Jira issue type name, one of `Email Request`, `Partner Support Request form`. |
-| status | varchar | Current workflow status, one of `In progress`, `Waiting for customer`, `Escalated to PTT`, `Escalated to Auth PT`, `Done`, `Canceled`, `Ready to archive`. |
-| status_changed | varchar | ISO 8601 timestamp when the ticket's status category last changed. |
-| priority | varchar | Priority level, one of `High`, `Normal`, `Low`, `Critical`. |
-| assignee | varchar | Display name of the current assignee; empty string if unassigned. |
-| reporter | varchar | Display name of the person who reported the ticket. |
-| creator | varchar | Display name of the person who created the ticket (may differ from reporter). |
-| created | varchar | ISO 8601 timestamp when the ticket was created. |
-| updated | varchar | ISO 8601 timestamp of the most recent field or comment update. |
-| due_date | int | Jira due date. Unused. |
-| labels | varchar | Semicolon-separated list of labels applied to the ticket. |
-| request_type | varchar | JSM service request type name, e.g. `New Access Request`. Unused. |
-| request_participants | varchar | Semicolon-separated display names of request participants (CC'd users). |
-| organizations | varchar | Semicolon-separated names of JSM organizations the request is associated with. |
-| form_topic | varchar | The ticket's "Form topic" (a multi-select field), as a `; `-separated list of the chosen options. Options are grouped under Already Using, Onboarding, and Escalated from Call Center. A ticket can carry more than one topic. |
-| solution_provided | varchar | The ticket's "Solution provided" checkbox: `Yes`, `No`, or `Planned for future`. |
-| comment_count | bigint | Total number of comments on the ticket. Equals the ticket's row count in [`psom_comment`](psom_comment.qmd) for the same `date`. |
-| fetched_at | varchar | UTC timestamp when the Lambda wrote this row (`YYYY-MM-DD HH:MM:SS`). |
+| date | string | Partition key: the date the Lambda ran (`YYYY-MM-DD`).|
+| key | string | Jira ticket key, e.g. `PSOM-42`. |
+| summary | string | One-line ticket title. |
+| description | string | Full ticket description, extracted from Atlassian Document Format (ADF) to plain text. |
+| issue_type | string | Jira issue type name, one of `Email Request`, `Partner Support Request form`. |
+| status | string | Current workflow status, one of `In progress`, `Waiting for customer`, `Escalated to PTT`, `Escalated to Auth PT`, `Done`, `Canceled`, `Ready to archive`. |
+| status_changed | string | ISO 8601 timestamp when the ticket's status category last changed. |
+| priority | string | Priority level, one of `High`, `Normal`, `Low`, `Critical`. |
+| assignee | string | Display name of the current assignee; empty string if unassigned. |
+| reporter | string | Display name of the person who reported the ticket. |
+| creator | string | Display name of the person who created the ticket (may differ from reporter). |
+| created | string | ISO 8601 timestamp when the ticket was created. |
+| updated | string | ISO 8601 timestamp of the most recent field or comment update. |
+| due_date | integer | Jira due date. Unused. |
+| labels | string | Semicolon-separated list of labels applied to the ticket. |
+| request_type | string | JSM service request type name, e.g. `New Access Request`. Unused. |
+| request_participants | string | Semicolon-separated display names of request participants (CC'd users). |
+| organizations | string | Semicolon-separated names of JSM organizations the request is associated with. |
+| form_topic | string | The ticket's "Form topic" (a multi-select field), as a `; `-separated list of the chosen options. Options are grouped under Already Using, Onboarding, and Escalated from Call Center. A ticket can carry more than one topic. |
+| solution_provided | string | The ticket's "Solution provided" checkbox: `Yes`, `No`, or `Planned for future`. |
+| comment_count | integer | Total number of comments on the ticket. Equals the ticket's row count in [`psom_comment`](psom_comment.qmd) for the same `date`. |
+| fetched_at | string | UTC timestamp when the Lambda wrote this row (`YYYY-MM-DD HH:MM:SS`). |
 
 ## Notes
 
 All timestamp columns (`created`, `updated`, `status_changed`, `fetched_at`)
-are stored as `varchar`. The ISO 8601 ones carry an offset from UTC, e.g.
+are stored as `string`. The ISO 8601 ones carry an offset from UTC, e.g.
 `2026-09-25T10:31:43.801-0400`.
 
 **Schema rework on 2026-09-28.** The `sla_first_response_*` and

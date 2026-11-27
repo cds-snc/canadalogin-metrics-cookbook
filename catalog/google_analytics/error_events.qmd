@@ -31,8 +31,8 @@ fields are kept.
 | error_id | string | `error_id` event parameter. |
 | rp_name | string | `rp_name` event parameter. The relying party (partner service) the user came from |
 | rp_client_id | string | `rp_client_id` event parameter. The relying party's client registration |
-| eventcount | bigint | Number of events |
-| totalusers | bigint | Number of distinct users. Do not sum. |
+| eventcount | integer | Number of events |
+| totalusers | integer | Number of distinct users. Do not sum. |
 | error_code | string | `error_id`, else `error`. Derived in the ETL |
 
 ## Notes

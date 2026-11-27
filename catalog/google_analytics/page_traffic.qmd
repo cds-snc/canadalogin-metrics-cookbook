@@ -33,9 +33,9 @@ One row per `date` per `streamname` per `pagetitle` per `pagepath`.
 | streamname | string | Display name of the GA4 data stream |
 | pagetitle | string | The page's `<title>` at the time of the visit |
 | pagepath | string | The page's URL path |
-| sessions | bigint | Number of sessions that included this page on this day |
-| activeusers | bigint | Number of distinct active users who viewed this page on this day |
-| screenpageviews | bigint | Number of times this page was viewed on this day |
+| sessions | integer | Number of sessions that included this page on this day |
+| activeusers | integer | Number of distinct active users who viewed this page on this day |
+| screenpageviews | integer | Number of times this page was viewed on this day |
 
 ## Notes
 

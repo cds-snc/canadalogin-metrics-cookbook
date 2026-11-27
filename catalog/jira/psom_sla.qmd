@@ -27,15 +27,15 @@ ticket's SLA fields.
 
 | Field Name | Type | Description |
 |---|---|---|
-| date | varchar | Partition key: the date the Lambda ran (`YYYY-MM-DD`). |
-| key | varchar | Jira ticket key, e.g. `PSOM-42`. |
-| sla | varchar | Which SLA clock, one of `first_response`, `time_to_done`, `pso_time_to_done`, or `escalated_to_pt`. See the Notes for definitions. |
-| due | varchar | ISO 8601 datetime with UTC offset, e.g. `2026-07-02T09:52:39-0400`. For a running clock, the breach deadline. For a clock that has stopped, when it stopped. Null if the clock never started. |
+| date | string | Partition key: the date the Lambda ran (`YYYY-MM-DD`). |
+| key | string | Jira ticket key, e.g. `PSOM-42`. |
+| sla | string | Which SLA clock, one of `first_response`, `time_to_done`, `pso_time_to_done`, or `escalated_to_pt`. See the Notes for definitions. |
+| due | string | ISO 8601 datetime with UTC offset, e.g. `2026-07-02T09:52:39-0400`. For a running clock, the breach deadline. For a clock that has stopped, when it stopped. Null if the clock never started. |
 | breached | boolean | Did the clock miss its goal? `false` covers both a met goal and a clock still inside its goal. Null if the clock never started. |
-| goal_minutes | bigint | The goal, in working minutes. It varies between tickets. |
-| elapsed_minutes | bigint | Working minutes on the clock as of the fetch. |
+| goal_minutes | integer | The goal, in working minutes. It varies between tickets. |
+| elapsed_minutes | integer | Working minutes on the clock as of the fetch. |
 | paused | boolean | Is a running clock paused? Null once the clock has stopped. |
-| fetched_at | varchar | UTC timestamp when the Lambda wrote this row (`YYYY-MM-DD HH:MM:SS`). |
+| fetched_at | string | UTC timestamp when the Lambda wrote this row (`YYYY-MM-DD HH:MM:SS`). |
 
 ## Notes
 

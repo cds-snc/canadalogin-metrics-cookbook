@@ -15,3 +15,5 @@ It has two chapters:
   including their calculation logic and example SQL queries.
 - The [Data Catalog](catalog/index.qmd) describes the underlying tables, field
   by field.
+
+To write or edit a page, follow the [Style Guide](style-guide.qmd).

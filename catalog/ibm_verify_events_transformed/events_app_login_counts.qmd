@@ -37,12 +37,12 @@ One row per `application_id` per day.
 | application_name | string | The latest name seen for the application that day (for example, "IRIS - PRC - Prod"). It changes if the application is renamed, so do not group or join on it. For a label, use the latest name in [`events_application_mapping`](events_application_mapping.qmd) |
 | from_date | string | The reporting day in ET, for example "2026-09-15". Cast before comparing to a date |
 | to_date | string | Same as `from_date` |
-| total_logins | bigint | SSO events for the application that day. Counts events, not people |
-| unique_users | bigint | Distinct users with an SSO event for the application that day, successful or not |
-| failed_logins | bigint | Failed SSO events that day |
-| successful_logins | bigint | Successful SSO events that day |
-| mtd_unique_users | bigint | Distinct users of the application month-to-date. Resets on the 1st |
-| ytd_unique_users | bigint | Distinct users of the application year-to-date. Resets on January 1 |
+| total_logins | integer | SSO events for the application that day. Counts events, not people |
+| unique_users | integer | Distinct users with an SSO event for the application that day, successful or not |
+| failed_logins | integer | Failed SSO events that day |
+| successful_logins | integer | Successful SSO events that day |
+| mtd_unique_users | integer | Distinct users of the application month-to-date. Resets on the 1st |
+| ytd_unique_users | integer | Distinct users of the application year-to-date. Resets on January 1 |
 | fetched_at | string | When the job wrote the row, in ISO 8601 UTC |
 | date | string | Partition key. Same as `from_date` |
 

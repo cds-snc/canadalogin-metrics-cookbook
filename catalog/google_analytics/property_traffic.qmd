@@ -30,10 +30,10 @@ One row per `date`.
 | Field Name | Type | Description |
 |---|---|---|
 | date | string | The reporting day, as a partition key (for example, "2026-07-23") |
-| sessions | bigint | Number of sessions started on this day, site-wide |
-| activeusers | bigint | Number of distinct active users on this day, site-wide |
-| newusers | bigint | Number of users on this day who had not been seen before |
-| screenpageviews | bigint | Number of page views on this day, site-wide |
+| sessions | integer | Number of sessions started on this day, site-wide |
+| activeusers | integer | Number of distinct active users on this day, site-wide |
+| newusers | integer | Number of users on this day who had not been seen before |
+| screenpageviews | integer | Number of page views on this day, site-wide |
 
 ## Notes
 

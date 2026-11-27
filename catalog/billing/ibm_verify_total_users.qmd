@@ -29,7 +29,7 @@ Sourced from a total users CSV exported from IBM Verify and loaded by the
 | Field Name | Type | Description |
 |---|---|---|
 | `snapshot_date` | `date` | Date the user count was recorded, from the CSV `Date` column |
-| `total_users` | `bigint` | Total number of users in the tenant on `snapshot_date` |
+| `total_users` | `integer` | Total number of users in the tenant on `snapshot_date` |
 | `upload_date` | `date` | Date the CSV supplying this row was uploaded, in America/Toronto |
 | `uploaded_at` | `timestamp` | When the CSV supplying this row was uploaded to S3, in UTC |
 | `source_key` | `string` | S3 key of the CSV supplying this row, ending in the original filename |

@@ -40,8 +40,8 @@ One row per `date` per `streamid` per `pagepath` per `pagetitle` per
 | pagepath | string | The page's URL path as GA4 reports it. Signal Check paths include a private token. Do not use (see Notes) |
 | pagetitle | string | The page's `<title>` at the time of the event. Signal Check titles include the edition number |
 | eventname | string | GA4 event name, for example `page_view`, `scroll`, `click`, `user_engagement`, or `read_30s` |
-| eventcount | bigint | Number of times this event fired on this page on this day |
-| totalusers | bigint | Number of distinct users who fired this event on this page on this day. Do not sum |
+| eventcount | integer | Number of times this event fired on this page on this day |
+| totalusers | integer | Number of distinct users who fired this event on this page on this day. Do not sum |
 | pagepath_redacted | string | `pagepath` with the Signal Check token removed. Derived in the ETL. Filter and group on this |
 | page_kind | string | What kind of page this is, one of `signal_check`, `dashboard`, `redirect`, `cookbook`, `preview`, or `other`. Derived in the ETL |
 

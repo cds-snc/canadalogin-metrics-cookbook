@@ -35,23 +35,23 @@ site into the `date=YYYY-MM-DD` partition corresponding to the preceding day.
 
 | Field Name | Type | Description |
 |---|---|---|
-| `date` | `varchar` | Hive partition key: the date the Lambda ran for (yesterday's date, `YYYY-MM-DD`). |
-| `fetch_date` | `varchar` | UTC timestamp when the Lambda fetched the data (`YYYY-MM-DD HH:MM:SS`). Useful for diagnosing staleness. |
-| `slug` | `varchar` | Upptime site identifier. One of the six values in the table above. |
-| `lang` | `varchar` | Short label identifying the site variant, one of the six values in the table above. |
-| `url` | `varchar` | The monitored URL. |
-| `status` | `varchar` | Site status at fetch time: `up` or `down`. |
-| `uptime_day` | `double` | Uptime percentage over the past 24 hours (~288 five-minute pings). |
-| `uptime_week` | `double` | Uptime percentage over the past 7 days (~2,016 pings). |
-| `uptime_month` | `double` | Uptime percentage over the past 30 days (~8,640 pings). |
-| `uptime_year` | `double` | Uptime percentage over the past 365 days (~105,120 pings). |
-| `uptime_alltime` | `double` | Uptime percentage across all pings since monitoring began (April 2, 2026). |
-| `response_day_ms` | `bigint` | Average response time over the past 24 hours, in milliseconds. Equals `0` during unmonitored outage gaps (see notes). |
-| `response_week_ms` | `bigint` | Average response time over the past 7 days, in milliseconds. |
-| `response_month_ms` | `bigint` | Average response time over the past 30 days, in milliseconds. |
-| `response_year_ms` | `bigint` | Average response time over the past 365 days, in milliseconds. |
-| `response_alltime_ms` | `bigint` | Average response time across all pings since monitoring began, in milliseconds. |
-| `daily_minutes_down` | `varchar` | JSON string mapping each outage date to total minutes down on that date. |
+| `date` | `string` | Hive partition key: the date the Lambda ran for (yesterday's date, `YYYY-MM-DD`). |
+| `fetch_date` | `string` | UTC timestamp when the Lambda fetched the data (`YYYY-MM-DD HH:MM:SS`). Useful for diagnosing staleness. |
+| `slug` | `string` | Upptime site identifier. One of the six values in the table above. |
+| `lang` | `string` | Short label identifying the site variant, one of the six values in the table above. |
+| `url` | `string` | The monitored URL. |
+| `status` | `string` | Site status at fetch time: `up` or `down`. |
+| `uptime_day` | `float` | Uptime percentage over the past 24 hours (~288 five-minute pings). |
+| `uptime_week` | `float` | Uptime percentage over the past 7 days (~2,016 pings). |
+| `uptime_month` | `float` | Uptime percentage over the past 30 days (~8,640 pings). |
+| `uptime_year` | `float` | Uptime percentage over the past 365 days (~105,120 pings). |
+| `uptime_alltime` | `float` | Uptime percentage across all pings since monitoring began (April 2, 2026). |
+| `response_day_ms` | `integer` | Average response time over the past 24 hours, in milliseconds. Equals `0` during unmonitored outage gaps (see notes). |
+| `response_week_ms` | `integer` | Average response time over the past 7 days, in milliseconds. |
+| `response_month_ms` | `integer` | Average response time over the past 30 days, in milliseconds. |
+| `response_year_ms` | `integer` | Average response time over the past 365 days, in milliseconds. |
+| `response_alltime_ms` | `integer` | Average response time across all pings since monitoring began, in milliseconds. |
+| `daily_minutes_down` | `string` | JSON string mapping each outage date to total minutes down on that date. |
 
 ## Notes
 
