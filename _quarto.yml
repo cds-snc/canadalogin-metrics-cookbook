@@ -198,6 +198,13 @@ website:
                 href: catalog/rp/service.qmd
               - text: alias
                 href: catalog/rp/alias.qmd
+          - section: "ECM"
+            href: catalog/ecm.qmd
+            contents:
+              - text: credential_baseline
+                href: catalog/ecm/credential_baseline.qmd
+              - text: sic_split
+                href: catalog/ecm/sic_split.qmd
           - section: "IBM Verify (deprecated)"
             href: catalog/ibm_verify.qmd
             contents:

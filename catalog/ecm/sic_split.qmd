@@ -1,0 +1,55 @@
+---
+title: "ecm.sic_split"
+description: "Estimated share of Sign-in Canada for each CanadaLogin partner group that replaced it, one row per part and service."
+---
+
+How the ECM application Sign-in Canada (`https://auth.id.canada.ca`, since
+decommissioned) divides between its CanadaLogin partner groups.
+
+One row is one service in one part. It joins to
+[`rp.service`](../rp/service.qmd) on `rp_id`.
+
+`Keywords`: ECM, Sign-in Canada, split, partner group, share, estimate, legacy volume replaced
+
+## Provenance
+
+Each share is an estimate. It is the part's share of CanadaLogin active
+credentials in October 2026, taken from the Sign-in Canada credential split. The
+table is static and is not refreshed. See the [ECM](../ecm.qmd) page.
+
+* **Updated**: Static
+* **Retention**: Indefinitely
+* **Steward**: EDCP Data and Research Team
+* **Contact**: [Colin Douglas](mailto:colin.douglas@cds-snc.ca)
+* **Location**: `s3://canadalogin-reporting-transformed/ecm/sic_split/`
+
+## Fields
+
+| Field Name | Type | Description |
+|---|---|---|
+| `ecm_service` | `string` | The ECM application being split, as ECM stores its name. |
+| `part` | `string` | The partner group, for example `ATIP` or `MyCGC`. |
+| `rp_id` | `integer` | The CanadaLogin service in the part. Joins to `rp.service.rp_id`. |
+| `part_share` | `float` | The part's estimated share of Sign-in Canada, as a proportion between 0 and 1. |
+
+## Notes
+
+**Sum `part_share` over distinct parts, not over rows.** The value repeats on
+every row of a part, so a part with two services counts twice if you sum rows.
+ATIP has two services. Take one value per part, then sum:
+
+```sql
+SELECT sum(part_share) AS total_share
+FROM (
+  SELECT part, max(part_share) AS part_share
+  FROM ecm.sic_split
+  GROUP BY part
+)
+```
+
+**The shares of the distinct parts add up to 1.** Multiply a part's share by
+Sign-in Canada's `active_credentials` in
+[`ecm.credential_baseline`](credential_baseline.qmd) to get the part's size.
+
+**The shares are estimates.** They come from CanadaLogin active credentials in
+October 2026, not from ECM counts. They stay fixed.
