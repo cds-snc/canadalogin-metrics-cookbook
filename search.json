@@ -2615,143 +2615,143 @@
     ]
   },
   {
-    "objectID": "catalog/call_centre/weekly_topic_dump.html",
-    "href": "catalog/call_centre/weekly_topic_dump.html",
-    "title": "call_centre.weekly_topic_dump",
+    "objectID": "catalog/ecm/sic_split.html",
+    "href": "catalog/ecm/sic_split.html",
+    "title": "ecm.sic_split",
     "section": "",
-    "text": "Individual call records from the CanadaLogin support queue, with topic classifications for each call.\nEach row represents one topic record associated with a single call. A single call may have multiple rows if multiple topics were recorded.\nKeywords: call centre, topics, call reasons, contact drivers, caller issues",
+    "text": "How the ECM application Sign-in Canada (https://auth.id.canada.ca, since decommissioned) divides between its CanadaLogin partner groups.\nOne row is one service in one part. It joins to rp.service on rp_id.\nKeywords: ECM, Sign-in Canada, split, partner group, share, estimate, legacy volume replaced",
     "crumbs": [
       "Data Catalog",
-      "Call Centre",
-      "weekly_topic_dump"
+      "ECM",
+      "sic_split"
     ]
   },
   {
-    "objectID": "catalog/call_centre/weekly_topic_dump.html#provenance",
-    "href": "catalog/call_centre/weekly_topic_dump.html#provenance",
-    "title": "call_centre.weekly_topic_dump",
+    "objectID": "catalog/ecm/sic_split.html#provenance",
+    "href": "catalog/ecm/sic_split.html#provenance",
+    "title": "ecm.sic_split",
     "section": "Provenance",
-    "text": "Provenance\nSourced from a weekly Excel report that is typically sent to the EDCP Data and Research team via email. That spreadsheet is extracted and loaded into the data repository via the call_centre_etl.py Lambda. The extracted_at field records when each row was last extracted from the source file.\n\nUpdated: Weekly, typically on Tuesdays\nRetention: 7 years\nSteward: EDCP Data and Research Team\nContact: Colin Douglas",
+    "text": "Provenance\nEach share is an estimate. It is the part’s share of CanadaLogin active credentials in October 2026, taken from the Sign-in Canada credential split. The table is static and is not refreshed. See the ECM page.\n\nUpdated: Static\nRetention: Indefinitely\nSteward: EDCP Data and Research Team\nContact: Colin Douglas\nLocation: s3://canadalogin-reporting-transformed/ecm/sic_split/",
     "crumbs": [
       "Data Catalog",
-      "Call Centre",
-      "weekly_topic_dump"
+      "ECM",
+      "sic_split"
     ]
   },
   {
-    "objectID": "catalog/call_centre/weekly_topic_dump.html#fields",
-    "href": "catalog/call_centre/weekly_topic_dump.html#fields",
-    "title": "call_centre.weekly_topic_dump",
+    "objectID": "catalog/ecm/sic_split.html#fields",
+    "href": "catalog/ecm/sic_split.html#fields",
+    "title": "ecm.sic_split",
     "section": "Fields",
-    "text": "Fields\nOne row per topic record per call. A single call (call_no) may appear on multiple rows if more than one topic was recorded.\n\n\n\n\n\n\n\n\nField Name\nType\nDescription\n\n\n\n\ncall_no\ninteger\nIdentifier for the call. Not unique - multiple rows share the same call_no when multiple topics were recorded\n\n\ncall_datetime\ntimestamp\nDate and time the call took place\n\n\ncall_date\ndate\nDate the call took place\n\n\ndate\nstring\nCall date as a text date. Mirrors call_date\n\n\nclienttype\nstring\nType of caller, for example “Business”, “Public”, “Government of Canada”\n\n\nlanguage\nstring\nLanguage of the call, for example “English”, “French”\n\n\norigin\nstring\nProvince or region the caller is calling from\n\n\nstatobject\nstring\nThe call topic as recorded in the source system. May contain leading/trailing whitespace or inconsistent spacing\n\n\ncstat\nstring\nFull topic classification path, including category and topic (for example, “Main Document description::What is CanadaLogin?”)\n\n\ntransactiontype\nstring\nType of transaction recorded for the topic: “Search”, “Callback”, or “Comment”. Padded with trailing spaces, so trim before comparing. “Callback” marks every topic row of a call escalated to PSO\n\n\nprogramcontact\nstring\nProgram contact information provided to the caller, if any. Often missing\n\n\nsource\nfloat\nUnused",
+    "text": "Fields\n\n\n\n\n\n\n\n\nField Name\nType\nDescription\n\n\n\n\necm_service\nstring\nThe ECM application being split, as ECM stores its name.\n\n\npart\nstring\nThe partner group, for example ATIP or MyCGC.\n\n\nrp_id\ninteger\nThe CanadaLogin service in the part. Joins to rp.service.rp_id.\n\n\npart_share\nfloat\nThe part’s estimated share of Sign-in Canada, as a proportion between 0 and 1.",
     "crumbs": [
       "Data Catalog",
-      "Call Centre",
-      "weekly_topic_dump"
+      "ECM",
+      "sic_split"
     ]
   },
   {
-    "objectID": "catalog/call_centre/weekly_topic_dump.html#notes",
-    "href": "catalog/call_centre/weekly_topic_dump.html#notes",
-    "title": "call_centre.weekly_topic_dump",
+    "objectID": "catalog/ecm/sic_split.html#notes",
+    "href": "catalog/ecm/sic_split.html#notes",
+    "title": "ecm.sic_split",
     "section": "Notes",
-    "text": "Notes\nBecause a single call can generate multiple topic rows, do not count rows to get call volume. Use COUNT(DISTINCT call_no) or join to weekly_activity_report for call counts.\nstatobject frequently contains leading/trailing whitespace and repeated internal spaces. Always clean it before grouping:\nREGEXP_REPLACE(TRIM(statobject), '\\s+', ' ') AS call_topic\nSee the Call Centre metrics chapter for topic count and topic share example SQL.\ncall_datetime is a native timestamp and can be used directly. call_date is the same value truncated to a DATE.",
+    "text": "Notes\nSum part_share over distinct parts, not over rows. The value repeats on every row of a part, so a part with two services counts twice if you sum rows. ATIP has two services. Take one value per part, then sum:\nSELECT sum(part_share) AS total_share\nFROM (\n  SELECT part, max(part_share) AS part_share\n  FROM ecm.sic_split\n  GROUP BY part\n)\nThe shares of the distinct parts add up to 1. Multiply a part’s share by Sign-in Canada’s active_credentials in ecm.credential_baseline to get the part’s size.\nThe shares are estimates. They come from CanadaLogin active credentials in October 2026, not from ECM counts. They stay fixed.",
     "crumbs": [
       "Data Catalog",
-      "Call Centre",
-      "weekly_topic_dump"
+      "ECM",
+      "sic_split"
     ]
   },
   {
-    "objectID": "catalog/call_centre.html",
-    "href": "catalog/call_centre.html",
-    "title": "Call Centre",
+    "objectID": "catalog/ecm.html",
+    "href": "catalog/ecm.html",
+    "title": "ECM",
     "section": "",
-    "text": "Weekly call centre data extracted from the CanadaLogin support queue Excel reports. These two tables share the same source and update cadence but are at different grains: weekly_activity_report is one row per week, while weekly_topic_dump is one row per topic record per call. They arrive as two separate files in the same weekly email, so each table has its own extraction pipeline (see the provenance note on each table’s page).",
+    "text": "Reference tables on the legacy External Credential Management (ECM) service, in the ecm schema. ECM is GCKey plus the Interac Sign-In Service (ISI). The tables hold ECM’s size before CanadaLogin, so that analysts can measure how much of it now has a CanadaLogin replacement.\ncredential_baseline holds one row per ECM application, with its credential counts for FY25-26. sic_split divides one ECM application, Sign-in Canada, between the CanadaLogin partner groups that replaced it.\nECM calls an application a relying party. This site says “ECM application” for the ECM side and “service” for CanadaLogin.",
     "crumbs": [
       "Data Catalog",
-      "Call Centre"
+      "ECM"
     ]
   },
   {
-    "objectID": "catalog/call_centre.html#tables",
-    "href": "catalog/call_centre.html#tables",
-    "title": "Call Centre",
+    "objectID": "catalog/ecm.html#tables",
+    "href": "catalog/ecm.html#tables",
+    "title": "ECM",
     "section": "Tables",
-    "text": "Tables\n\n\n\n\n\n\nTable\n\n\n\nDescription\n\n\n\n\n\n\n\n\ncall_centre.weekly_activity_report\n\n\nWeekly call volume and service-level summary for the support queue, one row per week.\n\n\n\n\n\n\ncall_centre.weekly_topic_dump\n\n\nIndividual support calls with their topic classifications, one row per topic per call.\n\n\n\n\n\n\nNo matching items",
+    "text": "Tables\n\n\n\n\n\n\nTable\n\n\n\nDescription\n\n\n\n\n\n\n\n\necm.credential_baseline\n\n\nFY25-26 average active credentials, one row per ECM application.\n\n\n\n\n\n\necm.sic_split\n\n\nEstimated share of Sign-in Canada for each CanadaLogin partner group that replaced it, one row per part and service.\n\n\n\n\n\n\nNo matching items",
     "crumbs": [
       "Data Catalog",
-      "Call Centre"
+      "ECM"
     ]
   },
   {
-    "objectID": "catalog/billing/ibm_verify_resource_units.html",
-    "href": "catalog/billing/ibm_verify_resource_units.html",
-    "title": "billing.ibm_verify_resource_units",
-    "section": "",
-    "text": "The resource units the CanadaLogin IBM Verify tenant consumed each month, split by product group, as reported in the IBM Verify billing export.\nEach row is one product group in one usage month.\nKeywords: billing, resource units, RU, usage, cost, invoice, IBM Verify, single sign-on, MFA, adaptive access",
-    "crumbs": [
-      "Data Catalog",
-      "IBM Verify Billing",
-      "ibm_verify_resource_units"
-    ]
-  },
-  {
-    "objectID": "catalog/billing/ibm_verify_resource_units.html#provenance",
-    "href": "catalog/billing/ibm_verify_resource_units.html#provenance",
-    "title": "billing.ibm_verify_resource_units",
+    "objectID": "catalog/ecm.html#provenance",
+    "href": "catalog/ecm.html#provenance",
+    "title": "ECM",
     "section": "Provenance",
-    "text": "Provenance\nSourced from a resource-unit CSV exported by hand from IBM Verify each month and loaded by the monthly billing Lambda. Each export covers all past months. A new upload updates earlier months as well as adding the latest one.\n\nUpdated: Manually, monthly\nRetention: Indefinitely\nSteward: EDCP Data and Research Team\nContact: Yinlin Zhang (Data and Research team)",
+    "text": "Provenance\nBoth tables are static. They are not refreshed and they are not part of the pipeline. The credential counts come from ECM’s VendorData reporting database. The Sign-in Canada shares are estimates made from CanadaLogin data.",
     "crumbs": [
       "Data Catalog",
-      "IBM Verify Billing",
-      "ibm_verify_resource_units"
+      "ECM"
     ]
   },
   {
-    "objectID": "catalog/billing/ibm_verify_resource_units.html#fields",
-    "href": "catalog/billing/ibm_verify_resource_units.html#fields",
-    "title": "billing.ibm_verify_resource_units",
-    "section": "Fields",
-    "text": "Fields\n\n\n\n\n\n\n\n\nField Name\nType\nDescription\n\n\n\n\nusage_month\ndate\nFirst day of the usage month.\n\n\nusage_group\nstring\nIBM Verify product group. One of Single sign-on, Multi-factor authentication, Adaptive access, or Lifecycle management and governance\n\n\nresource_units\ndecimal\nResource units consumed by usage_group in usage_month\n\n\nupload_date\ndate\nDate the CSV supplying this row was uploaded, in Eastern Time\n\n\nuploaded_at\ntimestamp\nWhen the CSV supplying this row was uploaded to S3, in UTC\n\n\nsource_key\nstring\nS3 key of the CSV supplying this row, ending in the original filename",
-    "crumbs": [
-      "Data Catalog",
-      "IBM Verify Billing",
-      "ibm_verify_resource_units"
-    ]
-  },
-  {
-    "objectID": "catalog/billing/ibm_verify_resource_units.html#notes",
-    "href": "catalog/billing/ibm_verify_resource_units.html#notes",
-    "title": "billing.ibm_verify_resource_units",
+    "objectID": "catalog/ecm.html#notes",
+    "href": "catalog/ecm.html#notes",
+    "title": "ECM",
     "section": "Notes",
-    "text": "Notes\nThe latest month is partial. An export covers usage only up to its export date, so the row for the month the export was taken in is incomplete. The next monthly upload replaces it with the full figure.\nZero is a real value. A group with no billable usage in a month has a row with resource_units = 0, not a missing row.",
+    "text": "Notes\nThe tables count credentials, not people. An ECM active credential is a billing count, not a number of people.\nThe baseline is fixed on purpose. It is not refreshed as ECM shrinks. A shrinking baseline would count each service that moves twice.\nJoin through rp.alias. An ECM application points to the CanadaLogin service that replaced it through rp.alias, where the alias is the ECM application’s name. The two tables each explain their join.\nThese tables do not track people moving. ECM and CanadaLogin credentials cannot be linked. The measure built on them is the volume of ECM that now has a CanadaLogin replacement, weighted by each ECM application’s size.",
     "crumbs": [
       "Data Catalog",
-      "IBM Verify Billing",
-      "ibm_verify_resource_units"
+      "ECM"
     ]
   },
   {
-    "objectID": "catalog/billing.html",
-    "href": "catalog/billing.html",
-    "title": "IBM Verify Billing",
+    "objectID": "catalog/call_centre/weekly_activity_report.html",
+    "href": "catalog/call_centre/weekly_activity_report.html",
+    "title": "call_centre.weekly_activity_report",
     "section": "",
-    "text": "IBM Verify billing figures for the CanadaLogin tenant, in the billing schema. Both tables come from CSV reports exported by hand from IBM Verify each month and uploaded to S3, where the monthly billing Lambda merges them into the tables. ibm_verify_total_users holds dated snapshots of the tenant’s total user count, while ibm_verify_resource_units holds the resource units consumed each month by each product group.",
+    "text": "Weekly summary of call centre operations for the CanadaLogin support queue.\nEach row represents one reporting week, summarizing call volume, service levels, call outcomes, and call type breakdowns for that week.\nKeywords: call centre, calls, weekly, volume, wait time, call length, service level",
     "crumbs": [
       "Data Catalog",
-      "IBM Verify Billing"
+      "Call Centre",
+      "weekly_activity_report"
     ]
   },
   {
-    "objectID": "catalog/billing.html#tables",
-    "href": "catalog/billing.html#tables",
-    "title": "IBM Verify Billing",
-    "section": "Tables",
-    "text": "Tables\n\n\n\n\n\n\nTable\n\n\n\nDescription\n\n\n\n\n\n\n\n\nbilling.ibm_verify_total_users\n\n\nSnapshots of the IBM Verify tenant’s total user count, one row per snapshot date.\n\n\n\n\n\n\nbilling.ibm_verify_resource_units\n\n\nIBM Verify resource units consumed each month, by product group.\n\n\n\n\n\n\nNo matching items",
+    "objectID": "catalog/call_centre/weekly_activity_report.html#provenance",
+    "href": "catalog/call_centre/weekly_activity_report.html#provenance",
+    "title": "call_centre.weekly_activity_report",
+    "section": "Provenance",
+    "text": "Provenance\nSourced from a weekly Excel report that is typically sent to the EDCP Data and Research team via email. That spreadsheet is extracted and loaded into the data repository via the call centre weekly activity report Lambda. The extracted_at field records when each row was last extracted from the source file.\n\nUpdated: Weekly, typically on Tuesdays\nRetention: 7 years\nSteward: EDCP Data and Research Team\nContact: Colin Douglas",
     "crumbs": [
       "Data Catalog",
-      "IBM Verify Billing"
+      "Call Centre",
+      "weekly_activity_report"
+    ]
+  },
+  {
+    "objectID": "catalog/call_centre/weekly_activity_report.html#fields",
+    "href": "catalog/call_centre/weekly_activity_report.html#fields",
+    "title": "call_centre.weekly_activity_report",
+    "section": "Fields",
+    "text": "Fields\nOne row per reporting week.\nMany count fields are stored as float because they originate from Excel. Proportions (fields ending in _pct) are stored as values between 0 and 1, not 0 and 100.\n\n\n\n\n\n\n\n\nField Name\nType\nDescription\n\n\n\n\nweek_text\nstring\nReport title, extracted from the Excel file\n\n\ndate_range_start\nstring\nStart date of the reporting week as a text date (for example, “2026-04-26”)\n\n\ndate_range_end\nstring\nEnd date of the reporting week as a text date (for example, “2026-05-02”)\n\n\ndate\nstring\nEquivalent to date_range_start; used as the primary date key\n\n\nfile\nstring\nSource filename the row was extracted from\n\n\nextracted_at\nstring\nISO 8601 timestamp of when the row was extracted from the source file\n\n\ncalls_accepted\nfloat\nTotal calls accepted by the queue during the week\n\n\ncalls_accepted_pct\nfloat\nProportion of calls accepted (typically 1.0)\n\n\ncalls_abandoned\nfloat\nNumber of calls abandoned before being answered\n\n\ncalls_abandoned_pct\nfloat\nProportion of accepted calls that were abandoned\n\n\ncalls_answered\nfloat\nNumber of calls answered by an agent\n\n\npct_answered_within_60s\nfloat\nProportion of calls answered within 60 seconds\n\n\navg_delay_seconds\nfloat\nAverage wait time before a call was answered, in seconds\n\n\navg_call_length_seconds\nfloat\nAverage duration of answered calls, in seconds\n\n\navg_handle_time_seconds\nfloat\nAverage total handle time per call (call length plus any wrap-up time), in seconds\n\n\ncalls_completed_by_io\nfloat\nNumber of calls completed by the information officer\n\n\ncalls_completed_by_io_pct\nfloat\nProportion of answered calls completed by the information officer\n\n\nhangups\nfloat\nNumber of calls where the caller hung up\n\n\nhangups_pct\nfloat\nProportion of answered calls that ended in a hangup\n\n\ntest_calls\nfloat\nNumber of test calls made during the week\n\n\ntest_calls_pct\nfloat\nProportion of accepted calls that were test calls\n\n\ntotal_calls_answered\nfloat\nTotal calls answered (may differ from calls_answered depending on reporting logic)\n\n\ntotal_calls_answered_pct\nfloat\nProportion of accepted calls that were answered\n\n\ncomments\nfloat\nNumber of calls where a comment was recorded\n\n\ncomments_pct\nfloat\nProportion of answered calls with a comment\n\n\ncallback\nfloat\nNumber of calls where a callback was requested or offered\n\n\ncallback_pct\nfloat\nProportion of answered calls that involved a callback\n\n\nno_information_provided\nfloat\nNumber of calls where no information was provided to the caller\n\n\nno_information_provided_pct\nfloat\nProportion of answered calls where no information was provided\n\n\ntransfer_to_crisis_centres\nfloat\nNumber of calls transferred to a crisis centre\n\n\ntransfer_to_crisis_centres_pct\nfloat\nProportion of answered calls transferred to a crisis centre\n\n\nprogram_content_provided\nfloat\nNumber of calls where program content was provided to the caller\n\n\nprogram_content_provided_pct\nfloat\nProportion of answered calls where program content was provided\n\n\ntotal_of_call_types\nfloat\nTotal number of call-type records for the week (used as denominator for call-type proportions)\n\n\ntotal_of_call_types_pct\nfloat\nProportion of total call types (typically 1.0)",
+    "crumbs": [
+      "Data Catalog",
+      "Call Centre",
+      "weekly_activity_report"
+    ]
+  },
+  {
+    "objectID": "catalog/call_centre/weekly_activity_report.html#notes",
+    "href": "catalog/call_centre/weekly_activity_report.html#notes",
+    "title": "call_centre.weekly_activity_report",
+    "section": "Notes",
+    "text": "Notes\navg_delay_seconds and avg_call_length_seconds are weekly averages sourced from the report directly. When combining across weeks, use a weighted average with calls_answered as the weight rather than a simple average. See the Call Centre metrics chapter for example SQL.\ndate_range_start and date_range_end are stored as strings. Cast to DATE in SQL when filtering by date range.",
+    "crumbs": [
+      "Data Catalog",
+      "Call Centre",
+      "weekly_activity_report"
     ]
   },
   {
@@ -2803,51 +2803,191 @@
     ]
   },
   {
-    "objectID": "catalog/call_centre/weekly_activity_report.html",
-    "href": "catalog/call_centre/weekly_activity_report.html",
-    "title": "call_centre.weekly_activity_report",
+    "objectID": "catalog/billing.html",
+    "href": "catalog/billing.html",
+    "title": "IBM Verify Billing",
     "section": "",
-    "text": "Weekly summary of call centre operations for the CanadaLogin support queue.\nEach row represents one reporting week, summarizing call volume, service levels, call outcomes, and call type breakdowns for that week.\nKeywords: call centre, calls, weekly, volume, wait time, call length, service level",
+    "text": "IBM Verify billing figures for the CanadaLogin tenant, in the billing schema. Both tables come from CSV reports exported by hand from IBM Verify each month and uploaded to S3, where the monthly billing Lambda merges them into the tables. ibm_verify_total_users holds dated snapshots of the tenant’s total user count, while ibm_verify_resource_units holds the resource units consumed each month by each product group.",
     "crumbs": [
       "Data Catalog",
-      "Call Centre",
-      "weekly_activity_report"
+      "IBM Verify Billing"
     ]
   },
   {
-    "objectID": "catalog/call_centre/weekly_activity_report.html#provenance",
-    "href": "catalog/call_centre/weekly_activity_report.html#provenance",
-    "title": "call_centre.weekly_activity_report",
+    "objectID": "catalog/billing.html#tables",
+    "href": "catalog/billing.html#tables",
+    "title": "IBM Verify Billing",
+    "section": "Tables",
+    "text": "Tables\n\n\n\n\n\n\nTable\n\n\n\nDescription\n\n\n\n\n\n\n\n\nbilling.ibm_verify_total_users\n\n\nSnapshots of the IBM Verify tenant’s total user count, one row per snapshot date.\n\n\n\n\n\n\nbilling.ibm_verify_resource_units\n\n\nIBM Verify resource units consumed each month, by product group.\n\n\n\n\n\n\nNo matching items",
+    "crumbs": [
+      "Data Catalog",
+      "IBM Verify Billing"
+    ]
+  },
+  {
+    "objectID": "catalog/billing/ibm_verify_resource_units.html",
+    "href": "catalog/billing/ibm_verify_resource_units.html",
+    "title": "billing.ibm_verify_resource_units",
+    "section": "",
+    "text": "The resource units the CanadaLogin IBM Verify tenant consumed each month, split by product group, as reported in the IBM Verify billing export.\nEach row is one product group in one usage month.\nKeywords: billing, resource units, RU, usage, cost, invoice, IBM Verify, single sign-on, MFA, adaptive access",
+    "crumbs": [
+      "Data Catalog",
+      "IBM Verify Billing",
+      "ibm_verify_resource_units"
+    ]
+  },
+  {
+    "objectID": "catalog/billing/ibm_verify_resource_units.html#provenance",
+    "href": "catalog/billing/ibm_verify_resource_units.html#provenance",
+    "title": "billing.ibm_verify_resource_units",
     "section": "Provenance",
-    "text": "Provenance\nSourced from a weekly Excel report that is typically sent to the EDCP Data and Research team via email. That spreadsheet is extracted and loaded into the data repository via the call centre weekly activity report Lambda. The extracted_at field records when each row was last extracted from the source file.\n\nUpdated: Weekly, typically on Tuesdays\nRetention: 7 years\nSteward: EDCP Data and Research Team\nContact: Colin Douglas",
+    "text": "Provenance\nSourced from a resource-unit CSV exported by hand from IBM Verify each month and loaded by the monthly billing Lambda. Each export covers all past months. A new upload updates earlier months as well as adding the latest one.\n\nUpdated: Manually, monthly\nRetention: Indefinitely\nSteward: EDCP Data and Research Team\nContact: Yinlin Zhang (Data and Research team)",
     "crumbs": [
       "Data Catalog",
-      "Call Centre",
-      "weekly_activity_report"
+      "IBM Verify Billing",
+      "ibm_verify_resource_units"
     ]
   },
   {
-    "objectID": "catalog/call_centre/weekly_activity_report.html#fields",
-    "href": "catalog/call_centre/weekly_activity_report.html#fields",
-    "title": "call_centre.weekly_activity_report",
+    "objectID": "catalog/billing/ibm_verify_resource_units.html#fields",
+    "href": "catalog/billing/ibm_verify_resource_units.html#fields",
+    "title": "billing.ibm_verify_resource_units",
     "section": "Fields",
-    "text": "Fields\nOne row per reporting week.\nMany count fields are stored as float because they originate from Excel. Proportions (fields ending in _pct) are stored as values between 0 and 1, not 0 and 100.\n\n\n\n\n\n\n\n\nField Name\nType\nDescription\n\n\n\n\nweek_text\nstring\nReport title, extracted from the Excel file\n\n\ndate_range_start\nstring\nStart date of the reporting week as a text date (for example, “2026-04-26”)\n\n\ndate_range_end\nstring\nEnd date of the reporting week as a text date (for example, “2026-05-02”)\n\n\ndate\nstring\nEquivalent to date_range_start; used as the primary date key\n\n\nfile\nstring\nSource filename the row was extracted from\n\n\nextracted_at\nstring\nISO 8601 timestamp of when the row was extracted from the source file\n\n\ncalls_accepted\nfloat\nTotal calls accepted by the queue during the week\n\n\ncalls_accepted_pct\nfloat\nProportion of calls accepted (typically 1.0)\n\n\ncalls_abandoned\nfloat\nNumber of calls abandoned before being answered\n\n\ncalls_abandoned_pct\nfloat\nProportion of accepted calls that were abandoned\n\n\ncalls_answered\nfloat\nNumber of calls answered by an agent\n\n\npct_answered_within_60s\nfloat\nProportion of calls answered within 60 seconds\n\n\navg_delay_seconds\nfloat\nAverage wait time before a call was answered, in seconds\n\n\navg_call_length_seconds\nfloat\nAverage duration of answered calls, in seconds\n\n\navg_handle_time_seconds\nfloat\nAverage total handle time per call (call length plus any wrap-up time), in seconds\n\n\ncalls_completed_by_io\nfloat\nNumber of calls completed by the information officer\n\n\ncalls_completed_by_io_pct\nfloat\nProportion of answered calls completed by the information officer\n\n\nhangups\nfloat\nNumber of calls where the caller hung up\n\n\nhangups_pct\nfloat\nProportion of answered calls that ended in a hangup\n\n\ntest_calls\nfloat\nNumber of test calls made during the week\n\n\ntest_calls_pct\nfloat\nProportion of accepted calls that were test calls\n\n\ntotal_calls_answered\nfloat\nTotal calls answered (may differ from calls_answered depending on reporting logic)\n\n\ntotal_calls_answered_pct\nfloat\nProportion of accepted calls that were answered\n\n\ncomments\nfloat\nNumber of calls where a comment was recorded\n\n\ncomments_pct\nfloat\nProportion of answered calls with a comment\n\n\ncallback\nfloat\nNumber of calls where a callback was requested or offered\n\n\ncallback_pct\nfloat\nProportion of answered calls that involved a callback\n\n\nno_information_provided\nfloat\nNumber of calls where no information was provided to the caller\n\n\nno_information_provided_pct\nfloat\nProportion of answered calls where no information was provided\n\n\ntransfer_to_crisis_centres\nfloat\nNumber of calls transferred to a crisis centre\n\n\ntransfer_to_crisis_centres_pct\nfloat\nProportion of answered calls transferred to a crisis centre\n\n\nprogram_content_provided\nfloat\nNumber of calls where program content was provided to the caller\n\n\nprogram_content_provided_pct\nfloat\nProportion of answered calls where program content was provided\n\n\ntotal_of_call_types\nfloat\nTotal number of call-type records for the week (used as denominator for call-type proportions)\n\n\ntotal_of_call_types_pct\nfloat\nProportion of total call types (typically 1.0)",
+    "text": "Fields\n\n\n\n\n\n\n\n\nField Name\nType\nDescription\n\n\n\n\nusage_month\ndate\nFirst day of the usage month.\n\n\nusage_group\nstring\nIBM Verify product group. One of Single sign-on, Multi-factor authentication, Adaptive access, or Lifecycle management and governance\n\n\nresource_units\ndecimal\nResource units consumed by usage_group in usage_month\n\n\nupload_date\ndate\nDate the CSV supplying this row was uploaded, in Eastern Time\n\n\nuploaded_at\ntimestamp\nWhen the CSV supplying this row was uploaded to S3, in UTC\n\n\nsource_key\nstring\nS3 key of the CSV supplying this row, ending in the original filename",
     "crumbs": [
       "Data Catalog",
-      "Call Centre",
-      "weekly_activity_report"
+      "IBM Verify Billing",
+      "ibm_verify_resource_units"
     ]
   },
   {
-    "objectID": "catalog/call_centre/weekly_activity_report.html#notes",
-    "href": "catalog/call_centre/weekly_activity_report.html#notes",
-    "title": "call_centre.weekly_activity_report",
+    "objectID": "catalog/billing/ibm_verify_resource_units.html#notes",
+    "href": "catalog/billing/ibm_verify_resource_units.html#notes",
+    "title": "billing.ibm_verify_resource_units",
     "section": "Notes",
-    "text": "Notes\navg_delay_seconds and avg_call_length_seconds are weekly averages sourced from the report directly. When combining across weeks, use a weighted average with calls_answered as the weight rather than a simple average. See the Call Centre metrics chapter for example SQL.\ndate_range_start and date_range_end are stored as strings. Cast to DATE in SQL when filtering by date range.",
+    "text": "Notes\nThe latest month is partial. An export covers usage only up to its export date, so the row for the month the export was taken in is incomplete. The next monthly upload replaces it with the full figure.\nZero is a real value. A group with no billable usage in a month has a row with resource_units = 0, not a missing row.",
+    "crumbs": [
+      "Data Catalog",
+      "IBM Verify Billing",
+      "ibm_verify_resource_units"
+    ]
+  },
+  {
+    "objectID": "catalog/call_centre.html",
+    "href": "catalog/call_centre.html",
+    "title": "Call Centre",
+    "section": "",
+    "text": "Weekly call centre data extracted from the CanadaLogin support queue Excel reports. These two tables share the same source and update cadence but are at different grains: weekly_activity_report is one row per week, while weekly_topic_dump is one row per topic record per call. They arrive as two separate files in the same weekly email, so each table has its own extraction pipeline (see the provenance note on each table’s page).",
+    "crumbs": [
+      "Data Catalog",
+      "Call Centre"
+    ]
+  },
+  {
+    "objectID": "catalog/call_centre.html#tables",
+    "href": "catalog/call_centre.html#tables",
+    "title": "Call Centre",
+    "section": "Tables",
+    "text": "Tables\n\n\n\n\n\n\nTable\n\n\n\nDescription\n\n\n\n\n\n\n\n\ncall_centre.weekly_activity_report\n\n\nWeekly call volume and service-level summary for the support queue, one row per week.\n\n\n\n\n\n\ncall_centre.weekly_topic_dump\n\n\nIndividual support calls with their topic classifications, one row per topic per call.\n\n\n\n\n\n\nNo matching items",
+    "crumbs": [
+      "Data Catalog",
+      "Call Centre"
+    ]
+  },
+  {
+    "objectID": "catalog/call_centre/weekly_topic_dump.html",
+    "href": "catalog/call_centre/weekly_topic_dump.html",
+    "title": "call_centre.weekly_topic_dump",
+    "section": "",
+    "text": "Individual call records from the CanadaLogin support queue, with topic classifications for each call.\nEach row represents one topic record associated with a single call. A single call may have multiple rows if multiple topics were recorded.\nKeywords: call centre, topics, call reasons, contact drivers, caller issues",
     "crumbs": [
       "Data Catalog",
       "Call Centre",
-      "weekly_activity_report"
+      "weekly_topic_dump"
+    ]
+  },
+  {
+    "objectID": "catalog/call_centre/weekly_topic_dump.html#provenance",
+    "href": "catalog/call_centre/weekly_topic_dump.html#provenance",
+    "title": "call_centre.weekly_topic_dump",
+    "section": "Provenance",
+    "text": "Provenance\nSourced from a weekly Excel report that is typically sent to the EDCP Data and Research team via email. That spreadsheet is extracted and loaded into the data repository via the call_centre_etl.py Lambda. The extracted_at field records when each row was last extracted from the source file.\n\nUpdated: Weekly, typically on Tuesdays\nRetention: 7 years\nSteward: EDCP Data and Research Team\nContact: Colin Douglas",
+    "crumbs": [
+      "Data Catalog",
+      "Call Centre",
+      "weekly_topic_dump"
+    ]
+  },
+  {
+    "objectID": "catalog/call_centre/weekly_topic_dump.html#fields",
+    "href": "catalog/call_centre/weekly_topic_dump.html#fields",
+    "title": "call_centre.weekly_topic_dump",
+    "section": "Fields",
+    "text": "Fields\nOne row per topic record per call. A single call (call_no) may appear on multiple rows if more than one topic was recorded.\n\n\n\n\n\n\n\n\nField Name\nType\nDescription\n\n\n\n\ncall_no\ninteger\nIdentifier for the call. Not unique - multiple rows share the same call_no when multiple topics were recorded\n\n\ncall_datetime\ntimestamp\nDate and time the call took place\n\n\ncall_date\ndate\nDate the call took place\n\n\ndate\nstring\nCall date as a text date. Mirrors call_date\n\n\nclienttype\nstring\nType of caller, for example “Business”, “Public”, “Government of Canada”\n\n\nlanguage\nstring\nLanguage of the call, for example “English”, “French”\n\n\norigin\nstring\nProvince or region the caller is calling from\n\n\nstatobject\nstring\nThe call topic as recorded in the source system. May contain leading/trailing whitespace or inconsistent spacing\n\n\ncstat\nstring\nFull topic classification path, including category and topic (for example, “Main Document description::What is CanadaLogin?”)\n\n\ntransactiontype\nstring\nType of transaction recorded for the topic: “Search”, “Callback”, or “Comment”. Padded with trailing spaces, so trim before comparing. “Callback” marks every topic row of a call escalated to PSO\n\n\nprogramcontact\nstring\nProgram contact information provided to the caller, if any. Often missing\n\n\nsource\nfloat\nUnused",
+    "crumbs": [
+      "Data Catalog",
+      "Call Centre",
+      "weekly_topic_dump"
+    ]
+  },
+  {
+    "objectID": "catalog/call_centre/weekly_topic_dump.html#notes",
+    "href": "catalog/call_centre/weekly_topic_dump.html#notes",
+    "title": "call_centre.weekly_topic_dump",
+    "section": "Notes",
+    "text": "Notes\nBecause a single call can generate multiple topic rows, do not count rows to get call volume. Use COUNT(DISTINCT call_no) or join to weekly_activity_report for call counts.\nstatobject frequently contains leading/trailing whitespace and repeated internal spaces. Always clean it before grouping:\nREGEXP_REPLACE(TRIM(statobject), '\\s+', ' ') AS call_topic\nSee the Call Centre metrics chapter for topic count and topic share example SQL.\ncall_datetime is a native timestamp and can be used directly. call_date is the same value truncated to a DATE.",
+    "crumbs": [
+      "Data Catalog",
+      "Call Centre",
+      "weekly_topic_dump"
+    ]
+  },
+  {
+    "objectID": "catalog/ecm/credential_baseline.html",
+    "href": "catalog/ecm/credential_baseline.html",
+    "title": "ecm.credential_baseline",
+    "section": "",
+    "text": "The size of each ECM application before CanadaLogin, as ECM’s average active credentials over FY25-26.\nOne row is one ECM application. It joins to rp.alias on ecm_service = alias, and from there to rp.service.\nKeywords: ECM, External Credential Management, GCKey, Interac, ISI, baseline, active credentials, legacy volume replaced, FY25-26",
+    "crumbs": [
+      "Data Catalog",
+      "ECM",
+      "credential_baseline"
+    ]
+  },
+  {
+    "objectID": "catalog/ecm/credential_baseline.html#provenance",
+    "href": "catalog/ecm/credential_baseline.html#provenance",
+    "title": "ecm.credential_baseline",
+    "section": "Provenance",
+    "text": "Provenance\nThe counts come from ECM’s VendorData reporting database. One query covered applications that sign in directly with GCKey or Interac. The other covered applications behind the GC Credential Federation. This table merges the two results into one row per application. The table is static and is not refreshed. See the ECM page.\n\nUpdated: Static\nRetention: Indefinitely\nSteward: EDCP Data and Research Team\nContact: Colin Douglas\nLocation: s3://canadalogin-reporting-transformed/ecm/credential_baseline/",
+    "crumbs": [
+      "Data Catalog",
+      "ECM",
+      "credential_baseline"
+    ]
+  },
+  {
+    "objectID": "catalog/ecm/credential_baseline.html#fields",
+    "href": "catalog/ecm/credential_baseline.html#fields",
+    "title": "ecm.credential_baseline",
+    "section": "Fields",
+    "text": "Fields\n\n\n\n\n\n\n\n\nField Name\nType\nDescription\n\n\n\n\necm_service\nstring\nThe ECM application, as named in the ECM reporting database.\n\n\necm_service_id\nstring\nECM’s identifier for the application.\n\n\ndepartment\nstring\nThe department that owns the application.\n\n\ngckey_credentials\ninteger\nAverage active GCKey credentials per month over FY25-26.\n\n\nisi_credentials\ninteger\nAverage active Interac Sign-In Service credentials per month over FY25-26.\n\n\nactive_credentials\ninteger\nAverage active credentials per month over FY25-26, GCKey and ISI together. This is the application’s ECM size.",
+    "crumbs": [
+      "Data Catalog",
+      "ECM",
+      "credential_baseline"
+    ]
+  },
+  {
+    "objectID": "catalog/ecm/credential_baseline.html#notes",
+    "href": "catalog/ecm/credential_baseline.html#notes",
+    "title": "ecm.credential_baseline",
+    "section": "Notes",
+    "text": "Notes\nThe period is FY25-26, April 2025 to March 2026. Each credential column is the average of ECM’s monthly active credentials over those 12 months.\nActive credentials is ECM’s billing measure, not monthly users. A GCKey credential is active if it was used in the last two years. An Interac credential is active if it was used in the last 12 months.\nEach credential belongs to the first application it was used at. ECM calls this “first through the door”. Counts across applications add up to ECM’s total without overlap.\nactive_credentials can differ from gckey_credentials + isi_credentials. Each average is rounded on its own.\nJoin to rp.alias with a left join from this table. An ECM application has an alias only once a CanadaLogin service has replaced it, so an inner join drops the rest. An application with several aliases returns one row per alias, so aggregate after the join and count each ecm_service once.\nSELECT b.ecm_service,\n       b.active_credentials,\n       s.service_name_en\nFROM ecm.credential_baseline b\nLEFT JOIN rp.alias a ON b.ecm_service = a.alias\nLEFT JOIN rp.service s ON a.rp_id = s.rp_id",
+    "crumbs": [
+      "Data Catalog",
+      "ECM",
+      "credential_baseline"
     ]
   },
   {
@@ -3459,7 +3599,7 @@
     "href": "catalog/index.html#sources",
     "title": "About",
     "section": "Sources",
-    "text": "Sources\nEach source page covers what its tables share: where the data comes from, when it updates, and caveats that apply to all of them.\n\nRelying Parties - reference tables in the rp schema that identify the services using CanadaLogin and their aliases\nIBM Verify Counts - daily summary tables in the ibm_verify_events_transformed schema, built from the IBM Verify event stream\nIBM Verify Events - the IBM Verify event stream in the ibm_verify_events_raw schema, one row per event\nIBM Verify Billing - monthly IBM Verify billing reports in the billing schema: total users and resource units by product group\nCall Centre - weekly call centre data from the CanadaLogin support queue reports\nPlatform - incident response and uptime tables in the sre schema\nJira - daily snapshots of PSOM support tickets and the EDCPPTP partner transition board in the jira schema\nGoogle Analytics - tables in the google_analytics schema, populated from the CanadaLogin GA4 property\nIBM Verify (deprecated) - the old ibm_verify tables, pulled from the IBM Verify reporting API",
+    "text": "Sources\nEach source page covers what its tables share: where the data comes from, when it updates, and caveats that apply to all of them.\n\nRelying Parties - reference tables in the rp schema that identify the services using CanadaLogin and their aliases\nECM - static reference tables in the ecm schema that hold the size of the legacy External Credential Management (ECM) service before CanadaLogin\nIBM Verify Counts - daily summary tables in the ibm_verify_events_transformed schema, built from the IBM Verify event stream\nIBM Verify Events - the IBM Verify event stream in the ibm_verify_events_raw schema, one row per event\nIBM Verify Billing - monthly IBM Verify billing reports in the billing schema: total users and resource units by product group\nCall Centre - weekly call centre data from the CanadaLogin support queue reports\nPlatform - incident response and uptime tables in the sre schema\nJira - daily snapshots of PSOM support tickets and the EDCPPTP partner transition board in the jira schema\nGoogle Analytics - tables in the google_analytics schema, populated from the CanadaLogin GA4 property\nIBM Verify (deprecated) - the old ibm_verify tables, pulled from the IBM Verify reporting API",
     "crumbs": [
       "Data Catalog"
     ]
@@ -3469,7 +3609,7 @@
     "href": "catalog/index.html#all-tables",
     "title": "About",
     "section": "All Tables",
-    "text": "All Tables\n\n\n    \n      \n      \n    \n\n\n\n\n\n\nTable\n\n\n\nDescription\n\n\n\n\n\n\n\n\nbilling.ibm_verify_resource_units\n\n\nIBM Verify resource units consumed each month, by product group.\n\n\n\n\n\n\nbilling.ibm_verify_total_users\n\n\nSnapshots of the IBM Verify tenant’s total user count, one row per snapshot date.\n\n\n\n\n\n\ncall_centre.weekly_activity_report\n\n\nWeekly call volume and service-level summary for the support queue, one row per week.\n\n\n\n\n\n\ncall_centre.weekly_topic_dump\n\n\nIndividual support calls with their topic classifications, one row per topic per call.\n\n\n\n\n\n\ngoogle_analytics.error_events\n\n\nDaily count of errors CanadaLogin flags to GA4.\n\n\n\n\n\n\ngoogle_analytics.funnel_metrics\n\n\nMetrics derived from funnel rows, such as task success rate.\n\n\n\n\n\n\ngoogle_analytics.funnel_metrics_current\n\n\nFunnel metrics, resolved to the current funnel version for each date.\n\n\n\n\n\n\ngoogle_analytics.funnels\n\n\nStep-by-step counts for each defined GA4 funnel.\n\n\n\n\n\n\ngoogle_analytics.funnels_current\n\n\nFunnel step counts, resolved to the current funnel version for each date.\n\n\n\n\n\n\ngoogle_analytics.meta_page_events\n\n\nDaily GA4 events on Signal Check, the dashboards, and the Cookbook, by page and event name.\n\n\n\n\n\n\ngoogle_analytics.meta_page_traffic\n\n\nDaily readership of Signal Check, the dashboards, and the Cookbook, by page and session source.\n\n\n\n\n\n\ngoogle_analytics.page_traffic\n\n\nDaily GA4 traffic by page title, path, and data stream.\n\n\n\n\n\n\ngoogle_analytics.partner_portal_page_traffic\n\n\nNot available yet. Daily GA4 traffic to CanadaLogin Partner Portal pages, by page title and path.\n\n\n\n\n\n\ngoogle_analytics.property_traffic\n\n\nProperty-wide daily GA4 traffic, one row per day.\n\n\n\n\n\n\nibm_verify.app_login_counts\n\n\nDeprecated. Daily SSO event counts by application.\n\n\n\n\n\n\nibm_verify.auth_total_logins\n\n\nDeprecated. Daily CanadaLogin-wide authentication event totals.\n\n\n\n\n\n\nibm_verify.mfa_activity\n\n\nDeprecated. Daily multi-factor authentication activity by factor and result.\n\n\n\n\n\n\nibm_verify_events_raw.adaptive_access\n\n\nOne row per IBM Verify adaptive access evaluation.\n\n\n\n\n\n\nibm_verify_events_raw.application_usage\n\n\nOne row per IBM Verify SSO event, when someone reaches an application.\n\n\n\n\n\n\nibm_verify_events_raw.authentication_activity\n\n\nOne row per IBM Verify authentication event.\n\n\n\n\n\n\nibm_verify_events_raw.mfa_activity\n\n\nOne row per IBM Verify multi-factor authentication event.\n\n\n\n\n\n\nibm_verify_events_transformed.events_adaptive_risk_summary\n\n\nDaily adaptive access evaluations by risk level.\n\n\n\n\n\n\nibm_verify_events_transformed.events_app_login_counts\n\n\nDaily SSO event counts by application.\n\n\n\n\n\n\nibm_verify_events_transformed.events_application_mapping\n\n\nEach application’s IBM Verify ID, current name, and first and last event this year.\n\n\n\n\n\n\nibm_verify_events_transformed.events_auth_total_logins\n\n\nDaily CanadaLogin-wide authentication event totals.\n\n\n\n\n\n\nibm_verify_events_transformed.events_mfa_activity\n\n\nDaily multi-factor authentication activity by factor and result.\n\n\n\n\n\n\njira.edcpptp\n\n\nDaily snapshot of every EDCPPTP Jira issue, one row per issue per snapshot.\n\n\n\n\n\n\njira.edcpptp_comment\n\n\nEvery comment on every EDCPPTP issue, one row per comment per snapshot.\n\n\n\n\n\n\njira.edcpptp_field_catalog\n\n\nEvery Jira field definition, with EDCPPTP usage counts, one row per field per snapshot.\n\n\n\n\n\n\njira.psom\n\n\nDaily snapshot of every PSOM Jira ticket, one row per ticket per snapshot.\n\n\n\n\n\n\njira.psom_comment\n\n\nEvery comment on every PSOM ticket, one row per comment per snapshot.\n\n\n\n\n\n\njira.psom_sla\n\n\nSLA clock state for each PSOM ticket, one row per ticket per SLA per snapshot.\n\n\n\n\n\n\nrp.alias\n\n\nMaps each identifier or name a source system uses for a service back to one rp_id.\n\n\n\n\n\n\nrp.service\n\n\nOne row per relying party, with its names, operator, and launch date.\n\n\n\n\n\n\nsre.mttr_current\n\n\nLatest state of every incident, one row per incident.\n\n\n\n\n\n\nsre.mttr_history\n\n\nDated snapshots of every incident, one row per incident per snapshot.\n\n\n\n\n\n\nsre.uptime_summary\n\n\nDaily rolling-window uptime and response-time figures for each monitored site.\n\n\n\n\n\n\nsre.uptime_timeseries\n\n\nStatus snapshots for each monitored site, one row per upptime bot commit.\n\n\n\n\n\n\nNo matching items",
+    "text": "All Tables\n\n\n    \n      \n      \n    \n\n\n\n\n\n\nTable\n\n\n\nDescription\n\n\n\n\n\n\n\n\nbilling.ibm_verify_resource_units\n\n\nIBM Verify resource units consumed each month, by product group.\n\n\n\n\n\n\nbilling.ibm_verify_total_users\n\n\nSnapshots of the IBM Verify tenant’s total user count, one row per snapshot date.\n\n\n\n\n\n\ncall_centre.weekly_activity_report\n\n\nWeekly call volume and service-level summary for the support queue, one row per week.\n\n\n\n\n\n\ncall_centre.weekly_topic_dump\n\n\nIndividual support calls with their topic classifications, one row per topic per call.\n\n\n\n\n\n\necm.credential_baseline\n\n\nFY25-26 average active credentials, one row per ECM application.\n\n\n\n\n\n\necm.sic_split\n\n\nEstimated share of Sign-in Canada for each CanadaLogin partner group that replaced it, one row per part and service.\n\n\n\n\n\n\ngoogle_analytics.error_events\n\n\nDaily count of errors CanadaLogin flags to GA4.\n\n\n\n\n\n\ngoogle_analytics.funnel_metrics\n\n\nMetrics derived from funnel rows, such as task success rate.\n\n\n\n\n\n\ngoogle_analytics.funnel_metrics_current\n\n\nFunnel metrics, resolved to the current funnel version for each date.\n\n\n\n\n\n\ngoogle_analytics.funnels\n\n\nStep-by-step counts for each defined GA4 funnel.\n\n\n\n\n\n\ngoogle_analytics.funnels_current\n\n\nFunnel step counts, resolved to the current funnel version for each date.\n\n\n\n\n\n\ngoogle_analytics.meta_page_events\n\n\nDaily GA4 events on Signal Check, the dashboards, and the Cookbook, by page and event name.\n\n\n\n\n\n\ngoogle_analytics.meta_page_traffic\n\n\nDaily readership of Signal Check, the dashboards, and the Cookbook, by page and session source.\n\n\n\n\n\n\ngoogle_analytics.page_traffic\n\n\nDaily GA4 traffic by page title, path, and data stream.\n\n\n\n\n\n\ngoogle_analytics.partner_portal_page_traffic\n\n\nNot available yet. Daily GA4 traffic to CanadaLogin Partner Portal pages, by page title and path.\n\n\n\n\n\n\ngoogle_analytics.property_traffic\n\n\nProperty-wide daily GA4 traffic, one row per day.\n\n\n\n\n\n\nibm_verify.app_login_counts\n\n\nDeprecated. Daily SSO event counts by application.\n\n\n\n\n\n\nibm_verify.auth_total_logins\n\n\nDeprecated. Daily CanadaLogin-wide authentication event totals.\n\n\n\n\n\n\nibm_verify.mfa_activity\n\n\nDeprecated. Daily multi-factor authentication activity by factor and result.\n\n\n\n\n\n\nibm_verify_events_raw.adaptive_access\n\n\nOne row per IBM Verify adaptive access evaluation.\n\n\n\n\n\n\nibm_verify_events_raw.application_usage\n\n\nOne row per IBM Verify SSO event, when someone reaches an application.\n\n\n\n\n\n\nibm_verify_events_raw.authentication_activity\n\n\nOne row per IBM Verify authentication event.\n\n\n\n\n\n\nibm_verify_events_raw.mfa_activity\n\n\nOne row per IBM Verify multi-factor authentication event.\n\n\n\n\n\n\nibm_verify_events_transformed.events_adaptive_risk_summary\n\n\nDaily adaptive access evaluations by risk level.\n\n\n\n\n\n\nibm_verify_events_transformed.events_app_login_counts\n\n\nDaily SSO event counts by application.\n\n\n\n\n\n\nibm_verify_events_transformed.events_application_mapping\n\n\nEach application’s IBM Verify ID, current name, and first and last event this year.\n\n\n\n\n\n\nibm_verify_events_transformed.events_auth_total_logins\n\n\nDaily CanadaLogin-wide authentication event totals.\n\n\n\n\n\n\nibm_verify_events_transformed.events_mfa_activity\n\n\nDaily multi-factor authentication activity by factor and result.\n\n\n\n\n\n\njira.edcpptp\n\n\nDaily snapshot of every EDCPPTP Jira issue, one row per issue per snapshot.\n\n\n\n\n\n\njira.edcpptp_comment\n\n\nEvery comment on every EDCPPTP issue, one row per comment per snapshot.\n\n\n\n\n\n\njira.edcpptp_field_catalog\n\n\nEvery Jira field definition, with EDCPPTP usage counts, one row per field per snapshot.\n\n\n\n\n\n\njira.psom\n\n\nDaily snapshot of every PSOM Jira ticket, one row per ticket per snapshot.\n\n\n\n\n\n\njira.psom_comment\n\n\nEvery comment on every PSOM ticket, one row per comment per snapshot.\n\n\n\n\n\n\njira.psom_sla\n\n\nSLA clock state for each PSOM ticket, one row per ticket per SLA per snapshot.\n\n\n\n\n\n\nrp.alias\n\n\nMaps each identifier or name a source system uses for a service back to one rp_id.\n\n\n\n\n\n\nrp.service\n\n\nOne row per relying party, with its names, operator, and launch date.\n\n\n\n\n\n\nsre.mttr_current\n\n\nLatest state of every incident, one row per incident.\n\n\n\n\n\n\nsre.mttr_history\n\n\nDated snapshots of every incident, one row per incident per snapshot.\n\n\n\n\n\n\nsre.uptime_summary\n\n\nDaily rolling-window uptime and response-time figures for each monitored site.\n\n\n\n\n\n\nsre.uptime_timeseries\n\n\nStatus snapshots for each monitored site, one row per upptime bot commit.\n\n\n\n\n\n\nNo matching items",
     "crumbs": [
       "Data Catalog"
     ]

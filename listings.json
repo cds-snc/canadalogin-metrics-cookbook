@@ -142,10 +142,10 @@
     ]
   },
   {
-    "listing": "/catalog/call_centre.html",
+    "listing": "/catalog/ecm.html",
     "items": [
-      "/catalog/call_centre/weekly_activity_report.html",
-      "/catalog/call_centre/weekly_topic_dump.html"
+      "/catalog/ecm/credential_baseline.html",
+      "/catalog/ecm/sic_split.html"
     ]
   },
   {
@@ -153,6 +153,13 @@
     "items": [
       "/catalog/billing/ibm_verify_total_users.html",
       "/catalog/billing/ibm_verify_resource_units.html"
+    ]
+  },
+  {
+    "listing": "/catalog/call_centre.html",
+    "items": [
+      "/catalog/call_centre/weekly_activity_report.html",
+      "/catalog/call_centre/weekly_topic_dump.html"
     ]
   },
   {
@@ -187,6 +194,8 @@
       "/catalog/billing/ibm_verify_total_users.html",
       "/catalog/call_centre/weekly_activity_report.html",
       "/catalog/call_centre/weekly_topic_dump.html",
+      "/catalog/ecm/credential_baseline.html",
+      "/catalog/ecm/sic_split.html",
       "/catalog/google_analytics/error_events.html",
       "/catalog/google_analytics/funnel_metrics.html",
       "/catalog/google_analytics/funnel_metrics_current.html",
