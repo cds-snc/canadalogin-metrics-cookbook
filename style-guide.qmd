@@ -1,0 +1,134 @@
+---
+title: Style Guide
+description: "How to write and edit pages in the Metrics Cookbook and the Data Catalog."
+---
+
+How to write for this site. It applies to every page. For the mechanics of
+adding a page (files, listings, sidebar, tests), see the
+[README](https://github.com/cds-snc/canadalogin-metrics-cookbook#adding-a-page).
+
+## Goals
+
+Readers come here to find one fact, fast. Every sentence should help them find
+it or use it safely.
+
+- **Cut words, not facts.** Remove filler, repetition and background. Keep any
+  fact that stops a reader getting a wrong answer: a null that is really an
+  empty string, a count that double-counts, a field that is always `0`.
+- **Lead with the answer.** Put the rule or the definition first, and the
+  reason after it.
+- **Say it once.** Put a caveat shared by several tables on the source page, and
+  link to it from the others.
+- **Use a table for anything a reader looks up.** Use prose only for things that
+  need explaining.
+
+## Sentences
+
+- Write in plain language, with short sentences and one idea each.
+- Use the active voice and the present tense: "The Lambda writes a row", not
+  "A row will be written".
+- Use Canadian spelling: *centre*, *colour*, *labelled*, *organization*.
+- Write *for example* in prose. *e.g.* is fine in a table cell.
+- Do not open with "This table contains" or "This page describes". Say what
+  the thing is.
+
+## Facts and dates
+
+- **Describe how the data behaves, not what one query showed.** No dated
+  counts, and no "so far" or "as of". Write "rarely filled in", not "15 of 392
+  rows".
+- **Provenance dates are fine:** launch, go-live, a schema change, the first
+  snapshot.
+- **Check every claim** against the data or the pipeline code before you write
+  it. If something is not known yet, say so, for example "Pending". Do not
+  guess.
+- Write dates as `YYYY-MM-DD`.
+- Write times on a 24-hour clock with `ET`: `06:00 ET`, `~04:00 ET`. Timestamp
+  fields follow the time zone of their source.
+- New pages never mention deprecated tables.
+
+## Words
+
+| Use | Not | Why |
+|---|---|---|
+| sign-in | login | CanadaLogin style guide dictates that we "sign in" everywhere in order to avoid the confusing phrasing of "log in with CanadaLogin" |
+| authentication event, SSO event | sign-in, in a column name, axis label or metric name | No table counts sign-ins, so "sign-in" is prose only. A metric can use it only when labelled an estimate. |
+| factor (`mfa_type`) | method | The MFA breakdown dimension. |
+
+"Sign-in" is a noun ("a failed sign-in"). "Sign in" is a verb ("users sign in
+with a passkey"). Likewise "login" and "log in".
+
+For what each sign-in term means, see the [IBM Verify](cookbook/ibm_verify.qmd)
+source page.
+
+## Catalog pages
+
+Start from `catalog/data-catalog-template.qmd`.
+
+- **`title`** is the table's full name: `schema.table`.
+- **`description`** is one line ending in a period, stating what a row is:
+  "Daily snapshot of every PSOM Jira ticket, one row per ticket per snapshot."
+- **Intro:** one sentence saying what the table is. Then one saying what a row is,
+  and what it joins to.
+- **Provenance:** one or two sentences on where the data comes from. Then the
+  `Updated`, `Retention`, `Steward`, `Contact` and `Location` bullets.
+- **Fields:** one table with `Field Name | Type | Description`.
+  - Use Parquet type names: `boolean`, `date`, `decimal`, `float`, `integer`,
+    `string`, `time`, `timestamp`. Not Athena names such as `varchar` or `bigint`.
+  - Write a boolean's description as the question it answers: "Is the comment
+    hidden from customers?"
+  - List the values of a short set of codes: "One of `sent`, `success`,
+    `failure`." Use "E.g." when Jira or the source allows more values than
+    you have seen.
+  - Say what an empty value looks like: null, empty string, `{}` or `0`.
+
+## Metric pages
+
+- **`title`** is the plain-language metric name, in title case.
+- **`description`** is one line ending in a period: "Share of accepted calls
+  abandoned before an agent answered."
+- **Intro:** one sentence defining the metric ("The proportion of..."). Then one
+  saying when it is useful ("This metric is useful for...").
+- **`## Calculation`:** the logic in a few sentences, then the example queries
+  in the collapsed `Example queries` callout, with `## SQL` and `## R` tabs.
+- **`## Interpretation notes`:** how to read the number, and what can mislead.
+  Rates start with "The rate is a proportion between 0 and 1."
+- **`## Alternative names`:** a lowercase bullet list of other names people
+  search for.
+
+## Queries
+
+- Write SQL for Amazon Athena. See [Conventions](cookbook/index.qmd#conventions).
+- Give every SQL block an R twin that returns the same result.
+  `tests/run_parity_tests.R` checks them.
+- Prefer idiomatic dbplyr over raw `sql()` in R.
+- Read the Notes on a table's catalog page before you query it.
+- Name output columns for what they count, in `snake_case`.
+- Keep code comments short, and only where the reason is not obvious.
+- A catalog page shows a short snippet only when the field cannot be used
+  without one. Full queries belong in the cookbook.
+
+## Notes
+
+A note is a bold lead sentence that states the rule, followed by one to three
+sentences on why or what to do.
+
+> **Only `screenpageviews` sums across pages.** GA4 counts `activeusers` and
+> `sessions` within each row, so a user who viewed three pages in a day appears
+> in all three rows. Summing either across pages overcounts.
+
+- Make the lead a full sentence, ending in a period.
+- Make it an instruction or a fact a reader can act on.
+- Give each note one point. Split a note that makes two.
+
+## Links
+
+- Link a table or page the first time you mention it, with a relative path:
+  [`rp.service`](catalog/rp/service.qmd).
+- Link to a section by its anchor rather than repeating it:
+  [Dates are strings](catalog/ibm_verify_events_transformed.qmd#dates-are-strings).
+- When you link to the internal pipeline repo, say it needs cds-snc access.
+
+## Holding a page back
+
+Set `draft: true` in the front matter, with a YAML comment saying why.
